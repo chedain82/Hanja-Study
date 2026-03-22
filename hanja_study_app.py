@@ -14,6 +14,37 @@ st.set_page_config(
     layout="centered",
 )
 
+# 18번 줄 근처 스타일 시작 부분
+st.markdown(
+    """
+    <style>
+    /* 1. 어떤 기기에서도 배경을 다크 모드로 강제 고정 */
+    .stApp {
+        background-color: #0E1117 !important;
+    }
+
+    /* 2. 모든 글자 색상을 흰색으로 강제 고정 (라이트 모드 방지) */
+    html, body, [data-testid="stWidgetLabel"], .stMarkdown, p, h1, h2, h3, span, div {
+        color: #FFFFFF !important;
+    }
+
+    /* 3. 버튼 테두리와 글자색도 흰색으로 */
+    .stButton>button {
+        color: #FFFFFF !important;
+        border-color: #FFFFFF !important;
+        background-color: transparent !important;
+    }
+
+    /* 기존에 있던 여백 설정 */
+    .block-container {
+        padding-top: 2rem;
+        padding-bottom: 0rem;
+        max-width: 600px;
+    }
+    </style>
+    """,
+    unsafe_allow_html=True
+)
 
 # =========================
 # Style
