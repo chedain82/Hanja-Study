@@ -1,10 +1,3 @@
-아, 죄송합니다! 제가 이전 답변에서 작성해 드린 코드는 **'스타일(CSS)' 부분만** 수정한 코드였습니다. 전체 코드를 다 보내드리지 않고 스타일 부분만 덜렁 보내드려서 혼란을 드렸네요. 😭
-
-기존에 작성하셨던 **모든 기능(단어 불러오기, 화면 이동, 퀴즈 기능 등)은 그대로 살려두고**, 디자인(스타일) 부분만 아내분 휴대폰에서도 예쁘게 보이도록 수정한 **진짜 완전한 전체 코드**를 다시 보내드립니다.
-
-이 코드를 복사해서 `hanja_study_app.py` 파일의 내용을 싹 지우고 붙여넣어 주세요!
-
-```python
 import random
 from pathlib import Path
 
@@ -798,4 +791,3 @@ elif page == "study_type": page_study_type()
 elif page == "memorize": page_memorize()
 elif page == "quiz": page_quiz()
 else: page_home()
-```
