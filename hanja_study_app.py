@@ -14,104 +14,146 @@ st.set_page_config(
     layout="centered",
 )
 
+
 # =========================
-# Style (기존 디자인 유지 + 모바일 반응형 추가)
+# Global Style (Responsive)
 # =========================
 st.markdown(
     """
     <style>
-    /* 1. 다크모드 강제 고정 */
+    /* =========================
+       0. 다크 모드 고정
+    ========================= */
     .stApp {
         background-color: #0E1117 !important;
     }
-    html, body, [data-testid="stWidgetLabel"], .stMarkdown, p, h1, h2, h3, span, div, label {
-        color: #f7f9fc !important;
+
+    html, body,
+    [data-testid="stWidgetLabel"],
+    .stMarkdown, p, h1, h2, h3, h4, h5, h6,
+    span, div, label {
+        color: #FFFFFF !important;
     }
 
-    /* 2. 화면 여백 최적화 (모바일에서 잘리지 않게) */
+    header[data-testid="stHeader"] {
+        background: transparent !important;
+    }
+
+    /* =========================
+       1. 전체 레이아웃
+    ========================= */
     .block-container {
-        max-width: 600px !important; 
-        padding-top: 2rem !important; 
-        padding-bottom: 2rem !important;
-        padding-left: 1rem !important;
-        padding-right: 1rem !important;
-        margin: 0 auto;
+        max-width: 760px;
+        padding-top: clamp(6.8rem, 10vw, 9.4rem) !important;
+        padding-bottom: clamp(2.2rem, 4vw, 3.6rem) !important;
+        padding-left: clamp(0.95rem, 3vw, 1.2rem) !important;
+        padding-right: clamp(0.95rem, 3vw, 1.2rem) !important;
     }
 
-    /* 3. 제목 크기 (화면 크기에 따라 자동 조절) */
+    /* =========================
+       2. 타이틀 / 텍스트
+    ========================= */
     .app-title {
         text-align: center;
-        font-size: clamp(1.8rem, 6vw, 2.7rem) !important; 
+        font-size: clamp(2.25rem, 6.3vw, 3rem);
         font-weight: 900;
-        margin-bottom: 1rem;
+        color: #f7f9fc !important;
+        margin-top: clamp(-0.6rem, -1vw, -0.1rem);
+        margin-bottom: clamp(2rem, 4vw, 2.9rem);
+        letter-spacing: -0.04em;
+        line-height: 1.06;
     }
 
     .main-title {
         text-align: center;
-        font-size: clamp(2rem, 8vw, 3.15rem) !important;
+        font-size: clamp(2.7rem, 7.5vw, 3.45rem);
         font-weight: 900;
-        margin: 0.5rem 0;
+        margin-top: 0.15rem;
+        margin-bottom: clamp(0.65rem, 2vw, 0.95rem);
+        color: #f7f9fc !important;
+        letter-spacing: -0.045em;
+        line-height: 1.04;
     }
 
     .sub-title {
         text-align: center;
-        font-size: clamp(1.2rem, 5vw, 1.8rem) !important;
+        font-size: clamp(1.7rem, 5vw, 2.15rem);
         font-weight: 900;
-        margin-bottom: 0.5rem;
-        color: #f7f9fc;
+        margin-top: 0.1rem;
+        margin-bottom: clamp(0.45rem, 1.8vw, 0.8rem);
+        color: #f7f9fc !important;
+        letter-spacing: -0.02em;
+        line-height: 1.08;
     }
 
     .small-info {
         text-align: center;
-        font-size: 1.08rem;
-        color: #9aa7bd;
-        margin-bottom: 0.5rem;
+        font-size: clamp(1rem, 3.2vw, 1.18rem);
+        color: #9aa7bd !important;
+        margin-bottom: clamp(0.35rem, 1.3vw, 0.6rem);
         font-weight: 800;
+        line-height: 1.1;
     }
 
     .range-info {
         text-align: center;
-        margin-bottom: 0.5rem;
+        margin-bottom: clamp(0.75rem, 2vw, 1.15rem);
     }
 
     .range-chip {
         display: inline-block;
-        padding: 0.42rem 0.92rem;
+        padding: clamp(0.4rem, 1vw, 0.52rem) clamp(0.82rem, 2vw, 1.08rem);
         border-radius: 999px;
         background: rgba(126, 231, 240, 0.08);
-        border: 1px solid rgba(126, 231, 240, 0.65);
+        border: 1px solid rgba(126, 231, 240, 0.68);
         color: #8ef3fb !important;
-        font-size: 1rem;
+        font-size: clamp(0.96rem, 2.8vw, 1.08rem);
         font-weight: 900;
         margin: 0.14rem;
+        line-height: 1.1;
     }
 
     .section-label {
         text-align: center;
-        font-size: clamp(1.2rem, 5vw, 1.95rem) !important;
+        font-size: clamp(1.8rem, 5.3vw, 2.2rem);
         font-weight: 900;
-        margin-bottom: 0.5rem;
+        color: #f7f9fc !important;
+        margin-top: clamp(0.35rem, 1vw, 0.75rem);
+        margin-bottom: clamp(0.8rem, 2.2vw, 1.2rem);
+        letter-spacing: -0.03em;
+        line-height: 1.08;
     }
 
-    /* 4. 기본 버튼 스타일 (원래 디자인) */
+    /* =========================
+       3. 버튼 공통
+    ========================= */
     .stButton > button {
         width: 100%;
-        border-radius: 22px;
-        min-height: 62px;
-        font-size: 1.35rem !important;
+        min-height: clamp(72px, 10vw, 86px);
+        border-radius: clamp(20px, 3vw, 25px);
+        font-size: clamp(1.28rem, 3.9vw, 1.7rem);
         font-weight: 900;
         border: 1px solid rgba(255,255,255,0.12) !important;
         background: rgba(255,255,255,0.05) !important;
         color: #f7f9fc !important;
         backdrop-filter: blur(2px);
+        -webkit-backdrop-filter: blur(2px);
         transition: all 0.18s ease;
-        box-shadow: none;
+        box-shadow: none !important;
+        padding-top: 0.2rem !important;
+        padding-bottom: 0.2rem !important;
     }
 
     .stButton > button:hover {
         border: 1px solid rgba(126, 231, 240, 0.45) !important;
         background: rgba(255,255,255,0.08) !important;
         color: #ffffff !important;
+    }
+
+    .stButton > button:focus,
+    .stButton > button:active {
+        outline: none !important;
+        box-shadow: none !important;
     }
 
     .stButton > button[kind="primary"] {
@@ -121,72 +163,103 @@ st.markdown(
         transform: scale(1.02);
     }
 
+    /* =========================
+       4. 화면별 버튼 크기
+    ========================= */
     .home-btn .stButton > button {
-        min-height: 86px;
-        font-size: 2rem !important;
-        border-radius: 24px;
+        min-height: clamp(84px, 11vw, 102px);
+        font-size: clamp(1.8rem, 5vw, 2.35rem);
+        font-weight: 900;
+        border-radius: clamp(22px, 3vw, 28px);
+        margin-top: clamp(0.4rem, 1.5vw, 0.9rem);
     }
 
     .grade-grid .stButton > button {
-        min-height: 96px;
-        font-size: 2rem !important;
-        border-radius: 22px;
-        margin-bottom: 0.25rem;
+        min-height: clamp(88px, 11vw, 108px);
+        font-size: clamp(1.75rem, 4.8vw, 2.2rem);
+        font-weight: 900;
+        border-radius: clamp(22px, 3vw, 26px);
+        margin-bottom: clamp(0.2rem, 1vw, 0.5rem);
     }
 
     .range-group-btn .stButton > button {
-        min-height: 92px;
-        font-size: 3.6rem !important;
-        border-radius: 24px;
+        min-height: clamp(84px, 11vw, 104px);
+        font-size: clamp(2rem, 6.2vw, 3.35rem);
+        font-weight: 900;
+        border-radius: clamp(22px, 3vw, 26px);
     }
 
     .step-btn .stButton > button {
-        min-height: 86px;
-        font-size: 3.2rem !important;
-        border-radius: 24px;
+        min-height: clamp(80px, 10.5vw, 96px);
+        font-size: clamp(1.7rem, 5vw, 2.55rem);
+        font-weight: 900;
+        border-radius: clamp(20px, 3vw, 24px);
+    }
+
+    .mode-btn .stButton > button {
+        min-height: clamp(86px, 11vw, 104px);
+        font-size: clamp(1.5rem, 4.4vw, 2rem);
+        font-weight: 900;
+        border-radius: clamp(22px, 3vw, 26px);
     }
 
     .back-btn .stButton > button,
     .complete-btn .stButton > button {
-        min-height: 74px;
-        font-size: 1.7rem !important;
-        border-radius: 22px;
-    }
-
-    .mode-btn .stButton > button {
-        min-height: 76px;
-        font-size: 1.7rem !important;
+        min-height: clamp(78px, 10vw, 92px);
+        font-size: clamp(1.45rem, 4.1vw, 2rem);
+        font-weight: 900;
+        border-radius: clamp(20px, 3vw, 24px);
     }
 
     .back-small-btn .stButton > button {
-        min-height: 66px;
-        font-size: 1.35rem !important;
-        border-radius: 22px;
+        min-height: clamp(70px, 9vw, 80px);
+        font-size: clamp(1.25rem, 3.7vw, 1.6rem);
+        font-weight: 900;
+        border-radius: clamp(18px, 3vw, 22px);
     }
 
     .exit-btn .stButton > button {
-        min-height: 58px;
-        font-size: 1.2rem !important;
-        border-radius: 20px;
+        min-height: clamp(60px, 8vw, 68px);
+        font-size: clamp(1.05rem, 3vw, 1.35rem);
+        font-weight: 900;
+        border-radius: clamp(16px, 3vw, 20px);
         background: rgba(255,255,255,0.03) !important;
+        color: #f7f9fc !important;
         border: 1px solid rgba(255,255,255,0.16) !important;
     }
 
-    /* 5. 대왕 한자 크기 (모바일에서 안 잘리게) */
+    .quiz-type-btn .stButton > button {
+        min-height: clamp(68px, 9vw, 80px);
+        font-size: clamp(1.12rem, 3.4vw, 1.42rem);
+        font-weight: 900;
+        border-radius: clamp(18px, 3vw, 22px);
+    }
+
+    .quiz-action-btn .stButton > button {
+        height: clamp(76px, 10vw, 90px) !important;
+        min-height: clamp(76px, 10vw, 90px) !important;
+        border-radius: clamp(20px, 3vw, 24px) !important;
+        font-size: clamp(1.55rem, 4.5vw, 2.05rem) !important;
+        font-weight: 900 !important;
+    }
+
+    /* =========================
+       5. 카드 / 큰 글자
+    ========================= */
     .hanja-card {
         background: transparent;
         border: none;
-        min-height: 210px;
+        min-height: clamp(220px, 28vw, 280px);
         display: flex;
         align-items: center;
         justify-content: center;
         text-align: center;
-        padding: 0.1rem;
-        margin-bottom: 0.25rem;
+        padding: 0.15rem;
+        margin-bottom: clamp(0.3rem, 1vw, 0.55rem);
     }
 
     .hanja-big {
-        font-size: clamp(5rem, 25vw, 9.4rem) !important; /* 9.4rem을 최대 크기로 제한 */
+        font-size: clamp(7rem, 17vw, 10.4rem);
         font-weight: 900;
         line-height: 0.95;
         color: #ffffff !important;
@@ -194,7 +267,7 @@ st.markdown(
     }
 
     .question-big-hanja {
-        font-size: clamp(4rem, 20vw, 8rem) !important;
+        font-size: clamp(6.2rem, 15vw, 9rem);
         font-weight: 900;
         line-height: 0.95;
         color: #ffffff !important;
@@ -203,34 +276,77 @@ st.markdown(
     }
 
     .question-big-text {
-        font-size: clamp(1.8rem, 8vw, 3.7rem) !important;
+        font-size: clamp(2.6rem, 8vw, 4.2rem);
         font-weight: 900;
-        line-height: 1.02;
+        line-height: 1.05;
         color: #f7f9fc !important;
         text-align: center;
         letter-spacing: -0.04em;
+        word-break: keep-all;
     }
 
-    .quiz-type-btn .stButton > button {
-        min-height: 64px;
-        font-size: 1.22rem !important;
+    /* =========================
+       6. 공통 간격
+    ========================= */
+    .spacer-1 { height: clamp(0.45rem, 1vw, 0.6rem); }
+    .spacer-2 { height: clamp(0.8rem, 2vw, 1.1rem); }
+    .spacer-3 { height: clamp(1.3rem, 3vw, 1.8rem); }
+    .spacer-4 { height: clamp(2rem, 4vw, 2.8rem); }
+
+    /* =========================
+       7. 작은 휴대폰 보정
+    ========================= */
+    @media (max-width: 430px) {
+        .block-container {
+            padding-top: clamp(7.3rem, 12vw, 9.6rem) !important;
+            padding-left: 0.95rem !important;
+            padding-right: 0.95rem !important;
+        }
+
+        .main-title {
+            margin-bottom: 0.85rem;
+        }
+
+        .section-label {
+            margin-bottom: 1rem;
+        }
+
+        .mode-btn .stButton > button {
+            min-height: clamp(88px, 12vw, 102px);
+            font-size: clamp(1.55rem, 4.8vw, 1.95rem);
+        }
+
+        .home-btn .stButton > button {
+            min-height: clamp(88px, 12vw, 102px);
+        }
     }
 
-    .quiz-action-btn .stButton > button {
-        height: 70px !important;
-        border-radius: 20px !important;
-        font-size: 1.8rem !important;
-    }
+    /* =========================
+       8. 큰 휴대폰/태블릿 보정
+    ========================= */
+    @media (min-width: 768px) {
+        .block-container {
+            padding-top: clamp(5.8rem, 7vw, 7.4rem) !important;
+            max-width: 820px;
+        }
 
-    .spacer-1 { height: 0.35rem; }
-    .spacer-2 { height: 0.7rem; }
-    .spacer-3 { height: 1.2rem; }
-    .spacer-4 { height: 2rem; }
-    
-    /* 상단바 숨기기 */
-    #MainMenu {visibility: hidden;}
-    footer {visibility: hidden;}
-    header {visibility: hidden;}
+        .stButton > button {
+            min-height: clamp(68px, 7vw, 82px);
+        }
+
+        .mode-btn .stButton > button {
+            min-height: clamp(78px, 8vw, 92px);
+            font-size: clamp(1.4rem, 2.6vw, 1.8rem);
+        }
+
+        .range-group-btn .stButton > button {
+            font-size: clamp(1.9rem, 4vw, 2.7rem);
+        }
+
+        .step-btn .stButton > button {
+            font-size: clamp(1.5rem, 3vw, 2rem);
+        }
+    }
     </style>
     """,
     unsafe_allow_html=True,
@@ -253,7 +369,6 @@ GRADE_GROUPS = {
 }
 
 GRADE_ORDER = ["8급", "준5급", "4급", "7급", "5급", "준3급", "6급", "준4급", "3급"]
-
 STEP_NUMBERS = [1, 2, 3, 4, 5, 6]
 
 
@@ -274,19 +389,20 @@ def init_state() -> None:
         "memorize_cycle": 1,
         "memorize_show_answer": False,
         "quiz_type": "meaning_to_hanja",
-        "quiz_sequence": [],     
-        "quiz_index": 0,         
-        "quiz_current_row": None, 
+        "quiz_sequence": [],
+        "quiz_index": 0,
+        "quiz_current_row": None,
         "quiz_question": None,
         "quiz_options": [],
         "quiz_answer_index": None,
         "quiz_selected_index": None,
         "quiz_checked": False,
-        "wrong_answers": [],     
+        "wrong_answers": [],
     }
     for k, v in defaults.items():
         if k not in st.session_state:
             st.session_state[k] = v
+
 
 init_state()
 
@@ -397,8 +513,10 @@ def go_page(page_name: str) -> None:
 
 def render_range_info() -> None:
     chips = []
+
     if st.session_state.selected_grade:
         chips.append(f"급수 {st.session_state.selected_grade}")
+
     if st.session_state.selected_group and st.session_state.selected_steps:
         step_text = ", ".join(
             [f"{st.session_state.selected_group}-{s}" for s in sorted(st.session_state.selected_steps)]
@@ -415,11 +533,11 @@ def set_study_mode(db_name: str, label: str, mode: str) -> None:
     st.session_state.study_label = label
     st.session_state.study_mode = mode
     st.session_state.filtered_df = get_filtered_df()
-    
+
     st.session_state.memorize_index = 0
-    st.session_state.memorize_cycle = 1 
+    st.session_state.memorize_cycle = 1
     st.session_state.memorize_show_answer = False
-    
+
     st.session_state.wrong_answers = []
     st.session_state.quiz_index = 0
 
@@ -466,7 +584,7 @@ def build_new_quiz_question() -> None:
 
     row_idx = st.session_state.quiz_sequence[st.session_state.quiz_index]
     row = df.iloc[row_idx]
-    st.session_state.quiz_current_row = row.to_dict() 
+    st.session_state.quiz_current_row = row.to_dict()
 
     quiz_type = st.session_state.quiz_type
 
@@ -517,6 +635,7 @@ def page_home() -> None:
     st.markdown("<div class='main-title'>한자 공부</div>", unsafe_allow_html=True)
     st.markdown("<div class='spacer-4'></div>", unsafe_allow_html=True)
     st.markdown("<div class='spacer-4'></div>", unsafe_allow_html=True)
+    st.markdown("<div class='spacer-4'></div>", unsafe_allow_html=True)
 
     left, center, right = st.columns([1.6, 2.4, 1.6])
     with center:
@@ -531,6 +650,7 @@ def page_grade() -> None:
     st.markdown("<div class='spacer-4'></div>", unsafe_allow_html=True)
 
     grade_cols = st.columns(3)
+
     for i, grade in enumerate(GRADE_ORDER):
         with grade_cols[i % 3]:
             st.markdown("<div class='grade-grid'>", unsafe_allow_html=True)
@@ -550,6 +670,7 @@ def page_grade() -> None:
             st.markdown("<div class='spacer-2'></div>", unsafe_allow_html=True)
 
     st.markdown("<div class='spacer-4'></div>", unsafe_allow_html=True)
+
     left, center, right = st.columns([2.3, 1.2, 2.3])
     with center:
         st.markdown("<div class='exit-btn'>", unsafe_allow_html=True)
@@ -587,6 +708,7 @@ def page_range() -> None:
 
     elif len(groups) == 2:
         outer_left, col1, col2, outer_right = st.columns([0.7, 1.2, 1.2, 0.7])
+
         with col1:
             st.markdown("<div class='range-group-btn'>", unsafe_allow_html=True)
             if st.button(
@@ -712,57 +834,71 @@ def page_study_type() -> None:
 
 
 def page_memorize() -> None:
-    st.markdown("""
-    <style>
-    /* 외우기 페이지의 거대 버튼 (원래 디자인으로 복구하되 반응형 추가) */
-    button[kind="primary"] {
-        height: clamp(150px, 35vw, 260px) !important;
-        min-height: 150px !important;
-        border-radius: 40px !important;
-        background: rgba(255,255,255,0.03) !important;
-        border: 2px solid rgba(255,255,255,0.16) !important;
-        transition: 0.3s;
-        display: flex !important;
-        align-items: center !important;
-        justify-content: center !important;
-        padding: 0 !important;
-        margin: 0 auto !important;
-        width: 100% !important;
-        box-shadow: none !important;
-        transform: none !important;
-    }
-    
-    button[kind="primary"]:hover {
-        background: rgba(255,255,255,0.08) !important;
-        border-color: rgba(126, 231, 240, 0.45) !important;
-    }
+    st.markdown(
+        """
+        <style>
+        /* 외우기 페이지의 좌/중앙/우 거대 버튼 반응형 */
+        button[kind="primary"] {
+            height: clamp(190px, 28vw, 260px) !important;
+            min-height: clamp(190px, 28vw, 260px) !important;
+            border-radius: clamp(26px, 5vw, 40px) !important;
+            background: rgba(255,255,255,0.03) !important;
+            border: 2px solid rgba(255,255,255,0.16) !important;
+            transition: 0.3s;
+            display: flex !important;
+            align-items: center !important;
+            justify-content: center !important;
+            padding: 0 !important;
+            margin: 0 auto !important;
+            width: 100% !important;
+            box-shadow: none !important;
+            transform: none !important;
+        }
 
-    button[kind="primary"] p, button[kind="primary"] div, button[kind="primary"] span {
-        font-size: clamp(2rem, 8vw, 6.5rem) !important;
-        font-weight: 900 !important;
-        color: #ffffff !important;
-        line-height: 1.2 !important;
-        white-space: normal !important;
-        word-break: keep-all !important;
-        margin: 0 !important;
-        padding: 0 !important;
-    }
+        button[kind="primary"]:hover {
+            background: rgba(255,255,255,0.08) !important;
+            border-color: rgba(126, 231, 240, 0.45) !important;
+        }
 
-    div[data-testid="column"]:nth-child(1) button[kind="primary"] p,
-    div[data-testid="column"]:nth-child(1) button[kind="primary"] div,
-    div[data-testid="column"]:nth-child(1) button[kind="primary"] span,
-    div[data-testid="column"]:nth-child(3) button[kind="primary"] p,
-    div[data-testid="column"]:nth-child(3) button[kind="primary"] div,
-    div[data-testid="column"]:nth-child(3) button[kind="primary"] span {
-        font-size: clamp(3rem, 12vw, 8rem) !important;
-        line-height: 1 !important;
-    }
+        button[kind="primary"] p,
+        button[kind="primary"] div,
+        button[kind="primary"] span {
+            font-size: clamp(4rem, 10vw, 6.5rem) !important;
+            font-weight: 900 !important;
+            color: #ffffff !important;
+            line-height: 1.15 !important;
+            white-space: normal !important;
+            word-break: keep-all !important;
+            margin: 0 !important;
+            padding: 0 !important;
+        }
 
-    button[kind="primary"]:hover p, button[kind="primary"]:hover div, button[kind="primary"]:hover span {
-        color: #00f2ff !important;
-    }
-    </style>
-    """, unsafe_allow_html=True)
+        div[data-testid="column"]:nth-child(1) button[kind="primary"] p,
+        div[data-testid="column"]:nth-child(1) button[kind="primary"] div,
+        div[data-testid="column"]:nth-child(1) button[kind="primary"] span,
+        div[data-testid="column"]:nth-child(3) button[kind="primary"] p,
+        div[data-testid="column"]:nth-child(3) button[kind="primary"] div,
+        div[data-testid="column"]:nth-child(3) button[kind="primary"] span {
+            font-size: clamp(4.8rem, 12vw, 8rem) !important;
+            line-height: 1 !important;
+        }
+
+        button[kind="primary"]:hover p,
+        button[kind="primary"]:hover div,
+        button[kind="primary"]:hover span {
+            color: #00f2ff !important;
+        }
+
+        @media (min-width: 768px) {
+            button[kind="primary"] {
+                height: clamp(210px, 24vw, 250px) !important;
+                min-height: clamp(210px, 24vw, 250px) !important;
+            }
+        }
+        </style>
+        """,
+        unsafe_allow_html=True,
+    )
 
     df = st.session_state.filtered_df
     if df.empty:
@@ -774,7 +910,7 @@ def page_memorize() -> None:
     idx = max(0, min(st.session_state.memorize_index, len(df) - 1))
     st.session_state.memorize_index = idx
     row = df.iloc[idx]
-    
+
     cycle = st.session_state.memorize_cycle
 
     st.markdown(f"<div class='main-title'>{st.session_state.study_label}</div>", unsafe_allow_html=True)
@@ -812,7 +948,7 @@ def page_memorize() -> None:
             if st.button(reveal_text, key="hide_answer", type="primary", use_container_width=True):
                 pass
         else:
-            if st.button("정답 보기", key="show_answer", type="primary", use_container_width=True):
+            if st.button("?", key="show_answer", type="primary", use_container_width=True):
                 st.session_state.memorize_show_answer = True
                 st.rerun()
 
@@ -838,7 +974,7 @@ def page_memorize() -> None:
 
 def page_quiz() -> None:
     df = st.session_state.filtered_df
-    
+
     if not df.empty and st.session_state.quiz_index >= len(st.session_state.quiz_sequence):
         wrong_count = len(st.session_state.wrong_answers)
         correct_count = len(df) - wrong_count
@@ -847,21 +983,49 @@ def page_quiz() -> None:
         st.markdown("<div class='sub-title'>학습 완료!</div>", unsafe_allow_html=True)
         st.markdown("<div class='spacer-2'></div>", unsafe_allow_html=True)
 
-        st.markdown(f"""
-        <div style='height: 260px; min-height: 260px; border-radius: 40px; background: rgba(255,255,255,0.03); border: 2px solid rgba(255,255,255,0.16); display: flex; flex-direction: column; justify-content: center; align-items: center;'>
-            <div style='font-size: clamp(1.5rem, 6vw, 3rem); font-weight: 900; color: #ffffff; margin-bottom: 1rem;'>고생하셨습니다! 🎉</div>
-            <div style='font-size: clamp(1.2rem, 5vw, 2rem); font-weight: 800; color: #8ef3fb;'>총 {len(df)}문제 중 <span style='font-size:clamp(1.5rem, 6vw, 2.5rem); color:#00f2ff;'>{correct_count}</span>문제 정답</div>
-        </div>
-        """, unsafe_allow_html=True)
-        
+        st.markdown(
+            f"""
+            <div style="
+                min-height: clamp(220px, 28vw, 260px);
+                border-radius: clamp(26px, 5vw, 40px);
+                background: rgba(255,255,255,0.03);
+                border: 2px solid rgba(255,255,255,0.16);
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+                padding: 1.2rem;
+                text-align: center;
+            ">
+                <div style="
+                    font-size: clamp(2rem, 6vw, 3rem);
+                    font-weight: 900;
+                    color: #ffffff;
+                    margin-bottom: 1rem;
+                    line-height: 1.1;
+                ">고생하셨습니다! 🎉</div>
+                <div style="
+                    font-size: clamp(1.35rem, 4vw, 2rem);
+                    font-weight: 800;
+                    color: #8ef3fb;
+                    line-height: 1.25;
+                ">
+                    총 {len(df)}문제 중
+                    <span style="font-size: clamp(1.9rem, 5vw, 2.5rem); color:#00f2ff;">{correct_count}</span>문제 정답
+                </div>
+            </div>
+            """,
+            unsafe_allow_html=True,
+        )
+
         st.markdown("<div class='spacer-3'></div>", unsafe_allow_html=True)
-        
+
         if wrong_count > 0:
             c1, c2 = st.columns(2, gap="small")
             with c1:
                 st.markdown("<div class='quiz-action-btn'>", unsafe_allow_html=True)
-                if st.button("🔥 오답 다시 외우기", key="review_wrong", use_container_width=True, type="primary"):
-                    wrong_df = pd.DataFrame(st.session_state.wrong_answers).drop_duplicates(subset=['hanja'])
+                if st.button("🔥 오답만 다시 외우기", key="review_wrong", use_container_width=True, type="primary"):
+                    wrong_df = pd.DataFrame(st.session_state.wrong_answers).drop_duplicates(subset=["hanja"])
                     st.session_state.filtered_df = wrong_df.reset_index(drop=True)
                     st.session_state.memorize_index = 0
                     st.session_state.memorize_cycle = 1
@@ -890,7 +1054,6 @@ def page_quiz() -> None:
 
     st.markdown(f"<div class='main-title'>{st.session_state.study_label}</div>", unsafe_allow_html=True)
     st.markdown("<div class='sub-title'>퀴즈</div>", unsafe_allow_html=True)
-    
     st.markdown(f"<div class='small-info'>{st.session_state.quiz_index + 1} / {len(df)}</div>", unsafe_allow_html=True)
 
     t1, t2 = st.columns(2)
@@ -941,54 +1104,93 @@ def page_quiz() -> None:
 
     st.markdown("<div class='spacer-1'></div>", unsafe_allow_html=True)
 
-    q_class = 'question-big-hanja' if st.session_state.quiz_type == "hanja_to_sound" else 'question-big-text'
-    
-    fixed_grid_style = "height: clamp(150px, 20vh, 260px); min-height: 150px; max-height: 260px; display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; width: 100%; box-sizing: border-box;"
+    q_class = "question-big-hanja" if st.session_state.quiz_type == "hanja_to_sound" else "question-big-text"
+
+    fixed_grid_style = """
+        min-height: clamp(200px, 25vw, 260px);
+        display: grid;
+        grid-template-columns: 1fr auto 1fr;
+        align-items: center;
+        width: 100%;
+        box-sizing: border-box;
+    """
 
     if not checked:
         question_html = f"""
-        <div style='{fixed_grid_style}'>
+        <div style="{fixed_grid_style}">
             <div></div>
-            <div class='{q_class}' style='margin:0; text-align:center;'>{question}</div>
+            <div class="{q_class}" style="margin:0; text-align:center;">{question}</div>
             <div></div>
         </div>
         """
     else:
-        is_correct = (selected_index == answer_index)
+        is_correct = selected_index == answer_index
         correct_text = options[answer_index]
-        
+
         if is_correct:
             question_html = f"""
-            <div style='{fixed_grid_style}'>
-                <div style='display: flex; justify-content: flex-end; padding-right: 2rem;'>
-                    <div style='font-size: clamp(4rem, 15vw, 8rem); font-weight: 900; color: #00f2ff; line-height: 1; text-shadow: 0 0 20px rgba(0,242,255,0.6); margin-top:-10px;'>O</div>
+            <div style="{fixed_grid_style}">
+                <div style="display: flex; justify-content: flex-end; padding-right: clamp(0.8rem, 3vw, 2rem);">
+                    <div style="
+                        font-size: clamp(4.5rem, 12vw, 8rem);
+                        font-weight: 900;
+                        color: #00f2ff;
+                        line-height: 1;
+                        text-shadow: 0 0 20px rgba(0,242,255,0.6);
+                        margin-top:-10px;
+                    ">O</div>
                 </div>
-                <div class='{q_class}' style='margin:0; text-align:center;'>{question}</div>
+                <div class="{q_class}" style="margin:0; text-align:center;">{question}</div>
                 <div></div>
             </div>
             """
         else:
             question_html = f"""
-            <div style='{fixed_grid_style}'>
-                <div style='display: flex; justify-content: flex-end; padding-right: 2rem;'>
-                    <div style='font-size: clamp(4rem, 15vw, 8rem); font-weight: 900; color: #ff4b4b; line-height: 1; text-shadow: 0 0 20px rgba(255,75,75,0.6); margin-top:-10px;'>X</div>
+            <div style="{fixed_grid_style}">
+                <div style="display: flex; justify-content: flex-end; padding-right: clamp(0.8rem, 3vw, 2rem);">
+                    <div style="
+                        font-size: clamp(4.5rem, 12vw, 8rem);
+                        font-weight: 900;
+                        color: #ff4b4b;
+                        line-height: 1;
+                        text-shadow: 0 0 20px rgba(255,75,75,0.6);
+                        margin-top:-10px;
+                    ">X</div>
                 </div>
-                <div class='{q_class}' style='margin:0; text-align:center;'>{question}</div>
-                <div style='display: flex; flex-direction: column; justify-content: center; text-align: left; padding-left: 2rem;'>
-                    <span style='font-size: clamp(1rem, 3vw, 1.6rem); font-weight: 800; color: #f7f9fc; line-height: 1.2; margin-bottom:0.5rem;'>정답은</span>
-                    <span style='font-size: clamp(1.5rem, 5vw, 3.2rem); font-weight: 900; color: #00f2ff; line-height: 1.1; text-shadow: 0 0 10px rgba(0,242,255,0.4);'>{correct_text}</span>
+                <div class="{q_class}" style="margin:0; text-align:center;">{question}</div>
+                <div style="
+                    display: flex;
+                    flex-direction: column;
+                    justify-content: center;
+                    text-align: left;
+                    padding-left: clamp(0.8rem, 3vw, 2rem);
+                ">
+                    <span style="
+                        font-size: clamp(1rem, 3vw, 1.6rem);
+                        font-weight: 800;
+                        color: #f7f9fc;
+                        line-height: 1.2;
+                        margin-bottom:0.5rem;
+                    ">정답은</span>
+                    <span style="
+                        font-size: clamp(1.8rem, 5vw, 3.2rem);
+                        font-weight: 900;
+                        color: #00f2ff;
+                        line-height: 1.1;
+                        text-shadow: 0 0 10px rgba(0,242,255,0.4);
+                    ">{correct_text}</span>
                 </div>
             </div>
             """
-            
+
     st.markdown(question_html, unsafe_allow_html=True)
     st.markdown("<div class='spacer-1'></div>", unsafe_allow_html=True)
 
     option_cols = st.columns(2, gap="small")
-    
+
     for idx, option in enumerate(options):
         label = option
-        
+
         if not checked:
             if selected_index == idx:
                 bg_color = "rgba(0, 242, 255, 0.1) !important;"
@@ -1012,40 +1214,41 @@ def page_quiz() -> None:
         css = f"""
         <style>
         div.element-container:has(.{marker_class}) + div.element-container button {{
-            height: clamp(80px, 15vh, 120px) !important;
-            border-radius: 24px !important;
+            min-height: clamp(96px, 16vw, 120px) !important;
+            height: clamp(96px, 16vw, 120px) !important;
+            border-radius: clamp(18px, 4vw, 24px) !important;
             background: {bg_color}
             border: {border}
             transition: all 0.2s ease !important;
             box-shadow: none !important;
             transform: none !important;
         }}
-        
+
         div.element-container:has(.{marker_class}) + div.element-container button p,
         div.element-container:has(.{marker_class}) + div.element-container button span,
         div.element-container:has(.{marker_class}) + div.element-container button div {{
-            font-size: clamp(1.5rem, 5vw, 4rem) !important; 
+            font-size: clamp(1.7rem, 5vw, 4rem) !important;
             font-weight: 900 !important;
             color: {text_color}
-            line-height: 1.2 !important;
+            line-height: 1.15 !important;
             white-space: normal !important;
             word-break: keep-all !important;
             margin: 0 !important;
             padding: 0 !important;
         }}
-        
+
         div.element-container:has(.{marker_class}) + div.element-container button:hover {{
             background: rgba(255,255,255,0.08) !important;
             border-color: rgba(126, 231, 240, 0.45) !important;
         }}
-        
+
         div.element-container:has(.{marker_class}) + div.element-container button:hover p,
         div.element-container:has(.{marker_class}) + div.element-container button:hover span,
         div.element-container:has(.{marker_class}) + div.element-container button:hover div {{
             color: #00f2ff !important;
         }}
         </style>
-        <div class='{marker_class}' style='display:none;'></div>
+        <div class="{marker_class}" style="display:none;"></div>
         """
 
         with option_cols[idx % 2]:
@@ -1072,14 +1275,14 @@ def page_quiz() -> None:
 
     with c2:
         st.markdown("<div class='quiz-action-btn'>", unsafe_allow_html=True)
-        if st.button("다음 ▶", key="quiz_next", use_container_width=True):
-            st.session_state.quiz_index += 1 
+        if st.button("▶", key="quiz_next", use_container_width=True):
+            st.session_state.quiz_index += 1
             build_new_quiz_question()
             st.rerun()
         st.markdown("</div>", unsafe_allow_html=True)
 
     st.markdown("<div class='spacer-2'></div>", unsafe_allow_html=True)
-    
+
     left, center, right = st.columns([2.4, 1.3, 2.4])
     with center:
         st.markdown("<div class='exit-btn'>", unsafe_allow_html=True)
@@ -1089,7 +1292,7 @@ def page_quiz() -> None:
 
 
 # =========================
-# Data check & Run
+# Data check
 # =========================
 try:
     db1, db2, excel_path = load_excel_data()
