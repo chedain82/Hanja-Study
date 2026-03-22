@@ -14,75 +14,52 @@ st.set_page_config(
     layout="centered",
 )
 
-# 18번 줄 근처 스타일 시작 부분
+# =========================
+# Style (통합 및 최적화된 스타일)
+# =========================
 st.markdown(
     """
     <style>
-    /* 1. 어떤 기기에서도 배경을 다크 모드로 강제 고정 */
+    /* 1. 배경 및 전체 텍스트 다크모드 강제 고정 */
     .stApp {
         background-color: #0E1117 !important;
     }
-
-    /* 2. 모든 글자 색상을 흰색으로 강제 고정 (라이트 모드 방지) */
-    html, body, [data-testid="stWidgetLabel"], .stMarkdown, p, h1, h2, h3, span, div {
-        color: #FFFFFF !important;
+    html, body, [data-testid="stWidgetLabel"], .stMarkdown, p, h1, h2, h3, span, div, label {
+        color: #f7f9fc !important;
     }
 
-    /* 3. 버튼 테두리와 글자색도 흰색으로 */
-    .stButton>button {
-        color: #FFFFFF !important;
-        border-color: #FFFFFF !important;
-        background-color: transparent !important;
-    }
-
-    /* 기존에 있던 여백 설정 */
+    /* 2. 전체 컨테이너 (모바일 화면에 쏙 들어오게 다이어트) */
     .block-container {
-        padding-top: 2rem;
-        padding-bottom: 0rem;
-        max-width: 600px;
-    }
-    </style>
-    """,
-    unsafe_allow_html=True
-)
-
-# =========================
-# Style
-# =========================
-st.markdown(
-    """
-    <style>
-    .block-container {
-        max-width: 760px;
-        padding-top: 6.3rem;
-        padding-bottom: 1.8rem;
+        max-width: 550px !important; 
+        padding-top: 1.5rem !important; 
+        padding-bottom: 1.5rem !important;
+        padding-left: 1rem !important;
+        padding-right: 1rem !important;
+        margin: 0 auto;
     }
 
+    /* 3. 타이틀 스타일 (고정 크기 rem 대신 화면 비율 vw 사용) */
     .app-title {
         text-align: center;
-        font-size: 2.7rem;
+        font-size: 8vw !important; 
         font-weight: 900;
-        color: #f7f9fc;
-        margin-top: -3.2rem;
-        margin-bottom: 2.4rem;
+        margin-top: 0rem;
+        margin-bottom: 1.5rem;
         letter-spacing: -0.04em;
-        line-height: 1.05;
+        line-height: 1.1;
     }
 
     .main-title {
         text-align: center;
-        font-size: 3.15rem;
+        font-size: 9vw !important;
         font-weight: 900;
-        margin-top: 0.15rem;
-        margin-bottom: 0.45rem;
-        color: #f7f9fc;
-        letter-spacing: -0.04em;
-        line-height: 1.03;
+        margin: 0.5rem 0;
+        line-height: 1.1;
     }
 
     .sub-title {
         text-align: center;
-        font-size: 1.8rem;
+        font-size: 6vw !important;
         font-weight: 900;
         margin-top: 0.05rem;
         margin-bottom: 0.35rem;
@@ -111,7 +88,7 @@ st.markdown(
         border-radius: 999px;
         background: rgba(126, 231, 240, 0.08);
         border: 1px solid rgba(126, 231, 240, 0.65);
-        color: #8ef3fb;
+        color: #8ef3fb !important;
         font-size: 1rem;
         font-weight: 900;
         margin: 0.14rem;
@@ -119,7 +96,7 @@ st.markdown(
 
     .section-label {
         text-align: center;
-        font-size: 1.95rem;
+        font-size: 6vw !important;
         font-weight: 900;
         color: #f7f9fc;
         margin-top: 0.15rem;
@@ -127,45 +104,45 @@ st.markdown(
         letter-spacing: -0.03em;
     }
 
-    /* 일반 버튼 기본 스타일 */
+    /* 4. 일반 버튼 기본 스타일 */
     .stButton > button {
         width: 100%;
         border-radius: 22px;
         min-height: 62px;
-        font-size: 1.35rem;
+        font-size: 1.35rem !important;
         font-weight: 900;
-        border: 1px solid rgba(255,255,255,0.12);
-        background: rgba(255,255,255,0.05);
-        color: #f7f9fc;
+        border: 1px solid rgba(255,255,255,0.12) !important;
+        background: rgba(255,255,255,0.05) !important;
+        color: #f7f9fc !important;
         backdrop-filter: blur(2px);
         transition: all 0.18s ease;
         box-shadow: none;
     }
 
     .stButton > button:hover {
-        border: 1px solid rgba(126, 231, 240, 0.45);
-        background: rgba(255,255,255,0.08);
-        color: #ffffff;
+        border: 1px solid rgba(126, 231, 240, 0.45) !important;
+        background: rgba(255,255,255,0.08) !important;
+        color: #ffffff !important;
     }
 
     /* 전체 페이지에서 쓰이는 Primary 버튼 스타일 */
     .stButton > button[kind="primary"] {
-        background: rgba(126, 231, 240, 0.14);
-        border: 1.8px solid rgba(126, 231, 240, 0.82);
-        color: #bafcff;
+        background: rgba(126, 231, 240, 0.14) !important;
+        border: 1.8px solid rgba(126, 231, 240, 0.82) !important;
+        color: #bafcff !important;
         transform: scale(1.02);
     }
 
     .home-btn .stButton > button {
         min-height: 86px;
-        font-size: 2rem;
+        font-size: 2rem !important;
         font-weight: 900;
         border-radius: 24px;
     }
 
     .grade-grid .stButton > button {
         min-height: 96px;
-        font-size: 2rem;
+        font-size: 2rem !important;
         font-weight: 900;
         border-radius: 22px;
         margin-bottom: 0.25rem;
@@ -173,14 +150,14 @@ st.markdown(
 
     .range-group-btn .stButton > button {
         min-height: 92px;
-        font-size: 3.6rem;
+        font-size: 3.6rem !important;
         font-weight: 900;
         border-radius: 24px;
     }
 
     .step-btn .stButton > button {
         min-height: 86px;
-        font-size: 3.2rem;
+        font-size: 3.2rem !important;
         font-weight: 900;
         border-radius: 24px;
     }
@@ -188,34 +165,35 @@ st.markdown(
     .back-btn .stButton > button,
     .complete-btn .stButton > button {
         min-height: 74px;
-        font-size: 1.7rem;
+        font-size: 1.7rem !important;
         font-weight: 900;
         border-radius: 22px;
     }
 
     .mode-btn .stButton > button {
         min-height: 76px;
-        font-size: 1.7rem;
+        font-size: 1.7rem !important;
         font-weight: 900;
     }
 
     .back-small-btn .stButton > button {
         min-height: 66px;
-        font-size: 1.35rem;
+        font-size: 1.35rem !important;
         font-weight: 900;
         border-radius: 22px;
     }
 
     .exit-btn .stButton > button {
         min-height: 58px;
-        font-size: 1.2rem;
+        font-size: 1.2rem !important;
         font-weight: 900;
         border-radius: 20px;
-        background: rgba(255,255,255,0.03);
-        color: #f7f9fc;
-        border: 1px solid rgba(255,255,255,0.16);
+        background: rgba(255,255,255,0.03) !important;
+        color: #f7f9fc !important;
+        border: 1px solid rgba(255,255,255,0.16) !important;
     }
 
+    /* 5. 대왕 한자 크기 (화면 너비에 따라 유동적으로 변하게 수정) */
     .hanja-card {
         background: transparent;
         border: none;
@@ -229,34 +207,37 @@ st.markdown(
     }
 
     .hanja-big {
-        font-size: 9.4rem;
+        font-size: 28vw !important; /* 9.4rem -> 28vw 변경 */
         font-weight: 900;
-        line-height: 0.95;
-        color: #ffffff;
+        line-height: 1;
+        color: #ffffff !important;
         letter-spacing: -0.04em;
+        text-align: center;
+        display: block;
+        margin: 10px 0;
     }
 
     .question-big-hanja {
-        font-size: 8rem;
+        font-size: 22vw !important; /* 8rem -> 22vw 변경 */
         font-weight: 900;
-        line-height: 0.95;
-        color: #ffffff;
+        line-height: 1;
+        color: #ffffff !important;
         letter-spacing: -0.04em;
         text-align: center;
     }
 
     .question-big-text {
-        font-size: 3.7rem;
+        font-size: 10vw !important; /* 3.7rem -> 10vw 변경 */
         font-weight: 900;
         line-height: 1.02;
-        color: #f7f9fc;
+        color: #f7f9fc !important;
         text-align: center;
         letter-spacing: -0.04em;
     }
 
     .quiz-type-btn .stButton > button {
         min-height: 64px;
-        font-size: 1.22rem;
+        font-size: 1.22rem !important;
         font-weight: 900;
     }
 
@@ -272,6 +253,19 @@ st.markdown(
     .spacer-2 { height: 0.7rem; }
     .spacer-3 { height: 1.2rem; }
     .spacer-4 { height: 2rem; }
+    
+    /* 6. 모바일 웹 브라우저 상단바 등 방해 요소 제거 */
+    #MainMenu {visibility: hidden;}
+    footer {visibility: hidden;}
+    header {visibility: hidden;}
+
+    /* 7. 아이폰 미니 등 아주 작은 폰을 위한 미세 조정 */
+    @media (max-width: 380px) {
+        .main-title { font-size: 11vw !important; }
+        .stButton>button { min-height: 55px !important; font-size: 1.1rem !important; }
+        .hanja-big { font-size: 32vw !important; }
+        .question-big-hanja { font-size: 25vw !important; }
+    }
     </style>
     """,
     unsafe_allow_html=True,
@@ -315,15 +309,15 @@ def init_state() -> None:
         "memorize_cycle": 1,
         "memorize_show_answer": False,
         "quiz_type": "meaning_to_hanja",
-        "quiz_sequence": [],     # 💡 [추가] 퀴즈 출제 순서 저장
-        "quiz_index": 0,         # 💡 [추가] 현재 퀴즈 몇 번인지 기록
-        "quiz_current_row": None, # 💡 [추가] 오답 노트를 위해 현재 문제 정보 저장
+        "quiz_sequence": [],     
+        "quiz_index": 0,         
+        "quiz_current_row": None, 
         "quiz_question": None,
         "quiz_options": [],
         "quiz_answer_index": None,
         "quiz_selected_index": None,
         "quiz_checked": False,
-        "wrong_answers": [],     # 💡 [추가] 틀린 문제 딕셔너리 저장 리스트
+        "wrong_answers": [],     
     }
     for k, v in defaults.items():
         if k not in st.session_state:
@@ -460,12 +454,10 @@ def set_study_mode(db_name: str, label: str, mode: str) -> None:
     st.session_state.study_mode = mode
     st.session_state.filtered_df = get_filtered_df()
     
-    # 외우기 관련 초기화
     st.session_state.memorize_index = 0
     st.session_state.memorize_cycle = 1 
     st.session_state.memorize_show_answer = False
     
-    # 퀴즈 관련 초기화
     st.session_state.wrong_answers = []
     st.session_state.quiz_index = 0
 
@@ -476,7 +468,6 @@ def set_study_mode(db_name: str, label: str, mode: str) -> None:
     if mode == "외우기":
         go_page("memorize")
     else:
-        # 💡 [추가] 퀴즈 진입 시 범위 내의 문제 순서를 섞어서 저장 (1바퀴만 돌게)
         df_len = len(st.session_state.filtered_df)
         st.session_state.quiz_sequence = random.sample(range(df_len), df_len)
         build_new_quiz_question()
@@ -503,7 +494,6 @@ def build_option_label(row: pd.Series, quiz_type: str) -> str:
 def build_new_quiz_question() -> None:
     df = st.session_state.filtered_df
 
-    # 💡 [수정] 모든 문제를 다 풀었거나 비어있으면 퀴즈 생성을 멈춤
     if df.empty or st.session_state.quiz_index >= len(st.session_state.quiz_sequence):
         st.session_state.quiz_question = None
         st.session_state.quiz_options = []
@@ -512,10 +502,9 @@ def build_new_quiz_question() -> None:
         st.session_state.quiz_checked = False
         return
 
-    # 순서대로 문제 하나를 뽑아옴
     row_idx = st.session_state.quiz_sequence[st.session_state.quiz_index]
     row = df.iloc[row_idx]
-    st.session_state.quiz_current_row = row.to_dict() # 💡 오답 정리를 위해 원본 저장
+    st.session_state.quiz_current_row = row.to_dict() 
 
     quiz_type = st.session_state.quiz_type
 
@@ -767,10 +756,10 @@ def page_study_type() -> None:
 def page_memorize() -> None:
     st.markdown("""
     <style>
-    /* 외우기 페이지의 거대 버튼 (크기 260px 고정) */
+    /* 외우기 페이지의 거대 버튼 (모바일에 맞게 조정) */
     button[kind="primary"] {
-        height: 260px !important;
-        min-height: 260px !important;
+        height: 35vh !important; /* 높이를 화면 비율로 조정 */
+        min-height: 200px !important;
         border-radius: 40px !important;
         background: rgba(255,255,255,0.03) !important;
         border: 2px solid rgba(255,255,255,0.16) !important;
@@ -791,7 +780,7 @@ def page_memorize() -> None:
     }
 
     button[kind="primary"] p, button[kind="primary"] div, button[kind="primary"] span {
-        font-size: 6.5rem !important;
+        font-size: 10vw !important; /* 글자 크기도 비율로 조정 */
         font-weight: 900 !important;
         color: #ffffff !important;
         line-height: 1.2 !important;
@@ -801,13 +790,14 @@ def page_memorize() -> None:
         padding: 0 !important;
     }
 
+    /* 좌우 화살표 버튼 크기 조절 */
     div[data-testid="column"]:nth-child(1) button[kind="primary"] p,
     div[data-testid="column"]:nth-child(1) button[kind="primary"] div,
     div[data-testid="column"]:nth-child(1) button[kind="primary"] span,
     div[data-testid="column"]:nth-child(3) button[kind="primary"] p,
     div[data-testid="column"]:nth-child(3) button[kind="primary"] div,
     div[data-testid="column"]:nth-child(3) button[kind="primary"] span {
-        font-size: 8rem !important;
+        font-size: 15vw !important;
         line-height: 1 !important;
     }
 
@@ -892,7 +882,6 @@ def page_memorize() -> None:
 def page_quiz() -> None:
     df = st.session_state.filtered_df
     
-    # 💡 [핵심 추가] 퀴즈 완료 시 (더 이상 풀 문제가 없을 때) 결과 팝업 화면을 보여줍니다.
     if not df.empty and st.session_state.quiz_index >= len(st.session_state.quiz_sequence):
         wrong_count = len(st.session_state.wrong_answers)
         correct_count = len(df) - wrong_count
@@ -901,11 +890,10 @@ def page_quiz() -> None:
         st.markdown("<div class='sub-title'>학습 완료!</div>", unsafe_allow_html=True)
         st.markdown("<div class='spacer-2'></div>", unsafe_allow_html=True)
 
-        # 퀴즈 결과 박스
         st.markdown(f"""
         <div style='height: 260px; min-height: 260px; border-radius: 40px; background: rgba(255,255,255,0.03); border: 2px solid rgba(255,255,255,0.16); display: flex; flex-direction: column; justify-content: center; align-items: center;'>
-            <div style='font-size: 3rem; font-weight: 900; color: #ffffff; margin-bottom: 1rem;'>고생하셨습니다! 🎉</div>
-            <div style='font-size: 2rem; font-weight: 800; color: #8ef3fb;'>총 {len(df)}문제 중 <span style='font-size:2.5rem; color:#00f2ff;'>{correct_count}</span>문제 정답</div>
+            <div style='font-size: 2.5rem; font-weight: 900; color: #ffffff; margin-bottom: 1rem;'>고생하셨습니다! 🎉</div>
+            <div style='font-size: 1.5rem; font-weight: 800; color: #8ef3fb;'>총 {len(df)}문제 중 <span style='font-size:2rem; color:#00f2ff;'>{correct_count}</span>문제 정답</div>
         </div>
         """, unsafe_allow_html=True)
         
@@ -915,8 +903,7 @@ def page_quiz() -> None:
             c1, c2 = st.columns(2, gap="small")
             with c1:
                 st.markdown("<div class='quiz-action-btn'>", unsafe_allow_html=True)
-                if st.button("🔥 오답만 다시 외우기", key="review_wrong", use_container_width=True, type="primary"):
-                    # 틀린 문제들만 추려서 데이터프레임 다시 만들기
+                if st.button("🔥 오답 다시 외우기", key="review_wrong", use_container_width=True, type="primary"):
                     wrong_df = pd.DataFrame(st.session_state.wrong_answers).drop_duplicates(subset=['hanja'])
                     st.session_state.filtered_df = wrong_df.reset_index(drop=True)
                     st.session_state.memorize_index = 0
@@ -947,7 +934,6 @@ def page_quiz() -> None:
     st.markdown(f"<div class='main-title'>{st.session_state.study_label}</div>", unsafe_allow_html=True)
     st.markdown("<div class='sub-title'>퀴즈</div>", unsafe_allow_html=True)
     
-    # 💡 퀴즈 진행률 표시 (1 / 20)
     st.markdown(f"<div class='small-info'>{st.session_state.quiz_index + 1} / {len(df)}</div>", unsafe_allow_html=True)
 
     t1, t2 = st.columns(2)
@@ -1000,7 +986,8 @@ def page_quiz() -> None:
 
     q_class = 'question-big-hanja' if st.session_state.quiz_type == "hanja_to_sound" else 'question-big-text'
     
-    fixed_grid_style = "height: 260px; min-height: 260px; max-height: 260px; display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; width: 100%; box-sizing: border-box;"
+    # 퀴즈 질문 박스 높이도 화면 비율(vh)로 조정
+    fixed_grid_style = "height: 20vh; min-height: 150px; display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; width: 100%; box-sizing: border-box;"
 
     if not checked:
         question_html = f"""
@@ -1017,8 +1004,8 @@ def page_quiz() -> None:
         if is_correct:
             question_html = f"""
             <div style='{fixed_grid_style}'>
-                <div style='display: flex; justify-content: flex-end; padding-right: 2rem;'>
-                    <div style='font-size: 8rem; font-weight: 900; color: #00f2ff; line-height: 1; text-shadow: 0 0 20px rgba(0,242,255,0.6); margin-top:-10px;'>O</div>
+                <div style='display: flex; justify-content: flex-end; padding-right: 1rem;'>
+                    <div style='font-size: 6rem; font-weight: 900; color: #00f2ff; line-height: 1; text-shadow: 0 0 20px rgba(0,242,255,0.6); margin-top:-10px;'>O</div>
                 </div>
                 <div class='{q_class}' style='margin:0; text-align:center;'>{question}</div>
                 <div></div>
@@ -1027,13 +1014,13 @@ def page_quiz() -> None:
         else:
             question_html = f"""
             <div style='{fixed_grid_style}'>
-                <div style='display: flex; justify-content: flex-end; padding-right: 2rem;'>
-                    <div style='font-size: 8rem; font-weight: 900; color: #ff4b4b; line-height: 1; text-shadow: 0 0 20px rgba(255,75,75,0.6); margin-top:-10px;'>X</div>
+                <div style='display: flex; justify-content: flex-end; padding-right: 1rem;'>
+                    <div style='font-size: 6rem; font-weight: 900; color: #ff4b4b; line-height: 1; text-shadow: 0 0 20px rgba(255,75,75,0.6); margin-top:-10px;'>X</div>
                 </div>
                 <div class='{q_class}' style='margin:0; text-align:center;'>{question}</div>
-                <div style='display: flex; flex-direction: column; justify-content: center; text-align: left; padding-left: 2rem;'>
-                    <span style='font-size: 1.6rem; font-weight: 800; color: #f7f9fc; line-height: 1.2; margin-bottom:0.5rem;'>정답은</span>
-                    <span style='font-size: 3.2rem; font-weight: 900; color: #00f2ff; line-height: 1.1; text-shadow: 0 0 10px rgba(0,242,255,0.4);'>{correct_text}</span>
+                <div style='display: flex; flex-direction: column; justify-content: center; text-align: left; padding-left: 1rem;'>
+                    <span style='font-size: 1.2rem; font-weight: 800; color: #f7f9fc; line-height: 1.2; margin-bottom:0.2rem;'>정답은</span>
+                    <span style='font-size: 2rem; font-weight: 900; color: #00f2ff; line-height: 1.1; text-shadow: 0 0 10px rgba(0,242,255,0.4);'>{correct_text}</span>
                 </div>
             </div>
             """
@@ -1069,8 +1056,9 @@ def page_quiz() -> None:
         css = f"""
         <style>
         div.element-container:has(.{marker_class}) + div.element-container button {{
-            height: 120px !important;
-            border-radius: 24px !important;
+            height: 12vh !important; /* 보기 버튼 높이도 비율로 조정 */
+            min-height: 80px !important;
+            border-radius: 20px !important;
             background: {bg_color}
             border: {border}
             transition: all 0.2s ease !important;
@@ -1081,7 +1069,7 @@ def page_quiz() -> None:
         div.element-container:has(.{marker_class}) + div.element-container button p,
         div.element-container:has(.{marker_class}) + div.element-container button span,
         div.element-container:has(.{marker_class}) + div.element-container button div {{
-            font-size: 4rem !important; 
+            font-size: 7vw !important; /* 글자 크기 비율 조정 */
             font-weight: 900 !important;
             color: {text_color}
             line-height: 1.2 !important;
@@ -1122,7 +1110,6 @@ def page_quiz() -> None:
                 st.warning("답을 선택해 주세요.")
             else:
                 st.session_state.quiz_checked = True
-                # 💡 [추가] 틀렸을 경우, 현재 문제(quiz_current_row)를 오답 노트에 저장
                 if st.session_state.quiz_selected_index != answer_index:
                     st.session_state.wrong_answers.append(st.session_state.quiz_current_row)
                 st.rerun()
@@ -1131,7 +1118,7 @@ def page_quiz() -> None:
     with c2:
         st.markdown("<div class='quiz-action-btn'>", unsafe_allow_html=True)
         if st.button("▶", key="quiz_next", use_container_width=True):
-            st.session_state.quiz_index += 1 # 💡 다음 문제로 인덱스 증가
+            st.session_state.quiz_index += 1 
             build_new_quiz_question()
             st.rerun()
         st.markdown("</div>", unsafe_allow_html=True)
