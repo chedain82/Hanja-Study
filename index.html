@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <title>한자 공부</title>
 <style>
-  @import url('https://fonts.googleapis.com/css2?family=Ma+Shan+Zheng&family=Noto+Sans+KR:wght@400;500;700;900&display=swap');
+  @import url('https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@400;700;900&family=Nanum+Myeongjo:wght@400;700;800&display=swap');
 
   :root {
     --bg: #F1DADF;
@@ -23,7 +23,7 @@
 
   body {
     background: var(--bg);
-    font-family: 'Noto Sans KR', sans-serif;
+    font-family: 'Nanum Myeongjo', serif;
     height: 100dvh;
     overflow: hidden;
     display: flex;
@@ -140,7 +140,7 @@
 
   /* 한자 표시 */
   .hanja-display {
-    text-align: center; font-family: 'Ma Shan Zheng', cursive; font-weight: 400;
+    text-align: center; font-family: 'Noto Serif KR', serif; font-weight: 900;
     line-height: 1.0; padding: 6px 0 4px;
   }
   .meaning-display {
@@ -173,13 +173,13 @@
   .quiz-opt {
     width: 68%; min-height: 46px; border-radius: 8px;
     background: #EFEFEF; border: 1.5px solid #999;
-    cursor: pointer; font-size: 18px; font-weight: 700;
-    display: grid; grid-template-columns: 32px 1fr; align-items: center;
+    cursor: pointer;
+    display: grid; grid-template-columns: 1fr 2fr 1fr; align-items: center;
     padding: 6px 10px;
-    transition: all .15s; font-family: 'Ma Shan Zheng', cursive;
+    transition: all .15s;
   }
-  .quiz-opt .num { font-size: 14px; color: #555; text-align: left; font-family: 'Noto Sans KR', sans-serif; }
-  .quiz-opt .opt-text { text-align: center; }
+  .quiz-opt .num { font-size: 14px; color: #555; text-align: left; font-family: 'Nanum Myeongjo', serif; }
+  .quiz-opt .opt-text { text-align: center; font-size: 22px; font-weight: 700; font-family: 'Noto Serif KR', serif; }
   .quiz-opt.chosen { background: #DDE8FB; border-color: #2C77E6; }
   .quiz-opt.correct { background: #DCEAD8; border-color: var(--correct); }
   .quiz-opt.wrong-chosen { background: #FDECEA; border-color: var(--wrong); }
@@ -665,7 +665,7 @@ function renderQuiz() {
       else if (i === S.quizSelected) cls = 'wrong-chosen';
     } else if (i === S.quizSelected) cls = 'chosen';
     return `<button class="quiz-opt ${cls}" onclick="chooseOpt(${i})" ${S.quizChecked?'disabled':''}>
-      <span class="num">${i+1}.</span><span class="opt-text">${c}</span>
+      <span class="num">${i+1}.</span><span class="opt-text">${c}</span><span></span>
     </button>`;
   }).join('');
 
@@ -675,7 +675,7 @@ function renderQuiz() {
     ${cardHeader(it.급수)}
     <div class="counter mb-8"><strong>${S.idx+1}</strong>/${total}</div>
     <div class="score-row"><span>✅ ${S.correct}</span><span>❌ ${S.wrong}</span></div>
-    <div style="font-size:${qSize}px;font-weight:400;font-family:'Ma Shan Zheng',cursive;text-align:center;padding:6px 0 2px;">${qText}</div>
+    <div style="font-size:${qSize}px;font-weight:900;font-family:'Noto Serif KR',serif;text-align:center;padding:6px 0 2px;">${qText}</div>
     <div class="result-msg ${resultCls}">${S.quizResult}</div>
     <div class="quiz-options">${opts}</div>
     <div class="card-nav" style="margin:8px 0 4px;">
