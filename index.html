@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <title>한자 공부</title>
 <style>
-  @import url('https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;700;900&family=Nanum+Myeongjo:wght@400;700;800&display=swap');
+  @import url('https://fonts.googleapis.com/css2?family=Nanum+Myeongjo:wght@400;700;800&family=Nanum+Myeongjo:wght@400;700;800&display=swap');
 
   :root {
     --bg: #F1DADF;
@@ -57,12 +57,12 @@
   }
   .btn-black:disabled { background: #CEC6C6; color: #9F8F8F; cursor: default; }
   .btn-black:disabled:active { opacity:1; transform:none; }
-  .btn-back { background: none; font-size: 28px; font-weight: 900; color: #222; width: 52px; height: 44px; }
+  .btn-back { background: none; font-size: 28px; font-weight: 800; color: #222; width: 52px; height: 44px; }
 
   /* 홈 - 1/3, 2/3 위치 */
   #home .card { justify-content: flex-start; align-items: center; }
   .home-title {
-    font-family: 'Noto Serif SC', serif; font-size: 42px; font-weight: 900;
+    font-family: 'Nanum Myeongjo', serif; font-size: 42px; font-weight: 800;
     position: absolute; top: 30%; transform: translateY(-50%);
   }
   .home-btns {
@@ -86,7 +86,7 @@
     border: 2px solid var(--blue); border-radius: 20px 20px 20px 0;
     padding: 5px 10px; font-size: 14px; font-weight: 700;
   }
-  .badge span { color: var(--blue); font-size: 20px; font-weight: 900; }
+  .badge span { color: var(--blue); font-size: 20px; font-weight: 800; }
 
   /* 범위 - 시작버튼 하단 고정 */
   #range .card { overflow: hidden; }
@@ -139,7 +139,7 @@
     justify-content: center; gap: 28px; padding-bottom: 10px;
   }
   .hanja-display {
-    text-align: center; font-family: 'Noto Serif SC', serif; font-weight: 900; line-height: 1.1;
+    text-align: center; font-family: 'Nanum Myeongjo', serif; font-weight: 800; line-height: 1.1;
   }
   .meaning-display {
     text-align: center; font-weight: 700; color: #1A73E8;
@@ -158,7 +158,7 @@
   .reveal-btn {
     width: 74px; height: 74px; border-radius: 50%; background: none;
     border: 3px solid var(--blue); cursor: pointer;
-    font-size: 20px; font-weight: 900; color: var(--blue);
+    font-size: 20px; font-weight: 800; color: var(--blue);
     display: flex; align-items: center; justify-content: center;
     transition: all .15s;
   }
@@ -175,7 +175,7 @@
     padding: 6px 10px; transition: all .15s;
   }
   .quiz-opt .num { font-size: 14px; color: #555; text-align: left; font-family: 'Nanum Myeongjo', serif; }
-  .quiz-opt .opt-text { text-align: center; font-size: 22px; font-weight: 700; font-family: 'Noto Serif SC', serif; }
+  .quiz-opt .opt-text { text-align: center; font-size: 22px; font-weight: 700; font-family: 'Nanum Myeongjo', serif; }
   .quiz-opt.chosen { background: #DDE8FB; border-color: #2C77E6; }
   .quiz-opt.correct { background: #DCEAD8; border-color: var(--correct); }
   .quiz-opt.wrong-chosen { background: #EFEFEF; border-color: #999; }
@@ -197,7 +197,7 @@
   .dir-toggle span.active { background: white; }
 
   .finish-box { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 14px; text-align: center; }
-  .finish-title { font-size: 28px; font-weight: 900; }
+  .finish-title { font-size: 28px; font-weight: 800; }
   .finish-score { font-size: 19px; font-weight: 700; }
   .btn-row { display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; }
   .back-wrap { position: absolute; left: 14px; bottom: 44px; }
@@ -207,11 +207,11 @@
   .wrong-list { flex: 1; overflow-y: auto; display: flex; flex-direction: column; gap: 10px; }
   .wrong-item { background: white; border: 1.2px solid #D8D8D8; border-radius: 12px; padding: 12px 14px; display: flex; gap: 10px; align-items: flex-start; }
   .wrong-item-num { font-size: 14px; font-weight: 700; color: var(--gray); min-width: 24px; }
-  .wrong-item-hanja { font-size: 26px; font-weight: 900; font-family: 'Noto Serif SC', serif; }
+  .wrong-item-hanja { font-size: 26px; font-weight: 800; font-family: 'Nanum Myeongjo', serif; }
   .wrong-item-desc { font-size: 15px; font-weight: 600; }
   .wrong-item-meta { font-size: 12px; color: var(--gray); margin-top: 4px; }
 
-  .section-title { font-size: clamp(26px, 8vw, 38px); font-weight: 900; font-family: 'Noto Serif SC', serif; text-align: center; }
+  .section-title { font-size: clamp(26px, 8vw, 38px); font-weight: 800; font-family: 'Nanum Myeongjo', serif; text-align: center; }
 
   #loading { position: fixed; inset: 0; background: var(--bg); display: flex; align-items: center; justify-content: center; flex-direction: column; gap: 16px; z-index: 100; }
   .spinner { width: 48px; height: 48px; border: 5px solid #DDD; border-top-color: var(--blue); border-radius: 50%; animation: spin .8s linear infinite; }
@@ -570,7 +570,7 @@ function renderQuiz(){
     <div class="counter mb-8"><strong>${S.idx+1}</strong>/${total}</div>
     ${progressBar(S.idx,total)}
     <div class="score-row"><span>✅ ${S.correct}</span><span>❌ ${S.wrong}</span></div>
-    <div style="font-size:${qSize}px;font-weight:900;font-family:'Noto Serif SC',serif;text-align:center;padding:4px 0 2px;flex-shrink:0;">${qText}</div>
+    <div style="font-size:${qSize}px;font-weight:800;font-family:'Nanum Myeongjo',serif;text-align:center;padding:4px 0 2px;flex-shrink:0;">${qText}</div>
     <div class="result-msg ${resultCls}">${S.quizResult}</div>
     <div class="quiz-options">${opts}</div>
     <div class="card-nav" style="padding:4px 0 4px;">
