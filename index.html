@@ -160,9 +160,11 @@
     border: 4px solid var(--blue); cursor: pointer;
     font-size: 60px; font-weight: 800; color: var(--blue);
     display: flex; align-items: center; justify-content: center;
+    line-height: 1; overflow: hidden;
     transition: all .15s;
   }
   .reveal-btn:active { transform: scale(.9); }
+  .reveal-btn.quiz-btn { font-size: 22px; }
 
   /* 퀴즈 */
   .score-row { display: flex; gap: 10px; justify-content: center; font-size: 15px; font-weight: 700; margin-bottom: 2px; }
@@ -584,7 +586,7 @@ function renderQuiz(){
     <div class="quiz-options">${opts}</div>
     <div class="card-nav" style="padding:4px 0 4px;">
       <button class="nav-arrow" onclick="prevItem()" ${S.idx===0?'disabled':''}>◀</button>
-      <button class="reveal-btn" onclick="checkAnswer()">정답</button>
+      <button class="reveal-btn quiz-btn" onclick="checkAnswer()">정답</button>
       <button class="nav-arrow" onclick="nextItem()">▶</button>
     </div>
     <button class="dir-toggle" onclick="toggleDir()">
