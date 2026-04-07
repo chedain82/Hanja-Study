@@ -374,7 +374,7 @@ const S = {
   lastMain:'study_type', wrongNoteBack:'home',
   cardFinishMsg:'끝났습니다.\n다시 반복 할까요?',
   lastStudy:null,
-  writeChecked:false, writeCorrect:false
+  writeChecked:false, writeCorrect:false, writeUserInput:''
 };
 
 const LEVEL_ORDER = ['8급','7급','6급','준5급','5급','준4급','4급','준3급'];
@@ -711,7 +711,7 @@ function renderWrite(){
     <div class="card-content-wrap" style="gap:20px;">
       <div style="font-size:${hSize}px;font-weight:800;font-family:'Nanum Myeongjo',serif;text-align:center;">${it.한자}</div>
       <input class="write-input" id="write-input" type="text" placeholder="독음을 입력하세요"
-        value="${checked?it.독음:''}"
+        value="${checked?(S.writeCorrect?it.독음:S.writeUserInput):''}"
         ${checked?'readonly':''}
         onkeydown="if(event.key==='Enter')checkWrite()"
         autofocus
@@ -744,6 +744,7 @@ function checkWrite(){
   const val=(inp?inp.value:'').replace(/\s/g,'');
   const correct=S.items[S.idx].독음.replace(/\s/g,'');
   S.writeChecked=true;
+  S.writeUserInput=inp?inp.value:'';
   S.writeCorrect=val===correct;
   if(S.writeCorrect){
     S.correct++; playSound('correct');
@@ -754,12 +755,12 @@ function checkWrite(){
   renderWrite();
 }
 function nextWriteItem(){
-  if(S.idx<S.items.length-1){S.idx++;S.writeChecked=false;S.writeCorrect=false;}
+  if(S.idx<S.items.length-1){S.idx++;S.writeChecked=false;S.writeCorrect=false;S.writeUserInput='';}
   else S.isFinished=true;
   renderWrite();
 }
 function prevWriteItem(){
-  if(S.idx>0){S.idx--;S.writeChecked=false;S.writeCorrect=false;renderWrite();}
+  if(S.idx>0){S.idx--;S.writeChecked=false;S.writeCorrect=false;S.writeUserInput='';renderWrite();}
 }
 function restartWrite(){
   S.items=buildItems();S.idx=0;S.isFinished=false;
