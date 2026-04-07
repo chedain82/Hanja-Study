@@ -29,10 +29,11 @@
     display: flex;
     flex-direction: column;
     align-items: center;
+    justify-content: center;
     padding: 4px 6px;
   }
 
-  .screen { display: none; width: 100%; max-width: 430px; flex-direction: column; align-items: center; }
+  .screen { display: none; width: 100%; max-width: 430px; flex-direction: column; align-items: center; height: 100dvh; }
   .screen.active { display: flex; }
   .top-label { width: 100%; padding: 4px 8px 4px; color: var(--gray); font-size: 13px; }
 
@@ -40,6 +41,7 @@
     width: 100%; background: var(--card); border-radius: 18px;
     padding: 14px 16px 12px; position: relative;
     height: calc(100dvh - 34px);
+    max-height: 860px;
     display: flex; flex-direction: column; overflow: hidden;
   }
 
