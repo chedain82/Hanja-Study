@@ -264,8 +264,9 @@
   <div class="card">
     <div class="home-title">漢字 공부</div>
     <div class="home-btns">
-      <button class="btn btn-black" onclick="go('level')" style="width:144px;">입장 하기</button>
-      <button class="btn btn-black" id="home-wrong-btn" onclick="go('wrong_note')" style="width:144px;">오답 노트</button>
+      <button class="btn btn-black" onclick="go('level')" style="width:180px;">학습 하기</button>
+      <button class="btn btn-black" onclick="go('exam_select')" style="width:180px;">기출문제 풀기</button>
+      <button class="btn btn-black" id="home-wrong-btn" onclick="go('wrong_note')" style="width:180px;">오답 노트</button>
     </div>
     <div class="last-study" id="last-study-label"></div>
   </div>
@@ -335,6 +336,19 @@
   <div class="card" id="write-inner"></div>
 </div>
 
+<!-- 기출문제 회차 선택 -->
+<div id="exam_select" class="screen">
+  <div class="top-label">기출문제</div>
+  <div class="card">
+    <div class="section-title mb-16">기출문제 풀기</div>
+    <div style="font-size:15px;font-weight:700;color:var(--gray);text-align:center;margin-bottom:14px;">3급 기출문제 회차를 선택하세요</div>
+    <div id="exam-round-grid" class="level-grid" style="grid-template-columns:repeat(3,84px);gap:12px;"></div>
+    <div style="flex:1;"></div>
+    <div class="btn-row mb-12"><button class="btn btn-black" id="exam-start-btn" onclick="startExam()" disabled>시작</button></div>
+    <div class="back-wrap"><button class="btn btn-back" onclick="go('home')">|◁</button></div>
+  </div>
+</div>
+
 <!-- 오답 노트 -->
 <div id="wrong_note" class="screen">
   <div class="top-label">오답 노트</div>
@@ -379,7 +393,7 @@ const S = {
   writeChecked:false, writeCorrect:false, writeUserInput:''
 };
 
-const LEVEL_ORDER = ['8급','7급','6급','준5급','5급','준4급','4급','준3급'];
+const LEVEL_ORDER = ['8급','7급','6급','준5급','5급','준4급','4급','준3급','3급'];
 const LEVEL_STEPS = {
   '8급':['A-1','A-2','A-3'],
   '7급':['A-4','A-5','A-6'],
@@ -388,7 +402,8 @@ const LEVEL_STEPS = {
   '5급':['D-1','D-2','D-3','D-4','D-5','D-6','E-1','E-2','E-3','E-4','E-5','E-6'],
   '준4급':['F-1','F-2','F-3','F-4','F-5','F-6','G-1','G-2','G-3','G-4','G-5','G-6'],
   '4급':['H-1','H-2','H-3','H-4','H-5','H-6','I-1','I-2','I-3','I-4','I-5','I-6'],
-  '준3급':['J1-1','J1-2','J1-3','J2-1','J2-2','J2-3','J3-1','J3-2','J3-3','J4-1','J4-2','J4-3','J5-1','J5-2','J5-3']
+  '준3급':['J1-1','J1-2','J1-3','J2-1','J2-2','J2-3','J3-1','J3-2','J3-3','J4-1','J4-2','J4-3','J5-1','J5-2','J5-3'],
+  '3급':['K1-1','K1-2','K1-3','K2-1','K2-2','K2-3','K3-1','K3-2','K3-3','K4-1','K4-2','K4-3','K5-1','K5-2','K5-3']
 };
 let ALL = [];
 
@@ -428,6 +443,7 @@ function render(){
   else if(S.screen==='quiz')renderQuiz();
   else if(S.screen==='write')renderWrite();
   else if(S.screen==='wrong_note')renderWrongNote();
+  else if(S.screen==='exam_select')renderExamSelect();
 }
 
 function renderHome(){
@@ -449,8 +465,17 @@ function renderRange(){
   document.getElementById('range-badge').innerHTML=`${S.level} <span>+</span>`;
   const steps=LEVEL_STEPS[S.level]||[];
   const container=document.getElementById('range-groups');
-  if(S.level==='준3급'){
-    container.innerHTML=`<div class="range-group"><div class="range-group-title">📖 파트 J</div><div class="range-grid">${steps.map(s=>rangeBtn(s)).join('')}</div></div>`;
+  if(S.level==='준3급'||S.level==='3급'){
+    // J파트/K파트: 서브그룹별 (J1,J2,... / K1,K2,...)
+    const groups={};
+    steps.forEach(s=>{
+      const m=s.match(/^([A-Z]\d+)/i);
+      const g=m?m[1]:s.split('-')[0];
+      (groups[g]=groups[g]||[]).push(s);
+    });
+    container.innerHTML=Object.entries(groups).map(([g,ss])=>`
+      <div class="range-group"><div class="range-group-title">📖 파트 ${g}</div><div class="range-grid">${ss.map(s=>rangeBtn(s)).join('')}</div></div>
+    `).join('');
   } else {
     const groups={};
     steps.forEach(s=>{const g=s.split('-')[0][0];(groups[g]=groups[g]||[]).push(s);});
@@ -465,11 +490,12 @@ function toggleRange(s){const i=S.ranges.indexOf(s);if(i>=0)S.ranges.splice(i,1)
 
 function renderStudyType(){
   document.getElementById('type-badge').innerHTML=`${S.level} <span>+</span>`;
+  // 3급은 선정한자에도 쓰기 추가
+  const selModes = S.level==='3급'
+    ? [{mode:'card', label:'카드<br>외우기'},{mode:'quiz', label:'퀴즈'},{mode:'write', label:'쓰기'}]
+    : [{mode:'card', label:'카드<br>외우기'},{mode:'quiz', label:'퀴즈'}];
   document.getElementById('type-blocks').innerHTML=[
-    {cat:'선정', label:'선정 한자', modes:[
-      {mode:'card', label:'카드<br>외우기'},
-      {mode:'quiz', label:'퀴즈'}
-    ]},
+    {cat:'선정', label:'선정 한자', modes: selModes},
     {cat:'교과서', label:'교과서 한자', modes:[
       {mode:'card', label:'카드<br>외우기'},
       {mode:'quiz', label:'퀴즈'},
@@ -682,6 +708,20 @@ function retryWrong(){
 }
 
 // ===== 쓰기 퀴즈 =====
+function getWriteAnswer(it){
+  // 선정한자: "뜻 음" 형태 (예: "한 일")
+  if(it.타입==='선정') return `${it.뜻} ${it.독음}`;
+  // 교과서한자: 독음만
+  return it.독음;
+}
+function getWritePlaceholder(it){
+  if(it.타입==='선정') return '뜻과 음을 입력하세요 (예: 한 일)';
+  return '독음을 입력하세요';
+}
+function compareWrite(userVal, correctVal){
+  // 띄어쓰기 모두 제거 후 비교
+  return userVal.replace(/\s/g,'') === correctVal.replace(/\s/g,'');
+}
 function renderWrite(){
   const box=document.getElementById('write-inner');
   const it=S.items[S.idx];const total=S.items.length;
@@ -703,7 +743,7 @@ function renderWrite(){
 
   const hSize=hanjaFontSize(it.한자);
   const checked=S.writeChecked;
-  const correct=it.독음.replace(/\s/g,'');
+  const correctDisplay=getWriteAnswer(it);
 
   box.innerHTML=`
     ${cardHeader(it.급수)}
@@ -712,15 +752,15 @@ function renderWrite(){
     <div class="score-row"><span>✅ ${S.correct}</span><span>❌ ${S.wrong}</span></div>
     <div class="card-content-wrap" style="gap:20px;">
       <div style="font-size:${hSize}px;font-weight:800;font-family:'Nanum Myeongjo',serif;text-align:center;">${it.한자}</div>
-      <input class="write-input" id="write-input" type="text" placeholder="독음을 입력하세요"
-        value="${checked?(S.writeCorrect?it.독음:S.writeUserInput):''}"
+      <input class="write-input" id="write-input" type="text" placeholder="${getWritePlaceholder(it)}"
+        value="${checked?(S.writeCorrect?correctDisplay:S.writeUserInput):''}"
         ${checked?'readonly':''}
-        onkeydown="if(event.key==='Enter')checkWrite()"
+        onkeydown="handleWriteKey(event)"
         autofocus
       />
       <div class="write-result ${checked?(S.writeCorrect?'ok':'fail'):''}">${
         checked
-          ? (S.writeCorrect ? '✅ 정답입니다!' : `❌ 정답: ${it.독음}`)
+          ? (S.writeCorrect ? '✅ 정답입니다!' : `❌ 정답: ${correctDisplay}`)
           : ''
       }</div>
     </div>
@@ -739,15 +779,24 @@ function renderWrite(){
     },100);
   }
 }
-
+function handleWriteKey(event){
+  if(event.key==='Enter'){
+    event.preventDefault();
+    if(S.writeChecked) nextWriteItem();
+    else checkWrite();
+  } else if(event.key===' ' && S.writeChecked){
+    event.preventDefault();
+    nextWriteItem();
+  }
+}
 function checkWrite(){
   if(S.writeChecked)return;
   const inp=document.getElementById('write-input');
-  const val=(inp?inp.value:'').replace(/\s/g,'');
-  const correct=S.items[S.idx].독음.replace(/\s/g,'');
+  const val=inp?inp.value:'';
+  const correctVal=getWriteAnswer(S.items[S.idx]);
   S.writeChecked=true;
-  S.writeUserInput=inp?inp.value:'';
-  S.writeCorrect=val===correct;
+  S.writeUserInput=val;
+  S.writeCorrect=compareWrite(val, correctVal);
   if(S.writeCorrect){
     S.correct++; playSound('correct');
   } else {
@@ -839,6 +888,14 @@ function startWrongQuiz(){
   S.category=S.wrongNote[0]?.타입||'선정';go('quiz');
 }
 function clearWrongNote(){S.wrongNote=[];toast('오답 노트를 비웠습니다.');renderWrongNote();}
+
+// ===== 기출문제 (placeholder) =====
+function renderExamSelect(){
+  const grid=document.getElementById('exam-round-grid');
+  grid.innerHTML='<div style="font-size:16px;font-weight:700;color:var(--gray);text-align:center;grid-column:1/-1;padding:40px 0;">준비 중입니다.</div>';
+  document.getElementById('exam-start-btn').disabled=true;
+}
+function startExam(){}
 
 loadData();
 </script>
