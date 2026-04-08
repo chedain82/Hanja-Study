@@ -249,6 +249,22 @@
   .mb-8 { margin-bottom: 8px; }
   .mb-12 { margin-bottom: 12px; }
   .mb-16 { margin-bottom: 16px; }
+
+  /* 기출문제 회차 버튼 */
+  .exam-round-btn {
+    width: 100%; height: 56px; border-radius: 14px;
+    background: white; border: 2px solid #DDD;
+    font-size: 17px; font-weight: 700; color: #333;
+    cursor: pointer; transition: all .15s;
+    display: flex; align-items: center; justify-content: center; gap: 8px;
+    font-family: 'Nanum Myeongjo', serif;
+  }
+  .exam-round-btn:active { transform: scale(.96); }
+  .exam-round-btn.selected { background: var(--blue); color: white; border-color: var(--blue); }
+  .exam-type-label {
+    font-size: 13px; font-weight: 700; color: white;
+    background: var(--blue); border-radius: 8px; padding: 3px 10px;
+  }
 </style>
 </head>
 <body>
@@ -336,17 +352,43 @@
   <div class="card" id="write-inner"></div>
 </div>
 
-<!-- 기출문제 회차 선택 -->
+<!-- 기출문제 유형 선택 -->
 <div id="exam_select" class="screen">
   <div class="top-label">기출문제</div>
   <div class="card">
-    <div class="section-title mb-16">기출문제 풀기</div>
-    <div style="font-size:15px;font-weight:700;color:var(--gray);text-align:center;margin-bottom:14px;">3급 기출문제 회차를 선택하세요</div>
-    <div id="exam-round-grid" class="level-grid" style="grid-template-columns:repeat(3,84px);gap:12px;"></div>
+    <div class="section-title mb-8">기출문제</div>
+    <div style="display:flex;align-items:center;justify-content:center;gap:6px;margin-bottom:16px;">
+      <span style="font-size:18px;font-weight:800;color:var(--blue);border:2px solid var(--blue);border-radius:10px;padding:4px 14px;">3급</span>
+    </div>
+    <div style="font-size:15px;font-weight:700;color:#555;text-align:center;margin-bottom:18px;">유형을 선택하세요</div>
+    <div style="display:flex;flex-direction:column;gap:14px;align-items:center;">
+      <button class="btn btn-black" onclick="goExamType('huneum')" style="width:220px;height:64px;font-size:19px;">한자 훈음 쓰기</button>
+      <button class="btn btn-black" onclick="goExamType('reading')" style="width:220px;height:64px;font-size:19px;">한자어 독음 쓰기</button>
+    </div>
     <div style="flex:1;"></div>
-    <div class="btn-row mb-12"><button class="btn btn-black" id="exam-start-btn" onclick="startExam()" disabled>시작</button></div>
     <div class="back-wrap"><button class="btn btn-back" onclick="go('home')">|◁</button></div>
   </div>
+</div>
+
+<!-- 기출문제 회차 선택 -->
+<div id="exam_round" class="screen">
+  <div class="top-label">기출문제</div>
+  <div class="card">
+    <div class="section-title mb-8" id="exam-round-title"></div>
+    <div style="font-size:15px;font-weight:700;color:var(--gray);text-align:center;margin-bottom:14px;">회차를 선택하세요</div>
+    <div id="exam-round-list" style="overflow-y:auto;flex:1;display:flex;flex-direction:column;gap:10px;padding:0 8px;"></div>
+    <div style="padding-top:14px;display:flex;justify-content:center;flex-shrink:0;">
+      <button class="btn btn-black" id="exam-round-start-btn" onclick="startExam()" disabled>시작</button>
+    </div>
+    <div style="height:50px;flex-shrink:0;"></div>
+    <div class="back-wrap"><button class="btn btn-back" onclick="go('exam_select')">|◁</button></div>
+  </div>
+</div>
+
+<!-- 기출문제 쓰기 -->
+<div id="exam_write" class="screen">
+  <div class="top-label">기출문제</div>
+  <div class="card" id="exam-write-inner"></div>
 </div>
 
 <!-- 오답 노트 -->
@@ -390,7 +432,10 @@ const S = {
   lastMain:'study_type', wrongNoteBack:'home',
   cardFinishMsg:'끝났습니다.\n다시 반복 할까요?',
   lastStudy:null,
-  writeChecked:false, writeCorrect:false, writeUserInput:''
+  writeChecked:false, writeCorrect:false, writeUserInput:'',
+  examType:null, examRound:null, examItems:[], examIdx:0,
+  examChecked:false, examCorrect:false, examUserInput:'',
+  examCorrectCount:0, examWrongCount:0, examFinished:false
 };
 
 const LEVEL_ORDER = ['8급','7급','6급','준5급','5급','준4급','4급','준3급','3급'];
@@ -444,6 +489,8 @@ function render(){
   else if(S.screen==='write')renderWrite();
   else if(S.screen==='wrong_note')renderWrongNote();
   else if(S.screen==='exam_select')renderExamSelect();
+  else if(S.screen==='exam_round')renderExamRound();
+  else if(S.screen==='exam_write')renderExamWrite();
 }
 
 function renderHome(){
@@ -896,15 +943,150 @@ function startWrongQuiz(){
 }
 function clearWrongNote(){S.wrongNote=[];toast('오답 노트를 비웠습니다.');renderWrongNote();}
 
-// ===== 기출문제 (placeholder) =====
-function renderExamSelect(){
-  const grid=document.getElementById('exam-round-grid');
-  grid.innerHTML='<div style="font-size:16px;font-weight:700;color:var(--gray);text-align:center;grid-column:1/-1;padding:40px 0;">준비 중입니다.</div>';
-  document.getElementById('exam-start-btn').disabled=true;
+// ===== 기출문제 =====
+let EXAM_DATA = {};
+async function loadExamData() {
+  try {
+    const r = await fetch('exam_data.json');
+    EXAM_DATA = await r.json();
+  } catch(e) { console.log('exam_data.json load failed'); }
 }
-function startExam(){}
+
+function renderExamSelect(){}
+function goExamType(type){
+  S.examType=type;
+  S.examRound=null;
+  go('exam_round');
+}
+function renderExamRound(){
+  const title=document.getElementById('exam-round-title');
+  title.textContent=S.examType==='huneum'?'한자 훈음 쓰기':'한자어 독음 쓰기';
+  const list=document.getElementById('exam-round-list');
+  const rounds=Object.keys(EXAM_DATA).sort((a,b)=>Number(a)-Number(b));
+  if(!rounds.length){
+    list.innerHTML='<div style="text-align:center;font-size:16px;font-weight:700;color:var(--gray);padding:40px 0;">데이터가 없습니다.</div>';
+    document.getElementById('exam-round-start-btn').disabled=true;
+    return;
+  }
+  list.innerHTML=rounds.map(r=>{
+    const exam=EXAM_DATA[r];
+    const cnt=exam.subj.filter(s=>s.type===S.examType).length;
+    return`<button class="exam-round-btn${S.examRound===r?' selected':''}" onclick="selectExamRound('${r}')">
+      제 ${r}회 <span style="font-size:13px;color:${S.examRound===r?'rgba(255,255,255,0.8)':'var(--gray)'}">(${cnt}문제)</span>
+    </button>`;
+  }).join('');
+  document.getElementById('exam-round-start-btn').disabled=!S.examRound;
+}
+function selectExamRound(r){S.examRound=r;renderExamRound();}
+
+function startExam(){
+  if(!S.examRound||!EXAM_DATA[S.examRound])return;
+  const exam=EXAM_DATA[S.examRound];
+  S.examItems=exam.subj.filter(s=>s.type===S.examType);
+  if(!S.examItems.length){toast('해당 유형의 문제가 없습니다.');return;}
+  S.examIdx=0;S.examChecked=false;S.examCorrect=false;S.examUserInput='';
+  S.examCorrectCount=0;S.examWrongCount=0;S.examFinished=false;
+  go('exam_write');
+}
+
+function renderExamWrite(){
+  const box=document.getElementById('exam-write-inner');
+  const items=S.examItems;
+  const it=items[S.examIdx];
+  const total=items.length;
+
+  if(S.examFinished){
+    box.innerHTML=`
+      <div class="finish-box">
+        <div class="finish-title">끝났습니다! 🎉</div>
+        <div class="finish-score">✅ 정답 ${S.examCorrectCount} &nbsp; ❌ 오답 ${S.examWrongCount}</div>
+        <div style="font-size:16px;font-weight:700;color:var(--gray);">제 ${S.examRound}회 · ${S.examType==='huneum'?'훈음 쓰기':'독음 쓰기'}</div>
+        <div class="btn-row" style="margin-top:12px;">
+          <button class="btn btn-black" onclick="restartExam()" style="min-width:120px;height:52px;font-size:17px;">다시 풀기</button>
+          <button class="btn btn-black" onclick="go('exam_round')" style="min-width:120px;height:52px;font-size:17px;">회차 선택</button>
+        </div>
+        <div class="btn-row">
+          <button class="btn btn-black" onclick="go('home')" style="min-width:120px;height:52px;font-size:17px;">홈으로</button>
+        </div>
+      </div>
+      <div class="back-wrap"><button class="btn btn-back" onclick="go('exam_round')">|◁</button></div>
+    `;return;
+  }
+
+  if(!it){box.innerHTML='<div style="flex:1;display:flex;align-items:center;justify-content:center;">데이터 없음</div>';return;}
+
+  const hSize=hanjaFontSize(it.q);
+  const checked=S.examChecked;
+  const placeholder=S.examType==='huneum'?'훈과 음을 쓰세요 (예: 깨달을 각)':'독음을 쓰세요';
+  const typeLabel=S.examType==='huneum'?'훈음 쓰기':'독음 쓰기';
+
+  box.innerHTML=`
+    <div class="study-header">
+      <div style="display:flex;align-items:center;gap:6px;">
+        <span class="exam-type-label">${typeLabel}</span>
+        <span style="font-size:13px;font-weight:700;color:var(--gray);">제${S.examRound}회</span>
+      </div>
+      <span style="font-size:14px;font-weight:700;color:var(--gray);">${it.no}</span>
+    </div>
+    <div class="counter mb-8"><strong>${S.examIdx+1}</strong>/${total}</div>
+    ${progressBar(S.examIdx,total)}
+    <div class="score-row"><span>✅ ${S.examCorrectCount}</span><span>❌ ${S.examWrongCount}</span></div>
+    <div class="card-content-wrap" style="gap:20px;">
+      <div style="font-size:${hSize}px;font-weight:800;font-family:'Nanum Myeongjo',serif;text-align:center;">${it.q}</div>
+      <input class="write-input" id="exam-input" type="text" placeholder="${placeholder}"
+        value="${checked?(S.examCorrect?it.answer:S.examUserInput):''}"
+        ${checked?'readonly':''}
+        onkeydown="handleExamKey(event)"
+        autofocus
+      />
+      <div class="write-result ${checked?(S.examCorrect?'ok':'fail'):''}">${
+        checked
+          ? (S.examCorrect ? '✅ 정답입니다!' : `❌ 정답: ${it.answer}`)
+          : ''
+      }</div>
+      <div class="card-nav" style="padding:4px 0 4px;">
+        <button class="nav-arrow" onclick="prevExamItem()" ${S.examIdx===0?'disabled':''}>◀</button>
+        <button class="write-confirm-btn" onclick="${checked?'nextExamItem()':'checkExam()'}">${checked?'다음':'확인'}</button>
+        <button class="nav-arrow" onclick="nextExamItem()">▶</button>
+      </div>
+    </div>
+    <div class="back-wrap"><button class="btn btn-back" onclick="go('exam_round')">|◁</button></div>
+  `;
+  setTimeout(()=>{const inp=document.getElementById('exam-input');if(inp)inp.focus();},100);
+}
+
+function handleExamKey(event){
+  if(event.key==='Enter'){event.preventDefault();if(S.examChecked)nextExamItem();else checkExam();}
+  else if(event.key===' '&&S.examChecked){event.preventDefault();nextExamItem();}
+}
+function checkExam(){
+  if(S.examChecked)return;
+  const inp=document.getElementById('exam-input');
+  const val=inp?inp.value:'';
+  const it=S.examItems[S.examIdx];
+  S.examChecked=true;
+  S.examUserInput=val;
+  S.examCorrect=val.replace(/\s/g,'')===it.answer.replace(/\s/g,'');
+  if(S.examCorrect){S.examCorrectCount++;playSound('correct');}
+  else{S.examWrongCount++;playSound('wrong');}
+  renderExamWrite();
+}
+function nextExamItem(){
+  if(S.examIdx<S.examItems.length-1){S.examIdx++;S.examChecked=false;S.examCorrect=false;S.examUserInput='';}
+  else S.examFinished=true;
+  renderExamWrite();
+}
+function prevExamItem(){
+  if(S.examIdx>0){S.examIdx--;S.examChecked=false;S.examCorrect=false;S.examUserInput='';renderExamWrite();}
+}
+function restartExam(){
+  S.examIdx=0;S.examChecked=false;S.examCorrect=false;S.examUserInput='';
+  S.examCorrectCount=0;S.examWrongCount=0;S.examFinished=false;
+  renderExamWrite();
+}
 
 loadData();
+loadExamData();
 </script>
 </body>
 </html>
