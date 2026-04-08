@@ -772,12 +772,11 @@ function renderWrite(){
     <div class="back-wrap"><button class="btn btn-back" onclick="go(S.lastMain)">|◁</button></div>
   `;
 
-  if(!checked){
-    setTimeout(()=>{
-      const inp=document.getElementById('write-input');
-      if(inp)inp.focus();
-    },100);
-  }
+  // 채점 전이든 후든 항상 input에 포커스
+  setTimeout(()=>{
+    const inp=document.getElementById('write-input');
+    if(inp)inp.focus();
+  },100);
 }
 function handleWriteKey(event){
   if(event.key==='Enter'){
