@@ -409,7 +409,7 @@ let ALL = [];
 
 async function loadData() {
   try {
-    const r = await fetch('hanja_data.json');
+    const r = await fetch('./hanja_data.json');
     ALL = await r.json();
     document.getElementById('loading').style.display = 'none';
     render();
