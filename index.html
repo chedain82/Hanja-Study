@@ -490,10 +490,12 @@ function toggleRange(s){const i=S.ranges.indexOf(s);if(i>=0)S.ranges.splice(i,1)
 
 function renderStudyType(){
   document.getElementById('type-badge').innerHTML=`${S.level} <span>+</span>`;
-  // 3급은 선정한자에도 쓰기 추가
-  const selModes = S.level==='3급'
-    ? [{mode:'card', label:'카드<br>외우기'},{mode:'quiz', label:'퀴즈'},{mode:'write', label:'쓰기'}]
-    : [{mode:'card', label:'카드<br>외우기'},{mode:'quiz', label:'퀴즈'}];
+  // 모든 급수에서 선정한자 쓰기 가능
+  const selModes = [
+    {mode:'card', label:'카드<br>외우기'},
+    {mode:'quiz', label:'퀴즈'},
+    {mode:'write', label:'쓰기'}
+  ];
   document.getElementById('type-blocks').innerHTML=[
     {cat:'선정', label:'선정 한자', modes: selModes},
     {cat:'교과서', label:'교과서 한자', modes:[
@@ -763,11 +765,11 @@ function renderWrite(){
           ? (S.writeCorrect ? '✅ 정답입니다!' : `❌ 정답: ${correctDisplay}`)
           : ''
       }</div>
-    </div>
-    <div class="card-nav" style="padding:4px 0 4px;">
-      <button class="nav-arrow" onclick="prevWriteItem()" ${S.idx===0?'disabled':''}>◀</button>
-      <button class="write-confirm-btn" onclick="${checked?'nextWriteItem()':'checkWrite()'}">${checked?'다음':'확인'}</button>
-      <button class="nav-arrow" onclick="nextWriteItem()">▶</button>
+      <div class="card-nav" style="padding:4px 0 4px;">
+        <button class="nav-arrow" onclick="prevWriteItem()" ${S.idx===0?'disabled':''}>◀</button>
+        <button class="write-confirm-btn" onclick="${checked?'nextWriteItem()':'checkWrite()'}">${checked?'다음':'확인'}</button>
+        <button class="nav-arrow" onclick="nextWriteItem()">▶</button>
+      </div>
     </div>
     <div class="back-wrap"><button class="btn btn-back" onclick="go(S.lastMain)">|◁</button></div>
   `;
