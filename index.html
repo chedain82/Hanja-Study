@@ -520,7 +520,10 @@ function buildItems(){
   const compRanges=S.ranges.map(r=>r.replace('-','').toUpperCase());
   let items=ALL.filter(it=>it.급수===S.level&&compRanges.includes(it.표시단계)&&it.타입===S.category);
   if(S.random)items=shuffle(items);
-  else items.sort((a,b)=>(a.단계+a.번호).localeCompare(b.단계+b.번호));
+  else items.sort((a,b)=>{
+    if(a.단계!==b.단계)return a.단계.localeCompare(b.단계);
+    return (parseInt(a.번호)||0)-(parseInt(b.번호)||0);
+  });
   return items;
 }
 function startStudy(){
@@ -818,6 +821,9 @@ function restartWrite(){
   S.items=buildItems();S.idx=0;S.isFinished=false;
   S.correct=0;S.wrong=0;S.writeChecked=false;S.writeCorrect=false;
   renderWrite();
+}
+function prevItem(){
+  if(S.idx>0){S.idx--;S.showBack=false;S.quizSelected=null;S.quizChecked=false;S.quizResult='';S.quizItemKey=null;render();}
 }
 function nextItem(){
   if(S.screen==='quiz'&&!S.quizChecked)addUnique(S.unanswered,S.items[S.idx]);
