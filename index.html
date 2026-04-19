@@ -2490,9 +2490,10 @@ initLogin();
 </script>
 
 <!-- ===== FIREBASE (모듈) ===== -->
+<!-- Firebase 설정만 반영된 핵심 부분입니다. 기존 index.html 하단의 firebaseConfig 부분만 이 코드로 교체하세요 -->
+
 <script type="module">
-  import { initializeApp }
-    from "https://www.gstatic.com/firebasejs/10.14.1/firebase-app.js";
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-app.js";
   import { getAuth, signInWithEmailAndPassword,
            createUserWithEmailAndPassword, signOut }
     from "https://www.gstatic.com/firebasejs/10.14.1/firebase-auth.js";
@@ -2501,46 +2502,38 @@ initLogin();
            query, where }
     from "https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore.js";
 
-  /* ── 아래에 Firebase 콘솔에서 복사한 설정값을 붙여넣으세요 ── */
   const firebaseConfig = {
-    apiKey:            "여기에_apiKey",
-    authDomain:        "여기에_authDomain",
-    projectId:         "여기에_projectId",
-    storageBucket:     "여기에_storageBucket",
-    messagingSenderId: "여기에_messagingSenderId",
-    appId:             "여기에_appId"
+    apiKey: "AIzaSyBq8rbc8KsA41Ckr_lxWWK6omaj1T1FYbo",
+    authDomain: "hanja-study-cf5b8.firebaseapp.com",
+    projectId: "hanja-study-cf5b8",
+    storageBucket: "hanja-study-cf5b8.firebasestorage.app",
+    messagingSenderId: "690880076226",
+    appId: "1:690880076226:web:32b9cc6f466ad269455e5b",
+    measurementId: "G-6NP6VJKLRJ"
   };
-  /* ─────────────────────────────────────────────────────────── */
 
   const app  = initializeApp(firebaseConfig);
   const auth = getAuth(app);
   const db   = getFirestore(app);
 
-  /* ── Auth ── */
   window.fbLogin  = (email, pw) => signInWithEmailAndPassword(auth, email, pw);
-  window.fbSignup = (email, pw) => createUserWithEmailAndPassword(auth, email, pw);
+  window.fbSignup = (email, pw) => createUserWithEmailAndPassword(auth, pw);
   window.fbLogout = ()          => signOut(auth);
-  window._firebaseReady = true; // Firebase 준비 완료 플래그
+  window._firebaseReady = true;
 
-  /* ── 선생님 ── */
-  // 선생님 정보 저장 (회원가입 시)
   window._fbSaveTeacher = (uid, data) =>
     setDoc(doc(db, 'teachers', uid), data);
 
-  // 선생님 정보 불러오기 (로그인 시 이름 가져오기)
   window._fbGetTeacher = async (uid) => {
     const snap = await getDoc(doc(db, 'teachers', uid));
     return snap.exists() ? snap.data() : null;
   };
 
-  // 전체 선생님 목록 (학생 로그인 선택 화면용)
   window._fbGetAllTeachers = async () => {
     const snap = await getDocs(collection(db, 'teachers'));
     return snap.docs.map(d => ({ id: d.id, ...d.data() }));
   };
 
-  /* ── 학생 ── */
-  // 로그인 검증: 선생님ID + 이름 + PIN
   window._fbGetStudents = async (teacherId, name, pin) => {
     const q = query(collection(db, 'students'),
                     where('teacherId', '==', teacherId),
@@ -2550,14 +2543,12 @@ initLogin();
     return snap.docs.map(d => ({ id: d.id, ...d.data() }));
   };
 
-  // 특정 선생님의 학생 목록
   window._fbGetTeacherStudents = async (teacherId) => {
     const q = query(collection(db, 'students'), where('teacherId', '==', teacherId));
     const snap = await getDocs(q);
     return snap.docs.map(d => ({ id: d.id, ...d.data() }));
   };
 
-  // 같은 선생님 반에 이름 중복 체크
   window._fbCheckStudentName = async (teacherId, name) => {
     const q = query(collection(db, 'students'),
                     where('teacherId', '==', teacherId),
@@ -2566,20 +2557,15 @@ initLogin();
     return !snap.empty;
   };
 
-  // 학생 추가
   window._fbAddStudent = (data) => addDoc(collection(db, 'students'), data);
-
-  // 학생 삭제
   window._fbDeleteStudent = (id) => deleteDoc(doc(db, 'students', id));
 
-  /* ── 학생 학습 데이터 ── */
   window._fbGetStudentData = async (studentId) => {
     const snap = await getDoc(doc(db, 'studentData', studentId));
     return snap.exists() ? snap.data() : null;
   };
+
   window._fbSetStudentData = (studentId, data) =>
     setDoc(doc(db, 'studentData', studentId), data);
 
 </script>
-</body>
-</html>
