@@ -571,10 +571,93 @@ body {
   border-radius: 10px; padding: 7px 14px;
   font-size: 13px; font-weight: 700; cursor: pointer; font-family: inherit;
 }
+.student-detail-btn {
+  background: #EEF3FD; color: var(--blue); border: none;
+  border-radius: 10px; padding: 7px 14px;
+  font-size: 13px; font-weight: 700; cursor: pointer; font-family: inherit;
+  margin-right: 6px;
+}
 .teacher-notice {
   text-align: center; padding: 16px; color: var(--gray);
   font-size: 13px; font-weight: 700; line-height: 1.8;
 }
+
+/* ===== 학생 상세 보기 ===== */
+#student-detail {
+  display: none;
+  position: fixed; inset: 0;
+  background: rgba(0,0,0,.45);
+  z-index: 600;
+  align-items: flex-end;
+  justify-content: center;
+}
+#student-detail.active { display: flex; }
+.student-detail-sheet {
+  width: 100%; max-width: 560px;
+  background: var(--bg);
+  border-radius: 24px 24px 0 0;
+  max-height: 88dvh;
+  overflow-y: auto;
+  padding: 0 0 32px;
+  animation: sheetUp .28s ease-out;
+}
+@keyframes sheetUp { from { transform: translateY(100%); } to { transform: translateY(0); } }
+
+.detail-handle {
+  width: 40px; height: 4px; border-radius: 2px;
+  background: #CCC; margin: 12px auto 0;
+}
+.detail-header {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 16px 20px 8px;
+}
+.detail-student-name { font-size: 22px; font-weight: 800; }
+.detail-close-btn {
+  background: rgba(0,0,0,.07); border: none; border-radius: 50%;
+  width: 36px; height: 36px; font-size: 18px;
+  cursor: pointer; display: flex; align-items: center; justify-content: center;
+}
+.detail-today-badge {
+  display: inline-flex; align-items: center; gap: 5px;
+  border-radius: 20px; padding: 4px 12px;
+  font-size: 13px; font-weight: 700; margin: 0 20px 12px;
+}
+.detail-today-badge.today { background: #E8F5E9; color: var(--correct); }
+.detail-today-badge.not-today { background: #FFF0F0; color: var(--wrong); }
+
+.detail-grid {
+  display: grid; grid-template-columns: 1fr 1fr;
+  gap: 10px; padding: 0 16px 14px;
+}
+.detail-card {
+  background: white; border-radius: 16px; padding: 14px 12px;
+  text-align: center;
+}
+.detail-val { font-size: 26px; font-weight: 800; color: #222; }
+.detail-lbl { font-size: 11px; font-weight: 700; color: var(--gray); margin-top: 4px; }
+
+.detail-section { padding: 0 16px 14px; }
+.detail-section-title { font-size: 14px; font-weight: 800; color: #222; margin-bottom: 10px; }
+
+.detail-level-row { margin-bottom: 8px; }
+.detail-level-header { display: flex; justify-content: space-between; margin-bottom: 4px; }
+.detail-level-name { font-size: 13px; font-weight: 700; }
+.detail-level-pct { font-size: 13px; font-weight: 700; color: var(--blue); }
+.detail-bar-bg { height: 6px; background: #EEE; border-radius: 3px; overflow: hidden; }
+.detail-bar-fill { height: 100%; background: var(--blue); border-radius: 3px; transition: width .6s ease; }
+
+.detail-wrong-item {
+  background: white; border-radius: 12px; padding: 10px 14px;
+  display: flex; align-items: center; gap: 10px; margin-bottom: 8px;
+}
+.detail-wrong-hanja { font-size: 26px; font-weight: 800; flex-shrink: 0; }
+.detail-wrong-text { flex: 1; font-size: 14px; font-weight: 700; }
+.detail-wrong-count {
+  background: #FFE8E8; color: var(--wrong);
+  border-radius: 12px; padding: 3px 10px;
+  font-size: 12px; font-weight: 800;
+}
+.detail-empty { text-align: center; color: var(--gray); font-size: 14px; font-weight: 700; padding: 16px; }
 </style>
 </head>
 <body>
@@ -714,6 +797,21 @@ body {
   </div>
 </div>
 
+<!-- ===== 학생 상세 보기 (바텀시트) ===== -->
+<div id="student-detail" onclick="closeStudentDetail(event)">
+  <div class="student-detail-sheet" id="student-detail-sheet">
+    <div class="detail-handle"></div>
+    <div class="detail-header">
+      <div class="detail-student-name" id="detail-name">학생</div>
+      <button class="detail-close-btn" onclick="closeStudentDetail()">✕</button>
+    </div>
+    <div id="detail-today-badge"></div>
+    <div id="detail-body">
+      <div style="text-align:center;padding:40px;color:var(--gray);font-size:14px;font-weight:700;">불러오는 중...</div>
+    </div>
+  </div>
+</div>
+
 <div id="loading"><div class="spinner"></div><div style="font-size:16px;font-weight:700;color:#555;">데이터 불러오는 중...</div></div>
 <div id="toast"></div>
 <div id="badge-popup"><span class="bp-icon" id="bp-icon"></span><div class="bp-text"><div class="bp-title">🏅 배지 획득!</div><div class="bp-name" id="bp-name"></div></div></div>
@@ -844,7 +942,7 @@ body {
   <div id="tab-profile" class="tab-pane">
     <div class="profile-header">
       <div class="profile-avatar">漢</div>
-      <div class="profile-name" id="profile-name">한자 학습자</div>
+      <div class="profile-name">한자 학습자</div>
       <div class="profile-badge-lv" id="profile-level-lbl">학습 시작</div>
     </div>
     <div class="profile-grid">
@@ -2204,9 +2302,36 @@ async function renderTeacherStudentList() {
       <div class="student-row">
         <div class="student-row-num">${i+1}</div>
         <div class="student-row-name">${s.name}</div>
+        <button class="student-detail-btn" onclick="showStudentDetail('${s.id}','${s.name}')">학습현황</button>
         <button class="student-del-btn" onclick="deleteStudent('${s.id}','${s.name}')">삭제</button>
       </div>`).join('');
   } catch(e) { list.innerHTML = `<div class="teacher-notice" style="color:var(--wrong);">오류: ${e.message}</div>`; }
+}
+
+/* ===== 학생 상세 보기 ===== */
+async function showStudentDetail(studentId, studentName) {
+  document.getElementById("detail-name").textContent = studentName;
+  document.getElementById("detail-today-badge").innerHTML = "";
+  document.getElementById("detail-body").innerHTML = "<div style="text-align:center;padding:40px;color:var(--gray);font-size:14px;font-weight:700;">불러오는 중...</div>";
+  document.getElementById("student-detail").classList.add("active");
+  try {
+    const data = await window._fbGetStudentData(studentId);
+    if (!data) { document.getElementById("detail-body").innerHTML = "<div class="detail-empty">아직 학습 기록이 없어요.<br>학생이 처음 로그인하면 데이터가 생겨요.</div>"; return; }
+    const st = data.settings || {}; const sl = data.studyLog || []; const wn = data.wrongNote || [];
+    const today = new Date(); const todayStr = today.getFullYear()+"-"+String(today.getMonth()+1).padStart(2,"0")+"-"+String(today.getDate()).padStart(2,"0");
+    const lastUpdated = data.lastUpdated ? data.lastUpdated.slice(0,10) : ""; const isToday = lastUpdated === todayStr;
+    document.getElementById("detail-today-badge").innerHTML = "<div class="detail-today-badge "+(isToday?"today":"not-today")+"">"+(isToday?"✅ 오늘 학습함":"⚠️ 마지막 접속: "+(lastUpdated||"기록 없음"))+"</div>";
+    const todayLogs = sl.filter(e=>e.date===todayStr); const todayTotal = todayLogs.reduce((s,e)=>s+(e.total||0),0); const todayCorrect = todayLogs.reduce((s,e)=>s+(e.correct||0),0);
+    const totalQ = st.totalQuestions||0; const totalC = st.totalCorrect||0; const acc = totalQ>0?Math.round(totalC/totalQ*100):0;
+    const streak = st.streak||0; const totalDays = new Set(sl.map(e=>e.date)).size;
+    const LEVEL_ORDER = ["8급","7급","6급","준5급","5급","준4급","4급","준3급","3급"]; const LEVEL_STEPS = {"8급":3,"7급":3,"6급":6,"준5급":6,"5급":12,"준4급":12,"4급":12,"준3급":15,"3급":15}; const lp = st.levelProgress||{};
+    const wrongArr = Array.isArray(wn)?wn:Object.values(wn); const top5 = [...wrongArr].sort((a,b)=>(b._wrongCount||1)-(a._wrongCount||1)).slice(0,5);
+    document.getElementById("detail-body").innerHTML = "<div class="detail-grid"><div class="detail-card"><div class="detail-val">"+totalQ+"</div><div class="detail-lbl">📝 누적 문제 수</div></div><div class="detail-card"><div class="detail-val">"+acc+"%</div><div class="detail-lbl">✅ 전체 정답률</div></div><div class="detail-card"><div class="detail-val">"+todayTotal+"</div><div class="detail-lbl">📖 오늘 푼 문제</div></div><div class="detail-card"><div class="detail-val">"+(todayTotal>0?Math.round(todayCorrect/todayTotal*100)+"%":"-")+"</div><div class="detail-lbl">🎯 오늘 정답률</div></div><div class="detail-card"><div class="detail-val">"+streak+"일</div><div class="detail-lbl">🔥 연속 학습</div></div><div class="detail-card"><div class="detail-val">"+totalDays+"일</div><div class="detail-lbl">📅 총 학습 일수</div></div></div><div class="detail-section"><div class="detail-section-title">📚 급수별 학습 현황</div>"+LEVEL_ORDER.map(lv=>{const cnt=lp[lv]||0;const tot=(LEVEL_STEPS[lv]||1)*10;const pct=cnt>0?Math.min(100,Math.round(cnt/tot*100)):0;return"<div class="detail-level-row"><div class="detail-level-header"><span class="detail-level-name">"+lv+"</span><span class="detail-level-pct">"+(cnt>0?pct+"%":"미학습")+"</span></div><div class="detail-bar-bg"><div class="detail-bar-fill" style="width:"+pct+"%"></div></div></div>";}).join("")+"</div><div class="detail-section"><div class="detail-section-title">❌ 자주 틀린 한자 Top 5</div>"+(top5.length?top5.map(it=>"<div class="detail-wrong-item"><div class="detail-wrong-hanja">"+(it.한자||"?")+"</div><div class="detail-wrong-text">"+(it.뜻||"")+" "+(it.독음||"")+"</div><div class="detail-wrong-count">"+(it._wrongCount||1)+"회</div></div>").join(""):"<div class="detail-empty">오답이 없어요 🎉</div>")+"</div>";
+  } catch(e) { document.getElementById("detail-body").innerHTML = "<div class="detail-empty" style="color:var(--wrong);">오류: "+e.message+"</div>"; }
+}
+function closeStudentDetail(e) {
+  if (e && e.target !== document.getElementById("student-detail")) return;
+  document.getElementById("student-detail").classList.remove("active");
 }
 async function addStudent() {
   const name = document.getElementById('new-student-name').value.trim();
@@ -2250,14 +2375,13 @@ initLogin();
 
   /* ── 아래에 Firebase 콘솔에서 복사한 설정값을 붙여넣으세요 ── */
   const firebaseConfig = {
-  apiKey: "AIzaSyBq8rbc8KsA41Ckr_lxWWK6omaj1T1FYbo",
-  authDomain: "hanja-study-cf5b8.firebaseapp.com",
-  projectId: "hanja-study-cf5b8",
-  storageBucket: "hanja-study-cf5b8.firebasestorage.app",
-  messagingSenderId: "690880076226",
-  appId: "1:690880076226:web:32b9cc6f466ad269455e5b",
-  measurementId: "G-6NP6VJKLRJ"
-};
+    apiKey:            "여기에_apiKey",
+    authDomain:        "여기에_authDomain",
+    projectId:         "여기에_projectId",
+    storageBucket:     "여기에_storageBucket",
+    messagingSenderId: "여기에_messagingSenderId",
+    appId:             "여기에_appId"
+  };
   /* ─────────────────────────────────────────────────────────── */
 
   const app  = initializeApp(firebaseConfig);
