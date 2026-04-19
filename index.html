@@ -422,9 +422,297 @@ body {
 .weak-header { padding: 20px 18px 12px; font-size: 28px; font-weight: 800; }
 .profile-tab-pad { padding: 0 14px 24px; }
 .tab-section-label { font-size: 13px; font-weight: 700; color: var(--gray); margin-bottom: 8px; padding: 0 14px; }
+
+/* ===== LOGIN SCREEN ===== */
+#login-screen {
+  position: fixed; inset: 0;
+  background: var(--bg);
+  display: none; flex-direction: column;
+  align-items: center; justify-content: center;
+  z-index: 1000; padding: 24px;
+  overflow-y: auto;
+}
+#login-screen.active { display: flex; }
+
+.login-logo { font-size: 52px; font-weight: 800; font-family: 'Nanum Myeongjo', serif; margin-bottom: 6px; }
+.login-sub-title { font-size: 15px; font-weight: 700; color: var(--gray); margin-bottom: 36px; }
+
+/* 역할 선택 버튼 */
+.login-role-btns { display: flex; gap: 16px; width: 100%; max-width: 320px; }
+.login-role-btn {
+  flex: 1; height: 110px; border-radius: 22px; border: none;
+  cursor: pointer; font-family: inherit; font-size: 17px; font-weight: 800;
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  gap: 10px; transition: all .2s; -webkit-user-select: none; user-select: none;
+}
+.login-role-btn .role-icon { font-size: 38px; }
+.login-role-btn.student { background: var(--blue); color: white; box-shadow: 0 4px 16px rgba(59,125,224,.35); }
+.login-role-btn.teacher { background: var(--black-btn); color: white; box-shadow: 0 4px 16px rgba(0,0,0,.2); }
+.login-role-btn:active { transform: scale(.94); opacity: .9; }
+
+/* 공통 폼 래퍼 */
+.login-form-wrap {
+  width: 100%; max-width: 320px;
+  display: none; flex-direction: column; align-items: center; gap: 14px;
+}
+.login-form-wrap.active { display: flex; }
+.login-form-title { font-size: 26px; font-weight: 800; margin-bottom: 4px; align-self: flex-start; }
+.login-form-sub   { font-size: 13px; font-weight: 700; color: var(--gray); align-self: flex-start; margin-top: -8px; margin-bottom: 2px; }
+
+/* 입력창 */
+.login-input {
+  width: 100%; height: 54px; border-radius: 16px;
+  border: 2px solid #DDD; padding: 0 18px;
+  font-size: 18px; font-family: inherit; font-weight: 700;
+  background: white; outline: none; transition: border .2s;
+}
+.login-input:focus { border-color: var(--blue); }
+.login-error { color: var(--wrong); font-size: 14px; font-weight: 700; text-align: center; min-height: 20px; }
+
+/* 버튼 */
+.login-submit-btn {
+  width: 100%; height: 54px; border-radius: 16px; border: none;
+  background: var(--blue); color: white; font-size: 18px; font-weight: 800;
+  cursor: pointer; font-family: inherit; transition: all .2s;
+}
+.login-submit-btn:active { opacity: .8; transform: scale(.98); }
+.login-back-btn {
+  background: none; border: none; color: var(--gray);
+  font-size: 15px; font-weight: 700; cursor: pointer; font-family: inherit; margin-top: 2px;
+}
+.login-link-btn {
+  background: none; border: none; color: var(--blue);
+  font-size: 14px; font-weight: 700; cursor: pointer; font-family: inherit;
+  text-decoration: underline;
+}
+
+/* 선생님 목록 (학생 로그인 1단계) */
+.teacher-pick-list { width: 100%; display: flex; flex-direction: column; gap: 10px; }
+.teacher-pick-btn {
+  width: 100%; height: 60px; border-radius: 16px;
+  background: white; border: 2px solid #DDD;
+  display: flex; align-items: center; gap: 14px;
+  padding: 0 18px; cursor: pointer; font-family: inherit;
+  transition: all .15s; -webkit-user-select: none; user-select: none;
+}
+.teacher-pick-btn:active { border-color: var(--blue); background: #EEF3FD; transform: scale(.98); }
+.teacher-pick-btn.selected { border-color: var(--blue); background: #EEF3FD; }
+.teacher-pick-icon { font-size: 26px; }
+.teacher-pick-name { font-size: 17px; font-weight: 700; color: #222; }
+
+/* PIN pad */
+.pin-label { font-size: 14px; font-weight: 700; color: var(--gray); align-self: flex-start; }
+.pin-display { display: flex; gap: 14px; justify-content: center; margin: 2px 0 6px; }
+.pin-dot {
+  width: 22px; height: 22px; border-radius: 50%;
+  border: 2.5px solid var(--blue); background: transparent; transition: background .15s;
+}
+.pin-dot.filled { background: var(--blue); }
+.pin-pad { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; width: 100%; }
+.pin-key {
+  height: 62px; border-radius: 16px; border: none;
+  background: white; font-size: 24px; font-weight: 800;
+  cursor: pointer; font-family: inherit;
+  transition: all .15s; box-shadow: 0 2px 6px rgba(0,0,0,.08);
+  -webkit-user-select: none; user-select: none;
+}
+.pin-key:active { transform: scale(.9); background: #E8E8E8; }
+.pin-key.del     { font-size: 20px; background: #F5F0F0; color: #888; }
+.pin-key.confirm { background: var(--blue); color: white; font-size: 20px; }
+.pin-key.confirm:active { background: var(--dark-blue); }
+
+/* ===== TEACHER DASHBOARD ===== */
+#teacher-app {
+  display: none;
+  position: fixed; inset: 0;
+  background: var(--bg);
+  z-index: 500;
+  overflow-y: auto;
+  padding: 0;
+}
+#teacher-app.active { display: block; }
+.teacher-header {
+  background: var(--black-btn); color: white;
+  padding: 52px 20px 20px;
+  display: flex; align-items: center; justify-content: space-between;
+}
+.teacher-header-title { font-size: 24px; font-weight: 800; }
+.teacher-logout-btn {
+  background: rgba(255,255,255,.15); border: none; border-radius: 16px;
+  color: white; font-size: 13px; font-weight: 700;
+  padding: 8px 14px; cursor: pointer; font-family: inherit;
+}
+.teacher-body { padding: 16px; }
+.teacher-card { background: white; border-radius: 18px; padding: 18px; margin-bottom: 14px; }
+.teacher-card-title { font-size: 15px; font-weight: 800; color: #222; margin-bottom: 14px; }
+.teacher-input-row { display: flex; gap: 10px; margin-bottom: 10px; }
+.teacher-input {
+  height: 48px; border-radius: 14px; border: 2px solid #DDD;
+  padding: 0 14px; font-size: 16px; font-family: inherit; font-weight: 700;
+  outline: none; background: #FAFAFA; transition: border .2s;
+}
+.teacher-input:focus { border-color: var(--blue); }
+.teacher-add-btn {
+  width: 100%; height: 48px; border-radius: 14px; border: none;
+  background: var(--blue); color: white;
+  font-size: 16px; font-weight: 700; cursor: pointer;
+  font-family: inherit; transition: all .15s;
+}
+.teacher-add-btn:active { opacity: .8; transform: scale(.98); }
+.student-row {
+  display: flex; align-items: center;
+  padding: 12px 0; border-bottom: 1px solid #F5F5F5;
+}
+.student-row:last-child { border-bottom: none; }
+.student-row-num { font-size: 13px; font-weight: 700; color: var(--gray); min-width: 26px; }
+.student-row-name { flex: 1; font-size: 17px; font-weight: 700; }
+.student-del-btn {
+  background: #FFE8E8; color: var(--wrong); border: none;
+  border-radius: 10px; padding: 7px 14px;
+  font-size: 13px; font-weight: 700; cursor: pointer; font-family: inherit;
+}
+.teacher-notice {
+  text-align: center; padding: 16px; color: var(--gray);
+  font-size: 13px; font-weight: 700; line-height: 1.8;
+}
 </style>
 </head>
 <body>
+
+<!-- ===== LOGIN SCREEN ===== -->
+<div id="login-screen">
+
+  <!-- STEP 0: 역할 선택 -->
+  <div id="ls-role" style="display:flex;flex-direction:column;align-items:center;width:100%;">
+    <div class="login-logo">漢字</div>
+    <div class="login-sub-title">로그인해서 시작하세요</div>
+    <div class="login-role-btns">
+      <button class="login-role-btn student" onclick="lsGo('student-teacher')">
+        <span class="role-icon">📖</span>학생
+      </button>
+      <button class="login-role-btn teacher" onclick="lsGo('teacher-login')">
+        <span class="role-icon">👩‍🏫</span>선생님
+      </button>
+    </div>
+  </div>
+
+  <!-- STEP 1 (학생): 선생님 선택 -->
+  <div class="login-form-wrap" id="ls-student-teacher">
+    <div class="login-form-title">선생님 선택</div>
+    <div class="login-form-sub">내 선생님을 선택하세요</div>
+    <div class="teacher-pick-list" id="teacher-pick-list">
+      <div style="text-align:center;color:var(--gray);font-size:14px;font-weight:700;padding:20px 0;">불러오는 중...</div>
+    </div>
+    <div class="login-error" id="ls-teacher-pick-error"></div>
+    <button class="login-submit-btn" onclick="lsGo('student-name')">다음</button>
+    <button class="login-back-btn" onclick="lsBack('role')">← 뒤로</button>
+  </div>
+
+  <!-- STEP 2 (학생): 이름 입력 -->
+  <div class="login-form-wrap" id="ls-student-name">
+    <div class="login-form-title">이름 입력</div>
+    <div class="login-form-sub" id="ls-name-sub">선생님 반 학생 이름을 입력하세요</div>
+    <input class="login-input" id="student-name-input" type="text"
+      placeholder="이름" maxlength="10"
+      onkeydown="if(event.key==='Enter')lsGo('student-pin')"/>
+    <div class="login-error" id="ls-name-error"></div>
+    <button class="login-submit-btn" onclick="lsGo('student-pin')">다음</button>
+    <button class="login-back-btn" onclick="lsBack('student-teacher')">← 뒤로</button>
+  </div>
+
+  <!-- STEP 3 (학생): PIN 입력 -->
+  <div class="login-form-wrap" id="ls-student-pin">
+    <div class="login-form-title">PIN 입력</div>
+    <div class="login-form-sub" id="ls-pin-sub">비밀번호 4자리를 누르세요</div>
+    <div class="pin-display">
+      <div class="pin-dot" id="pin-d0"></div>
+      <div class="pin-dot" id="pin-d1"></div>
+      <div class="pin-dot" id="pin-d2"></div>
+      <div class="pin-dot" id="pin-d3"></div>
+    </div>
+    <div class="pin-pad">
+      <button class="pin-key" onclick="pinInput('1')">1</button>
+      <button class="pin-key" onclick="pinInput('2')">2</button>
+      <button class="pin-key" onclick="pinInput('3')">3</button>
+      <button class="pin-key" onclick="pinInput('4')">4</button>
+      <button class="pin-key" onclick="pinInput('5')">5</button>
+      <button class="pin-key" onclick="pinInput('6')">6</button>
+      <button class="pin-key" onclick="pinInput('7')">7</button>
+      <button class="pin-key" onclick="pinInput('8')">8</button>
+      <button class="pin-key" onclick="pinInput('9')">9</button>
+      <button class="pin-key del" onclick="pinDel()">⌫</button>
+      <button class="pin-key" onclick="pinInput('0')">0</button>
+      <button class="pin-key confirm" onclick="doStudentLogin()">✓</button>
+    </div>
+    <div class="login-error" id="ls-pin-error"></div>
+    <button class="login-back-btn" onclick="lsBack('student-name')">← 뒤로</button>
+  </div>
+
+  <!-- STEP A (선생님): 로그인 -->
+  <div class="login-form-wrap" id="ls-teacher-login">
+    <div class="login-form-title">선생님 로그인</div>
+    <input class="login-input" id="teacher-email-input" type="email"
+      placeholder="이메일" autocomplete="email"/>
+    <input class="login-input" id="teacher-pw-input" type="password"
+      placeholder="비밀번호" onkeydown="if(event.key==='Enter')doTeacherLogin()"/>
+    <div class="login-error" id="ls-teacher-error"></div>
+    <button class="login-submit-btn" onclick="doTeacherLogin()">로그인</button>
+    <button class="login-link-btn" onclick="lsGo('teacher-signup')" style="margin-top:-4px;">
+      처음이에요 → 회원가입
+    </button>
+    <button class="login-back-btn" onclick="lsBack('role')">← 뒤로</button>
+  </div>
+
+  <!-- STEP B (선생님): 회원가입 -->
+  <div class="login-form-wrap" id="ls-teacher-signup">
+    <div class="login-form-title">선생님 회원가입</div>
+    <input class="login-input" id="signup-name-input"  type="text"     placeholder="이름 (예: 김영희 선생님)" maxlength="15"/>
+    <input class="login-input" id="signup-email-input" type="email"    placeholder="이메일"/>
+    <input class="login-input" id="signup-pw-input"    type="password" placeholder="비밀번호 (6자 이상)"/>
+    <input class="login-input" id="signup-pw2-input"   type="password"
+      placeholder="비밀번호 확인" onkeydown="if(event.key==='Enter')doTeacherSignup()"/>
+    <div class="login-error" id="ls-signup-error"></div>
+    <button class="login-submit-btn" onclick="doTeacherSignup()">가입하기</button>
+    <button class="login-back-btn" onclick="lsBack('teacher-login')">← 뒤로</button>
+  </div>
+
+</div>
+
+<!-- ===== TEACHER DASHBOARD ===== -->
+<div id="teacher-app">
+  <div class="teacher-header">
+    <div>
+      <div style="font-size:12px;font-weight:700;opacity:.6;margin-bottom:2px;">선생님 대시보드</div>
+      <div class="teacher-header-title" id="teacher-header-name">선생님</div>
+    </div>
+    <button class="teacher-logout-btn" onclick="doLogout()">로그아웃</button>
+  </div>
+  <div class="teacher-body">
+
+    <!-- 학생 추가 -->
+    <div class="teacher-card">
+      <div class="teacher-card-title">➕ 학생 추가</div>
+      <div class="teacher-input-row">
+        <input class="teacher-input" id="new-student-name" style="flex:1;" placeholder="이름" maxlength="10"/>
+        <input class="teacher-input" id="new-student-pin" style="width:100px;text-align:center;" placeholder="PIN 4자리" maxlength="4" type="tel"
+          onkeydown="if(event.key==='Enter')addStudent()"/>
+      </div>
+      <button class="teacher-add-btn" onclick="addStudent()">추가하기</button>
+    </div>
+
+    <!-- 학생 목록 -->
+    <div class="teacher-card">
+      <div class="teacher-card-title">👥 학생 목록</div>
+      <div id="teacher-student-list">
+        <div class="teacher-notice">불러오는 중...</div>
+      </div>
+    </div>
+
+    <div class="teacher-notice">
+      📊 학생별 상세 리포트 · 과제 배정은<br>다음 업데이트에서 추가됩니다
+    </div>
+  </div>
+</div>
 
 <div id="loading"><div class="spinner"></div><div style="font-size:16px;font-weight:700;color:#555;">데이터 불러오는 중...</div></div>
 <div id="toast"></div>
@@ -576,6 +864,9 @@ body {
     </div>
     <div style="text-align:center;padding:0 14px 16px;">
       <button onclick="resetAllData()" style="background:none;border:none;color:var(--gray);font-size:13px;font-weight:700;cursor:pointer;font-family:inherit;">데이터 초기화</button>
+    </div>
+    <div style="text-align:center;padding:0 14px 28px;">
+      <button onclick="doLogout()" style="background:#FFF0F0;border:none;color:var(--wrong);font-size:14px;font-weight:700;cursor:pointer;font-family:inherit;border-radius:14px;padding:12px 32px;">🚪 로그아웃</button>
     </div>
   </div>
 
@@ -1703,8 +1994,338 @@ async function loadData() {
   }
 }
 
-loadData();
-loadExamData();
+/* ===== LOGIN ===== */
+/* ===== LOGIN STATE ===== */
+let currentUser    = null;   // { role, id, name, teacherId?, teacherName? }
+let pinBuffer      = '';
+let selectedTeacher = null;  // { id, name }
+
+/* ── 스텝 이동 ── */
+const LS_ALL = ['role','student-teacher','student-name','student-pin','teacher-login','teacher-signup'];
+function lsGo(step) {
+  if (step === 'student-name') {
+    if (!selectedTeacher) { document.getElementById('ls-teacher-pick-error').textContent = '선생님을 선택해 주세요'; return; }
+    document.getElementById('ls-teacher-pick-error').textContent = '';
+    document.getElementById('ls-name-sub').textContent = selectedTeacher.name + ' 반 학생 이름을 입력하세요';
+    document.getElementById('ls-pin-sub').textContent  = selectedTeacher.name + ' 반 · PIN 4자리';
+  }
+  if (step === 'student-pin') {
+    const name = document.getElementById('student-name-input').value.trim();
+    if (!name) { document.getElementById('ls-name-error').textContent = '이름을 입력해 주세요'; return; }
+    document.getElementById('ls-name-error').textContent = '';
+    pinBuffer = ''; updatePinDisplay();
+    document.getElementById('ls-pin-error').textContent = '';
+  }
+  LS_ALL.forEach(s => {
+    if (s === 'role') { document.getElementById('ls-role').style.display = 'none'; }
+    else { const el = document.getElementById('ls-'+s); if (el) el.classList.remove('active'); }
+  });
+  if (step === 'role') { document.getElementById('ls-role').style.display = 'flex'; }
+  else { const el = document.getElementById('ls-'+step); if (el) el.classList.add('active'); }
+  if (step === 'student-teacher') loadTeacherPickList();
+  if (step === 'student-name')  setTimeout(() => document.getElementById('student-name-input').focus(), 100);
+  if (step === 'teacher-login') setTimeout(() => document.getElementById('teacher-email-input').focus(), 100);
+  if (step === 'teacher-signup') setTimeout(() => document.getElementById('signup-name-input').focus(), 100);
+}
+function lsBack(step) { lsGo(step); }
+
+/* ── 선생님 목록 불러오기 ── */
+async function loadTeacherPickList() {
+  const list = document.getElementById('teacher-pick-list');
+  list.innerHTML = '<div style="text-align:center;color:var(--gray);font-size:14px;font-weight:700;padding:20px 0;">불러오는 중...</div>';
+  try {
+    const teachers = await window._fbGetAllTeachers();
+    if (!teachers.length) {
+      list.innerHTML = '<div style="text-align:center;color:var(--gray);font-size:14px;font-weight:700;padding:20px 0;">등록된 선생님이 없습니다.<br>선생님이 먼저 가입해야 해요.</div>'; return;
+    }
+    list.innerHTML = teachers.map(t => `
+      <button class="teacher-pick-btn${selectedTeacher&&selectedTeacher.id===t.id?' selected':''}"
+        onclick="selectTeacher('${t.id}','${t.name.replace(/'/g,'&#39;')}',this)">
+        <span class="teacher-pick-icon">👩‍🏫</span>
+        <span class="teacher-pick-name">${t.name}</span>
+      </button>`).join('');
+  } catch(e) {
+    list.innerHTML = `<div style="text-align:center;color:var(--wrong);font-size:14px;padding:16px;">${e.message}</div>`;
+  }
+}
+function selectTeacher(id, name, btn) {
+  selectedTeacher = { id, name };
+  document.getElementById('ls-teacher-pick-error').textContent = '';
+  document.querySelectorAll('.teacher-pick-btn').forEach(b => b.classList.remove('selected'));
+  btn.classList.add('selected');
+}
+
+/* ── PIN 패드 ── */
+function pinInput(d) { if (pinBuffer.length >= 4) return; pinBuffer += d; updatePinDisplay(); }
+function pinDel()    { pinBuffer = pinBuffer.slice(0,-1); updatePinDisplay(); }
+function updatePinDisplay() {
+  for (let i = 0; i < 4; i++) document.getElementById('pin-d'+i).classList.toggle('filled', i < pinBuffer.length);
+}
+
+/* ── 학생 로그인 ── */
+async function doStudentLogin() {
+  const errEl = document.getElementById('ls-pin-error');
+  if (pinBuffer.length < 4) { errEl.textContent = 'PIN 4자리를 모두 입력해 주세요'; return; }
+  const name = document.getElementById('student-name-input').value.trim();
+  errEl.textContent = '확인 중...';
+  try {
+    const snap = await window._fbGetStudents(selectedTeacher.id, name, pinBuffer);
+    if (!snap || snap.length === 0) {
+      errEl.textContent = '이름 또는 PIN이 맞지 않아요 🙅';
+      pinBuffer = ''; updatePinDisplay(); return;
+    }
+    const s = snap[0];
+    currentUser = { role:'student', id:s.id, name:s.name, teacherId:selectedTeacher.id, teacherName:selectedTeacher.name };
+    sessionStorage.setItem('hanja_session', JSON.stringify(currentUser));
+    enterStudentApp();
+  } catch(e) {
+    errEl.textContent = '오류가 발생했어요. 다시 시도해 주세요.';
+    pinBuffer = ''; updatePinDisplay();
+  }
+}
+
+/* ── 선생님 로그인 ── */
+async function doTeacherLogin() {
+  const email = document.getElementById('teacher-email-input').value.trim();
+  const pw    = document.getElementById('teacher-pw-input').value;
+  const errEl = document.getElementById('ls-teacher-error');
+  if (!email || !pw) { errEl.textContent = '이메일과 비밀번호를 입력해 주세요'; return; }
+  errEl.textContent = '로그인 중...';
+  try {
+    const result = await window.fbLogin(email, pw);
+    const uid    = result.user.uid;
+    const tData  = await window._fbGetTeacher(uid);
+    currentUser  = { role:'teacher', id:uid, name: tData ? tData.name : '선생님' };
+    sessionStorage.setItem('hanja_session', JSON.stringify(currentUser));
+    enterTeacherApp();
+  } catch(e) {
+    const codes = { 'auth/wrong-password':'비밀번호가 틀렸어요.','auth/invalid-credential':'이메일 또는 비밀번호가 틀렸어요.','auth/user-not-found':'등록된 이메일이 아닙니다.','auth/invalid-email':'이메일 형식을 확인해 주세요.' };
+    errEl.textContent = codes[e.code] || '로그인에 실패했습니다.';
+  }
+}
+
+/* ── 선생님 회원가입 ── */
+async function doTeacherSignup() {
+  const name  = document.getElementById('signup-name-input').value.trim();
+  const email = document.getElementById('signup-email-input').value.trim();
+  const pw    = document.getElementById('signup-pw-input').value;
+  const pw2   = document.getElementById('signup-pw2-input').value;
+  const errEl = document.getElementById('ls-signup-error');
+  if (!name)         { errEl.textContent = '이름을 입력해 주세요'; return; }
+  if (!email)        { errEl.textContent = '이메일을 입력해 주세요'; return; }
+  if (pw.length < 6) { errEl.textContent = '비밀번호는 6자 이상이어야 해요'; return; }
+  if (pw !== pw2)    { errEl.textContent = '비밀번호가 일치하지 않아요'; return; }
+  errEl.textContent = '가입 중...';
+  try {
+    const result = await window.fbSignup(email, pw);
+    const uid    = result.user.uid;
+    await window._fbSaveTeacher(uid, { name, email, createdAt: new Date().toISOString() });
+    currentUser = { role:'teacher', id:uid, name };
+    sessionStorage.setItem('hanja_session', JSON.stringify(currentUser));
+    enterTeacherApp();
+  } catch(e) {
+    const codes = { 'auth/email-already-in-use':'이미 사용 중인 이메일이에요.','auth/invalid-email':'이메일 형식을 확인해 주세요.','auth/weak-password':'비밀번호가 너무 단순해요.' };
+    errEl.textContent = codes[e.code] || '가입에 실패했습니다.';
+  }
+}
+
+/* ── 앱 진입 ── */
+function initLogin() {
+  try {
+    const saved = sessionStorage.getItem('hanja_session');
+    if (saved) {
+      currentUser = JSON.parse(saved);
+      if (currentUser.role === 'student') { enterStudentApp(); return; }
+      if (currentUser.role === 'teacher') { enterTeacherApp(); return; }
+    }
+  } catch(e) {}
+  document.getElementById('loading').style.display = 'none';
+  document.getElementById('login-screen').classList.add('active');
+  lsGo('role');
+}
+
+async function enterStudentApp() {
+  document.getElementById('login-screen').classList.remove('active');
+  document.getElementById('teacher-app').classList.remove('active');
+  const nameEl = document.getElementById('profile-name');
+  if (nameEl) nameEl.textContent = currentUser.name + ' 학생';
+  await loadStudentDataFromFirestore();
+  loadData(); loadExamData();
+}
+
+function enterTeacherApp() {
+  document.getElementById('loading').style.display = 'none';
+  document.getElementById('login-screen').classList.remove('active');
+  document.getElementById('teacher-app').classList.add('active');
+  const h = document.getElementById('teacher-header-name');
+  if (h) h.textContent = currentUser.name;
+  renderTeacherStudentList();
+}
+
+function doLogout() {
+  if (!confirm('로그아웃 할까요?')) return;
+  sessionStorage.removeItem('hanja_session');
+  currentUser = null; selectedTeacher = null;
+  try { if (window.fbLogout) window.fbLogout(); } catch(e) {}
+  location.reload();
+}
+
+/* ===== FIRESTORE: 학생 데이터 ===== */
+async function loadStudentDataFromFirestore() {
+  if (!currentUser || currentUser.role !== 'student') return;
+  try {
+    const data = await window._fbGetStudentData(currentUser.id);
+    if (data) {
+      if (data.settings)     settings     = data.settings;
+      if (data.studyLog)     studyLog     = data.studyLog;
+      if (data.earnedBadges) earnedBadges = data.earnedBadges;
+      if (data.wrongNote)    S.wrongNote  = data.wrongNote;
+    }
+  } catch(e) { console.log('Firestore 로드 실패:', e); }
+}
+async function syncToFirestore() {
+  if (!currentUser || currentUser.role !== 'student') return;
+  try {
+    await window._fbSetStudentData(currentUser.id, {
+      settings, studyLog: studyLog.slice(-300), earnedBadges, wrongNote: S.wrongNote,
+      lastUpdated: new Date().toISOString(), studentName: currentUser.name, teacherId: currentUser.teacherId
+    });
+  } catch(e) { console.log('Firestore 저장 실패:', e); }
+}
+
+/* ===== TEACHER: 학생 관리 ===== */
+async function renderTeacherStudentList() {
+  const list = document.getElementById('teacher-student-list');
+  list.innerHTML = '<div class="teacher-notice">불러오는 중...</div>';
+  try {
+    const students = await window._fbGetTeacherStudents(currentUser.id);
+    if (!students.length) { list.innerHTML = '<div class="teacher-notice">등록된 학생이 없습니다.<br>위에서 학생을 추가하세요.</div>'; return; }
+    list.innerHTML = students.map((s,i) => `
+      <div class="student-row">
+        <div class="student-row-num">${i+1}</div>
+        <div class="student-row-name">${s.name}</div>
+        <button class="student-del-btn" onclick="deleteStudent('${s.id}','${s.name}')">삭제</button>
+      </div>`).join('');
+  } catch(e) { list.innerHTML = `<div class="teacher-notice" style="color:var(--wrong);">오류: ${e.message}</div>`; }
+}
+async function addStudent() {
+  const name = document.getElementById('new-student-name').value.trim();
+  const pin  = document.getElementById('new-student-pin').value.trim();
+  if (!name)                { toast('이름을 입력해 주세요'); return; }
+  if (!/^\d{4}$/.test(pin)) { toast('PIN은 숫자 4자리여야 해요'); return; }
+  try {
+    const exists = await window._fbCheckStudentName(currentUser.id, name);
+    if (exists) { toast('같은 이름의 학생이 이미 있어요'); return; }
+    await window._fbAddStudent({ name, pin, teacherId:currentUser.id, teacherName:currentUser.name, createdAt:new Date().toISOString() });
+    document.getElementById('new-student-name').value = '';
+    document.getElementById('new-student-pin').value  = '';
+    toast('✅ ' + name + ' 학생이 추가됐어요');
+    renderTeacherStudentList();
+  } catch(e) { toast('오류: ' + e.message); }
+}
+async function deleteStudent(id, name) {
+  if (!confirm(`"${name}" 학생을 삭제할까요?`)) return;
+  try { await window._fbDeleteStudent(id); toast('삭제됐습니다'); renderTeacherStudentList(); }
+  catch(e) { toast('오류: ' + e.message); }
+}
+
+const _origSaveSettings  = saveSettings;  saveSettings  = function(){ _origSaveSettings();  syncToFirestore(); };
+const _origSaveStudyLog  = saveStudyLog;  saveStudyLog  = function(){ _origSaveStudyLog();  syncToFirestore(); };
+const _origSaveWrongNote = saveWrongNote; saveWrongNote = function(){ _origSaveWrongNote(); syncToFirestore(); };
+
+initLogin();
+</script>
+
+<!-- ===== FIREBASE (모듈) ===== -->
+<script type="module">
+  import { initializeApp }
+    from "https://www.gstatic.com/firebasejs/10.14.1/firebase-app.js";
+  import { getAuth, signInWithEmailAndPassword,
+           createUserWithEmailAndPassword, signOut }
+    from "https://www.gstatic.com/firebasejs/10.14.1/firebase-auth.js";
+  import { getFirestore, collection, doc,
+           getDocs, getDoc, setDoc, addDoc, deleteDoc,
+           query, where }
+    from "https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore.js";
+
+  /* ── 아래에 Firebase 콘솔에서 복사한 설정값을 붙여넣으세요 ── */
+  const firebaseConfig = {
+    apiKey:            "여기에_apiKey",
+    authDomain:        "여기에_authDomain",
+    projectId:         "여기에_projectId",
+    storageBucket:     "여기에_storageBucket",
+    messagingSenderId: "여기에_messagingSenderId",
+    appId:             "여기에_appId"
+  };
+  /* ─────────────────────────────────────────────────────────── */
+
+  const app  = initializeApp(firebaseConfig);
+  const auth = getAuth(app);
+  const db   = getFirestore(app);
+
+  /* ── Auth ── */
+  window.fbLogin  = (email, pw) => signInWithEmailAndPassword(auth, email, pw);
+  window.fbSignup = (email, pw) => createUserWithEmailAndPassword(auth, email, pw);
+  window.fbLogout = ()          => signOut(auth);
+
+  /* ── 선생님 ── */
+  // 선생님 정보 저장 (회원가입 시)
+  window._fbSaveTeacher = (uid, data) =>
+    setDoc(doc(db, 'teachers', uid), data);
+
+  // 선생님 정보 불러오기 (로그인 시 이름 가져오기)
+  window._fbGetTeacher = async (uid) => {
+    const snap = await getDoc(doc(db, 'teachers', uid));
+    return snap.exists() ? snap.data() : null;
+  };
+
+  // 전체 선생님 목록 (학생 로그인 선택 화면용)
+  window._fbGetAllTeachers = async () => {
+    const snap = await getDocs(collection(db, 'teachers'));
+    return snap.docs.map(d => ({ id: d.id, ...d.data() }));
+  };
+
+  /* ── 학생 ── */
+  // 로그인 검증: 선생님ID + 이름 + PIN
+  window._fbGetStudents = async (teacherId, name, pin) => {
+    const q = query(collection(db, 'students'),
+                    where('teacherId', '==', teacherId),
+                    where('name',      '==', name),
+                    where('pin',       '==', pin));
+    const snap = await getDocs(q);
+    return snap.docs.map(d => ({ id: d.id, ...d.data() }));
+  };
+
+  // 특정 선생님의 학생 목록
+  window._fbGetTeacherStudents = async (teacherId) => {
+    const q = query(collection(db, 'students'), where('teacherId', '==', teacherId));
+    const snap = await getDocs(q);
+    return snap.docs.map(d => ({ id: d.id, ...d.data() }));
+  };
+
+  // 같은 선생님 반에 이름 중복 체크
+  window._fbCheckStudentName = async (teacherId, name) => {
+    const q = query(collection(db, 'students'),
+                    where('teacherId', '==', teacherId),
+                    where('name',      '==', name));
+    const snap = await getDocs(q);
+    return !snap.empty;
+  };
+
+  // 학생 추가
+  window._fbAddStudent = (data) => addDoc(collection(db, 'students'), data);
+
+  // 학생 삭제
+  window._fbDeleteStudent = (id) => deleteDoc(doc(db, 'students', id));
+
+  /* ── 학생 학습 데이터 ── */
+  window._fbGetStudentData = async (studentId) => {
+    const snap = await getDoc(doc(db, 'studentData', studentId));
+    return snap.exists() ? snap.data() : null;
+  };
+  window._fbSetStudentData = (studentId, data) =>
+    setDoc(doc(db, 'studentData', studentId), data);
+
 </script>
 </body>
 </html>
