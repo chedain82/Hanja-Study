@@ -2223,6 +2223,7 @@ async function doTeacherLogin() {
   const pw    = document.getElementById('teacher-pw-input').value;
   const errEl = document.getElementById('ls-teacher-error');
   if (!email || !pw) { errEl.textContent = '이메일과 비밀번호를 입력해 주세요'; return; }
+  if (!window._firebaseReady) { errEl.textContent = '⏳ 잠시 후 다시 시도해 주세요 (로딩 중)'; return; }
   errEl.textContent = '로그인 중...';
   try {
     const result = await window.fbLogin(email, pw);
@@ -2232,8 +2233,14 @@ async function doTeacherLogin() {
     sessionStorage.setItem('hanja_session', JSON.stringify(currentUser));
     enterTeacherApp();
   } catch(e) {
-    const codes = { 'auth/wrong-password':'비밀번호가 틀렸어요.','auth/invalid-credential':'이메일 또는 비밀번호가 틀렸어요.','auth/user-not-found':'등록된 이메일이 아닙니다.','auth/invalid-email':'이메일 형식을 확인해 주세요.' };
-    errEl.textContent = codes[e.code] || '로그인에 실패했습니다.';
+    const codes = {
+      'auth/wrong-password':      '비밀번호가 틀렸어요.',
+      'auth/invalid-credential':  '이메일 또는 비밀번호가 틀렸어요.',
+      'auth/user-not-found':      '등록된 이메일이 아닙니다.',
+      'auth/invalid-email':       '이메일 형식을 확인해 주세요.',
+      'auth/too-many-requests':   '시도 횟수 초과. 잠시 후 다시 해주세요.'
+    };
+    errEl.textContent = codes[e.code] || ('로그인 실패: ' + (e.code || e.message));
   }
 }
 
@@ -2248,6 +2255,7 @@ async function doTeacherSignup() {
   if (!email)        { errEl.textContent = '이메일을 입력해 주세요'; return; }
   if (pw.length < 6) { errEl.textContent = '비밀번호는 6자 이상이어야 해요'; return; }
   if (pw !== pw2)    { errEl.textContent = '비밀번호가 일치하지 않아요'; return; }
+  if (!window._firebaseReady) { errEl.textContent = '⏳ 잠시 후 다시 시도해 주세요 (로딩 중)'; return; }
   errEl.textContent = '가입 중...';
   try {
     const result = await window.fbSignup(email, pw);
@@ -2257,8 +2265,12 @@ async function doTeacherSignup() {
     sessionStorage.setItem('hanja_session', JSON.stringify(currentUser));
     enterTeacherApp();
   } catch(e) {
-    const codes = { 'auth/email-already-in-use':'이미 사용 중인 이메일이에요.','auth/invalid-email':'이메일 형식을 확인해 주세요.','auth/weak-password':'비밀번호가 너무 단순해요.' };
-    errEl.textContent = codes[e.code] || '가입에 실패했습니다.';
+    const codes = {
+      'auth/email-already-in-use': '이미 가입된 이메일이에요. 로그인해 주세요.',
+      'auth/invalid-email':        '이메일 형식을 확인해 주세요.',
+      'auth/weak-password':        '비밀번호가 너무 단순해요.'
+    };
+    errEl.textContent = codes[e.code] || ('가입 실패: ' + (e.code || e.message));
   }
 }
 
@@ -2508,6 +2520,7 @@ initLogin();
   window.fbLogin  = (email, pw) => signInWithEmailAndPassword(auth, email, pw);
   window.fbSignup = (email, pw) => createUserWithEmailAndPassword(auth, email, pw);
   window.fbLogout = ()          => signOut(auth);
+  window._firebaseReady = true; // Firebase 준비 완료 플래그
 
   /* ── 선생님 ── */
   // 선생님 정보 저장 (회원가입 시)
