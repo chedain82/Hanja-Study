@@ -2347,28 +2347,96 @@ async function renderTeacherStudentList() {
 
 /* ===== 학생 상세 보기 ===== */
 async function showStudentDetail(studentId, studentName) {
-  document.getElementById("detail-name").textContent = studentName;
-  document.getElementById("detail-today-badge").innerHTML = "";
-  document.getElementById("detail-body").innerHTML = "<div style="text-align:center;padding:40px;color:var(--gray);font-size:14px;font-weight:700;">불러오는 중...</div>";
-  document.getElementById("student-detail").classList.add("active");
+  document.getElementById('detail-name').textContent = studentName;
+  document.getElementById('detail-today-badge').innerHTML = '';
+  document.getElementById('detail-body').innerHTML =
+    '<div style="text-align:center;padding:40px;color:var(--gray);font-size:14px;font-weight:700;">불러오는 중...</div>';
+  document.getElementById('student-detail').classList.add('active');
   try {
     const data = await window._fbGetStudentData(studentId);
-    if (!data) { document.getElementById("detail-body").innerHTML = "<div class="detail-empty">아직 학습 기록이 없어요.<br>학생이 처음 로그인하면 데이터가 생겨요.</div>"; return; }
-    const st = data.settings || {}; const sl = data.studyLog || []; const wn = data.wrongNote || [];
-    const today = new Date(); const todayStr = today.getFullYear()+"-"+String(today.getMonth()+1).padStart(2,"0")+"-"+String(today.getDate()).padStart(2,"0");
-    const lastUpdated = data.lastUpdated ? data.lastUpdated.slice(0,10) : ""; const isToday = lastUpdated === todayStr;
-    document.getElementById("detail-today-badge").innerHTML = "<div class="detail-today-badge "+(isToday?"today":"not-today")+"">"+(isToday?"✅ 오늘 학습함":"⚠️ 마지막 접속: "+(lastUpdated||"기록 없음"))+"</div>";
-    const todayLogs = sl.filter(e=>e.date===todayStr); const todayTotal = todayLogs.reduce((s,e)=>s+(e.total||0),0); const todayCorrect = todayLogs.reduce((s,e)=>s+(e.correct||0),0);
-    const totalQ = st.totalQuestions||0; const totalC = st.totalCorrect||0; const acc = totalQ>0?Math.round(totalC/totalQ*100):0;
-    const streak = st.streak||0; const totalDays = new Set(sl.map(e=>e.date)).size;
-    const LEVEL_ORDER = ["8급","7급","6급","준5급","5급","준4급","4급","준3급","3급"]; const LEVEL_STEPS = {"8급":3,"7급":3,"6급":6,"준5급":6,"5급":12,"준4급":12,"4급":12,"준3급":15,"3급":15}; const lp = st.levelProgress||{};
-    const wrongArr = Array.isArray(wn)?wn:Object.values(wn); const top5 = [...wrongArr].sort((a,b)=>(b._wrongCount||1)-(a._wrongCount||1)).slice(0,5);
-    document.getElementById("detail-body").innerHTML = "<div class="detail-grid"><div class="detail-card"><div class="detail-val">"+totalQ+"</div><div class="detail-lbl">📝 누적 문제 수</div></div><div class="detail-card"><div class="detail-val">"+acc+"%</div><div class="detail-lbl">✅ 전체 정답률</div></div><div class="detail-card"><div class="detail-val">"+todayTotal+"</div><div class="detail-lbl">📖 오늘 푼 문제</div></div><div class="detail-card"><div class="detail-val">"+(todayTotal>0?Math.round(todayCorrect/todayTotal*100)+"%":"-")+"</div><div class="detail-lbl">🎯 오늘 정답률</div></div><div class="detail-card"><div class="detail-val">"+streak+"일</div><div class="detail-lbl">🔥 연속 학습</div></div><div class="detail-card"><div class="detail-val">"+totalDays+"일</div><div class="detail-lbl">📅 총 학습 일수</div></div></div><div class="detail-section"><div class="detail-section-title">📚 급수별 학습 현황</div>"+LEVEL_ORDER.map(lv=>{const cnt=lp[lv]||0;const tot=(LEVEL_STEPS[lv]||1)*10;const pct=cnt>0?Math.min(100,Math.round(cnt/tot*100)):0;return"<div class="detail-level-row"><div class="detail-level-header"><span class="detail-level-name">"+lv+"</span><span class="detail-level-pct">"+(cnt>0?pct+"%":"미학습")+"</span></div><div class="detail-bar-bg"><div class="detail-bar-fill" style="width:"+pct+"%"></div></div></div>";}).join("")+"</div><div class="detail-section"><div class="detail-section-title">❌ 자주 틀린 한자 Top 5</div>"+(top5.length?top5.map(it=>"<div class="detail-wrong-item"><div class="detail-wrong-hanja">"+(it.한자||"?")+"</div><div class="detail-wrong-text">"+(it.뜻||"")+" "+(it.독음||"")+"</div><div class="detail-wrong-count">"+(it._wrongCount||1)+"회</div></div>").join(""):"<div class="detail-empty">오답이 없어요 🎉</div>")+"</div>";
-  } catch(e) { document.getElementById("detail-body").innerHTML = "<div class="detail-empty" style="color:var(--wrong);">오류: "+e.message+"</div>"; }
+    if (!data) {
+      document.getElementById('detail-body').innerHTML =
+        '<div class="detail-empty">아직 학습 기록이 없어요.<br>학생이 처음 로그인하면 데이터가 생겨요.</div>';
+      return;
+    }
+    const st = data.settings || {};
+    const sl = data.studyLog  || [];
+    const wn = data.wrongNote || [];
+    const today    = new Date();
+    const todayStr = today.getFullYear() + '-' +
+      String(today.getMonth()+1).padStart(2,'0') + '-' +
+      String(today.getDate()).padStart(2,'0');
+    const lastUpdated = data.lastUpdated ? data.lastUpdated.slice(0,10) : '';
+    const isToday     = lastUpdated === todayStr;
+
+    document.getElementById('detail-today-badge').innerHTML =
+      '<div class="detail-today-badge ' + (isToday ? 'today' : 'not-today') + '">' +
+      (isToday ? '✅ 오늘 학습함' : '⚠️ 마지막 접속: ' + (lastUpdated || '기록 없음')) +
+      '</div>';
+
+    const todayLogs    = sl.filter(e => e.date === todayStr);
+    const todayTotal   = todayLogs.reduce((s,e) => s + (e.total||0), 0);
+    const todayCorrect = todayLogs.reduce((s,e) => s + (e.correct||0), 0);
+    const totalQ  = st.totalQuestions || 0;
+    const totalC  = st.totalCorrect   || 0;
+    const acc     = totalQ > 0 ? Math.round(totalC / totalQ * 100) : 0;
+    const streak  = st.streak    || 0;
+    const totalDays = new Set(sl.map(e => e.date)).size;
+    const LEVEL_ORDER = ['8급','7급','6급','준5급','5급','준4급','4급','준3급','3급'];
+    const LEVEL_STEPS = {'8급':3,'7급':3,'6급':6,'준5급':6,'5급':12,'준4급':12,'4급':12,'준3급':15,'3급':15};
+    const lp = st.levelProgress || {};
+    const wrongArr = Array.isArray(wn) ? wn : Object.values(wn);
+    const top5 = [...wrongArr].sort((a,b) => (b._wrongCount||1) - (a._wrongCount||1)).slice(0,5);
+
+    const todayAcc = todayTotal > 0 ? Math.round(todayCorrect/todayTotal*100) + '%' : '-';
+
+    const levelRows = LEVEL_ORDER.map(lv => {
+      const cnt = lp[lv] || 0;
+      const tot = (LEVEL_STEPS[lv] || 1) * 10;
+      const pct = cnt > 0 ? Math.min(100, Math.round(cnt/tot*100)) : 0;
+      return `<div class="detail-level-row">
+        <div class="detail-level-header">
+          <span class="detail-level-name">${lv}</span>
+          <span class="detail-level-pct">${cnt > 0 ? pct + '%' : '미학습'}</span>
+        </div>
+        <div class="detail-bar-bg"><div class="detail-bar-fill" style="width:${pct}%"></div></div>
+      </div>`;
+    }).join('');
+
+    const wrongRows = top5.length
+      ? top5.map(it => `
+        <div class="detail-wrong-item">
+          <div class="detail-wrong-hanja">${it.한자||'?'}</div>
+          <div class="detail-wrong-text">${it.뜻||''} ${it.독음||''}</div>
+          <div class="detail-wrong-count">${it._wrongCount||1}회</div>
+        </div>`).join('')
+      : '<div class="detail-empty">오답이 없어요 🎉</div>';
+
+    document.getElementById('detail-body').innerHTML = `
+      <div class="detail-grid">
+        <div class="detail-card"><div class="detail-val">${totalQ}</div><div class="detail-lbl">📝 누적 문제 수</div></div>
+        <div class="detail-card"><div class="detail-val">${acc}%</div><div class="detail-lbl">✅ 전체 정답률</div></div>
+        <div class="detail-card"><div class="detail-val">${todayTotal}</div><div class="detail-lbl">📖 오늘 푼 문제</div></div>
+        <div class="detail-card"><div class="detail-val">${todayAcc}</div><div class="detail-lbl">🎯 오늘 정답률</div></div>
+        <div class="detail-card"><div class="detail-val">${streak}일</div><div class="detail-lbl">🔥 연속 학습</div></div>
+        <div class="detail-card"><div class="detail-val">${totalDays}일</div><div class="detail-lbl">📅 총 학습 일수</div></div>
+      </div>
+      <div class="detail-section">
+        <div class="detail-section-title">📚 급수별 학습 현황</div>
+        ${levelRows}
+      </div>
+      <div class="detail-section">
+        <div class="detail-section-title">❌ 자주 틀린 한자 Top 5</div>
+        ${wrongRows}
+      </div>`;
+  } catch(e) {
+    document.getElementById('detail-body').innerHTML =
+      `<div class="detail-empty" style="color:var(--wrong);">오류: ${e.message}</div>`;
+  }
 }
 function closeStudentDetail(e) {
-  if (e && e.target !== document.getElementById("student-detail")) return;
-  document.getElementById("student-detail").classList.remove("active");
+  if (e && e.target !== document.getElementById('student-detail')) return;
+  document.getElementById('student-detail').classList.remove('active');
 }
 async function addStudent() {
   const name = document.getElementById('new-student-name').value.trim();
