@@ -844,7 +844,7 @@ body {
   <div id="tab-profile" class="tab-pane">
     <div class="profile-header">
       <div class="profile-avatar">漢</div>
-      <div class="profile-name">한자 학습자</div>
+      <div class="profile-name" id="profile-name">한자 학습자</div>
       <div class="profile-badge-lv" id="profile-level-lbl">학습 시작</div>
     </div>
     <div class="profile-grid">
@@ -2250,13 +2250,14 @@ initLogin();
 
   /* ── 아래에 Firebase 콘솔에서 복사한 설정값을 붙여넣으세요 ── */
   const firebaseConfig = {
-    apiKey:            "여기에_apiKey",
-    authDomain:        "여기에_authDomain",
-    projectId:         "여기에_projectId",
-    storageBucket:     "여기에_storageBucket",
-    messagingSenderId: "여기에_messagingSenderId",
-    appId:             "여기에_appId"
-  };
+  apiKey: "AIzaSyBq8rbc8KsA41Ckr_lxWWK6omaj1T1FYbo",
+  authDomain: "hanja-study-cf5b8.firebaseapp.com",
+  projectId: "hanja-study-cf5b8",
+  storageBucket: "hanja-study-cf5b8.firebasestorage.app",
+  messagingSenderId: "690880076226",
+  appId: "1:690880076226:web:32b9cc6f466ad269455e5b",
+  measurementId: "G-6NP6VJKLRJ"
+};
   /* ─────────────────────────────────────────────────────────── */
 
   const app  = initializeApp(firebaseConfig);
