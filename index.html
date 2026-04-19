@@ -688,7 +688,30 @@ body {
     </div>
     <div class="login-error" id="ls-teacher-pick-error"></div>
     <button class="login-submit-btn" onclick="lsGo('student-name')">다음</button>
+    <div style="width:100%;display:flex;align-items:center;gap:10px;margin:2px 0;">
+      <div style="flex:1;height:1px;background:#DDD;"></div>
+      <span style="font-size:12px;font-weight:700;color:var(--gray);">또는</span>
+      <div style="flex:1;height:1px;background:#DDD;"></div>
+    </div>
+    <button class="login-submit-btn" onclick="lsGo('free-student')"
+      style="background:white;color:#555;border:2px solid #DDD;font-size:15px;">
+      👤 선생님 없이 시작하기
+    </button>
     <button class="login-back-btn" onclick="lsBack('role')">← 뒤로</button>
+  </div>
+
+  <!-- STEP 1-F (자유 학생): 이름만 입력 -->
+  <div class="login-form-wrap" id="ls-free-student">
+    <div class="login-form-title">자유 학습</div>
+    <div class="login-form-sub">이름을 입력하고 바로 시작해요<br>
+      <span style="color:var(--blue);">데이터는 이 기기에 저장돼요</span>
+    </div>
+    <input class="login-input" id="free-name-input" type="text"
+      placeholder="이름 또는 닉네임" maxlength="10"
+      onkeydown="if(event.key==='Enter')doFreeStudentLogin()"/>
+    <div class="login-error" id="ls-free-error"></div>
+    <button class="login-submit-btn" onclick="doFreeStudentLogin()">시작하기 🚀</button>
+    <button class="login-back-btn" onclick="lsBack('student-teacher')">← 뒤로</button>
   </div>
 
   <!-- STEP 2 (학생): 이름 입력 -->
@@ -2099,7 +2122,7 @@ let pinBuffer      = '';
 let selectedTeacher = null;  // { id, name }
 
 /* ── 스텝 이동 ── */
-const LS_ALL = ['role','student-teacher','student-name','student-pin','teacher-login','teacher-signup'];
+const LS_ALL = ['role','student-teacher','student-name','student-pin','teacher-login','teacher-signup','free-student'];
 function lsGo(step) {
   if (step === 'student-name') {
     if (!selectedTeacher) { document.getElementById('ls-teacher-pick-error').textContent = '선생님을 선택해 주세요'; return; }
@@ -2124,6 +2147,7 @@ function lsGo(step) {
   if (step === 'student-name')  setTimeout(() => document.getElementById('student-name-input').focus(), 100);
   if (step === 'teacher-login') setTimeout(() => document.getElementById('teacher-email-input').focus(), 100);
   if (step === 'teacher-signup') setTimeout(() => document.getElementById('signup-name-input').focus(), 100);
+  if (step === 'free-student')  setTimeout(() => document.getElementById('free-name-input').focus(), 100);
 }
 function lsBack(step) { lsGo(step); }
 
@@ -2180,6 +2204,17 @@ async function doStudentLogin() {
     errEl.textContent = '오류가 발생했어요. 다시 시도해 주세요.';
     pinBuffer = ''; updatePinDisplay();
   }
+}
+
+/* ── 자유 학생 로그인 (선생님 없음) ── */
+function doFreeStudentLogin() {
+  const name  = document.getElementById('free-name-input').value.trim();
+  const errEl = document.getElementById('ls-free-error');
+  if (!name) { errEl.textContent = '이름을 입력해 주세요'; return; }
+  // teacherId 없음 → localStorage만 사용
+  currentUser = { role:'student', id:'free_'+name, name, teacherId:null };
+  sessionStorage.setItem('hanja_session', JSON.stringify(currentUser));
+  enterStudentApp();
 }
 
 /* ── 선생님 로그인 ── */
@@ -2271,6 +2306,7 @@ function doLogout() {
 /* ===== FIRESTORE: 학생 데이터 ===== */
 async function loadStudentDataFromFirestore() {
   if (!currentUser || currentUser.role !== 'student') return;
+  if (!currentUser.teacherId) return; // 선생님 없는 학생은 localStorage만 사용
   try {
     const data = await window._fbGetStudentData(currentUser.id);
     if (data) {
@@ -2283,6 +2319,7 @@ async function loadStudentDataFromFirestore() {
 }
 async function syncToFirestore() {
   if (!currentUser || currentUser.role !== 'student') return;
+  if (!currentUser.teacherId) return; // 선생님 없는 학생은 localStorage만 사용
   try {
     await window._fbSetStudentData(currentUser.id, {
       settings, studyLog: studyLog.slice(-300), earnedBadges, wrongNote: S.wrongNote,
