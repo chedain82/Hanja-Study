@@ -352,21 +352,22 @@ body {
 .reveal-btn.quiz-btn { font-size: 18px; width: 66px; height: 66px; }
 
 /* 퀴즈 */
-.quiz-options { display: flex; flex-direction: column; gap: 7px; margin: 3px 0; align-items: center; flex-shrink: 0; }
-.quiz-opt { width: 72%; min-height: 48px; border-radius: 8px; background: #EFEFEF; border: 1.5px solid #999; cursor: pointer; display: grid; grid-template-columns: 1fr 2fr 1fr; align-items: center; padding: 6px 10px; transition: all .15s; }
-.quiz-opt .num { font-size: 14px; color: #555; text-align: left; }
-.quiz-opt .opt-text { text-align: center; font-size: 22px; font-weight: 700; }
+.quiz-options { display: flex; flex-direction: column; gap: 5px; margin: 2px 0; align-items: center; flex: 1; justify-content: center; }
+.quiz-opt { width: 86%; min-height: 44px; border-radius: 10px; background: #EFEFEF; border: 1.5px solid #CCC; cursor: pointer; display: grid; grid-template-columns: 28px 1fr 20px; align-items: center; padding: 5px 10px; transition: all .15s; }
+.quiz-opt .num { font-size: 13px; color: #888; text-align: left; }
+.quiz-opt .opt-text { text-align: center; font-size: 20px; font-weight: 700; }
 .quiz-opt.chosen { background: #DDE8FB; border-color: #2C77E6; }
 .quiz-opt.correct { background: #DCEAD8; border-color: var(--correct); }
 .quiz-opt.wrong-chosen { background: #EFEFEF; border-color: #999; }
 .quiz-opt:disabled { cursor: default; }
 .quiz-opt:not(:disabled):active { transform: scale(.97); }
-.result-msg { text-align: center; font-size: 14px; font-weight: 700; min-height: 28px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+.result-msg { text-align: center; font-size: 13px; font-weight: 700; min-height: 22px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
 .result-msg.ok { color: var(--correct); }
 .result-msg.fail { color: var(--wrong); }
-.dir-toggle { display: flex; background: #EDEDED; border-radius: 18px; padding: 4px; gap: 4px; margin: 3px auto 0; width: fit-content; cursor: pointer; border: none; flex-shrink: 0; }
-.dir-toggle span { border-radius: 14px; padding: 5px 14px; font-size: 13px; font-weight: 600; transition: background .2s; }
-.dir-toggle span.active { background: white; }
+/* dir-toggle은 상단 헤더에 배치 */
+.dir-toggle { display: flex; background: #E8E8E8; border-radius: 16px; padding: 3px; gap: 3px; width: fit-content; cursor: pointer; border: none; flex-shrink: 0; }
+.dir-toggle span { border-radius: 13px; padding: 4px 12px; font-size: 12px; font-weight: 700; transition: background .2s; color: #666; }
+.dir-toggle span.active { background: white; color: #222; }
 
 /* 쓰기 */
 .write-input { width: 80%; font-size: 28px; font-weight: 700; font-family: 'Nanum Myeongjo', serif; text-align: center; border: none; border-bottom: 3px solid var(--blue); background: transparent; outline: none; padding: 8px 0; color: var(--border); caret-color: var(--blue); }
@@ -1338,7 +1339,21 @@ function studyInfoLabel() {
   return S.level ? `${S.level} · ${rangeStr} · ${catStr} · ${modeStr}` : '';
 }
 
-function cardHeader(lv) { return`<div class="study-header"><div class="badge">${lv} <span>+</span></div><div class="toggle-wrap">랜덤<button class="toggle${S.random?' on':''}" onclick="toggleRandom()"></button></div></div>`; }
+function cardHeader(lv, showDirToggle) {
+  const dir = S.quizDir;
+  const dirBtn = showDirToggle ? `
+    <button class="dir-toggle" onclick="toggleDir()">
+      <span class="${dir==='한자→뜻'?'active':''}">한자→뜻</span>
+      <span class="${dir==='뜻→한자'?'active':''}">뜻→한자</span>
+    </button>` : '';
+  return `<div class="study-header">
+    <div style="display:flex;align-items:center;gap:8px;">
+      <div class="badge">${lv} <span>+</span></div>
+      ${dirBtn}
+    </div>
+    <div class="toggle-wrap">랜덤<button class="toggle${S.random?' on':''}" onclick="toggleRandom()"></button></div>
+  </div>`;
+}
 
 /* ===== CARD ===== */
 function renderCard() {
@@ -1350,7 +1365,7 @@ function renderCard() {
   if(S.isFinished){
     if (!S.sessionLogged) saveSessionLog(0, 0, total, S.lastStudy||'카드');
     box.innerHTML=`
-      ${cardHeader(it.급수||'')}
+      ${cardHeader(it.급수||'', false)}
       <div class="card-content-wrap">
         <div class="hanja-display" style="font-size:${Math.round(hSize*.75)}px;">${it.한자}</div>
         <div class="meaning-display" style="font-size:${Math.round(mSize*.75)}px;">${back}</div>
@@ -1364,7 +1379,7 @@ function renderCard() {
     `;return;
   }
   box.innerHTML=`
-    ${cardHeader(it.급수||'')}
+    ${cardHeader(it.급수||'', false)}
     <div class="counter mb-8"><strong>${S.idx+1}</strong>/${total}</div>
     ${progressBar(S.idx,total)}
     <div class="card-content-wrap">
@@ -1430,21 +1445,17 @@ function renderQuiz() {
   }).join('');
   const resultCls=S.quizResult.startsWith('틀렸습니다')?'fail':'ok';
   box.innerHTML=`
-    ${cardHeader(it.급수||'')}
+    ${cardHeader(it.급수||'', true)}
     <div class="counter mb-8"><strong>${S.idx+1}</strong>/${total}</div>
     ${progressBar(S.idx,total)}
     <div class="score-row"><span>✅ ${S.correct}</span><span>❌ ${S.wrong}</span></div>
-    <div style="font-size:${qSize}px;font-weight:800;font-family:'Nanum Myeongjo',serif;text-align:center;padding:4px 0 2px;flex-shrink:0;">${qText}</div>
+    <div style="font-size:${qSize}px;font-weight:800;font-family:'Nanum Myeongjo',serif;text-align:center;padding:6px 0 2px;flex-shrink:0;line-height:1.2;">${qText}</div>
     <div class="result-msg ${resultCls}">${S.quizResult}</div>
     <div class="quiz-options">${opts}</div>
-    <div class="card-nav" style="padding:4px 0 4px;">
+    <div class="card-nav" style="padding:6px 0 6px;flex-shrink:0;">
       <button class="reveal-btn quiz-btn" onclick="checkAnswer()">정답</button>
       <button class="nav-arrow" onclick="nextItem()">▶</button>
     </div>
-    <button class="dir-toggle" onclick="toggleDir()">
-      <span class="${dir==='한자→뜻'?'active':''}">한자 → 뜻</span>
-      <span class="${dir==='뜻→한자'?'active':''}">뜻 → 한자</span>
-    </button>
     <div class="back-wrap"><button class="btn btn-back" onclick="goSub(S.lastMain)">← 뒤로</button></div>
   `;
 }
@@ -1524,7 +1535,7 @@ function renderWrite() {
   }
   const hSize=hanjaFontSize(it.한자); const checked=S.writeChecked; const correctDisplay=getWriteAnswer(it);
   box.innerHTML=`
-    ${cardHeader(it.급수||'')}
+    ${cardHeader(it.급수||'', false)}
     <div class="counter mb-8"><strong>${S.idx+1}</strong>/${total}</div>
     ${progressBar(S.idx,total)}
     <div class="score-row"><span>✅ ${S.correct}</span><span>❌ ${S.wrong}</span></div>
