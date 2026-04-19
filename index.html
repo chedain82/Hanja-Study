@@ -2264,6 +2264,16 @@ async function doTeacherSignup() {
 
 /* ── 앱 진입 ── */
 function initLogin() {
+  // 안전장치: 5초 후에도 로딩 중이면 강제로 로그인 화면 표시
+  setTimeout(() => {
+    const loading = document.getElementById('loading');
+    if (loading && loading.style.display !== 'none') {
+      loading.style.display = 'none';
+      document.getElementById('login-screen').classList.add('active');
+      lsGo('role');
+    }
+  }, 5000);
+
   try {
     const saved = sessionStorage.getItem('hanja_session');
     if (saved) {
@@ -2278,6 +2288,7 @@ function initLogin() {
 }
 
 async function enterStudentApp() {
+  document.getElementById('loading').style.display = 'none'; // 로딩 즉시 숨기기
   document.getElementById('login-screen').classList.remove('active');
   document.getElementById('teacher-app').classList.remove('active');
   const nameEl = document.getElementById('profile-name');
