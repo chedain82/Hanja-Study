@@ -1418,7 +1418,10 @@ function renderQuiz() {
   let qText,qIsHanja,aText;
   if(dir==='한자→뜻'){qText=it.한자;qIsHanja=true;aText=answerText(it);}
   else{qText=answerText(it);qIsHanja=false;aText=it.한자;}
-  const qSize=qIsHanja?hanjaFontSize(qText):meaningFontSize(qText);
+  // 퀴즈 질문 크기: 한자는 최대 76px, 한국어는 최소 38px로 균형 맞춤
+  const qSize = qIsHanja
+    ? Math.min(hanjaFontSize(qText), 76)
+    : Math.max(meaningFontSize(qText), 38);
   const opts=S.quizChoices.map((c,i)=>{
     let cls='';
     if(S.quizChecked){if(c===aText)cls='correct';else if(i===S.quizSelected)cls='wrong-chosen';}
