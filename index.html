@@ -145,7 +145,7 @@ body {
 .dash-pad { padding: 0 14px 12px; }
 
 .streak-card {
-  background: var(--black-btn); color: white;
+  background: #2D6A4F; color: white;
   border-radius: 18px; padding: 16px 20px;
   display: flex; align-items: center; justify-content: space-between;
   margin-bottom: 12px;
@@ -352,7 +352,7 @@ body {
 .reveal-btn.quiz-btn { font-size: 18px; width: 66px; height: 66px; }
 
 /* 퀴즈 */
-.quiz-options { display: flex; flex-direction: column; gap: 5px; margin: 2px 0; align-items: center; flex: 1; justify-content: center; }
+.quiz-options { display: flex; flex-direction: column; gap: 5px; margin: 2px 0 10px; align-items: center; }
 .quiz-opt { width: 86%; min-height: 44px; border-radius: 10px; background: #EFEFEF; border: 1.5px solid #CCC; cursor: pointer; display: grid; grid-template-columns: 28px 1fr 20px; align-items: center; padding: 5px 10px; transition: all .15s; }
 .quiz-opt .num { font-size: 13px; color: #888; text-align: left; }
 .quiz-opt .opt-text { text-align: center; font-size: 20px; font-weight: 700; }
@@ -621,66 +621,6 @@ body {
   font-size: 13px; font-weight: 700; line-height: 1.8;
 }
 
-/* ===== B: 학급 대시보드 ===== */
-.teacher-dash {
-  display: grid; grid-template-columns: 1fr 1fr 1fr;
-  gap: 10px; margin-bottom: 14px;
-}
-.dash-card {
-  background: white; border-radius: 16px;
-  padding: 14px 8px; text-align: center;
-}
-.dash-val { font-size: 22px; font-weight: 800; color: #222; line-height: 1.1; }
-.dash-lbl { font-size: 11px; font-weight: 700; color: var(--gray); margin-top: 5px; }
-
-/* ===== F: 필터/정렬 바 ===== */
-.filter-bar {
-  display: flex; gap: 7px; margin-bottom: 12px;
-  flex-wrap: wrap; align-items: center;
-}
-.filter-btn {
-  border: 2px solid #E0E0E0; border-radius: 20px; background: white;
-  font-size: 12px; font-weight: 700; padding: 5px 12px;
-  cursor: pointer; font-family: inherit; color: #666;
-  transition: all .15s;
-}
-.filter-btn.active {
-  border-color: var(--blue); background: #EEF3FD; color: var(--blue);
-}
-.sort-select {
-  border: 2px solid #E0E0E0; border-radius: 20px; background: white;
-  font-size: 12px; font-weight: 700; padding: 5px 11px;
-  cursor: pointer; font-family: inherit; color: #666;
-  outline: none; margin-left: auto;
-  appearance: none; -webkit-appearance: none;
-  padding-right: 22px;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M0 0l5 6 5-6z' fill='%23999'/%3E%3C/svg%3E");
-  background-repeat: no-repeat; background-position: right 8px center;
-}
-
-/* ===== A/E: 학생 행 개선 ===== */
-.student-row-info { flex: 1; display: flex; flex-direction: column; gap: 2px; min-width: 0; }
-.student-row-name { font-size: 16px; font-weight: 700; }
-.student-status-line {
-  display: flex; align-items: center; gap: 5px; flex-wrap: wrap;
-}
-.status-dot {
-  width: 7px; height: 7px; border-radius: 50%;
-  display: inline-block; flex-shrink: 0;
-}
-.st-today { color: var(--correct); }
-.st-warn1 { color: #E65100; }
-.st-warn3 { color: var(--wrong); }
-.st-none  { color: var(--gray); }
-.dot-today { background: var(--correct); }
-.dot-warn1 { background: #E65100; }
-.dot-warn3 { background: var(--wrong); }
-.dot-none  { background: #BDBDBD; }
-.status-meta { font-size: 11px; font-weight: 700; }
-.status-sep { font-size: 11px; color: #DDD; }
-.status-level { font-size: 11px; font-weight: 700; color: #3B7DE0; }
-.status-acc { font-size: 11px; font-weight: 700; color: var(--gray); }
-
 /* ===== 학생 상세 보기 ===== */
 #student-detail {
   display: none;
@@ -913,13 +853,6 @@ body {
   </div>
   <div class="teacher-body">
 
-    <!-- B: 학급 요약 대시보드 -->
-    <div class="teacher-dash" id="teacher-dash">
-      <div class="dash-card"><div class="dash-val">-</div><div class="dash-lbl">📖 오늘 학습</div></div>
-      <div class="dash-card"><div class="dash-val">-</div><div class="dash-lbl">✅ 평균 정답률</div></div>
-      <div class="dash-card"><div class="dash-val">-</div><div class="dash-lbl">🔥 평균 연속</div></div>
-    </div>
-
     <!-- 학생 추가 -->
     <div class="teacher-card">
       <div class="teacher-card-title">➕ 학생 추가</div>
@@ -931,27 +864,17 @@ body {
       <button class="teacher-add-btn" onclick="addStudent()">추가하기</button>
     </div>
 
-    <!-- 학생 목록 (A/E/F 포함) -->
+    <!-- 학생 목록 -->
     <div class="teacher-card">
       <div class="teacher-card-title">👥 학생 목록</div>
-
-      <!-- F: 필터/정렬 바 -->
-      <div class="filter-bar" id="filter-bar">
-        <button class="filter-btn active" id="fb-all"      onclick="setTeacherFilter('all')">전체</button>
-        <button class="filter-btn"        id="fb-nottoday" onclick="setTeacherFilter('not-today')">오늘 미학습</button>
-        <button class="filter-btn"        id="fb-danger"   onclick="setTeacherFilter('danger')">3일+ 미접속</button>
-        <select class="sort-select" id="sort-select" onchange="setTeacherSort(this.value)">
-          <option value="name">이름순</option>
-          <option value="inactive">미접속순</option>
-          <option value="accuracy">정답률 낮은순</option>
-        </select>
-      </div>
-
       <div id="teacher-student-list">
         <div class="teacher-notice">불러오는 중...</div>
       </div>
     </div>
 
+    <div class="teacher-notice">
+      📊 학생별 상세 리포트 · 과제 배정은<br>다음 업데이트에서 추가됩니다
+    </div>
   </div>
 </div>
 
@@ -2001,7 +1924,7 @@ function renderQuiz() {
     <div class="quiz-options">${opts}</div>
     <div class="card-nav" style="padding:6px 0 6px;flex-shrink:0;">
       <button class="reveal-btn quiz-btn" onclick="checkAnswer()">정답</button>
-      <button class="nav-arrow" onclick="nextItem()">▶</button>
+      <button class="reveal-btn quiz-btn" onclick="nextItem()">다음</button>
     </div>
     <div class="back-wrap"><button class="btn btn-back" onclick="goSub(S.lastMain)">← 뒤로</button></div>
   `;
@@ -2566,168 +2489,21 @@ async function syncToFirestore() {
   } catch(e) { console.log('Firestore 저장 실패:', e); }
 }
 
-/* ===== TEACHER: 학생 관리 (A/B/E/F) ===== */
-let _teacherCache = [];
-let _teacherFilter = 'all';
-let _teacherSort = 'name';
-
-function setTeacherFilter(f) {
-  _teacherFilter = f;
-  document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
-  const map = {'all':'fb-all','not-today':'fb-nottoday','danger':'fb-danger'};
-  const el = document.getElementById(map[f]);
-  if (el) el.classList.add('active');
-  renderTeacherList();
-}
-function setTeacherSort(s) {
-  _teacherSort = s;
-  renderTeacherList();
-}
-
-function _todayStr() {
-  const d = new Date();
-  return d.getFullYear() + '-' + String(d.getMonth()+1).padStart(2,'0') + '-' + String(d.getDate()).padStart(2,'0');
-}
-
-function _getDaysSince(dateStr) {
-  if (!dateStr) return 999;
-  const today = new Date(_todayStr());
-  const last  = new Date(dateStr);
-  return Math.floor((today - last) / 86400000);
-}
-
-function _getCurrentLevel(lp) {
-  const ORDER = ['8급','7급','6급','준5급','5급','준4급','4급','준3급','3급'];
-  const STEPS = {'8급':3,'7급':3,'6급':6,'준5급':6,'5급':12,'준4급':12,'4급':12,'준3급':15,'3급':15};
-  let inProgress = null, lastCompleted = null;
-  for (const lv of ORDER) {
-    const cnt = lp[lv] || 0;
-    const tot = (STEPS[lv] || 1) * 10;
-    const pct = cnt > 0 ? Math.min(100, Math.round(cnt / tot * 100)) : 0;
-    if (pct > 0 && pct < 100) { inProgress = {lv, pct}; break; }
-    if (pct >= 100) lastCompleted = {lv, pct: 100};
-  }
-  return inProgress || lastCompleted;
-}
-
+/* ===== TEACHER: 학생 관리 ===== */
 async function renderTeacherStudentList() {
   const list = document.getElementById('teacher-student-list');
   list.innerHTML = '<div class="teacher-notice">불러오는 중...</div>';
-  _teacherCache = [];
   try {
     const students = await window._fbGetTeacherStudents(currentUser.id);
-    if (!students.length) {
-      list.innerHTML = '<div class="teacher-notice">등록된 학생이 없습니다.<br>위에서 학생을 추가하세요.</div>';
-      _renderTeacherDash([]);
-      return;
-    }
-    // 우선 이름만 표시
-    _teacherCache = students.map(s => ({...s, _loading: true, daysSince: 999, acc: -1, streak: 0, levelInfo: null, lastUpdated: ''}));
-    renderTeacherList();
-
-    // 병렬로 전체 데이터 로드
-    const results = await Promise.allSettled(students.map(s => window._fbGetStudentData(s.id)));
-    _teacherCache = students.map((s, i) => {
-      const d = results[i].status === 'fulfilled' ? results[i].value : null;
-      const st = d?.settings || {};
-      const lastUpdated = d?.lastUpdated ? d.lastUpdated.slice(0,10) : '';
-      const daysSince = _getDaysSince(lastUpdated);
-      const totalQ = st.totalQuestions || 0;
-      const totalC = st.totalCorrect   || 0;
-      const acc    = totalQ > 0 ? Math.round(totalC / totalQ * 100) : -1;
-      const streak = st.streak || 0;
-      const levelInfo = _getCurrentLevel(st.levelProgress || {});
-      return {...s, _loading: false, lastUpdated, daysSince, acc, streak, levelInfo, totalQ};
-    });
-    _renderTeacherDash(_teacherCache);
-    renderTeacherList();
-  } catch(e) {
-    list.innerHTML = `<div class="teacher-notice" style="color:var(--wrong);">오류: ${e.message}</div>`;
-  }
-}
-
-function _renderTeacherDash(cache) {
-  const el = document.getElementById('teacher-dash');
-  if (!el) return;
-  const total = cache.length;
-  const todayCnt = cache.filter(s => s.daysSince === 0).length;
-  const withAcc  = cache.filter(s => s.acc >= 0);
-  const avgAcc   = withAcc.length ? Math.round(withAcc.reduce((s,c)=>s+c.acc,0)/withAcc.length) : -1;
-  const withStrk = cache.filter(s => s.streak > 0);
-  const avgStrk  = withStrk.length ? Math.round(withStrk.reduce((s,c)=>s+c.streak,0)/withStrk.length) : 0;
-  const todayColor = (total > 0 && todayCnt === total) ? 'var(--correct)' : '#222';
-  el.innerHTML = `
-    <div class="dash-card">
-      <div class="dash-val" style="color:${todayColor}">${total>0?todayCnt+'/'+total:'-'}</div>
-      <div class="dash-lbl">📖 오늘 학습</div>
-    </div>
-    <div class="dash-card">
-      <div class="dash-val">${avgAcc>=0?avgAcc+'%':'-'}</div>
-      <div class="dash-lbl">✅ 평균 정답률</div>
-    </div>
-    <div class="dash-card">
-      <div class="dash-val">${avgStrk>0?avgStrk+'일':'-'}</div>
-      <div class="dash-lbl">🔥 평균 연속</div>
-    </div>`;
-}
-
-function renderTeacherList() {
-  const list = document.getElementById('teacher-student-list');
-  let arr = [..._teacherCache];
-
-  // F: 필터
-  if (_teacherFilter === 'not-today') arr = arr.filter(s => s.daysSince !== 0);
-  else if (_teacherFilter === 'danger') arr = arr.filter(s => s.daysSince >= 3);
-
-  // F: 정렬
-  if (!arr[0]?._loading) {
-    if (_teacherSort === 'inactive') arr.sort((a,b) => b.daysSince - a.daysSince);
-    else if (_teacherSort === 'accuracy') arr.sort((a,b) => (a.acc<0?999:a.acc) - (b.acc<0?999:b.acc));
-    else arr.sort((a,b) => a.name.localeCompare(b.name,'ko'));
-  }
-
-  if (!arr.length) {
-    list.innerHTML = '<div class="teacher-notice">해당하는 학생이 없습니다.</div>';
-    return;
-  }
-
-  list.innerHTML = arr.map((s, i) => {
-    // A: 상태 태그
-    let dotCls, txtCls, statusTxt;
-    if (s._loading) {
-      dotCls='dot-none'; txtCls='st-none'; statusTxt='로딩 중';
-    } else if (s.daysSince === 0) {
-      dotCls='dot-today'; txtCls='st-today'; statusTxt='오늘 학습 ✓';
-    } else if (s.daysSince <= 2) {
-      dotCls='dot-warn1'; txtCls='st-warn1'; statusTxt=s.daysSince+'일 전';
-    } else if (s.daysSince < 999) {
-      dotCls='dot-warn3'; txtCls='st-warn3'; statusTxt=s.daysSince+'일 미접속';
-    } else {
-      dotCls='dot-none'; txtCls='st-none'; statusTxt='기록 없음';
-    }
-    // E: 급수 진도
-    const lvHtml = (!s._loading && s.levelInfo)
-      ? `<span class="status-sep">·</span><span class="status-level">${s.levelInfo.lv} ${s.levelInfo.pct}%</span>`
-      : '';
-    // E: 정답률
-    const accHtml = (!s._loading && s.acc >= 0)
-      ? `<span class="status-sep">·</span><span class="status-acc">${s.acc}%</span>`
-      : '';
-    return `
+    if (!students.length) { list.innerHTML = '<div class="teacher-notice">등록된 학생이 없습니다.<br>위에서 학생을 추가하세요.</div>'; return; }
+    list.innerHTML = students.map((s,i) => `
       <div class="student-row">
         <div class="student-row-num">${i+1}</div>
-        <div class="student-row-info">
-          <div class="student-row-name">${s.name}</div>
-          <div class="student-status-line">
-            <span class="status-dot ${dotCls}"></span>
-            <span class="status-meta ${txtCls}">${statusTxt}</span>
-            ${lvHtml}${accHtml}
-          </div>
-        </div>
-        <button class="student-detail-btn" onclick="showStudentDetail('${s.id}','${s.name}')">현황</button>
-        <button class="student-del-btn"    onclick="deleteStudent('${s.id}','${s.name}')">삭제</button>
-      </div>`;
-  }).join('');
+        <div class="student-row-name">${s.name}</div>
+        <button class="student-detail-btn" onclick="showStudentDetail('${s.id}','${s.name}')">학습현황</button>
+        <button class="student-del-btn" onclick="deleteStudent('${s.id}','${s.name}')">삭제</button>
+      </div>`).join('');
+  } catch(e) { list.innerHTML = `<div class="teacher-notice" style="color:var(--wrong);">오류: ${e.message}</div>`; }
 }
 
 /* ===== 학생 상세 보기 ===== */
