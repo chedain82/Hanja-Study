@@ -2877,7 +2877,7 @@ initLogin();
   const db   = getFirestore(app);
 
   window.fbLogin  = (email, pw) => signInWithEmailAndPassword(auth, email, pw);
-  window.fbSignup = (email, pw) => createUserWithEmailAndPassword(auth, pw);
+  window.fbSignup = (email, pw) => createUserWithEmailAndPassword(auth, email, pw);
   window.fbLogout = ()          => signOut(auth);
   window._firebaseReady = true;
 
