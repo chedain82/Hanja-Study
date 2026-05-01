@@ -2631,17 +2631,17 @@ async function renderRankingTab() {
       const mvpBadge = isMvp ? '<span class="rank-mvp-badge">👑 MVP</span>' : '';
       const meBadge = isMe ? '<span class="rank-me-badge">나</span>' : '';
       const subTxt = _rankTab==='all' ? (item.teacherName ? item.teacherName+' 반' : '') : '';
-      return \`<div class="rank-card\${isMe?' rank-me':''}">
-        <div class="rank-num \${numCls}">\${numIcon}</div>
-        <div class="rank-info">
-          <div class="rank-name">\${item.name}\${mvpBadge}\${meBadge}</div>
-          \${subTxt?'<div class="rank-sub">'+subTxt+'</div>':''}
-        </div>
-        <div class="rank-score-wrap">
-          <span class="rank-score">\${item.weeklyProblems}</span>
-          <span class="rank-score-lbl">문제/주</span>
-        </div>
-      </div>\`;
+      return '<div class="rank-card'+(isMe?' rank-me':'')+'">'
+        +'<div class="rank-num '+numCls+'">'+numIcon+'</div>'
+        +'<div class="rank-info">'
+        +'<div class="rank-name">'+item.name+mvpBadge+meBadge+'</div>'
+        +(subTxt?'<div class="rank-sub">'+subTxt+'</div>':'')
+        +'</div>'
+        +'<div class="rank-score-wrap">'
+        +'<span class="rank-score">'+item.weeklyProblems+'</span>'
+        +'<span class="rank-score-lbl">문제/주</span>'
+        +'</div>'
+        +'</div>';
     }).join('');
   } catch(e) {
     list.innerHTML = '<div class="rank-empty" style="color:var(--wrong);">오류: '+e.message+'</div>';
