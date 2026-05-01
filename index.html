@@ -757,6 +757,114 @@ body {
   font-size: 12px; font-weight: 800;
 }
 .detail-empty { text-align: center; color: var(--gray); font-size: 14px; font-weight: 700; padding: 16px; }
+
+/* ===== 비밀번호 찾기 ===== */
+
+/* ===== 랭킹 탭 ===== */
+.ranking-header { padding:20px 18px 14px; font-size:28px; font-weight:800; }
+.rank-tabs { display:flex; gap:8px; padding:0 16px 10px; }
+.rank-tab-btn { flex:1; height:40px; border-radius:20px; border:2px solid #E0E0E0; background:white; font-size:14px; font-weight:700; color:#666; cursor:pointer; font-family:inherit; transition:all .15s; }
+.rank-tab-btn.active { background:var(--blue); color:white; border-color:var(--blue); }
+.rank-section { padding:0 14px 20px; }
+.rank-card { background:white; border-radius:14px; padding:12px 14px; margin-bottom:8px; display:flex; align-items:center; gap:12px; }
+.rank-card.rank-me { background:#EEF3FD; border:2px solid var(--blue); }
+.rank-num { font-size:20px; font-weight:800; min-width:32px; text-align:center; color:#CCC; }
+.rank-num.top1 { color:#FFB300; }
+.rank-num.top2 { color:#9E9E9E; }
+.rank-num.top3 { color:#A1673A; }
+.rank-info { flex:1; min-width:0; }
+.rank-name { font-size:16px; font-weight:700; color:#222; display:flex; align-items:center; gap:6px; flex-wrap:wrap; }
+.rank-sub  { font-size:11px; font-weight:700; color:var(--gray); margin-top:2px; }
+.rank-score-wrap { text-align:right; flex-shrink:0; }
+.rank-score { font-size:20px; font-weight:800; color:var(--blue); display:block; }
+.rank-score-lbl { font-size:10px; font-weight:700; color:var(--gray); }
+.rank-me-badge { background:var(--blue); color:white; border-radius:8px; padding:2px 7px; font-size:10px; font-weight:800; }
+.rank-mvp-badge { background:#FFB300; color:white; border-radius:8px; padding:2px 7px; font-size:10px; font-weight:800; }
+.rank-empty { text-align:center; color:var(--gray); font-size:14px; font-weight:700; padding:40px 0; line-height:1.8; }
+
+/* ===== 쿠폰 홈 카드 ===== */
+.coupon-home-card {
+  background:linear-gradient(135deg,#FF6B6B,#FF8E53);
+  border-radius:18px; padding:14px 18px; margin-bottom:12px; color:white;
+  position:relative; overflow:hidden; cursor:pointer;
+}
+.coupon-home-card::after { content:'🎟️'; position:absolute; right:16px; top:50%; transform:translateY(-50%); font-size:42px; opacity:.25; pointer-events:none; }
+.coupon-home-top { display:flex; align-items:flex-start; justify-content:space-between; margin-bottom:8px; }
+.coupon-home-title { font-size:14px; font-weight:800; opacity:.9; }
+.coupon-home-count { font-size:30px; font-weight:800; line-height:1; }
+.coupon-home-count span { font-size:13px; font-weight:700; }
+.coupon-streak-label { font-size:12px; font-weight:700; display:flex; justify-content:space-between; margin-bottom:4px; }
+.coupon-streak-bg { height:7px; background:rgba(255,255,255,.3); border-radius:4px; overflow:hidden; }
+.coupon-streak-fill { height:100%; background:white; border-radius:4px; transition:width .6s; }
+.coupon-streak-msg { font-size:12px; font-weight:700; margin-top:5px; opacity:.9; }
+
+/* ===== 미션 카드 ===== */
+.mission-card { background:white; border-radius:14px; padding:13px 16px; margin-bottom:12px; display:flex; align-items:flex-start; gap:12px; }
+.mission-icon { font-size:26px; flex-shrink:0; margin-top:2px; }
+.mission-info { flex:1; }
+.mission-label { font-size:12px; font-weight:800; color:var(--blue); margin-bottom:3px; }
+.mission-text  { font-size:14px; font-weight:700; color:#222; }
+
+/* ===== 칭찬 메시지 ===== */
+.praise-card { background:linear-gradient(135deg,#667eea,#764ba2); border-radius:14px; padding:13px 16px; margin-bottom:12px; color:white; }
+.praise-from { font-size:11px; font-weight:700; opacity:.75; margin-bottom:4px; }
+.praise-text  { font-size:14px; font-weight:700; line-height:1.5; }
+
+/* ===== 쿠폰 지갑 (프로필) ===== */
+.coupon-wallet-wrap { padding:0 14px 14px; }
+.coupon-wallet-card { background:white; border-radius:16px; padding:16px; }
+.coupon-wallet-header { display:flex; align-items:center; justify-content:space-between; margin-bottom:14px; }
+.coupon-wallet-title { font-size:15px; font-weight:800; }
+.coupon-wallet-cnt { font-size:13px; font-weight:700; color:var(--blue); }
+.coupon-grid { display:flex; flex-wrap:wrap; gap:8px; }
+.coupon-chip {
+  width:66px; height:66px; border-radius:12px;
+  background:linear-gradient(135deg,#FF6B6B,#FF8E53);
+  display:flex; flex-direction:column; align-items:center; justify-content:center;
+  color:white; box-shadow:0 2px 8px rgba(255,107,107,.35);
+}
+.coupon-chip.used { background:#DDD; color:#AAA; box-shadow:none; }
+.coupon-chip-icon { font-size:22px; }
+.coupon-chip-txt  { font-size:10px; font-weight:700; margin-top:2px; }
+.coupon-wallet-empty { text-align:center; color:var(--gray); font-size:14px; font-weight:700; padding:20px; }
+.coupon-perfect-progress { margin-top:12px; padding-top:12px; border-top:1px solid #F5F5F5; }
+.cpp-label { font-size:12px; font-weight:700; color:var(--gray); display:flex; justify-content:space-between; margin-bottom:5px; }
+.cpp-bar-bg { height:7px; background:#EEE; border-radius:4px; overflow:hidden; }
+.cpp-bar-fill { height:100%; background:linear-gradient(90deg,#FF6B6B,#FFE66D); border-radius:4px; }
+.cpp-msg { font-size:12px; font-weight:700; color:var(--gray); margin-top:5px; }
+
+/* ===== 10일 달성 오버레이 ===== */
+#coupon-overlay { display:none; position:fixed; inset:0; background:rgba(0,0,0,.72); z-index:900; align-items:center; justify-content:center; padding:20px; }
+#coupon-overlay.active { display:flex; }
+.coupon-ov-box { background:white; border-radius:24px; padding:28px 24px 24px; max-width:320px; width:100%; text-align:center; animation:popIn .45s cubic-bezier(.175,.885,.32,1.275); }
+@keyframes popIn { from{transform:scale(.5);opacity:0;} to{transform:scale(1);opacity:1;} }
+.coupon-ov-title { font-size:22px; font-weight:800; margin:14px 0 6px; }
+.coupon-ov-sub   { font-size:14px; font-weight:700; color:var(--gray); margin-bottom:4px; }
+.coupon-ov-count { font-size:34px; font-weight:800; color:var(--blue); margin-bottom:20px; }
+.coupon-ov-btn { background:var(--black-btn); color:white; border:none; border-radius:20px; padding:14px 32px; font-size:17px; font-weight:700; cursor:pointer; font-family:inherit; transition:all .15s; }
+.coupon-ov-btn:active { opacity:.8; transform:scale(.97); }
+
+/* ===== 폭죽 ===== */
+.confetti-piece { position:fixed; border-radius:2px; animation:confettiFall linear forwards; pointer-events:none; z-index:950; }
+@keyframes confettiFall { 0%{opacity:1;transform:translateY(-10px) rotate(0deg);} 100%{opacity:0;transform:translateY(105vh) rotate(900deg);} }
+
+/* ===== MVP 뱃지 (선생님 학생 목록) ===== */
+.mvp-badge-t { background:#FFB300; color:white; border-radius:8px; padding:2px 7px; font-size:10px; font-weight:800; display:inline-block; margin-left:4px; }
+
+/* ===== 선생님 textarea / 미션설정 ===== */
+.teacher-textarea { width:100%; border-radius:12px; border:2px solid #DDD; padding:10px 14px; font-size:14px; font-family:inherit; font-weight:700; outline:none; background:#FAFAFA; transition:border .2s; resize:none; height:70px; box-sizing:border-box; }
+.teacher-textarea:focus { border-color:var(--blue); }
+.teacher-preview-box { background:#F8F8F8; border-radius:10px; padding:10px 12px; margin-top:8px; font-size:14px; font-weight:700; color:#555; min-height:36px; white-space:pre-wrap; word-break:break-all; }
+
+/* 쿠폰 관리 (선생님 학생상세) */
+.coupon-mgmt-section { padding:0 16px 14px; }
+.coupon-mgmt-row { display:flex; align-items:center; gap:8px; margin-bottom:8px; }
+.coupon-mgmt-lbl { font-size:14px; font-weight:700; color:#555; flex:1; }
+.coupon-mgmt-val { font-size:22px; font-weight:800; color:var(--blue); min-width:40px; text-align:right; }
+.coupon-deduct-btn { background:var(--correct); color:white; border:none; border-radius:10px; padding:8px 14px; font-size:13px; font-weight:700; cursor:pointer; font-family:inherit; transition:all .15s; }
+.coupon-deduct-btn:disabled { background:#CCC; cursor:default; }
+.coupon-deduct-btn:active { opacity:.8; transform:scale(.97); }
+
 </style>
 </head>
 <body>
@@ -884,7 +992,21 @@ body {
     <button class="login-link-btn" onclick="lsGo('teacher-signup')" style="margin-top:-4px;">
       처음이에요 → 회원가입
     </button>
+    <button class="login-link-btn" onclick="lsGo('teacher-forgot')" style="margin-top:-4px;font-size:13px;color:var(--gray);">
+      🔑 비밀번호를 잊으셨나요?
+    </button>
     <button class="login-back-btn" onclick="lsBack('role')">← 뒤로</button>
+  </div>
+
+  <!-- STEP A-F (선생님): 비밀번호 찾기 -->
+  <div class="login-form-wrap" id="ls-teacher-forgot">
+    <div class="login-form-title">비밀번호 찾기</div>
+    <div class="login-form-sub">가입하신 이메일로<br>재설정 링크를 보내드립니다</div>
+    <input class="login-input" id="forgot-email-input" type="email" placeholder="이메일 주소"
+      onkeydown="if(event.key==='Enter')doPasswordReset()"/>
+    <div class="login-error" id="ls-forgot-msg"></div>
+    <button class="login-submit-btn" onclick="doPasswordReset()">재설정 메일 보내기 ✉️</button>
+    <button class="login-back-btn" onclick="lsBack('teacher-login')">← 뒤로</button>
   </div>
 
   <!-- STEP B (선생님): 회원가입 -->
@@ -952,6 +1074,23 @@ body {
       </div>
     </div>
 
+    <!-- 오늘의 미션 설정 -->
+    <div class="teacher-card">
+      <div class="teacher-card-title">🎯 오늘의 미션 설정</div>
+      <textarea class="teacher-textarea" id="mission-input" placeholder="예) 오늘은 8급 A-1 구간 퀴즈 완주하기!"></textarea>
+      <button class="teacher-add-btn" style="margin-top:8px;" onclick="saveMission()">미션 저장</button>
+      <div class="teacher-preview-box" id="mission-preview">현재 미션 없음</div>
+    </div>
+
+    <!-- 칭찬 메시지 -->
+    <div class="teacher-card">
+      <div class="teacher-card-title">💬 학생 칭찬 메시지</div>
+      <div style="font-size:12px;font-weight:700;color:var(--gray);margin-bottom:8px;">내 반 학생들의 홈 화면에 표시됩니다</div>
+      <textarea class="teacher-textarea" id="praise-input" placeholder="예) 여러분 정말 열심히 하고 있어요! 오늘도 파이팅! 💪"></textarea>
+      <button class="teacher-add-btn" style="margin-top:8px;" onclick="savePraise()">칭찬 메시지 보내기 💌</button>
+      <div class="teacher-preview-box" id="praise-preview">현재 메시지 없음</div>
+    </div>
+
   </div>
 </div>
 
@@ -972,6 +1111,24 @@ body {
 
 <div id="loading"><div class="spinner"></div><div style="font-size:16px;font-weight:700;color:#555;">데이터 불러오는 중...</div></div>
 <div id="toast"></div>
+<div id="coupon-overlay">
+  <div class="coupon-ov-box">
+    <div style="font-size:60px;">🎉</div>
+    <svg class="coupon-svg-img" viewBox="0 0 280 120" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:280px;margin:0 auto;display:block;">
+      <defs><linearGradient id="cg" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#FF6B6B"/><stop offset="100%" stop-color="#FF8E53"/></linearGradient></defs>
+      <rect width="280" height="120" rx="16" fill="url(#cg)"/>
+      <circle cx="0" cy="60" r="18" fill="white"/><circle cx="280" cy="60" r="18" fill="white"/>
+      <line x1="18" y1="60" x2="262" y2="60" stroke="rgba(255,255,255,.4)" stroke-width="2" stroke-dasharray="8,6"/>
+      <text x="140" y="44" text-anchor="middle" font-size="13" font-weight="800" fill="rgba(255,255,255,.85)" font-family="serif">10일 연속 정답 100%</text>
+      <text x="140" y="72" text-anchor="middle" font-size="26" font-weight="800" fill="white" font-family="serif">쿠폰 교환권</text>
+      <text x="140" y="100" text-anchor="middle" font-size="13" font-weight="700" fill="rgba(255,255,255,.8)" font-family="serif">1 COUPON</text>
+    </svg>
+    <div class="coupon-ov-title">🎊 쿠폰 획득!</div>
+    <div class="coupon-ov-sub">10일 연속 정답률 100% 달성!</div>
+    <div class="coupon-ov-count" id="coupon-ov-count">현재 0장 보유</div>
+    <button class="coupon-ov-btn" onclick="closeCouponOverlay()">닫기</button>
+  </div>
+</div>
 <div id="badge-popup"><span class="bp-icon" id="bp-icon"></span><div class="bp-text"><div class="bp-title">🏅 배지 획득!</div><div class="bp-name" id="bp-name"></div></div></div>
 
 <!-- ===== MAIN APP ===== -->
@@ -993,6 +1150,39 @@ body {
         </div>
         <div class="streak-fire" id="streak-fire">⛰️</div>
       </div>
+      <!-- 칭찬 메시지 -->
+      <div class="praise-card" id="praise-card-home" style="display:none;">
+        <div class="praise-from" id="praise-from-home"></div>
+        <div class="praise-text" id="praise-text-home"></div>
+      </div>
+
+      <!-- 오늘의 미션 -->
+      <div class="mission-card" id="mission-card-home" style="display:none;">
+        <div class="mission-icon">🎯</div>
+        <div class="mission-info">
+          <div class="mission-label">오늘의 미션</div>
+          <div class="mission-text" id="mission-text-home"></div>
+        </div>
+      </div>
+
+      <!-- 쿠폰 카드 -->
+      <div class="coupon-home-card" id="coupon-home-card" onclick="showTab('profile')">
+        <div class="coupon-home-top">
+          <div>
+            <div class="coupon-home-title">🎟️ 쿠폰 교환권</div>
+            <div class="coupon-home-count"><span id="coupon-home-count">0</span><span>장 보유</span></div>
+          </div>
+        </div>
+        <div>
+          <div class="coupon-streak-label">
+            <span id="coupon-streak-label-txt">10일 연속 100% 도전중</span>
+            <span id="coupon-streak-days">0/10일</span>
+          </div>
+          <div class="coupon-streak-bg"><div class="coupon-streak-fill" id="coupon-streak-bar"></div></div>
+          <div class="coupon-streak-msg" id="coupon-streak-msg"></div>
+        </div>
+      </div>
+
       <div class="stats-row">
         <div class="stat-card"><div class="stat-val" id="today-problems">0</div><div class="stat-unit">문제</div><div class="stat-lbl">오늘 푼 수</div></div>
         <div class="stat-card"><div class="stat-val" id="today-acc">-</div><div class="stat-unit">%</div><div class="stat-lbl">오늘 정답률</div></div>
@@ -1121,9 +1311,39 @@ body {
     <div style="text-align:center;padding:0 14px 16px;">
       <button onclick="resetAllData()" style="background:none;border:none;color:var(--gray);font-size:13px;font-weight:700;cursor:pointer;font-family:inherit;">데이터 초기화</button>
     </div>
+    <!-- 쿠폰 지갑 -->
+    <div class="coupon-wallet-wrap" id="coupon-wallet-wrap">
+      <div class="coupon-wallet-card">
+        <div class="coupon-wallet-header">
+          <div class="coupon-wallet-title">🎟️ 쿠폰 지갑</div>
+          <div class="coupon-wallet-cnt" id="coupon-wallet-cnt">0장 보유</div>
+        </div>
+        <div class="coupon-grid" id="coupon-grid"></div>
+        <div class="coupon-wallet-empty" id="coupon-wallet-empty">아직 쿠폰이 없어요 🎟️<br>10일 연속 100% 달성 시 획득!</div>
+        <div class="coupon-perfect-progress">
+          <div class="cpp-label"><span>🔥 연속 정답 100% 도전</span><span id="cpp-days">0/10일</span></div>
+          <div class="cpp-bar-bg"><div class="cpp-bar-fill" id="cpp-bar" style="width:0%"></div></div>
+          <div class="cpp-msg" id="cpp-msg"></div>
+        </div>
+      </div>
+    </div>
+
+    <div style="text-align:center;padding:0 14px 16px;">
+      <button onclick="resetAllData()" style="background:none;border:none;color:var(--gray);font-size:13px;font-weight:700;cursor:pointer;font-family:inherit;">데이터 초기화</button>
+    </div>
     <div style="text-align:center;padding:0 14px 28px;">
       <button onclick="doLogout()" style="background:#FFF0F0;border:none;color:var(--wrong);font-size:14px;font-weight:700;cursor:pointer;font-family:inherit;border-radius:14px;padding:12px 32px;">🚪 로그아웃</button>
     </div>
+  </div>
+
+  <!-- 랭킹 탭 -->
+  <div id="tab-ranking" class="tab-pane">
+    <div class="ranking-header">🏆 랭킹</div>
+    <div class="rank-tabs">
+      <button class="rank-tab-btn active" id="rank-tab-class" onclick="setRankTab('class')">우리 반</button>
+      <button class="rank-tab-btn" id="rank-tab-all" onclick="setRankTab('all')">전 체</button>
+    </div>
+    <div class="rank-section" id="rank-list"><div class="rank-empty">불러오는 중...</div></div>
   </div>
 
   <!-- BOTTOM NAV -->
@@ -1139,6 +1359,9 @@ body {
     </button>
     <button class="nav-tab" id="nav-weak" onclick="showTab('weak')">
       <span class="n-icon">🎯</span><span class="n-lbl">약점</span>
+    </button>
+    <button class="nav-tab" id="nav-ranking" onclick="showTab('ranking')">
+      <span class="n-icon">🏆</span><span class="n-lbl">랭킹</span>
     </button>
     <button class="nav-tab" id="nav-profile" onclick="showTab('profile')">
       <span class="n-icon">👤</span><span class="n-lbl">내정보</span>
@@ -1298,7 +1521,7 @@ function loadStudyLog() { try { return JSON.parse(localStorage.getItem('hanja_st
 function saveWrongNote() { try { localStorage.setItem('hanja_wrongNote', JSON.stringify(S.wrongNote)); } catch(e){} }
 function loadWrongNote() { try { return JSON.parse(localStorage.getItem('hanja_wrongNote')) || []; } catch(e){ return []; } }
 function saveSettings() { try { localStorage.setItem('hanja_settings', JSON.stringify(settings)); } catch(e){} }
-function loadSettings() { try { return JSON.parse(localStorage.getItem('hanja_settings')) || {streak:0,lastStudyDate:'',dailyGoal:20,totalCorrect:0,totalQuestions:0,totalTime:0,bestStreak:0,levelProgress:{}}; } catch(e){ return {streak:0,lastStudyDate:'',dailyGoal:20,totalCorrect:0,totalQuestions:0,totalTime:0,bestStreak:0,levelProgress:{}}; } }
+function loadSettings() { try { return JSON.parse(localStorage.getItem('hanja_settings')) || {streak:0,lastStudyDate:'',dailyGoal:20,totalCorrect:0,totalQuestions:0,totalTime:0,bestStreak:0,levelProgress:{},perfectStreak:0,lastPerfectDate:'',coupons:0,usedCoupons:0}; } catch(e){ return {streak:0,lastStudyDate:'',dailyGoal:20,totalCorrect:0,totalQuestions:0,totalTime:0,bestStreak:0,levelProgress:{},perfectStreak:0,lastPerfectDate:'',coupons:0,usedCoupons:0}; } }
 function saveBadges() { try { localStorage.setItem('hanja_badges', JSON.stringify(earnedBadges)); } catch(e){} }
 function loadBadges() { try { return JSON.parse(localStorage.getItem('hanja_badges')) || {}; } catch(e){ return {}; } }
 
@@ -1388,6 +1611,7 @@ function saveSessionLog(correct, wrong, total, desc) {
   }
   updateStreak();
   checkBadges();
+  if (total > 0 && (wrong||0) === 0 && correct === total) checkPerfectStreak();
   S.sessionStart = null;
 }
 function saveExamLog(correct, wrong, total) {
@@ -1424,6 +1648,7 @@ function showTab(name) {
   if (navBtn) navBtn.classList.add('active');
   // Render content
   if (name === 'home') renderHomeTab();
+  else if (name === 'ranking') renderRankingTab();
   else if (name === 'report') renderReportTab();
   else if (name === 'weak') renderWeakTab();
   else if (name === 'profile') renderProfileTab();
@@ -1489,6 +1714,24 @@ function renderHomeTab() {
   } else {
     nudge.style.display = 'none';
   }
+  // 미션 카드
+  const mCard = document.getElementById('mission-card-home');
+  const mText = document.getElementById('mission-text-home');
+  if (mCard && mText && window._teacherSettings && window._teacherSettings.mission) {
+    mText.textContent = window._teacherSettings.mission;
+    mCard.style.display = 'flex';
+  } else if (mCard) { mCard.style.display = 'none'; }
+  // 칭찬 카드
+  const pCard = document.getElementById('praise-card-home');
+  const pFrom = document.getElementById('praise-from-home');
+  const pText = document.getElementById('praise-text-home');
+  if (pCard && pText && window._teacherSettings && window._teacherSettings.praise) {
+    if (pFrom) pFrom.textContent = '💬 ' + (currentUser.teacherName||'선생님') + ' 선생님의 메시지';
+    pText.textContent = window._teacherSettings.praise;
+    pCard.style.display = 'block';
+  } else if (pCard) { pCard.style.display = 'none'; }
+  // 쿠폰 카드
+  renderCouponHomeCard();
 }
 
 function renderStudyTab() {
@@ -1668,6 +1911,7 @@ function renderProfileTab() {
   document.getElementById('pr-total-q').textContent = totalQ;
   document.getElementById('pr-total-days').textContent = totalDays;
   document.getElementById('pr-streak').textContent = best;
+  renderCouponWallet();
   document.getElementById('pr-total-time').textContent = totalMin;
   // Level label
   const lbl = totalQ >= 1000 ? '한자 달인 🏆' : totalQ >= 500 ? '한자 고수 ⭐' : totalQ >= 200 ? '열심히 학습 중 📚' : totalQ >= 50 ? '시작이 반 🌱' : '학습 시작';
@@ -2225,7 +2469,258 @@ function prevExamItem() { if(S.examIdx>0){S.examIdx--;S.examChecked=false;S.exam
 function restartExam() { S.examIdx=0;S.examChecked=false;S.examCorrect=false;S.examUserInput='';S.examCorrectCount=0;S.examWrongCount=0;S.examFinished=false;S.examWrongItems=[];S.sessionLogged=false;startSession();renderExamWrite(); }
 function retryExamWrong() { if(!S.examWrongItems.length){toast('오답이 없습니다.');return;} S.examItems=[...S.examWrongItems];S.examIdx=0;S.examChecked=false;S.examCorrect=false;S.examUserInput='';S.examCorrectCount=0;S.examWrongCount=0;S.examFinished=false;S.examWrongItems=[];S.sessionLogged=false;startSession();renderExamWrite(); }
 
-/* ===== DATA RESET ===== */
+/* ===== 쿠폰 홈 카드 렌더 ===== */
+function renderCouponHomeCard() {
+  const ps = settings.perfectStreak || 0;
+  const coupons = settings.coupons || 0;
+  const el = document.getElementById('coupon-home-count'); if(el) el.textContent = coupons;
+  const dEl = document.getElementById('coupon-streak-days'); if(dEl) dEl.textContent = ps+'/10일';
+  const bar = document.getElementById('coupon-streak-bar'); if(bar) bar.style.width = Math.min(100,ps*10)+'%';
+  const msgs = {0:'매일 100% 정답 10일 달성 시 쿠폰 1장!',1:'1일째! 9일 남았어요 💪',2:'2일째! 8일 더 하면 쿠폰!',3:'🔥 3일째! 7일 남았어요!',4:'4일째! 절반 가까이!',5:'⚡ 5일째! 절반 달성! 5일만 더!',6:'6일째! 4일 남았어요!',7:'💎 7일째! 3일만 더하면 쿠폰!',8:'거의 다 왔어요! 2일 남았어요!',9:'🚀 9일째! 내일 100% 달성하면 쿠폰!',10:'🎉 10일 달성! 쿠폰 교환권 획득!'};
+  const msg = document.getElementById('coupon-streak-msg'); if(msg) msg.textContent = msgs[Math.min(10,ps)] || '';
+}
+
+/* ===== 비밀번호 재설정 ===== */
+async function doPasswordReset() {
+  const email = document.getElementById('forgot-email-input').value.trim();
+  const msgEl = document.getElementById('ls-forgot-msg');
+  if (!email) { msgEl.textContent = '이메일을 입력해 주세요'; msgEl.style.color = 'var(--wrong)'; return; }
+  if (!window._firebaseReady) { msgEl.textContent = '⏳ 잠시 후 다시 시도해 주세요'; return; }
+  msgEl.textContent = '전송 중...'; msgEl.style.color = 'var(--gray)';
+  try {
+    await window.fbResetPassword(email);
+    msgEl.textContent = '✅ 재설정 이메일을 보냈어요. 받은 편지함을 확인하세요!';
+    msgEl.style.color = 'var(--correct)';
+  } catch(e) {
+    const codes = {'auth/user-not-found':'등록된 이메일이 아닙니다.','auth/invalid-email':'이메일 형식을 확인해 주세요.','auth/too-many-requests':'너무 많은 요청. 잠시 후 다시 시도하세요.'};
+    msgEl.textContent = codes[e.code] || ('오류: ' + (e.code || e.message));
+    msgEl.style.color = 'var(--wrong)';
+  }
+}
+
+/* ===== 주간 문제 수 계산 ===== */
+function getWeekStart() {
+  const d = new Date();
+  const day = d.getDay(); // 0=일, 1=월...
+  const diff = day === 0 ? -6 : 1 - day;
+  d.setDate(d.getDate() + diff);
+  return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');
+}
+function getWeeklyProblems() {
+  const ws = getWeekStart();
+  return studyLog.filter(e => e.date >= ws).reduce((s,e)=>s+(e.total||0),0);
+}
+
+/* ===== 연속 정답 100% 체크 ===== */
+function checkPerfectStreak() {
+  const today = todayStr();
+  if (settings.lastPerfectDate === today) return; // 오늘 이미 기록됨
+  const yesterday = new Date(); yesterday.setDate(yesterday.getDate()-1);
+  const yStr = yesterday.getFullYear()+'-'+String(yesterday.getMonth()+1).padStart(2,'0')+'-'+String(yesterday.getDate()).padStart(2,'0');
+  if (settings.lastPerfectDate === yStr) {
+    settings.perfectStreak = (settings.perfectStreak||0) + 1;
+  } else {
+    settings.perfectStreak = 1;
+  }
+  settings.lastPerfectDate = today;
+  const ps = settings.perfectStreak;
+  const mid = {3:'🔥 3일 연속 100%! 7일 더 하면 쿠폰!',5:'⚡ 5일 연속! 5일만 더하면 쿠폰!',7:'💎 7일 연속! 3일만 더하면 쿠폰!',9:'🚀 9일 연속! 내일 100%면 쿠폰!!'};
+  if (mid[ps]) setTimeout(()=>toast(mid[ps]), 1000);
+  if (ps >= 10) {
+    settings.coupons = (settings.coupons||0) + 1;
+    settings.perfectStreak = 0;
+    settings.lastPerfectDate = '';
+    saveSettings();
+    showConfetti();
+    setTimeout(()=>showCouponOverlay(settings.coupons), 500);
+    return;
+  }
+  saveSettings();
+}
+
+/* ===== 폭죽 ===== */
+function showConfetti() {
+  const colors = ['#FF6B6B','#FFE66D','#6BCB77','#4D96FF','#FF6FC8','#FFB347'];
+  for (let i=0;i<60;i++) {
+    const el = document.createElement('div');
+    el.className = 'confetti-piece';
+    el.style.cssText = `left:${Math.random()*100}vw;top:-10px;width:${6+Math.random()*8}px;height:${8+Math.random()*10}px;background:${colors[Math.floor(Math.random()*colors.length)]};animation-duration:${2+Math.random()*2}s;animation-delay:${Math.random()*1}s;`;
+    document.body.appendChild(el);
+    el.addEventListener('animationend', ()=>el.remove());
+  }
+}
+
+/* ===== 쿠폰 오버레이 ===== */
+function showCouponOverlay(count) {
+  const el = document.getElementById('coupon-ov-count');
+  if (el) el.textContent = '현재 ' + count + '장 보유';
+  document.getElementById('coupon-overlay').classList.add('active');
+}
+function closeCouponOverlay() {
+  document.getElementById('coupon-overlay').classList.remove('active');
+}
+
+/* ===== 쿠폰 지갑 렌더 (프로필) ===== */
+function renderCouponWallet() {
+  const coupons = settings.coupons || 0;
+  const used = settings.usedCoupons || 0;
+  const available = coupons - used;
+  const cntEl = document.getElementById('coupon-wallet-cnt');
+  if (cntEl) cntEl.textContent = available + '장 보유 (총 ' + coupons + '장)';
+  const grid = document.getElementById('coupon-grid');
+  const empty = document.getElementById('coupon-wallet-empty');
+  if (grid) {
+    if (coupons === 0) { grid.innerHTML=''; if(empty) empty.style.display='block'; }
+    else {
+      if(empty) empty.style.display='none';
+      let html2 = '';
+      for (let i=0;i<coupons;i++) {
+        const isUsed = i < used;
+        html2 += `<div class="coupon-chip${isUsed?' used':''}"><div class="coupon-chip-icon">${isUsed?'☑️':'🎟️'}</div><div class="coupon-chip-txt">${i+1}번</div></div>`;
+      }
+      grid.innerHTML = html2;
+    }
+  }
+  const ps = settings.perfectStreak || 0;
+  const dEl = document.getElementById('cpp-days'); if(dEl) dEl.textContent = ps+'/10일';
+  const bar = document.getElementById('cpp-bar'); if(bar) bar.style.width = Math.min(100,ps*10)+'%';
+  const msgs = ['100% 달성 10일 연속 → 쿠폰 1장!','1일! 9일 남았어요','2일! 8일 남았어요','🔥 3일! 7일 더!','4일! 절반에 가까워요','⚡ 5일! 반환점!','6일! 4일 남았어요','💎 7일! 3일 남았어요!','거의 다 왔어요! 2일!','🚀 9일! 내일이면 쿠폰!','🎉 10일 달성!'];
+  const msgEl = document.getElementById('cpp-msg'); if(msgEl) msgEl.textContent = msgs[Math.min(10,ps)] || '';
+}
+
+/* ===== 랭킹 탭 ===== */
+let _rankTab = 'class';
+function setRankTab(tab) {
+  _rankTab = tab;
+  document.getElementById('rank-tab-class').classList.toggle('active', tab==='class');
+  document.getElementById('rank-tab-all').classList.toggle('active', tab==='all');
+  renderRankingTab();
+}
+async function renderRankingTab() {
+  const list = document.getElementById('rank-list');
+  if (!list) return;
+  if (!currentUser || !currentUser.teacherId) {
+    list.innerHTML = '<div class="rank-empty">선생님 반에 속한 학생만<br>랭킹을 볼 수 있어요 🏆</div>';
+    return;
+  }
+  list.innerHTML = '<div class="rank-empty">🔄 불러오는 중...</div>';
+  try {
+    let items = [];
+    if (_rankTab === 'class') {
+      // 우리 반: 선생님 학생들의 weeklyRanking 읽기
+      const students = await window._fbGetTeacherStudents(currentUser.teacherId);
+      const results = await Promise.allSettled(students.map(s => window._fbGetWeeklyRanking(s.id)));
+      items = results.map((r,i) => {
+        const d = r.status==='fulfilled' && r.value ? r.value : {};
+        return { id:students[i].id, name:students[i].name, teacherName: currentUser.teacherName||'', weeklyProblems: d.weeklyProblems||0 };
+      });
+    } else {
+      // 전체: weeklyRanking 컬렉션 전체
+      items = await window._fbGetAllWeeklyRanking();
+    }
+    items.sort((a,b)=>b.weeklyProblems-a.weeklyProblems);
+    if (!items.length) { list.innerHTML='<div class="rank-empty">아직 데이터가 없어요 🏆</div>'; return; }
+    // MVP: 1위
+    const weekStart = getWeekStart();
+    list.innerHTML = items.map((item,i) => {
+      const rank = i+1;
+      const isMe = item.id === currentUser.id;
+      const isMvp = rank===1 && item.weeklyProblems>0;
+      const numCls = rank===1?'top1':rank===2?'top2':rank===3?'top3':'';
+      const numIcon = rank===1?'🥇':rank===2?'🥈':rank===3?'🥉':rank;
+      const mvpBadge = isMvp ? '<span class="rank-mvp-badge">👑 MVP</span>' : '';
+      const meBadge = isMe ? '<span class="rank-me-badge">나</span>' : '';
+      const subTxt = _rankTab==='all' ? (item.teacherName ? item.teacherName+' 반' : '') : '';
+      return \`<div class="rank-card\${isMe?' rank-me':''}">
+        <div class="rank-num \${numCls}">\${numIcon}</div>
+        <div class="rank-info">
+          <div class="rank-name">\${item.name}\${mvpBadge}\${meBadge}</div>
+          \${subTxt?'<div class="rank-sub">'+subTxt+'</div>':''}
+        </div>
+        <div class="rank-score-wrap">
+          <span class="rank-score">\${item.weeklyProblems}</span>
+          <span class="rank-score-lbl">문제/주</span>
+        </div>
+      </div>\`;
+    }).join('');
+  } catch(e) {
+    list.innerHTML = '<div class="rank-empty" style="color:var(--wrong);">오류: '+e.message+'</div>';
+  }
+}
+
+/* ===== 선생님 설정 (미션/칭찬) ===== */
+async function loadTeacherSettingsPreview() {
+  if (!currentUser || currentUser.role!=='teacher') return;
+  try {
+    const s = await window._fbGetTeacherSettings(currentUser.id);
+    const mPrev = document.getElementById('mission-preview');
+    const pPrev = document.getElementById('praise-preview');
+    if (s && s.mission && mPrev) mPrev.textContent = s.mission;
+    if (s && s.praise && pPrev) pPrev.textContent = s.praise;
+    const mInp = document.getElementById('mission-input'); if(mInp && s && s.mission) mInp.value = s.mission;
+    const pInp = document.getElementById('praise-input'); if(pInp && s && s.praise) pInp.value = s.praise;
+  } catch(e) {}
+}
+async function saveMission() {
+  const val = document.getElementById('mission-input').value.trim();
+  if (!val) { toast('미션 내용을 입력해 주세요'); return; }
+  try {
+    await window._fbSetTeacherSettings(currentUser.id, { mission: val });
+    document.getElementById('mission-preview').textContent = val;
+    toast('✅ 미션이 저장됐어요!');
+  } catch(e) { toast('저장 실패: '+e.message); }
+}
+async function savePraise() {
+  const val = document.getElementById('praise-input').value.trim();
+  if (!val) { toast('메시지를 입력해 주세요'); return; }
+  try {
+    await window._fbSetTeacherSettings(currentUser.id, { praise: val, praiseDate: new Date().toISOString() });
+    document.getElementById('praise-preview').textContent = val;
+    toast('✅ 칭찬 메시지를 보냈어요! 💌');
+  } catch(e) { toast('저장 실패: '+e.message); }
+}
+
+/* ===== 학생 쿠폰 관리 (선생님) ===== */
+let _detailStudentId = null;
+async function openCouponMgmt(studentId, studentName) {
+  _detailStudentId = studentId;
+  try {
+    const data = await window._fbGetStudentData(studentId);
+    const coupons = (data && data.settings && data.settings.coupons) || 0;
+    const used    = (data && data.settings && data.settings.usedCoupons) || 0;
+    const avail   = coupons - used;
+    document.getElementById('coupon-mgmt-avail').textContent = avail;
+    document.getElementById('coupon-mgmt-total').textContent = '(총 '+coupons+'장)';
+    document.getElementById('coupon-deduct-btn').disabled = avail <= 0;
+    document.getElementById('coupon-mgmt-section').style.display = 'block';
+  } catch(e) { toast('오류: '+e.message); }
+}
+async function deductCoupon() {
+  if (!_detailStudentId) return;
+  try {
+    const data = await window._fbGetStudentData(_detailStudentId);
+    if (!data || !data.settings) { toast('학생 데이터 없음'); return; }
+    const coupons = data.settings.coupons || 0;
+    const used = data.settings.usedCoupons || 0;
+    if (coupons - used <= 0) { toast('사용 가능한 쿠폰이 없어요'); return; }
+    data.settings.usedCoupons = used + 1;
+    await window._fbSetStudentData(_detailStudentId, data);
+    toast('✅ 쿠폰 1장 사용 처리됐어요');
+    await openCouponMgmt(_detailStudentId, '');
+  } catch(e) { toast('오류: '+e.message); }
+}
+
+/* ===== MVP 뱃지 (선생님 학생목록 – 주간 1등) ===== */
+function getMvpStudentId(cacheArr) {
+  if (!cacheArr || !cacheArr.length) return null;
+  // weeklyProblems 는 _teacherCacheWeekly 에서 관리 (간단하게 totalQ 로 대체)
+  // 정확히는 주간 문제수가 필요하지만, 현재 캐시에 없으므로 totalQ 최고값 학생 표시
+  let maxQ = 0, mvpId = null;
+  for (const s of cacheArr) { if ((s.totalQ||0) > maxQ) { maxQ = s.totalQ; mvpId = s.id; } }
+  return maxQ > 0 ? mvpId : null;
+}
+
+/* ===== DATA RESET =====
 function resetAllData() {
   if (!confirm('모든 학습 데이터를 삭제할까요? 이 작업은 되돌릴 수 없습니다.')) return;
   studyLog = []; settings = {streak:0,lastStudyDate:'',dailyGoal:20,totalCorrect:0,totalQuestions:0,totalTime:0,bestStreak:0,levelProgress:{}};
@@ -2257,7 +2752,7 @@ let teacherListCache = [];
 let teacherSearchKeyword = '';
 
 /* ── 스텝 이동 ── */
-const LS_ALL = ['role','student-teacher','student-name','student-pin','teacher-login','teacher-signup','free-student'];
+const LS_ALL = ['role','student-teacher','student-name','student-pin','teacher-login','teacher-forgot','teacher-signup','free-student'];
 function lsGo(step) {
   if (step === 'student-name') {
     if (!selectedTeacher) { document.getElementById('ls-teacher-pick-error').textContent = '선생님을 선택해 주세요'; return; }
@@ -2519,6 +3014,11 @@ async function enterStudentApp() {
   const nameEl = document.getElementById('profile-name');
   if (nameEl) nameEl.textContent = currentUser.name + ' 학생';
   await loadStudentDataFromFirestore();
+  if (currentUser.teacherId) {
+    try {
+      window._teacherSettings = await window._fbGetTeacherSettings(currentUser.teacherId);
+    } catch(e) { window._teacherSettings = {}; }
+  }
   loadData(); loadExamData();
 }
 
@@ -2529,6 +3029,7 @@ function enterTeacherApp() {
   const h = document.getElementById('teacher-header-name');
   if (h) h.textContent = currentUser.name;
   renderTeacherStudentList();
+  loadTeacherSettingsPreview();
 }
 
 function doLogout() {
@@ -2555,8 +3056,19 @@ async function loadStudentDataFromFirestore() {
 }
 async function syncToFirestore() {
   if (!currentUser || currentUser.role !== 'student') return;
-  if (!currentUser.teacherId) return; // 선생님 없는 학생은 localStorage만 사용
+  if (!currentUser.teacherId) return;
   try {
+    // 주간 랭킹 업데이트
+    const weekProblems = getWeeklyProblems();
+    if (window._fbUpdateWeeklyRanking) {
+      window._fbUpdateWeeklyRanking(currentUser.id, {
+        name: currentUser.name,
+        teacherId: currentUser.teacherId,
+        teacherName: currentUser.teacherName||'',
+        weeklyProblems: weekProblems,
+        updatedAt: new Date().toISOString()
+      }).catch(()=>{});
+    }
     await window._fbSetStudentData(currentUser.id, {
       settings, studyLog: studyLog.slice(-300), earnedBadges, wrongNote: S.wrongNote,
       lastUpdated: new Date().toISOString(), studentName: currentUser.name, teacherId: currentUser.teacherId
@@ -2689,6 +3201,7 @@ function renderTeacherList() {
     return;
   }
 
+  const mvpId = getMvpStudentId(arr);
   list.innerHTML = arr.map((s, i) => {
     // A: 상태 태그
     let dotCls, txtCls, statusTxt;
@@ -2715,7 +3228,7 @@ function renderTeacherList() {
       <div class="student-row">
         <div class="student-row-num">${i+1}</div>
         <div class="student-row-info">
-          <div class="student-row-name">${s.name}</div>
+          <div class="student-row-name">${s.name}${mvpId && s.id===mvpId ? '<span class="mvp-badge-t">👑MVP</span>' : ''}</div>
           <div class="student-status-line">
             <span class="status-dot ${dotCls}"></span>
             <span class="status-meta ${txtCls}">${statusTxt}</span>
@@ -2734,6 +3247,7 @@ async function showStudentDetail(studentId, studentName) {
   document.getElementById('detail-today-badge').innerHTML = '';
   document.getElementById('detail-body').innerHTML =
     '<div style="text-align:center;padding:40px;color:var(--gray);font-size:14px;font-weight:700;">불러오는 중...</div>';
+  _detailStudentId = studentId;
   document.getElementById('student-detail').classList.add('active');
   try {
     const data = await window._fbGetStudentData(studentId);
@@ -2756,6 +3270,7 @@ async function showStudentDetail(studentId, studentName) {
       '<div class="detail-today-badge ' + (isToday ? 'today' : 'not-today') + '">' +
       (isToday ? '✅ 오늘 학습함' : '⚠️ 마지막 접속: ' + (lastUpdated || '기록 없음')) +
       '</div>';
+    openCouponMgmt(studentId, studentName);
 
     const todayLogs    = sl.filter(e => e.date === todayStr);
     const todayTotal   = todayLogs.reduce((s,e) => s + (e.total||0), 0);
@@ -2796,6 +3311,18 @@ async function showStudentDetail(studentId, studentName) {
       : '<div class="detail-empty">오답이 없어요 🎉</div>';
 
     document.getElementById('detail-body').innerHTML = `
+      <!-- 쿠폰 관리 섹션 -->
+      <div class="coupon-mgmt-section" id="coupon-mgmt-section" style="display:none;">
+        <div class="detail-section-title">🎟️ 쿠폰 관리</div>
+        <div class="coupon-mgmt-row">
+          <span class="coupon-mgmt-lbl">사용 가능 쿠폰</span>
+          <span style="display:flex;align-items:center;gap:8px;">
+            <span class="coupon-mgmt-val" id="coupon-mgmt-avail">0</span>
+            <span style="font-size:12px;font-weight:700;color:var(--gray);" id="coupon-mgmt-total"></span>
+          </span>
+        </div>
+        <button class="coupon-deduct-btn" id="coupon-deduct-btn" onclick="deductCoupon()" disabled>쿠폰 1장 사용 처리</button>
+      </div>
       <div class="detail-grid">
         <div class="detail-card"><div class="detail-val">${totalQ}</div><div class="detail-lbl">📝 누적 문제 수</div></div>
         <div class="detail-card"><div class="detail-val">${acc}%</div><div class="detail-lbl">✅ 전체 정답률</div></div>
@@ -2855,11 +3382,11 @@ initLogin();
 <script type="module">
   import { initializeApp } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-app.js";
   import { getAuth, signInWithEmailAndPassword,
-           createUserWithEmailAndPassword, signOut }
+           createUserWithEmailAndPassword, signOut, sendPasswordResetEmail }
     from "https://www.gstatic.com/firebasejs/10.14.1/firebase-auth.js";
   import { getFirestore, collection, doc,
            getDocs, getDoc, setDoc, addDoc, deleteDoc,
-           query, where }
+           query, where, serverTimestamp }
     from "https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore.js";
 
   const firebaseConfig = {
@@ -2927,5 +3454,31 @@ initLogin();
 
   window._fbSetStudentData = (studentId, data) =>
     setDoc(doc(db, 'studentData', studentId), data);
+
+  /* 비밀번호 재설정 */
+  window.fbResetPassword = (email) => sendPasswordResetEmail(auth, email);
+
+  /* 주간 랭킹 */
+  window._fbUpdateWeeklyRanking = (studentId, data) =>
+    setDoc(doc(db, 'weeklyRanking', studentId), data);
+
+  window._fbGetWeeklyRanking = async (studentId) => {
+    const snap = await getDoc(doc(db, 'weeklyRanking', studentId));
+    return snap.exists() ? snap.data() : null;
+  };
+
+  window._fbGetAllWeeklyRanking = async () => {
+    const snap = await getDocs(collection(db, 'weeklyRanking'));
+    return snap.docs.map(d => ({ id: d.id, ...d.data() }));
+  };
+
+  /* 선생님 설정 (미션/칭찬) */
+  window._fbGetTeacherSettings = async (teacherId) => {
+    const snap = await getDoc(doc(db, 'teacherSettings', teacherId));
+    return snap.exists() ? snap.data() : {};
+  };
+
+  window._fbSetTeacherSettings = (teacherId, data) =>
+    setDoc(doc(db, 'teacherSettings', teacherId), data, { merge: true });
 
 </script>
