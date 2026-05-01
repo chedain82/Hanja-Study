@@ -867,12 +867,11 @@ body {
 
 
 /* ===== Firebase 준비 대기 후 선생님 데이터 로드 ===== */
-function _waitFirebaseThenLoad() {
+function _waitFirebaseRanking() {
   if (window._firebaseReady && window._fbGetTeacherStudents) {
-    loadMsgStudentList();
     renderTeacherRanking();
   } else {
-    setTimeout(_waitFirebaseThenLoad, 400);
+    setTimeout(_waitFirebaseRanking, 400);
   }
 }
 
@@ -1120,22 +1119,6 @@ function _waitFirebaseThenLoad() {
       <div class="teacher-preview-box" id="mission-preview">현재 미션 없음</div>
     </div>
 
-    <!-- 개인별 메시지 -->
-    <div class="teacher-card">
-      <div class="teacher-card-title">💬 개인별 메시지 보내기</div>
-      <div style="font-size:12px;font-weight:700;color:var(--gray);margin-bottom:10px;">학생을 선택하고 칭찬·숙제·알림을 보내세요</div>
-      <div class="msg-student-list" id="msg-student-list">
-        <div style="color:var(--gray);font-size:13px;font-weight:700;padding:8px;">학생 목록 불러오는 중...</div>
-      </div>
-      <div class="msg-type-row">
-        <button class="msg-type-btn selected" id="msg-type-praise" onclick="setMsgType('praise')">🌟 칭찬</button>
-        <button class="msg-type-btn" id="msg-type-homework" onclick="setMsgType('homework')">📝 숙제</button>
-        <button class="msg-type-btn" id="msg-type-notice" onclick="setMsgType('notice')">📢 알림</button>
-      </div>
-      <textarea class="teacher-textarea" id="personal-msg-input" placeholder="메시지를 입력하세요..."></textarea>
-      <button class="teacher-add-btn" style="margin-top:8px;" onclick="sendPersonalMsg()">메시지 보내기 💌</button>
-    </div>
-
     <!-- 선생님 랭킹 -->
     <div class="teacher-card">
       <div class="teacher-card-title">🏆 주간 랭킹</div>
@@ -1161,6 +1144,22 @@ function _waitFirebaseThenLoad() {
     <div id="detail-body">
       <div style="text-align:center;padding:40px;color:var(--gray);font-size:14px;font-weight:700;">불러오는 중...</div>
     </div>
+  </div>
+</div>
+
+<!-- ===== 메시지 모달 ===== -->
+<div id="msg-modal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.55);z-index:700;align-items:flex-end;justify-content:center;" onclick="closeMsgModal(event)">
+  <div style="width:100%;max-width:560px;background:white;border-radius:24px 24px 0 0;padding:20px 20px 32px;animation:sheetUp .28s ease-out;">
+    <div style="width:40px;height:4px;border-radius:2px;background:#CCC;margin:0 auto 16px;"></div>
+    <div style="font-size:18px;font-weight:800;margin-bottom:4px;" id="msg-modal-name">학생 이름</div>
+    <div style="font-size:12px;font-weight:700;color:var(--gray);margin-bottom:14px;">메시지 유형을 선택하고 내용을 입력하세요</div>
+    <div class="msg-type-row">
+      <button class="msg-type-btn selected" id="msg-type-praise" onclick="setMsgType('praise')">🌟 칭찬</button>
+      <button class="msg-type-btn" id="msg-type-homework" onclick="setMsgType('homework')">📝 숙제</button>
+      <button class="msg-type-btn" id="msg-type-notice" onclick="setMsgType('notice')">📢 알림</button>
+    </div>
+    <textarea class="teacher-textarea" id="personal-msg-input" placeholder="칭찬 메시지를 입력하세요 🌟" style="height:90px;margin-bottom:10px;"></textarea>
+    <button class="teacher-add-btn" onclick="sendPersonalMsg()">메시지 보내기 💌</button>
   </div>
 </div>
 
@@ -3090,7 +3089,7 @@ function enterTeacherApp() {
   if (h) h.textContent = currentUser.name;
   renderTeacherStudentList();
   loadTeacherSettingsPreview();
-  _waitFirebaseThenLoad();
+  _waitFirebaseRanking();
 }
 
 /* ===== 개인별 메시지 (선생님) ===== */
@@ -3135,6 +3134,21 @@ async function loadMsgStudentList() {
   }
 }
 
+function openMsgModal(studentId, studentName) {
+  _msgSelectedId = studentId;
+  const modal = document.getElementById('msg-modal');
+  const nameEl = document.getElementById('msg-modal-name');
+  if (nameEl) nameEl.textContent = studentName + ' 학생에게 메시지';
+  if (modal) modal.style.display = 'flex';
+  const inp = document.getElementById('personal-msg-input');
+  if (inp) { inp.value = ''; inp.focus(); }
+  setMsgType('praise');
+}
+function closeMsgModal(e) {
+  const modal = document.getElementById('msg-modal');
+  if (!e || e.target === modal) { if(modal) modal.style.display='none'; }
+}
+
 function selectMsgStudent(id) {
   _msgSelectedId = (_msgSelectedId===id) ? null : id;
   document.querySelectorAll('.msg-student-btn').forEach(b => b.classList.remove('selected'));
@@ -3157,9 +3171,8 @@ async function sendPersonalMsg() {
     });
     const s = _msgStudentList.find(x => x.id===_msgSelectedId);
     toast('✅ '+(s?s.name:'학생')+'에게 메시지를 보냈어요 💌');
-    document.getElementById('personal-msg-input').value = '';
+    closeMsgModal();
     _msgSelectedId = null;
-    document.querySelectorAll('.msg-student-btn').forEach(b => b.classList.remove('selected'));
   } catch(e) { toast('오류: '+e.message); }
 }
 
@@ -3425,6 +3438,7 @@ function renderTeacherList() {
           </div>
         </div>
         <button class="student-detail-btn" onclick="showStudentDetail('${s.id}','${s.name}')">현황</button>
+        <button class="student-detail-btn" style="background:#FFF3E0;color:#E65100;" onclick="openMsgModal('${s.id}','${s.name}')">💬</button>
         <button class="student-del-btn"    onclick="deleteStudent('${s.id}','${s.name}')">삭제</button>
       </div>`;
   }).join('');
