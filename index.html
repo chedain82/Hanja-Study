@@ -866,6 +866,16 @@ body {
 .coupon-deduct-btn:active { opacity:.8; transform:scale(.97); }
 
 
+/* ===== Firebase 준비 대기 후 선생님 데이터 로드 ===== */
+function _waitFirebaseThenLoad() {
+  if (window._firebaseReady && window._fbGetTeacherStudents) {
+    loadMsgStudentList();
+    renderTeacherRanking();
+  } else {
+    setTimeout(_waitFirebaseThenLoad, 400);
+  }
+}
+
 /* ===== 개인별 메시지 (선생님) ===== */
 .msg-student-list { display:flex; flex-direction:column; gap:6px; margin-bottom:10px; max-height:200px; overflow-y:auto; }
 .msg-student-btn { display:flex; align-items:center; gap:10px; padding:10px 14px; border-radius:12px; border:2px solid #EEE; background:white; cursor:pointer; font-family:inherit; transition:all .15s; text-align:left; width:100%; }
@@ -3080,7 +3090,135 @@ function enterTeacherApp() {
   if (h) h.textContent = currentUser.name;
   renderTeacherStudentList();
   loadTeacherSettingsPreview();
-  setTimeout(() => { loadMsgStudentList(); renderTeacherRanking(); }, 900);
+  _waitFirebaseThenLoad();
+}
+
+/* ===== 개인별 메시지 (선생님) ===== */
+let _msgStudentList = [];
+let _msgSelectedId  = null;
+let _msgType        = 'praise';
+
+function setMsgType(type) {
+  _msgType = type;
+  ['praise','homework','notice'].forEach(t => {
+    const b = document.getElementById('msg-type-'+t);
+    if (b) b.classList.toggle('selected', t===type);
+  });
+  const ph = {praise:'칭찬 메시지를 입력하세요 🌟',homework:'숙제 내용을 입력하세요 📝',notice:'알림 내용을 입력하세요 📢'};
+  const inp = document.getElementById('personal-msg-input');
+  if (inp) inp.placeholder = ph[type]||'메시지를 입력하세요...';
+}
+
+async function loadMsgStudentList() {
+  if (!currentUser || currentUser.role!=='teacher') return;
+  const listEl = document.getElementById('msg-student-list');
+  if (!listEl) return;
+  if (!window._firebaseReady || !window._fbGetTeacherStudents) {
+    listEl.innerHTML = '<div style="color:var(--gray);font-size:13px;padding:8px;">잠시 후 재시도...</div>';
+    setTimeout(loadMsgStudentList, 600); return;
+  }
+  listEl.innerHTML = '<div style="color:var(--gray);font-size:13px;padding:8px;">불러오는 중...</div>';
+  try {
+    _msgStudentList = await window._fbGetTeacherStudents(currentUser.id);
+    if (!_msgStudentList.length) {
+      listEl.innerHTML = '<div style="color:var(--gray);font-size:13px;font-weight:700;padding:8px;">등록된 학생이 없어요</div>';
+      return;
+    }
+    listEl.innerHTML = _msgStudentList.map(s =>
+      `<button class="msg-student-btn" id="msgbtn-${s.id}" onclick="selectMsgStudent('${s.id}')">
+        <span class="msg-student-name">${s.name}</span>
+        <span class="msg-student-check">✓</span>
+      </button>`
+    ).join('');
+  } catch(e) {
+    if (listEl) listEl.innerHTML = '<div style="color:var(--wrong);font-size:13px;padding:8px;">오류: '+e.message+'</div>';
+  }
+}
+
+function selectMsgStudent(id) {
+  _msgSelectedId = (_msgSelectedId===id) ? null : id;
+  document.querySelectorAll('.msg-student-btn').forEach(b => b.classList.remove('selected'));
+  if (_msgSelectedId) {
+    const b = document.getElementById('msgbtn-'+_msgSelectedId);
+    if (b) b.classList.add('selected');
+  }
+}
+
+async function sendPersonalMsg() {
+  if (!_msgSelectedId) { toast('학생을 선택해 주세요'); return; }
+  const text = document.getElementById('personal-msg-input').value.trim();
+  if (!text) { toast('메시지를 입력해 주세요'); return; }
+  try {
+    await window._fbSetPersonalMsg(_msgSelectedId, {
+      text, type: _msgType,
+      from: currentUser.name,
+      teacherId: currentUser.id,
+      sentAt: new Date().toISOString()
+    });
+    const s = _msgStudentList.find(x => x.id===_msgSelectedId);
+    toast('✅ '+(s?s.name:'학생')+'에게 메시지를 보냈어요 💌');
+    document.getElementById('personal-msg-input').value = '';
+    _msgSelectedId = null;
+    document.querySelectorAll('.msg-student-btn').forEach(b => b.classList.remove('selected'));
+  } catch(e) { toast('오류: '+e.message); }
+}
+
+/* ===== 선생님 랭킹 ===== */
+let _teacherRankTab = 'class';
+
+function setTeacherRankTab(tab) {
+  _teacherRankTab = tab;
+  const c = document.getElementById('t-rank-class');
+  const a = document.getElementById('t-rank-all');
+  if(c) c.classList.toggle('active', tab==='class');
+  if(a) a.classList.toggle('active', tab==='all');
+  renderTeacherRanking();
+}
+
+async function renderTeacherRanking() {
+  const listEl = document.getElementById('teacher-rank-list');
+  if (!listEl || !currentUser || currentUser.role!=='teacher') return;
+  if (!window._firebaseReady || !window._fbGetTeacherStudents) {
+    listEl.innerHTML = '<div class="t-rank-empty">연결 중...</div>';
+    setTimeout(renderTeacherRanking, 600); return;
+  }
+  listEl.innerHTML = '<div class="t-rank-empty">🔄 불러오는 중...</div>';
+  try {
+    let items = [];
+    if (_teacherRankTab==='class') {
+      const students = await window._fbGetTeacherStudents(currentUser.id);
+      const results  = await Promise.allSettled(
+        students.map(s => window._fbGetWeeklyRanking ? window._fbGetWeeklyRanking(s.id) : Promise.resolve(null))
+      );
+      items = results.map((r,i) => ({
+        id: students[i].id,
+        name: students[i].name,
+        weeklyProblems: (r.status==='fulfilled' && r.value) ? (r.value.weeklyProblems||0) : 0
+      }));
+    } else {
+      items = window._fbGetAllWeeklyRanking ? await window._fbGetAllWeeklyRanking() : [];
+    }
+    items.sort((a,b) => b.weeklyProblems - a.weeklyProblems);
+    if (!items.length || items.every(x=>x.weeklyProblems===0)) {
+      listEl.innerHTML='<div class="t-rank-empty">이번 주 학습 데이터가 없어요<br>학생들이 학습하면 나타나요 🏆</div>'; return;
+    }
+    const icons=['🥇','🥈','🥉'];
+    listEl.innerHTML = items.map((item,i) => {
+      const nc = i===0?'top1':i===1?'top2':i===2?'top3':'';
+      const sub = (_teacherRankTab==='all' && item.teacherName)
+        ? `<span style="font-size:11px;color:var(--gray);"> · ${item.teacherName} 반</span>` : '';
+      return `<div class="t-rank-row">
+        <div class="t-rank-num ${nc}">${icons[i]||i+1}</div>
+        <div class="t-rank-name">${item.name}${sub}</div>
+        <div style="text-align:right">
+          <div class="t-rank-score">${item.weeklyProblems}</div>
+          <div class="t-rank-lbl">문제/주</div>
+        </div>
+      </div>`;
+    }).join('');
+  } catch(e) {
+    listEl.innerHTML='<div class="t-rank-empty" style="color:var(--wrong);">오류: '+e.message+'</div>';
+  }
 }
 
 function doLogout() {
