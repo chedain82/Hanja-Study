@@ -865,6 +865,34 @@ body {
 .coupon-deduct-btn:disabled { background:#CCC; cursor:default; }
 .coupon-deduct-btn:active { opacity:.8; transform:scale(.97); }
 
+
+/* ===== 개인별 메시지 (선생님) ===== */
+.msg-student-list { display:flex; flex-direction:column; gap:6px; margin-bottom:10px; max-height:200px; overflow-y:auto; }
+.msg-student-btn { display:flex; align-items:center; gap:10px; padding:10px 14px; border-radius:12px; border:2px solid #EEE; background:white; cursor:pointer; font-family:inherit; transition:all .15s; text-align:left; width:100%; }
+.msg-student-btn.selected { border-color:var(--blue); background:#EEF3FD; }
+.msg-student-btn:active { transform:scale(.98); }
+.msg-student-name { font-size:15px; font-weight:700; color:#222; flex:1; }
+.msg-student-check { font-size:18px; opacity:0; transition:opacity .15s; }
+.msg-student-btn.selected .msg-student-check { opacity:1; }
+.msg-type-row { display:flex; gap:8px; margin-bottom:10px; }
+.msg-type-btn { flex:1; height:40px; border-radius:12px; border:2px solid #EEE; background:white; font-size:13px; font-weight:700; color:#666; cursor:pointer; font-family:inherit; transition:all .15s; }
+.msg-type-btn.selected { border-color:var(--blue); background:#EEF3FD; color:var(--blue); }
+
+/* ===== 선생님 랭킹 ===== */
+.teacher-rank-tabs { display:flex; gap:8px; margin-bottom:12px; }
+.t-rank-tab { flex:1; height:36px; border-radius:18px; border:2px solid #E0E0E0; background:white; font-size:13px; font-weight:700; color:#666; cursor:pointer; font-family:inherit; transition:all .15s; }
+.t-rank-tab.active { background:var(--blue); color:white; border-color:var(--blue); }
+.t-rank-row { display:flex; align-items:center; gap:10px; padding:8px 0; border-bottom:1px solid #F5F5F5; }
+.t-rank-row:last-child { border-bottom:none; }
+.t-rank-num { font-size:18px; font-weight:800; min-width:28px; text-align:center; color:#CCC; }
+.t-rank-num.top1 { color:#FFB300; }
+.t-rank-num.top2 { color:#9E9E9E; }
+.t-rank-num.top3 { color:#A1673A; }
+.t-rank-name { flex:1; font-size:15px; font-weight:700; color:#222; }
+.t-rank-score { font-size:18px; font-weight:800; color:var(--blue); }
+.t-rank-lbl { font-size:10px; font-weight:700; color:var(--gray); }
+.t-rank-empty { text-align:center; color:var(--gray); font-size:13px; font-weight:700; padding:20px 0; }
+
 </style>
 </head>
 <body>
@@ -1082,13 +1110,30 @@ body {
       <div class="teacher-preview-box" id="mission-preview">현재 미션 없음</div>
     </div>
 
-    <!-- 칭찬 메시지 -->
+    <!-- 개인별 메시지 -->
     <div class="teacher-card">
-      <div class="teacher-card-title">💬 학생 칭찬 메시지</div>
-      <div style="font-size:12px;font-weight:700;color:var(--gray);margin-bottom:8px;">내 반 학생들의 홈 화면에 표시됩니다</div>
-      <textarea class="teacher-textarea" id="praise-input" placeholder="예) 여러분 정말 열심히 하고 있어요! 오늘도 파이팅! 💪"></textarea>
-      <button class="teacher-add-btn" style="margin-top:8px;" onclick="savePraise()">칭찬 메시지 보내기 💌</button>
-      <div class="teacher-preview-box" id="praise-preview">현재 메시지 없음</div>
+      <div class="teacher-card-title">💬 개인별 메시지 보내기</div>
+      <div style="font-size:12px;font-weight:700;color:var(--gray);margin-bottom:10px;">학생을 선택하고 칭찬·숙제·알림을 보내세요</div>
+      <div class="msg-student-list" id="msg-student-list">
+        <div style="color:var(--gray);font-size:13px;font-weight:700;padding:8px;">학생 목록 불러오는 중...</div>
+      </div>
+      <div class="msg-type-row">
+        <button class="msg-type-btn selected" id="msg-type-praise" onclick="setMsgType('praise')">🌟 칭찬</button>
+        <button class="msg-type-btn" id="msg-type-homework" onclick="setMsgType('homework')">📝 숙제</button>
+        <button class="msg-type-btn" id="msg-type-notice" onclick="setMsgType('notice')">📢 알림</button>
+      </div>
+      <textarea class="teacher-textarea" id="personal-msg-input" placeholder="메시지를 입력하세요..."></textarea>
+      <button class="teacher-add-btn" style="margin-top:8px;" onclick="sendPersonalMsg()">메시지 보내기 💌</button>
+    </div>
+
+    <!-- 선생님 랭킹 -->
+    <div class="teacher-card">
+      <div class="teacher-card-title">🏆 주간 랭킹</div>
+      <div class="teacher-rank-tabs">
+        <button class="t-rank-tab active" id="t-rank-class" onclick="setTeacherRankTab('class')">우리 반</button>
+        <button class="t-rank-tab" id="t-rank-all" onclick="setTeacherRankTab('all')">전 체</button>
+      </div>
+      <div id="teacher-rank-list"><div class="t-rank-empty">불러오는 중...</div></div>
     </div>
 
   </div>
@@ -1169,7 +1214,7 @@ body {
       <div class="coupon-home-card" id="coupon-home-card" onclick="showTab('profile')">
         <div class="coupon-home-top">
           <div>
-            <div class="coupon-home-title">🎟️ 쿠폰 교환권</div>
+            <div class="coupon-home-title">🎟️ 쿠폰 10장 교환권</div>
             <div class="coupon-home-count"><span id="coupon-home-count">0</span><span>장 보유</span></div>
           </div>
         </div>
@@ -1319,7 +1364,7 @@ body {
           <div class="coupon-wallet-cnt" id="coupon-wallet-cnt">0장 보유</div>
         </div>
         <div class="coupon-grid" id="coupon-grid"></div>
-        <div class="coupon-wallet-empty" id="coupon-wallet-empty">아직 쿠폰이 없어요 🎟️<br>10일 연속 100% 달성 시 획득!</div>
+        <div class="coupon-wallet-empty" id="coupon-wallet-empty">아직 쿠폰이 없어요 🎟️<br>10일 연속 100% 달성 시 쿠폰 10장 교환권 획득!</div>
         <div class="coupon-perfect-progress">
           <div class="cpp-label"><span>🔥 연속 정답 100% 도전</span><span id="cpp-days">0/10일</span></div>
           <div class="cpp-bar-bg"><div class="cpp-bar-fill" id="cpp-bar" style="width:0%"></div></div>
@@ -1721,13 +1766,15 @@ function renderHomeTab() {
     mText.textContent = window._teacherSettings.mission;
     mCard.style.display = 'flex';
   } else if (mCard) { mCard.style.display = 'none'; }
-  // 칭찬 카드
+  // 개인 메시지 카드
   const pCard = document.getElementById('praise-card-home');
   const pFrom = document.getElementById('praise-from-home');
   const pText = document.getElementById('praise-text-home');
-  if (pCard && pText && window._teacherSettings && window._teacherSettings.praise) {
-    if (pFrom) pFrom.textContent = '💬 ' + (currentUser.teacherName||'선생님') + ' 선생님의 메시지';
-    pText.textContent = window._teacherSettings.praise;
+  const myMsg = window._myPersonalMsg;
+  if (pCard && myMsg && myMsg.text) {
+    const typeLabel = {praise:'🌟 칭찬',homework:'📝 숙제',notice:'📢 알림'}[myMsg.type]||'💬';
+    if (pFrom) pFrom.textContent = typeLabel + ' · ' + (currentUser.teacherName||'선생님') + ' 선생님';
+    pText.textContent = myMsg.text;
     pCard.style.display = 'block';
   } else if (pCard) { pCard.style.display = 'none'; }
   // 쿠폰 카드
@@ -2476,7 +2523,7 @@ function renderCouponHomeCard() {
   const el = document.getElementById('coupon-home-count'); if(el) el.textContent = coupons;
   const dEl = document.getElementById('coupon-streak-days'); if(dEl) dEl.textContent = ps+'/10일';
   const bar = document.getElementById('coupon-streak-bar'); if(bar) bar.style.width = Math.min(100,ps*10)+'%';
-  const msgs = {0:'매일 100% 정답 10일 달성 시 쿠폰 1장!',1:'1일째! 9일 남았어요 💪',2:'2일째! 8일 더 하면 쿠폰!',3:'🔥 3일째! 7일 남았어요!',4:'4일째! 절반 가까이!',5:'⚡ 5일째! 절반 달성! 5일만 더!',6:'6일째! 4일 남았어요!',7:'💎 7일째! 3일만 더하면 쿠폰!',8:'거의 다 왔어요! 2일 남았어요!',9:'🚀 9일째! 내일 100% 달성하면 쿠폰!',10:'🎉 10일 달성! 쿠폰 교환권 획득!'};
+  const msgs = {0:'매일 100% 정답 10일 연속 달성 시 쿠폰 10장 교환권!',1:'1일째! 9일 남았어요 💪',2:'2일째! 8일 더 하면 쿠폰!',3:'🔥 3일째! 7일 남았어요!',4:'4일째! 절반 가까이!',5:'⚡ 5일째! 절반 달성! 5일만 더!',6:'6일째! 4일 남았어요!',7:'💎 7일째! 3일만 더하면 쿠폰!',8:'거의 다 왔어요! 2일 남았어요!',9:'🚀 9일째! 내일 100% 달성하면 쿠폰!',10:'🎉 10일 달성! 쿠폰 교환권 획득!'};
   const msg = document.getElementById('coupon-streak-msg'); if(msg) msg.textContent = msgs[Math.min(10,ps)] || '';
 }
 
@@ -3018,6 +3065,9 @@ async function enterStudentApp() {
     try {
       window._teacherSettings = await window._fbGetTeacherSettings(currentUser.teacherId);
     } catch(e) { window._teacherSettings = {}; }
+    try {
+      window._myPersonalMsg = await window._fbGetPersonalMsg(currentUser.id);
+    } catch(e) { window._myPersonalMsg = null; }
   }
   loadData(); loadExamData();
 }
@@ -3030,6 +3080,7 @@ function enterTeacherApp() {
   if (h) h.textContent = currentUser.name;
   renderTeacherStudentList();
   loadTeacherSettingsPreview();
+  setTimeout(() => { loadMsgStudentList(); renderTeacherRanking(); }, 900);
 }
 
 function doLogout() {
@@ -3457,6 +3508,15 @@ initLogin();
 
   /* 비밀번호 재설정 */
   window.fbResetPassword = (email) => sendPasswordResetEmail(auth, email);
+
+  /* 개인별 메시지 */
+  window._fbSetPersonalMsg = (studentId, data) =>
+    setDoc(doc(db, 'personalMessages', studentId), data);
+
+  window._fbGetPersonalMsg = async (studentId) => {
+    const snap = await getDoc(doc(db, 'personalMessages', studentId));
+    return snap.exists() ? snap.data() : null;
+  };
 
   /* 주간 랭킹 */
   window._fbUpdateWeeklyRanking = (studentId, data) =>
