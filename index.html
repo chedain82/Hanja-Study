@@ -2141,13 +2141,13 @@ function renderLevelProgress() {
       }
     }
 
-    return \`<div class="lp-row" onclick="showLevelDetail('\${lv}')">
+    return `<div class="lp-row" onclick="showLevelDetail('${lv}')">
       <div class="lp-row-header">
-        <span class="lp-name">\${lv}</span>
-        <span class="lp-pct \${pctCls}">\${pctLabel}</span>
+        <span class="lp-name">${lv}</span>
+        <span class="lp-pct ${pctCls}">${pctLabel}</span>
       </div>
-      <div class="lp-bar-bg"><div class="lp-bar-fill" style="width:\${pct}%"></div></div>
-    </div>\`;
+      <div class="lp-bar-bg"><div class="lp-bar-fill" style="width:${pct}%"></div></div>
+    </div>`;
   }).join('');
 }
 
