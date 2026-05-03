@@ -3029,17 +3029,25 @@ async function renderRankingTab() {
   list.innerHTML = '<div class="rank-empty">🔄 불러오는 중...</div>';
   try {
     let items = [];
+    const currentWeek = getWeekStart(); // 이번 주 시작일 (월요일)
     if (_rankTab === 'class') {
       // 우리 반: 선생님 학생들의 weeklyRanking 읽기
       const students = await window._fbGetTeacherStudents(currentUser.teacherId);
       const results = await Promise.allSettled(students.map(s => window._fbGetWeeklyRanking(s.id)));
       items = results.map((r,i) => {
         const d = r.status==='fulfilled' && r.value ? r.value : {};
-        return { id:students[i].id, name:students[i].name, teacherName: currentUser.teacherName||'', weeklyProblems: d.weeklyProblems||0 };
+        // weekKey가 이번 주와 다르면 0점 (주간 리셋)
+        const score = (d.weekKey === currentWeek) ? (d.weeklyProblems||0) : 0;
+        return { id:students[i].id, name:students[i].name, teacherName: currentUser.teacherName||'', weeklyProblems: score };
       });
     } else {
       // 전체: weeklyRanking 컬렉션 전체
-      items = await window._fbGetAllWeeklyRanking();
+      const allData = await window._fbGetAllWeeklyRanking();
+      // weekKey가 이번 주와 다른 항목은 0점 처리
+      items = allData.map(d => ({
+        ...d,
+        weeklyProblems: (d.weekKey === currentWeek) ? (d.weeklyProblems||0) : 0
+      }));
     }
     items.sort((a,b)=>b.weeklyProblems-a.weeklyProblems);
     if (!items.length) { list.innerHTML='<div class="rank-empty">아직 데이터가 없어요 🏆</div>'; return; }
@@ -3789,6 +3797,7 @@ async function syncToFirestore() {
         teacherId: currentUser.teacherId,
         teacherName: currentUser.teacherName||'',
         weeklyProblems: weekScore,
+        weekKey: getWeekStart(),
         updatedAt: new Date().toISOString()
       }).catch(()=>{});
     }
