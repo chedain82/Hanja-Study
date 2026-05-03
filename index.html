@@ -866,14 +866,6 @@ body {
 .coupon-deduct-btn:active { opacity:.8; transform:scale(.97); }
 
 
-/* ===== Firebase 준비 대기 후 선생님 데이터 로드 ===== */
-function _waitFirebaseRanking() {
-  if (window._firebaseReady && window._fbGetTeacherStudents) {
-    renderTeacherRanking();
-  } else {
-    setTimeout(_waitFirebaseRanking, 400);
-  }
-}
 
 /* ===== 개인별 메시지 (선생님) ===== */
 .msg-student-list { display:flex; flex-direction:column; gap:6px; margin-bottom:10px; max-height:200px; overflow-y:auto; }
@@ -1523,9 +1515,6 @@ function _waitFirebaseRanking() {
       <div class="badges-grid" id="badges-grid"></div>
     </div>
 
-    <div style="text-align:center;padding:0 14px 16px;">
-      <button onclick="resetAllData()" style="background:none;border:none;color:var(--gray);font-size:13px;font-weight:700;cursor:pointer;font-family:inherit;">데이터 초기화</button>
-    </div>
     <!-- 쿠폰 지갑 -->
     <div class="coupon-wallet-wrap" id="coupon-wallet-wrap">
       <div class="coupon-wallet-card">
@@ -1543,9 +1532,6 @@ function _waitFirebaseRanking() {
       </div>
     </div>
 
-    <div style="text-align:center;padding:0 14px 16px;">
-      <button onclick="resetAllData()" style="background:none;border:none;color:var(--gray);font-size:13px;font-weight:700;cursor:pointer;font-family:inherit;">데이터 초기화</button>
-    </div>
     <div style="text-align:center;padding:0 14px 28px;">
       <button onclick="doLogout()" style="background:#FFF0F0;border:none;color:var(--wrong);font-size:14px;font-weight:700;cursor:pointer;font-family:inherit;border-radius:14px;padding:12px 32px;">🚪 로그아웃</button>
     </div>
@@ -1695,6 +1681,16 @@ function _waitFirebaseRanking() {
 </div><!-- end #app -->
 
 <script>
+
+/* ===== Firebase 준비 대기 후 선생님 데이터 로드 ===== */
+function _waitFirebaseRanking() {
+  if (window._firebaseReady && window._fbGetTeacherStudents) {
+    renderTeacherRanking();
+  } else {
+    setTimeout(_waitFirebaseRanking, 400);
+  }
+}
+
 /* ===== UTILITIES ===== */
 function todayStr() {
   const d = new Date();
