@@ -1040,6 +1040,11 @@ function _waitFirebaseRanking() {
   min-width:24px; text-align:right; flex-shrink:0;
 }
 
+
+/* ===== 진도율 카드 hover ===== */
+.lv-bar-row[onclick]:hover { background:#F5F5F5; border-radius:6px; }
+.lv-bar-row[onclick]:active { background:#EEE; }
+
 </style>
 </head>
 <body>
@@ -2222,9 +2227,11 @@ function _buildLevelProgressHTML(wp, lp) {
       const tCls = tScore>=100?'done':tScore>0?'ing':'none';
       const sTxt = sScore>=100?'✅':'';
       const tTxt = tScore>=100?'✅':'';
+      // 해당 step이 속한 급수 찾기
+      const stepLv = LEVEL_ORDER.find(l => (LEVEL_STEPS[l]||[]).includes(step)) || lv;
       return `<div class="lv-step-card">
         <div class="lv-step-title">${step}</div>
-        <div class="lv-bar-row">
+        <div class="lv-bar-row" style="cursor:pointer" onclick="goStudyFromProgress('${stepLv}','${step}','선정')">
           <div class="lv-bar-label">
             <span class="lv-bar-type blue">선정</span>
             <span class="lv-bar-score ${sCls}">${sTxt}</span>
@@ -2234,7 +2241,7 @@ function _buildLevelProgressHTML(wp, lp) {
             <span class="lv-bar-num">${sScore>0?sScore+'점':''}</span>
           </div>
         </div>
-        <div class="lv-bar-row">
+        <div class="lv-bar-row" style="cursor:pointer" onclick="goStudyFromProgress('${stepLv}','${step}','교과서')">
           <div class="lv-bar-label">
             <span class="lv-bar-type pink">교과서</span>
             <span class="lv-bar-score ${tCls}">${tTxt}</span>
@@ -3711,6 +3718,19 @@ function _renderLevelDetailModal(lv, wp) {
 function closeLevelDetail(e) {
   const modal = document.getElementById('level-detail-modal');
   if (!e || e.target === modal) modal.classList.remove('active');
+}
+
+/* ===== 진도율 카드에서 바로 학습 이동 ===== */
+function goStudyFromProgress(lv, step, category) {
+  // 선생님 보기 모드면 이동 안 함
+  if (window._viewingStudentWP) return;
+  S.level    = lv;
+  S.ranges   = [step];
+  S.category = category;
+  S.mode     = null; // 유형 선택 화면에서 선택
+  // 학습 탭으로 이동 후 study_type 화면으로
+  showTab('study');
+  setTimeout(() => { goSub('study_type'); }, 100);
 }
 
 function doLogout() {
