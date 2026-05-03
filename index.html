@@ -1804,7 +1804,7 @@ function startSession() {
   S.sessionStart = Date.now();
   S.sessionLogged = false;
 }
-function saveSessionLog(correct, wrong, total, desc) {
+function saveSessionLog(correct, wrong, total, desc, writePct) {
   if (S.sessionLogged) return;
   S.sessionLogged = true;
   const duration = S.sessionStart ? Math.floor((Date.now() - S.sessionStart) / 1000) : 60;
@@ -1813,7 +1813,11 @@ function saveSessionLog(correct, wrong, total, desc) {
   // range: 단일 범위일 때만 기록
   const range = (S.ranges && S.ranges.length === 1) ? S.ranges[0] : '';
   const category = S.category || '';
-  const pct = total > 0 ? Math.round((correct||0) / total * 100) : 0;
+  // 점수: writePct가 명시적으로 전달되면 그것 사용 (쓰기 넘기기 포함 점수)
+  //       아니면 correct/total로 계산
+  const pct = (writePct !== undefined && writePct !== null)
+    ? writePct
+    : (total > 0 ? Math.ceil((correct||0) / total * 100) : 0);
   // 고유 ID (크로스 디바이스 병합용)
   const entryId = Date.now() + '_' + Math.random().toString(36).substr(2,6);
   const entry = {
@@ -2614,12 +2618,18 @@ function renderWrite() {
   const it=S.items[S.idx]; const total=S.items.length;
   if(!it){box.innerHTML='<div style="flex:1;display:flex;align-items:center;justify-content:center;">데이터가 없습니다.</div>';return;}
   if(S.isFinished){
-    if (!S.sessionLogged) saveSessionLog(S.correct, S.wrong, S.correct+S.wrong, S.lastStudy||'쓰기');
+    // 전체 문항 수 기준 점수 (넘기기=오답 처리)
+    const writeTotalItems = S.items.length || 1;
+    const writeScore = Math.ceil(S.correct / writeTotalItems * 100);
+    const writeSkipped = writeTotalItems - S.correct - S.wrong;
+    if (!S.sessionLogged) saveSessionLog(S.correct, S.wrong, writeTotalItems, S.lastStudy||'쓰기', writeScore);
+    const scoreColor = writeScore>=100?'var(--correct)':writeScore>=80?'var(--blue)':'var(--wrong)';
     box.innerHTML=`
       <div class="finish-box">
         <div style="font-size:13px;font-weight:700;color:var(--gray);background:#F0F0F0;border-radius:20px;padding:6px 16px;">${studyInfoLabel()}</div>
         <div class="finish-title">끝났습니다! 🎉</div>
-        <div class="finish-score">✅ 정답 ${S.correct} &nbsp; ❌ 오답 ${S.wrong}</div>
+        <div style="font-size:42px;font-weight:800;color:${scoreColor};">${writeScore}점</div>
+        <div class="finish-score">✅ 정답 ${S.correct} &nbsp; ❌ 오답 ${S.wrong} &nbsp; ⏭ 넘기기 ${writeSkipped}</div>
         <div class="btn-row">
           <button class="btn btn-black" onclick="restartWrite()" style="min-width:120px;height:52px;font-size:17px;">전체 다시</button>
           <button class="btn btn-black" onclick="retryWriteWrong()" ${S.writeWrongItems.length===0?'disabled':''} style="min-width:120px;height:52px;font-size:15px;">오답만 다시</button>
