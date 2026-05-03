@@ -971,6 +971,24 @@ function _waitFirebaseRanking() {
 .lp-bar-fill { height:100%; background:var(--blue); border-radius:4px; transition:width .6s; }
 .lp-tap-hint { font-size:11px; font-weight:700; color:var(--gray); text-align:center; padding:4px 0 8px; }
 
+
+/* ===== 상세 팝업 진행 바 ===== */
+.ld-step-header {
+  font-size:13px; font-weight:800; color:#444;
+  padding:12px 0 6px; border-bottom:2px solid #EEEEEE; margin-bottom:6px;
+}
+.ld-bar-wrap { margin-bottom:10px; }
+.ld-score-row {
+  display:flex; align-items:center; justify-content:space-between; margin-bottom:4px;
+}
+.ld-type-label { font-size:13px; font-weight:700; }
+.ld-type-label.blue { color:var(--blue); }
+.ld-type-label.pink { color:#E91E63; }
+.ld-score-val { font-size:13px; font-weight:800; }
+.ld-bar-bg2 { height:8px; background:#EEE; border-radius:4px; overflow:hidden; }
+.ld-bar-fill-blue { height:100%; background:var(--blue); border-radius:4px; transition:width .5s; }
+.ld-bar-fill-pink { height:100%; background:#F06292; border-radius:4px; transition:width .5s; }
+
 </style>
 </head>
 <body>
@@ -2870,7 +2888,7 @@ async function renderRankingTab() {
         +'</div>'
         +'<div class="rank-score-wrap">'
         +'<span class="rank-score">'+item.weeklyProblems+'</span>'
-        +'<span class="rank-score-lbl">문제/주</span>'
+        +'<span class="rank-score-lbl">점수/주</span>'
         +'</div>'
         +'</div>';
     }).join('');
@@ -3400,7 +3418,7 @@ async function renderTeacherRanking() {
         <div class="t-rank-name">${item.name}${sub}</div>
         <div style="text-align:right">
           <div class="t-rank-score">${item.weeklyProblems}</div>
-          <div class="t-rank-lbl">문제/주</div>
+          <div class="t-rank-lbl">점수/주</div>
         </div>
       </div>`;
     }).join('');
@@ -3449,9 +3467,13 @@ function renderTodayGoal() {
 
 /* ===== 급수별 상세 모달 ===== */
 function showLevelDetail(lv) {
+  // 선생님이 학생 상세 볼 때는 _viewingStudentWP 사용, 아니면 본인 settings
+  const wp = window._viewingStudentWP || settings.writeProgress || {};
+  _renderLevelDetailModal(lv, wp);
+}
+
+function _renderLevelDetailModal(lv, wp) {
   const steps = LEVEL_STEPS[lv] || [];
-  const wp = settings.writeProgress || {};
-  const TYPES = ['선정', '교과서'];
   const modal = document.getElementById('level-detail-modal');
   const titleEl = document.getElementById('ld-title');
   const bodyEl  = document.getElementById('ld-body');
@@ -3459,35 +3481,45 @@ function showLevelDetail(lv) {
 
   titleEl.textContent = lv + ' 단계별 상세 현황';
 
-  let completedCnt = 0, totalCnt = steps.length * TYPES.length;
+  let completedCnt = 0, totalCnt = steps.length * 2;
   let rows = '';
 
   for (const step of steps) {
-    rows += `<div style="font-size:12px;font-weight:800;color:var(--gray);padding:10px 4px 4px;border-bottom:2px solid #EEE;margin-bottom:2px;">${step}</div>`;
-    for (const type of TYPES) {
-      const key = step + '_' + type;
-      const score = wp[key] || 0;
-      let statusCls, statusTxt;
-      if (score >= 100) {
-        statusCls = 'done'; statusTxt = '✅ 완료';
-        completedCnt++;
-      } else if (score > 0) {
-        statusCls = 'progress'; statusTxt = `📝 ${score}점`;
-      } else {
-        statusCls = 'empty'; statusTxt = '⬜ 미시작';
-      }
-      const tagCls = type === '선정' ? 'sunjung' : 'textbook';
-      rows += `<div class="ld-row">
-        <span class="ld-type-tag ${tagCls}">${type} 한자</span>
-        <span class="ld-status ${statusCls}">${statusTxt}</span>
-      </div>`;
-    }
+    rows += `<div class="ld-step-header">${step}</div>`;
+
+    // 선정 한자 (파랑)
+    const keyS = step + '_선정';
+    const scoreS = wp[keyS] || 0;
+    if (scoreS >= 100) completedCnt++;
+    const sColor = scoreS >= 100 ? 'var(--correct)' : scoreS > 0 ? 'var(--blue)' : 'var(--gray)';
+    const sTxt   = scoreS >= 100 ? '✅ 완료' : scoreS > 0 ? scoreS + '점' : '미시작';
+    rows += `<div class="ld-bar-wrap">
+      <div class="ld-score-row">
+        <span class="ld-type-label blue">선정 한자</span>
+        <span class="ld-score-val" style="color:${sColor}">${sTxt}</span>
+      </div>
+      <div class="ld-bar-bg2"><div class="ld-bar-fill-blue" style="width:${scoreS}%"></div></div>
+    </div>`;
+
+    // 교과서 한자 (분홍)
+    const keyT = step + '_교과서';
+    const scoreT = wp[keyT] || 0;
+    if (scoreT >= 100) completedCnt++;
+    const tColor = scoreT >= 100 ? 'var(--correct)' : scoreT > 0 ? '#E91E63' : 'var(--gray)';
+    const tTxt   = scoreT >= 100 ? '✅ 완료' : scoreT > 0 ? scoreT + '점' : '미시작';
+    rows += `<div class="ld-bar-wrap">
+      <div class="ld-score-row">
+        <span class="ld-type-label pink">교과서 한자</span>
+        <span class="ld-score-val" style="color:${tColor}">${tTxt}</span>
+      </div>
+      <div class="ld-bar-bg2"><div class="ld-bar-fill-pink" style="width:${scoreT}%"></div></div>
+    </div>`;
   }
 
   const headerPct = totalCnt > 0 ? Math.round(completedCnt/totalCnt*100) : 0;
   bodyEl.innerHTML = `
-    <div style="text-align:center;padding:10px 0 14px;border-bottom:1px solid #EEE;margin-bottom:4px;">
-      <div style="font-size:28px;font-weight:800;color:${headerPct>=100?'var(--correct)':'var(--blue)'};">${headerPct}%</div>
+    <div style="text-align:center;padding:10px 0 14px;border-bottom:1px solid #EEE;margin-bottom:8px;">
+      <div style="font-size:30px;font-weight:800;color:${headerPct>=100?'var(--correct)':'var(--blue)'};">${headerPct}%</div>
       <div style="font-size:12px;font-weight:700;color:var(--gray);">${completedCnt}/${totalCnt} 완료 · 쓰기 100점 기준</div>
     </div>
     ${rows}`;
@@ -3779,16 +3811,41 @@ async function showStudentDetail(studentId, studentName) {
 
     const todayAcc = todayTotal > 0 ? Math.round(todayCorrect/todayTotal*100) + '%' : '-';
 
+    // 선생님이 학생 writeProgress 볼 수 있도록 전역 변수 설정
+    const wp_student = st.writeProgress || {};
+    window._viewingStudentWP = wp_student;
+
     const levelRows = LEVEL_ORDER.map(lv => {
-      const cnt = lp[lv] || 0;
-      const tot = (LEVEL_STEPS[lv] || 1) * 10;
-      const pct = cnt > 0 ? Math.min(100, Math.round(cnt/tot*100)) : 0;
-      return `<div class="detail-level-row">
-        <div class="detail-level-header">
-          <span class="detail-level-name">${lv}</span>
-          <span class="detail-level-pct">${cnt > 0 ? pct + '%' : '미학습'}</span>
+      const steps = LEVEL_STEPS[lv] || [];
+      const totalCells = steps.length * 2;
+      let completedCells = 0, hasAny = false;
+      for (const step of steps) {
+        const sScore = wp_student[step + '_선정'] || 0;
+        const tScore = wp_student[step + '_교과서'] || 0;
+        if (sScore >= 100) completedCells++;
+        if (tScore >= 100) completedCells++;
+        if (sScore > 0 || tScore > 0) hasAny = true;
+      }
+      let pct, pctLabel, pctColor;
+      if (hasAny) {
+        pct = Math.round(completedCells / totalCells * 100);
+        pctLabel = pct + '%';
+        pctColor = pct >= 100 ? 'var(--correct)' : 'var(--blue)';
+      } else {
+        const oldCnt = lp[lv] || 0;
+        if (oldCnt > 0) {
+          pct = Math.min(99, Math.round(oldCnt / (steps.length * 10) * 100));
+          pctLabel = pct + '%·참고'; pctColor = 'var(--blue)';
+        } else {
+          pct = 0; pctLabel = '미학습'; pctColor = 'var(--gray)';
+        }
+      }
+      return `<div class="lp-row" onclick="showLevelDetail('${lv}')" style="cursor:pointer;">
+        <div class="lp-row-header">
+          <span class="lp-name">${lv}</span>
+          <span class="lp-pct" style="color:${pctColor}">${pctLabel}</span>
         </div>
-        <div class="detail-bar-bg"><div class="detail-bar-fill" style="width:${pct}%"></div></div>
+        <div class="lp-bar-bg"><div class="lp-bar-fill" style="width:${pct}%"></div></div>
       </div>`;
     }).join('');
 
@@ -3838,6 +3895,7 @@ async function showStudentDetail(studentId, studentName) {
 function closeStudentDetail(e) {
   if (e && e.target !== document.getElementById('student-detail')) return;
   document.getElementById('student-detail').classList.remove('active');
+  window._viewingStudentWP = null; // 초기화
 }
 async function addStudent() {
   const name = document.getElementById('new-student-name').value.trim();
