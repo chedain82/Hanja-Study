@@ -1909,6 +1909,12 @@ function goSub(screen) {
   const el = document.getElementById(screen);
   if (el) { el.classList.add('active'); document.getElementById('bottom-nav').classList.add('hidden'); }
   S.screen = screen;
+  // 카드 화면 키보드 단축키 등록/해제
+  if (screen === 'card') {
+    document.addEventListener('keydown', _cardKeyHandler);
+  } else {
+    document.removeEventListener('keydown', _cardKeyHandler);
+  }
   // Render
   if (screen==='level') renderLevel();
   else if (screen==='range') renderRange();
@@ -2504,6 +2510,27 @@ function toggleBack() {
   if(md)md.style.opacity=S.showBack?'1':'0';
   if(rb){rb.textContent=S.showBack?'닫기':'?';rb.style.fontSize=S.showBack?'18px':'46px';}
 }
+
+/* ===== 카드 키보드 단축키 ===== */
+function _cardKeyHandler(e) {
+  if (S.screen !== 'card') return;
+  // 입력 필드 포커스 시 무시
+  if (e.target && (e.target.tagName==='INPUT'||e.target.tagName==='TEXTAREA')) return;
+  switch(e.key) {
+    case 'ArrowRight':  // → 다음 한자
+      e.preventDefault(); nextItem(); break;
+    case 'ArrowLeft':   // ← 이전 한자
+      e.preventDefault(); prevItem(); break;
+    case 'ArrowDown':   // ↓ 뜻 보기
+      e.preventDefault();
+      if (!S.showBack) toggleBack(); break;
+    case 'ArrowUp':     // ↑ 뜻 숨기기
+      e.preventDefault();
+      if (S.showBack) toggleBack(); break;
+    case ' ':           // 스페이스 - 뜻 토글
+      e.preventDefault(); toggleBack(); break;
+  }
+}
 function restartCard() { S.idx=0;S.isFinished=false;S.showBack=false;S.sessionLogged=false;renderCard(); }
 
 /* ===== QUIZ ===== */
@@ -2560,6 +2587,9 @@ function renderQuiz() {
     </div>
     <div class="back-wrap"><button class="btn btn-back" onclick="goSub(S.lastMain)">← 뒤로</button></div>
   `;
+  // ghost click 방지: 렌더 후 300ms 뒤에 클릭 허용
+  S._quizReady = false;
+  setTimeout(() => { S._quizReady = true; }, 300);
 }
 
 function buildChoices(it) {
@@ -2572,7 +2602,11 @@ function buildChoices(it) {
   return shuffle([correct,...cands]).slice(0,4);
 }
 
-function chooseOpt(i) { if(S.quizChecked)return; S.quizSelected=i; renderQuiz(); }
+function chooseOpt(i) {
+  if(S.quizChecked)return;
+  if (!S._quizReady) return; // 렌더 직후 ghost click 방지
+  S.quizSelected=i; renderQuiz();
+}
 function checkAnswer() {
   if(S.quizSelected===null||S.quizChecked)return;
   S.quizChecked=true;
@@ -2591,7 +2625,8 @@ function checkAnswer() {
 }
 function toggleDir() { S.quizDir=S.quizDir==='한자→뜻'?'뜻→한자':'한자→뜻';S.quizSelected=null;S.quizChecked=false;S.quizResult='';S.quizItemKey=null;renderQuiz(); }
 function restartQuiz() {
-  S.items=S.reviewMode?shuffle(S.items):buildItems();
+  S.reviewMode = false;           // 전체 다시는 항상 원본 문제로
+  S.items = buildItems();         // 오답 모드 해제 후 전체 문제 재빌드
   S.idx=0;S.isFinished=false;S.correct=0;S.wrong=0;S.sessionLogged=false;
   S.wrongItems=[];S.unanswered=[];
   S.quizSelected=null;S.quizChecked=false;S.quizResult='';S.quizItemKey=null;
@@ -2663,10 +2698,25 @@ function renderWrite() {
   `;
   setTimeout(()=>{ const inp=document.getElementById('write-input'); if(inp)inp.focus(); },100);
 }
-function handleWriteKey(e) { if(e.key==='Enter'){e.preventDefault();if(S.writeChecked)nextWriteItem();else checkWrite();}else if(e.key===' '&&S.writeChecked){e.preventDefault();nextWriteItem();} }
+function handleWriteKey(e) {
+  // IME 한국어 입력 중 자동 Enter 차단 (keyCode 229 = 조합 중)
+  if (e.isComposing || e.keyCode === 229) return;
+  if (e.key === 'Enter') {
+    e.preventDefault();
+    if (S.writeChecked) {
+      nextWriteItem();
+    } else {
+      const inp = document.getElementById('write-input');
+      if (inp && inp.value.trim()) checkWrite(); // 빈 값이면 무시
+    }
+  } else if (e.key === ' ' && S.writeChecked) {
+    e.preventDefault(); nextWriteItem();
+  }
+}
 function checkWrite() {
   if(S.writeChecked)return;
   const inp=document.getElementById('write-input'); const val=inp?inp.value:'';
+  if (!val.trim()) { toast('답을 입력해 주세요 ✏️'); return; } // 빈 값 제출 방지
   const correctVal=getWriteAnswer(S.items[S.idx]);
   S.writeChecked=true; S.writeUserInput=val; S.writeCorrect=compareWrite(val,correctVal);
   const card=document.getElementById('write-inner');
@@ -2676,7 +2726,13 @@ function checkWrite() {
 }
 function nextWriteItem() { if(S.idx<S.items.length-1){S.idx++;S.writeChecked=false;S.writeCorrect=false;S.writeUserInput='';slideNext();}else S.isFinished=true; renderWrite();applySlide(); }
 function prevWriteItem() { if(S.idx>0){S.idx--;S.writeChecked=false;S.writeCorrect=false;S.writeUserInput='';slidePrev();renderWrite();applySlide();} }
-function restartWrite() { S.items=S.reviewMode?shuffle(S.items):buildItems();S.idx=0;S.isFinished=false;S.sessionLogged=false;S.correct=0;S.wrong=0;S.writeChecked=false;S.writeCorrect=false;S.writeWrongItems=[];startSession();renderWrite(); }
+function restartWrite() {
+  S.reviewMode = false;           // 전체 다시는 항상 원본 문제로
+  S.items = buildItems();         // 오답 모드 해제 후 전체 문제 재빌드
+  S.idx=0;S.isFinished=false;S.sessionLogged=false;
+  S.correct=0;S.wrong=0;S.writeChecked=false;S.writeCorrect=false;S.writeWrongItems=[];
+  startSession();renderWrite();
+}
 function retryWriteWrong() { if(!S.writeWrongItems.length){toast('오답이 없습니다.');return;} S.items=[...S.writeWrongItems];S.idx=0;S.isFinished=false;S.reviewMode=true;S.sessionLogged=false;S.correct=0;S.wrong=0;S.writeChecked=false;S.writeCorrect=false;S.writeWrongItems=[];startSession();renderWrite(); }
 
 function prevItem() { if(S.idx>0){S.idx--;S.showBack=false;S.quizSelected=null;S.quizChecked=false;S.quizResult='';S.quizItemKey=null;slidePrev();} if(S.screen==='card')renderCard();else renderQuiz();applySlide(); }
