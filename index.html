@@ -989,6 +989,47 @@ function _waitFirebaseRanking() {
 .ld-bar-fill-blue { height:100%; background:var(--blue); border-radius:4px; transition:width .5s; }
 .ld-bar-fill-pink { height:100%; background:#F06292; border-radius:4px; transition:width .5s; }
 
+
+/* ===== 인라인 급수별 진도율 ===== */
+.lv-section { padding: 0 14px 8px; }
+.lv-section-title { font-size:14px; font-weight:800; color:#222; margin-bottom:10px; padding-top:4px; }
+.lv-level-block { margin-bottom:16px; }
+.lv-level-header {
+  display:flex; align-items:center; justify-content:space-between;
+  margin-bottom:6px;
+}
+.lv-level-name { font-size:16px; font-weight:800; color:#222; }
+.lv-level-pct  { font-size:14px; font-weight:800; color:var(--blue); }
+.lv-level-pct.done { color:var(--correct); }
+.lv-level-pct.none { color:var(--gray); }
+.lv-level-bar-bg { height:5px; background:#EEE; border-radius:3px; overflow:hidden; margin-bottom:8px; }
+.lv-level-bar-fill { height:100%; background:var(--blue); border-radius:3px; transition:width .5s; }
+.lv-steps-grid {
+  display:grid; grid-template-columns:repeat(3,1fr); gap:6px;
+}
+.lv-step-card {
+  background:white; border-radius:10px; padding:8px 7px;
+}
+.lv-step-title {
+  font-size:12px; font-weight:800; color:#333;
+  text-align:center; margin-bottom:6px;
+}
+.lv-bar-row { margin-bottom:5px; }
+.lv-bar-label {
+  display:flex; justify-content:space-between; align-items:center;
+  margin-bottom:2px;
+}
+.lv-bar-type  { font-size:10px; font-weight:700; }
+.lv-bar-type.blue { color:var(--blue); }
+.lv-bar-type.pink { color:#E91E63; }
+.lv-bar-score { font-size:10px; font-weight:800; }
+.lv-bar-score.done { color:var(--correct); }
+.lv-bar-score.ing  { color:var(--blue); }
+.lv-bar-score.none { color:var(--gray); }
+.lv-mini-bar { height:4px; background:#EEE; border-radius:2px; overflow:hidden; }
+.lv-mini-fill-blue { height:100%; background:var(--blue); border-radius:2px; }
+.lv-mini-fill-pink { height:100%; background:#F06292; border-radius:2px; }
+
 </style>
 </head>
 <body>
@@ -1426,11 +1467,16 @@ function _waitFirebaseRanking() {
         <svg id="vol-chart" class="chart-svg" height="90"></svg>
       </div>
     </div>
+    <!-- 급수별 학습 현황 -->
+    <div class="lv-section">
+      <div class="lv-section-title">📖 급수별 학습 현황</div>
+      <div id="level-progress-list"></div>
+    </div>
   </div>
 
   <!-- WEAK TAB -->
   <div id="tab-weak" class="tab-pane">
-    <div class="weak-header">약점 노트</div>
+    <div class="weak-header">오답노트</div>
     <div class="weak-section">
       <div class="weak-action-btns" id="weak-action-btns" style="display:none;">
         <button class="weak-action-btn primary" onclick="startWrongCard()">카드 보기</button>
@@ -1461,11 +1507,7 @@ function _waitFirebaseRanking() {
       <div class="badges-label">🏅 획득한 배지</div>
       <div class="badges-grid" id="badges-grid"></div>
     </div>
-    <div class="level-progress-wrap">
-      <div class="lp-label">📖 급수별 학습 현황</div>
-      <div id="level-progress-list"></div>
-      <div class="lp-tap-hint">💡 급수를 탭하면 단계별 상세 현황을 볼 수 있어요</div>
-    </div>
+
     <div style="text-align:center;padding:0 14px 16px;">
       <button onclick="resetAllData()" style="background:none;border:none;color:var(--gray);font-size:13px;font-weight:700;cursor:pointer;font-family:inherit;">데이터 초기화</button>
     </div>
@@ -1516,7 +1558,7 @@ function _waitFirebaseRanking() {
       <span class="n-icon">📊</span><span class="n-lbl">리포트</span>
     </button>
     <button class="nav-tab" id="nav-weak" onclick="showTab('weak')">
-      <span class="n-icon">🎯</span><span class="n-lbl">약점</span>
+      <span class="n-icon">🎯</span><span class="n-lbl">오답노트</span>
     </button>
     <button class="nav-tab" id="nav-ranking" onclick="showTab('ranking')">
       <span class="n-icon">🏆</span><span class="n-lbl">랭킹</span>
@@ -1944,6 +1986,8 @@ function renderReportTab() {
   // Charts
   renderAccuracyChart();
   renderVolumeChart();
+  // 급수별 학습 현황
+  renderLevelProgress();
 }
 
 function renderHeatmap() {
@@ -2120,53 +2164,74 @@ function renderBadgesGrid() {
   }).join('');
 }
 
-function renderLevelProgress() {
-  const list = document.getElementById('level-progress-list');
-  const wp = settings.writeProgress || {};
-  const lp = settings.levelProgress || {}; // 기존 데이터 하위 호환
-  const TYPES = ['선정', '교과서'];
-
-  list.innerHTML = LEVEL_ORDER.map(lv => {
+/* 인라인 진도율 렌더 (wp: writeProgress 객체, 기본은 본인, 선생님 보기 시 학생 wp 전달) */
+function _buildLevelProgressHTML(wp, lp) {
+  wp = wp || {};
+  lp = lp || {};
+  return LEVEL_ORDER.map(lv => {
     const steps = LEVEL_STEPS[lv] || [];
-    const totalCells = steps.length * TYPES.length;
-    let completedCells = 0;
-    let hasAnyWrite = false;
-
+    const totalCells = steps.length * 2;
+    let completedCells = 0, hasAny = false;
     for (const step of steps) {
-      for (const type of TYPES) {
-        const key = step + '_' + type;
-        const score = wp[key] || 0;
-        if (score >= 100) completedCells++;
-        if (score > 0) hasAnyWrite = true;
-      }
+      if ((wp[step+'_선정']||0) >= 100) completedCells++;
+      if ((wp[step+'_교과서']||0) >= 100) completedCells++;
+      if ((wp[step+'_선정']||0) > 0 || (wp[step+'_교과서']||0) > 0) hasAny = true;
     }
-
     let pct, pctLabel, pctCls;
-    if (totalCells > 0 && hasAnyWrite) {
+    if (hasAny) {
       pct = Math.round(completedCells / totalCells * 100);
-      pctLabel = pct + '%';
-      pctCls = pct >= 100 ? 'done' : '';
+      pctLabel = pct + '%'; pctCls = pct >= 100 ? 'done' : '';
     } else {
-      // 기존 levelProgress 참고 표시
       const oldCnt = lp[lv] || 0;
       if (oldCnt > 0) {
-        const oldPct = Math.min(99, Math.round(oldCnt / (steps.length * 10) * 100));
-        pct = oldPct;
-        pctLabel = oldPct + '%·참고';
-        pctCls = '';
-      } else {
-        pct = 0; pctLabel = '미학습'; pctCls = 'none';
-      }
+        pct = Math.min(99, Math.round(oldCnt / (steps.length * 10) * 100));
+        pctLabel = pct + '%·참고'; pctCls = '';
+      } else { pct = 0; pctLabel = '미학습'; pctCls = 'none'; }
     }
+    // 3개씩 그리드로 단계 표시
+    const stepCards = steps.map(step => {
+      const sScore = wp[step+'_선정'] || 0;
+      const tScore = wp[step+'_교과서'] || 0;
+      const sCls = sScore>=100?'done':sScore>0?'ing':'none';
+      const tCls = tScore>=100?'done':tScore>0?'ing':'none';
+      const sTxt = sScore>=100?'✅':sScore>0?sScore+'점':'미시작';
+      const tTxt = tScore>=100?'✅':tScore>0?tScore+'점':'미시작';
+      return `<div class="lv-step-card">
+        <div class="lv-step-title">${step}</div>
+        <div class="lv-bar-row">
+          <div class="lv-bar-label">
+            <span class="lv-bar-type blue">선정</span>
+            <span class="lv-bar-score ${sCls}">${sTxt}</span>
+          </div>
+          <div class="lv-mini-bar"><div class="lv-mini-fill-blue" style="width:${sScore}%"></div></div>
+        </div>
+        <div class="lv-bar-row">
+          <div class="lv-bar-label">
+            <span class="lv-bar-type pink">교과서</span>
+            <span class="lv-bar-score ${tCls}">${tTxt}</span>
+          </div>
+          <div class="lv-mini-bar"><div class="lv-mini-fill-pink" style="width:${tScore}%"></div></div>
+        </div>
+      </div>`;
+    }).join('');
 
-    return `<div class="lp-row" onclick="showLevelDetail('${lv}')">
-      <div class="lp-row-header">
-        <span class="lp-name">${lv}</span>
-        <span class="lp-pct ${pctCls}">${pctLabel}</span>
+    return `<div class="lv-level-block">
+      <div class="lv-level-header">
+        <span class="lv-level-name">${lv}</span>
+        <span class="lv-level-pct ${pctCls}">${pctLabel}</span>
       </div>
-      <div class="lp-bar-bg"><div class="lp-bar-fill" style="width:${pct}%"></div></div>
+      <div class="lv-level-bar-bg"><div class="lv-level-bar-fill" style="width:${pct}%"></div></div>
+      <div class="lv-steps-grid">${stepCards}</div>
     </div>`;
   }).join('');
+}
+
+function renderLevelProgress() {
+  const list = document.getElementById('level-progress-list');
+  if (!list) return;
+  const wp = settings.writeProgress || {};
+  const lp = settings.levelProgress || {};
+  list.innerHTML = _buildLevelProgressHTML(wp, lp);
 }
 
 /* ===== WRONG NOTE FUNCTIONS ===== */
@@ -3811,43 +3876,9 @@ async function showStudentDetail(studentId, studentName) {
 
     const todayAcc = todayTotal > 0 ? Math.round(todayCorrect/todayTotal*100) + '%' : '-';
 
-    // 선생님이 학생 writeProgress 볼 수 있도록 전역 변수 설정
+    // 선생님 학생 상세 - writeProgress 기반 인라인 진도율
     const wp_student = st.writeProgress || {};
-    window._viewingStudentWP = wp_student;
-
-    const levelRows = LEVEL_ORDER.map(lv => {
-      const steps = LEVEL_STEPS[lv] || [];
-      const totalCells = steps.length * 2;
-      let completedCells = 0, hasAny = false;
-      for (const step of steps) {
-        const sScore = wp_student[step + '_선정'] || 0;
-        const tScore = wp_student[step + '_교과서'] || 0;
-        if (sScore >= 100) completedCells++;
-        if (tScore >= 100) completedCells++;
-        if (sScore > 0 || tScore > 0) hasAny = true;
-      }
-      let pct, pctLabel, pctColor;
-      if (hasAny) {
-        pct = Math.round(completedCells / totalCells * 100);
-        pctLabel = pct + '%';
-        pctColor = pct >= 100 ? 'var(--correct)' : 'var(--blue)';
-      } else {
-        const oldCnt = lp[lv] || 0;
-        if (oldCnt > 0) {
-          pct = Math.min(99, Math.round(oldCnt / (steps.length * 10) * 100));
-          pctLabel = pct + '%·참고'; pctColor = 'var(--blue)';
-        } else {
-          pct = 0; pctLabel = '미학습'; pctColor = 'var(--gray)';
-        }
-      }
-      return `<div class="lp-row" onclick="showLevelDetail('${lv}')" style="cursor:pointer;">
-        <div class="lp-row-header">
-          <span class="lp-name">${lv}</span>
-          <span class="lp-pct" style="color:${pctColor}">${pctLabel}</span>
-        </div>
-        <div class="lp-bar-bg"><div class="lp-bar-fill" style="width:${pct}%"></div></div>
-      </div>`;
-    }).join('');
+    const levelRows = _buildLevelProgressHTML(wp_student, lp);
 
     const wrongRows = top5.length
       ? top5.map(it => `
@@ -3880,8 +3911,8 @@ async function showStudentDetail(studentId, studentName) {
         <div class="detail-card"><div class="detail-val">${totalDays}일</div><div class="detail-lbl">📅 총 학습 일수</div></div>
       </div>
       <div class="detail-section">
-        <div class="detail-section-title">📚 급수별 학습 현황</div>
-        ${levelRows}
+        <div class="detail-section-title">📖 급수별 학습 현황</div>
+        <div class="lv-section" style="padding:0;">${levelRows}</div>
       </div>
       <div class="detail-section">
         <div class="detail-section-title">❌ 자주 틀린 한자 Top 5</div>
