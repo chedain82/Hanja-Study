@@ -2539,12 +2539,18 @@ function renderQuiz() {
   const it=S.items[S.idx]; const total=S.items.length;
   if(!it){box.innerHTML='<div style="flex:1;display:flex;align-items:center;justify-content:center;">데이터가 없습니다.</div>';return;}
   if(S.isFinished){
-    if (!S.sessionLogged) saveSessionLog(S.correct, S.wrong, S.correct+S.wrong, S.lastStudy||'퀴즈');
+    // 전체 문항 기준 점수 (미응답/건너띄기 포함)
+    const quizTotalItems = S.items.length || 1;
+    const quizScore = Math.ceil(S.correct / quizTotalItems * 100);
+    const quizSkipped = S.unanswered.length;
+    if (!S.sessionLogged) saveSessionLog(S.correct, S.wrong, quizTotalItems, S.lastStudy||'퀴즈', quizScore);
+    const scoreColor = quizScore>=100?'var(--correct)':quizScore>=80?'var(--blue)':'var(--wrong)';
     box.innerHTML=`
       <div class="finish-box">
         <div style="font-size:13px;font-weight:700;color:var(--gray);background:#F0F0F0;border-radius:20px;padding:6px 16px;">${studyInfoLabel()}</div>
         <div class="finish-title">끝났습니다! 🎉</div>
-        <div class="finish-score">✅ 정답 ${S.correct} &nbsp; ❌ 오답 ${S.wrong} &nbsp; ⏭ 미응답 ${S.unanswered.length}</div>
+        <div style="font-size:42px;font-weight:800;color:${scoreColor};">${quizScore}점</div>
+        <div class="finish-score">✅ 정답 ${S.correct} &nbsp; ❌ 오답 ${S.wrong} &nbsp; ⏭ 미응답 ${quizSkipped}</div>
         <div style="font-size:18px;font-weight:700;">어떻게 할까요?</div>
         <div class="btn-row">
           <button class="btn btn-black" onclick="restartQuiz()" style="min-width:120px;height:52px;font-size:17px;">전체 다시</button>
