@@ -902,6 +902,75 @@ function _waitFirebaseRanking() {
 .t-rank-lbl { font-size:10px; font-weight:700; color:var(--gray); }
 .t-rank-empty { text-align:center; color:var(--gray); font-size:13px; font-weight:700; padding:20px 0; }
 
+
+/* ===== 급수별 상세 모달 ===== */
+#level-detail-modal {
+  display:none; position:fixed; inset:0; background:rgba(0,0,0,.6);
+  z-index:800; align-items:flex-end; justify-content:center;
+}
+#level-detail-modal.active { display:flex; }
+.ld-box {
+  width:100%; max-width:560px; background:white;
+  border-radius:24px 24px 0 0; padding:20px 0 32px;
+  max-height:80vh; display:flex; flex-direction:column;
+  animation:sheetUp .28s ease-out;
+}
+@keyframes sheetUp { from{transform:translateY(100%);} to{transform:translateY(0);} }
+.ld-handle { width:40px; height:4px; border-radius:2px; background:#CCC; margin:0 auto 16px; }
+.ld-title { font-size:18px; font-weight:800; padding:0 20px 12px; border-bottom:1px solid #EEE; }
+.ld-scroll { overflow-y:auto; flex:1; padding:8px 16px 0; }
+.ld-type-header {
+  display:flex; align-items:center; gap:8px;
+  font-size:12px; font-weight:800; color:var(--gray);
+  padding:10px 4px 6px; text-transform:uppercase; letter-spacing:.5px;
+}
+.ld-row {
+  display:flex; align-items:center; gap:10px;
+  padding:10px 4px; border-bottom:1px solid #F5F5F5;
+}
+.ld-step { font-size:15px; font-weight:800; color:#222; min-width:52px; }
+.ld-type-tag {
+  font-size:11px; font-weight:700; border-radius:8px;
+  padding:3px 8px; flex:1;
+}
+.ld-type-tag.sunjung { background:#EEF3FD; color:var(--blue); }
+.ld-type-tag.textbook { background:#FFF3E0; color:#E65100; }
+.ld-status { font-size:14px; font-weight:800; min-width:70px; text-align:right; }
+.ld-status.done  { color:var(--correct); }
+.ld-status.progress { color:var(--blue); }
+.ld-status.empty { color:var(--gray); }
+.ld-close-btn {
+  margin:14px 16px 0; height:48px; border-radius:16px;
+  background:#F5F5F5; border:none; font-size:16px; font-weight:700;
+  color:#444; cursor:pointer; font-family:inherit; width:calc(100% - 32px);
+}
+
+/* ===== 오늘의 목표 카드 (학습 목표 기반) ===== */
+.today-goal-card {
+  background:linear-gradient(135deg,#3B7DE0,#233D99);
+  border-radius:18px; padding:14px 18px; margin-bottom:12px; color:white;
+  cursor:pointer; position:relative; overflow:hidden;
+}
+.today-goal-card::after {
+  content:'🎯'; position:absolute; right:14px; top:50%;
+  transform:translateY(-50%); font-size:38px; opacity:.2; pointer-events:none;
+}
+.tgc-label { font-size:12px; font-weight:800; opacity:.8; margin-bottom:4px; }
+.tgc-goal  { font-size:16px; font-weight:800; line-height:1.4; }
+.tgc-sub   { font-size:11px; font-weight:700; opacity:.75; margin-top:4px; }
+
+/* ===== 진도율 업데이트 ===== */
+.lp-row { cursor:pointer; border-radius:10px; padding:8px 10px; margin-bottom:4px; transition:background .15s; }
+.lp-row:active { background:#F0F0F0; }
+.lp-row-header { display:flex; justify-content:space-between; align-items:center; margin-bottom:5px; }
+.lp-name { font-size:15px; font-weight:800; color:#222; }
+.lp-pct  { font-size:13px; font-weight:800; color:var(--blue); }
+.lp-pct.done { color:var(--correct); }
+.lp-pct.none { color:var(--gray); }
+.lp-bar-bg { height:7px; background:#EEE; border-radius:4px; overflow:hidden; }
+.lp-bar-fill { height:100%; background:var(--blue); border-radius:4px; transition:width .6s; }
+.lp-tap-hint { font-size:11px; font-weight:700; color:var(--gray); text-align:center; padding:4px 0 8px; }
+
 </style>
 </head>
 <body>
@@ -1163,6 +1232,16 @@ function _waitFirebaseRanking() {
   </div>
 </div>
 
+<!-- ===== 급수별 상세 모달 ===== -->
+<div id="level-detail-modal" onclick="closeLevelDetail(event)">
+  <div class="ld-box">
+    <div class="ld-handle"></div>
+    <div class="ld-title" id="ld-title">상세 현황</div>
+    <div class="ld-scroll" id="ld-body"></div>
+    <button class="ld-close-btn" onclick="document.getElementById('level-detail-modal').classList.remove('active')">닫기</button>
+  </div>
+</div>
+
 <div id="loading"><div class="spinner"></div><div style="font-size:16px;font-weight:700;color:#555;">데이터 불러오는 중...</div></div>
 <div id="toast"></div>
 <div id="coupon-overlay">
@@ -1208,6 +1287,13 @@ function _waitFirebaseRanking() {
       <div class="praise-card" id="praise-card-home" style="display:none;">
         <div class="praise-from" id="praise-from-home"></div>
         <div class="praise-text" id="praise-text-home"></div>
+      </div>
+
+      <!-- 오늘의 학습 목표 (자동) -->
+      <div class="today-goal-card" id="today-goal-card" style="display:none;" onclick="showTab('study')">
+        <div class="tgc-label">📚 오늘의 학습 목표</div>
+        <div class="tgc-goal" id="today-goal-text"></div>
+        <div class="tgc-sub" id="today-goal-sub"></div>
       </div>
 
       <!-- 오늘의 미션 -->
@@ -1360,7 +1446,7 @@ function _waitFirebaseRanking() {
     <div class="level-progress-wrap">
       <div class="lp-label">📖 급수별 학습 현황</div>
       <div id="level-progress-list"></div>
-      <div style="font-size:12px;font-weight:700;color:var(--gray);text-align:center;padding:8px 0;">퀴즈를 완료하면 진행률이 쌓여요</div>
+      <div class="lp-tap-hint">💡 급수를 탭하면 단계별 상세 현황을 볼 수 있어요</div>
     </div>
     <div style="text-align:center;padding:0 14px 16px;">
       <button onclick="resetAllData()" style="background:none;border:none;color:var(--gray);font-size:13px;font-weight:700;cursor:pointer;font-family:inherit;">데이터 초기화</button>
@@ -1652,20 +1738,45 @@ function saveSessionLog(correct, wrong, total, desc) {
   if (S.sessionLogged) return;
   S.sessionLogged = true;
   const duration = S.sessionStart ? Math.floor((Date.now() - S.sessionStart) / 1000) : 60;
-  const entry = { date: todayStr(), duration: Math.max(duration, 5), correct: correct||0, wrong: wrong||0, total: total||0, desc: desc||'' };
+  // mode 판별: S.mode 기반
+  const mode = S.mode || 'card'; // 'card' | 'quiz' | 'write'
+  // range: 단일 범위일 때만 기록
+  const range = (S.ranges && S.ranges.length === 1) ? S.ranges[0] : '';
+  const category = S.category || '';
+  const pct = total > 0 ? Math.round((correct||0) / total * 100) : 0;
+  // 고유 ID (크로스 디바이스 병합용)
+  const entryId = Date.now() + '_' + Math.random().toString(36).substr(2,6);
+  const entry = {
+    id: entryId,
+    date: todayStr(),
+    duration: Math.max(duration, 5),
+    correct: correct||0, wrong: wrong||0, total: total||0,
+    desc: desc||'', mode, range, category, pct
+  };
   studyLog.push(entry);
   saveStudyLog();
   // Update settings
-  settings.totalCorrect = (settings.totalCorrect||0) + (correct||0);
+  settings.totalCorrect   = (settings.totalCorrect||0)   + (correct||0);
   settings.totalQuestions = (settings.totalQuestions||0) + (total||0);
-  settings.totalTime = (settings.totalTime||0) + entry.duration;
+  settings.totalTime      = (settings.totalTime||0)      + entry.duration;
+  // 기존 levelProgress 유지 (하위 호환)
   if (desc && S.level) {
     if (!settings.levelProgress) settings.levelProgress = {};
     settings.levelProgress[S.level] = (settings.levelProgress[S.level]||0) + (total||0);
   }
+  // 새 writeProgress: 쓰기 모드에서 단계×타입별 최고 점수 기록
+  if (mode === 'write' && range && category && total > 0) {
+    if (!settings.writeProgress) settings.writeProgress = {};
+    const wpKey = range + '_' + category;
+    const existing = settings.writeProgress[wpKey] || 0;
+    settings.writeProgress[wpKey] = Math.max(existing, pct);
+  }
   updateStreak();
   checkBadges();
-  if (total > 0 && (wrong||0) === 0 && correct === total) checkPerfectStreak();
+  // 10일 연속: 퀴즈 OR 쓰기에서 80점 이상
+  if ((mode === 'quiz' || mode === 'write') && total > 0 && pct >= 80) {
+    checkPerfectStreak();
+  }
   S.sessionStart = null;
 }
 function saveExamLog(correct, wrong, total) {
@@ -1788,6 +1899,8 @@ function renderHomeTab() {
   } else if (pCard) { pCard.style.display = 'none'; }
   // 쿠폰 카드
   renderCouponHomeCard();
+  // 오늘의 학습 목표
+  renderTodayGoal();
 }
 
 function renderStudyTab() {
@@ -1991,15 +2104,50 @@ function renderBadgesGrid() {
 
 function renderLevelProgress() {
   const list = document.getElementById('level-progress-list');
-  const lp = settings.levelProgress || {};
+  const wp = settings.writeProgress || {};
+  const lp = settings.levelProgress || {}; // 기존 데이터 하위 호환
+  const TYPES = ['선정', '교과서'];
+
   list.innerHTML = LEVEL_ORDER.map(lv => {
-    const count = lp[lv] || 0;
-    const total = (LEVEL_STEPS[lv]||[]).length * 10;
-    const pct = Math.min(100, total > 0 ? Math.round(count/total*100) : 0);
-    return `<div class="lp-row">
-      <div class="lp-row-header"><span class="lp-name">${lv}</span><span class="lp-pct">${count > 0 ? pct + '%' : '미학습'}</span></div>
-      <div class="lp-bar-bg"><div class="lp-bar-fill" style="width:${pct}%"></div></div>
-    </div>`;
+    const steps = LEVEL_STEPS[lv] || [];
+    const totalCells = steps.length * TYPES.length;
+    let completedCells = 0;
+    let hasAnyWrite = false;
+
+    for (const step of steps) {
+      for (const type of TYPES) {
+        const key = step + '_' + type;
+        const score = wp[key] || 0;
+        if (score >= 100) completedCells++;
+        if (score > 0) hasAnyWrite = true;
+      }
+    }
+
+    let pct, pctLabel, pctCls;
+    if (totalCells > 0 && hasAnyWrite) {
+      pct = Math.round(completedCells / totalCells * 100);
+      pctLabel = pct + '%';
+      pctCls = pct >= 100 ? 'done' : '';
+    } else {
+      // 기존 levelProgress 참고 표시
+      const oldCnt = lp[lv] || 0;
+      if (oldCnt > 0) {
+        const oldPct = Math.min(99, Math.round(oldCnt / (steps.length * 10) * 100));
+        pct = oldPct;
+        pctLabel = oldPct + '%·참고';
+        pctCls = '';
+      } else {
+        pct = 0; pctLabel = '미학습'; pctCls = 'none';
+      }
+    }
+
+    return \`<div class="lp-row" onclick="showLevelDetail('\${lv}')">
+      <div class="lp-row-header">
+        <span class="lp-name">\${lv}</span>
+        <span class="lp-pct \${pctCls}">\${pctLabel}</span>
+      </div>
+      <div class="lp-bar-bg"><div class="lp-bar-fill" style="width:\${pct}%"></div></div>
+    </div>\`;
   }).join('');
 }
 
@@ -2567,6 +2715,28 @@ function getWeeklyProblems() {
   return studyLog.filter(e => e.date >= ws).reduce((s,e)=>s+(e.total||0),0);
 }
 
+/* 랭킹 점수: 퀴즈 정답×1 + 쓰기 정답×2 */
+function getWeeklyScore() {
+  const ws = getWeekStart();
+  const weekLogs = studyLog.filter(e => e.date >= ws);
+  let score = 0;
+  for (const e of weekLogs) {
+    const m = e.mode || '';
+    if (m === 'quiz') {
+      score += (e.correct||0) * 1;
+    } else if (m === 'write') {
+      score += (e.correct||0) * 2;
+    } else if (!m) {
+      // 기존 데이터 (mode 없음) - desc로 판별
+      const d = e.desc || '';
+      if (d.includes('퀴즈') || d.includes('quiz')) score += (e.correct||0) * 1;
+      else if (d.includes('쓰기') || d.includes('write')) score += (e.correct||0) * 2;
+    }
+    // 카드, 기출 등 = 0점
+  }
+  return score;
+}
+
 /* ===== 연속 정답 100% 체크 ===== */
 function checkPerfectStreak() {
   const today = todayStr();
@@ -2580,7 +2750,12 @@ function checkPerfectStreak() {
   }
   settings.lastPerfectDate = today;
   const ps = settings.perfectStreak;
-  const mid = {3:'🔥 3일 연속 100%! 7일 더 하면 쿠폰!',5:'⚡ 5일 연속! 5일만 더하면 쿠폰!',7:'💎 7일 연속! 3일만 더하면 쿠폰!',9:'🚀 9일 연속! 내일 100%면 쿠폰!!'};
+  const mid = {
+    3:'🔥 3일 연속 80점 이상! 7일 더 하면 쿠폰!',
+    5:'⚡ 5일 연속! 5일만 더하면 쿠폰 10장!',
+    7:'💎 7일 연속! 3일만 더하면 쿠폰!',
+    9:'🚀 9일 연속! 내일 80점 이상이면 쿠폰!!'
+  };
   if (mid[ps]) setTimeout(()=>toast(mid[ps]), 1000);
   if (ps >= 10) {
     settings.coupons = (settings.coupons||0) + 1;
@@ -3234,6 +3409,97 @@ async function renderTeacherRanking() {
   }
 }
 
+/* ===== 오늘의 학습 목표 자동 계산 ===== */
+function getTodayGoal() {
+  const wp = settings.writeProgress || {};
+  const TYPES = ['선정', '교과서'];
+  for (const lv of LEVEL_ORDER) {
+    const steps = LEVEL_STEPS[lv] || [];
+    for (const step of steps) {
+      for (const type of TYPES) {
+        const key = step + '_' + type;
+        const score = wp[key] || 0;
+        if (score < 100) {
+          return { lv, step, type, score };
+        }
+      }
+    }
+  }
+  return null; // 전체 완료!
+}
+
+function renderTodayGoal() {
+  const card = document.getElementById('today-goal-card');
+  const textEl = document.getElementById('today-goal-text');
+  const subEl  = document.getElementById('today-goal-sub');
+  if (!card) return;
+  const goal = getTodayGoal();
+  if (!goal) {
+    card.style.display = 'none'; return;
+  }
+  card.style.display = 'block';
+  const score = goal.score;
+  textEl.textContent = `${goal.step} ${goal.type} 쓰기 도전!`;
+  if (score > 0) {
+    subEl.textContent = `현재 최고점 ${score}점 · 100점 달성하면 완료!`;
+  } else {
+    subEl.textContent = `${goal.lv} · 아직 시작 전이에요. 지금 도전해보세요! 💪`;
+  }
+}
+
+/* ===== 급수별 상세 모달 ===== */
+function showLevelDetail(lv) {
+  const steps = LEVEL_STEPS[lv] || [];
+  const wp = settings.writeProgress || {};
+  const TYPES = ['선정', '교과서'];
+  const modal = document.getElementById('level-detail-modal');
+  const titleEl = document.getElementById('ld-title');
+  const bodyEl  = document.getElementById('ld-body');
+  if (!modal) return;
+
+  titleEl.textContent = lv + ' 단계별 상세 현황';
+
+  let completedCnt = 0, totalCnt = steps.length * TYPES.length;
+  let rows = '';
+
+  for (const step of steps) {
+    rows += `<div style="font-size:12px;font-weight:800;color:var(--gray);padding:10px 4px 4px;border-bottom:2px solid #EEE;margin-bottom:2px;">${step}</div>`;
+    for (const type of TYPES) {
+      const key = step + '_' + type;
+      const score = wp[key] || 0;
+      let statusCls, statusTxt;
+      if (score >= 100) {
+        statusCls = 'done'; statusTxt = '✅ 완료';
+        completedCnt++;
+      } else if (score > 0) {
+        statusCls = 'progress'; statusTxt = `📝 ${score}점`;
+      } else {
+        statusCls = 'empty'; statusTxt = '⬜ 미시작';
+      }
+      const tagCls = type === '선정' ? 'sunjung' : 'textbook';
+      rows += `<div class="ld-row">
+        <span class="ld-type-tag ${tagCls}">${type} 한자</span>
+        <span class="ld-status ${statusCls}">${statusTxt}</span>
+      </div>`;
+    }
+  }
+
+  const headerPct = totalCnt > 0 ? Math.round(completedCnt/totalCnt*100) : 0;
+  bodyEl.innerHTML = `
+    <div style="text-align:center;padding:10px 0 14px;border-bottom:1px solid #EEE;margin-bottom:4px;">
+      <div style="font-size:28px;font-weight:800;color:${headerPct>=100?'var(--correct)':'var(--blue)'};">${headerPct}%</div>
+      <div style="font-size:12px;font-weight:700;color:var(--gray);">${completedCnt}/${totalCnt} 완료 · 쓰기 100점 기준</div>
+    </div>
+    ${rows}`;
+
+  modal.classList.add('active');
+}
+
+function closeLevelDetail(e) {
+  const modal = document.getElementById('level-detail-modal');
+  if (!e || e.target === modal) modal.classList.remove('active');
+}
+
 function doLogout() {
   if (!confirm('로그아웃 할까요?')) return;
   sessionStorage.removeItem('hanja_session');
@@ -3245,12 +3511,34 @@ function doLogout() {
 /* ===== FIRESTORE: 학생 데이터 ===== */
 async function loadStudentDataFromFirestore() {
   if (!currentUser || currentUser.role !== 'student') return;
-  if (!currentUser.teacherId) return; // 선생님 없는 학생은 localStorage만 사용
+  if (!currentUser.teacherId) return;
   try {
     const data = await window._fbGetStudentData(currentUser.id);
     if (data) {
-      if (data.settings)     settings     = data.settings;
-      if (data.studyLog)     studyLog     = data.studyLog;
+      // settings: Firestore가 우선, 단 writeProgress는 병합
+      if (data.settings) {
+        const localWP = (settings.writeProgress) ? {...settings.writeProgress} : {};
+        settings = data.settings;
+        // writeProgress 병합: 더 높은 점수 유지
+        if (!settings.writeProgress) settings.writeProgress = {};
+        for (const k of Object.keys(localWP)) {
+          settings.writeProgress[k] = Math.max(settings.writeProgress[k]||0, localWP[k]||0);
+        }
+      }
+      // studyLog 병합: id 기반으로 중복 제거
+      if (data.studyLog) {
+        const remoteLog = data.studyLog;
+        const localIds = new Set(studyLog.map(e => e.id).filter(Boolean));
+        // 로컬에 없는 원격 항목 추가
+        const newFromRemote = remoteLog.filter(e => !e.id || !localIds.has(e.id));
+        // 로컬에 있는 항목 중 원격에 없는 것 (오프라인 중 작성)
+        const remoteIds = new Set(remoteLog.map(e => e.id).filter(Boolean));
+        const localOnly = studyLog.filter(e => e.id && !remoteIds.has(e.id));
+        // 원격 + 로컬만 있는 것 병합 후 날짜순 정렬
+        studyLog = [...remoteLog, ...localOnly].sort((a,b) => (a.date||'').localeCompare(b.date||''));
+        // 최근 300개만 유지
+        if (studyLog.length > 300) studyLog = studyLog.slice(-300);
+      }
       if (data.earnedBadges) earnedBadges = data.earnedBadges;
       if (data.wrongNote)    S.wrongNote  = data.wrongNote;
     }
@@ -3261,13 +3549,13 @@ async function syncToFirestore() {
   if (!currentUser.teacherId) return;
   try {
     // 주간 랭킹 업데이트
-    const weekProblems = getWeeklyProblems();
+    const weekScore = getWeeklyScore();
     if (window._fbUpdateWeeklyRanking) {
       window._fbUpdateWeeklyRanking(currentUser.id, {
         name: currentUser.name,
         teacherId: currentUser.teacherId,
         teacherName: currentUser.teacherName||'',
-        weeklyProblems: weekProblems,
+        weeklyProblems: weekScore,
         updatedAt: new Date().toISOString()
       }).catch(()=>{});
     }
