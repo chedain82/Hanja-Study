@@ -1030,6 +1030,16 @@ function _waitFirebaseRanking() {
 .lv-mini-fill-blue { height:100%; background:var(--blue); border-radius:2px; }
 .lv-mini-fill-pink { height:100%; background:#F06292; border-radius:2px; }
 
+
+/* ===== 바 + 점수 나란히 ===== */
+.lv-bar-with-score {
+  display:flex; align-items:center; gap:5px;
+}
+.lv-bar-num {
+  font-size:10px; font-weight:800; color:#222;
+  min-width:24px; text-align:right; flex-shrink:0;
+}
+
 </style>
 </head>
 <body>
@@ -1825,11 +1835,17 @@ function saveSessionLog(correct, wrong, total, desc) {
     settings.levelProgress[S.level] = (settings.levelProgress[S.level]||0) + (total||0);
   }
   // 새 writeProgress: 쓰기 모드에서 단계×타입별 최고 점수 기록
-  if (mode === 'write' && range && category && total > 0) {
+  if (mode === 'write' && category && total > 0 && S.ranges && S.ranges.length > 0) {
     if (!settings.writeProgress) settings.writeProgress = {};
-    const wpKey = range + '_' + category;
-    const existing = settings.writeProgress[wpKey] || 0;
-    settings.writeProgress[wpKey] = Math.max(existing, pct);
+    // 단일 범위든 다중 범위든 선택된 모든 범위에 점수 기록
+    const rangesToSave = S.ranges.length === 1
+      ? S.ranges
+      : _getRangesFromItems(S.items || [], S.ranges); // 실제 학습한 범위 기준
+    for (const r of rangesToSave) {
+      const wpKey = r + '_' + category;
+      const existing = settings.writeProgress[wpKey] || 0;
+      settings.writeProgress[wpKey] = Math.max(existing, pct);
+    }
   }
   updateStreak();
   checkBadges();
@@ -2194,8 +2210,8 @@ function _buildLevelProgressHTML(wp, lp) {
       const tScore = wp[step+'_교과서'] || 0;
       const sCls = sScore>=100?'done':sScore>0?'ing':'none';
       const tCls = tScore>=100?'done':tScore>0?'ing':'none';
-      const sTxt = sScore>=100?'✅':sScore>0?sScore+'점':'미시작';
-      const tTxt = tScore>=100?'✅':tScore>0?tScore+'점':'미시작';
+      const sTxt = sScore>=100?'✅':'';
+      const tTxt = tScore>=100?'✅':'';
       return `<div class="lv-step-card">
         <div class="lv-step-title">${step}</div>
         <div class="lv-bar-row">
@@ -2203,14 +2219,20 @@ function _buildLevelProgressHTML(wp, lp) {
             <span class="lv-bar-type blue">선정</span>
             <span class="lv-bar-score ${sCls}">${sTxt}</span>
           </div>
-          <div class="lv-mini-bar"><div class="lv-mini-fill-blue" style="width:${sScore}%"></div></div>
+          <div class="lv-bar-with-score">
+            <div class="lv-mini-bar" style="flex:1"><div class="lv-mini-fill-blue" style="width:${sScore}%"></div></div>
+            <span class="lv-bar-num">${sScore>0?sScore+'점':''}</span>
+          </div>
         </div>
         <div class="lv-bar-row">
           <div class="lv-bar-label">
             <span class="lv-bar-type pink">교과서</span>
             <span class="lv-bar-score ${tCls}">${tTxt}</span>
           </div>
-          <div class="lv-mini-bar"><div class="lv-mini-fill-pink" style="width:${tScore}%"></div></div>
+          <div class="lv-bar-with-score">
+            <div class="lv-mini-bar" style="flex:1"><div class="lv-mini-fill-pink" style="width:${tScore}%"></div></div>
+            <span class="lv-bar-num">${tScore>0?tScore+'점':''}</span>
+          </div>
         </div>
       </div>`;
     }).join('');
@@ -2793,6 +2815,13 @@ function getWeekStart() {
   d.setDate(d.getDate() + diff);
   return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');
 }
+/* 학습 아이템에서 실제 학습한 범위 목록 추출 */
+function _getRangesFromItems(items, fallbackRanges) {
+  if (!items || !items.length) return fallbackRanges || [];
+  const rangesInItems = [...new Set(items.map(it => it.단계).filter(Boolean))];
+  return rangesInItems.length > 0 ? rangesInItems : (fallbackRanges || []);
+}
+
 function getWeeklyProblems() {
   const ws = getWeekStart();
   return studyLog.filter(e => e.date >= ws).reduce((s,e)=>s+(e.total||0),0);
