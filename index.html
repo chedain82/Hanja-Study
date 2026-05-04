@@ -9,6 +9,13 @@
   window.dataLayer = window.dataLayer || [];
   function gtag(){dataLayer.push(arguments);}
   gtag('js', new Date()); gtag('config', 'G-G30WMXQDW6');
+
+  /* ===== GA 이벤트 헬퍼 ===== */
+  window.gaEvent = function(eventName, params) {
+    if (typeof gtag === 'function') {
+      gtag('event', eventName, params || {});
+    }
+  };
 </script>
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Nanum+Myeongjo:wght@400;700;800&display=swap');
@@ -1690,6 +1697,7 @@ function _waitFirebaseRanking() {
     setTimeout(_waitFirebaseRanking, 400);
   }
 }
+
 /* ===== UTILITIES ===== */
 function todayStr() {
   const d = new Date();
@@ -1796,7 +1804,11 @@ function checkBadges() {
     }
   }
   saveBadges();
-  if (newBadge) showBadge(newBadge.icon, newBadge.name);
+  if (newBadge) {
+    // GA: 배지 획득
+    gaEvent('badge_earned', { badge_name: newBadge.name, badge_id: newBadge.id });
+    showBadge(newBadge.icon, newBadge.name);
+  }
 }
 
 /* ===== SESSION TRACKING ===== */
@@ -1829,6 +1841,18 @@ function saveSessionLog(correct, wrong, total, desc, writePct) {
   };
   studyLog.push(entry);
   saveStudyLog();
+  // GA: 학습 완료
+  gaEvent('study_complete', {
+    mode: mode || '',
+    level: (desc||'').split(' ')[0] || '',
+    range: range || '',
+    category: category || '',
+    total_questions: total || 0,
+    correct_count: correct || 0,
+    wrong_count: wrong || 0,
+    accuracy_pct: pct || 0,
+    duration_sec: Math.max(duration, 5)
+  });
   // Update settings
   settings.totalCorrect   = (settings.totalCorrect||0)   + (correct||0);
   settings.totalQuestions = (settings.totalQuestions||0) + (total||0);
@@ -1891,6 +1915,9 @@ function showTab(name) {
   document.querySelectorAll('.nav-tab').forEach(el => el.classList.remove('active'));
   const navBtn = document.getElementById('nav-' + name);
   if (navBtn) navBtn.classList.add('active');
+  // GA: 탭 이동
+  const tabNames = {home:'홈', study:'학습', report:'리포트', weak:'오답노트', ranking:'랭킹', profile:'내정보'};
+  gaEvent('tab_view', { tab_name: tabNames[name] || name });
   // Render content
   if (name === 'home') renderHomeTab();
   else if (name === 'ranking') renderRankingTab();
@@ -1901,6 +1928,21 @@ function showTab(name) {
   // Scroll to top
   if (pane) pane.scrollTop = 0;
 }
+
+// 학습 이탈 추적
+window.addEventListener('beforeunload', function() {
+  if (S && S.sessionStart && !S.sessionLogged && S.items && S.items.length > 0) {
+    const elapsed = Math.floor((Date.now() - S.sessionStart) / 1000);
+    gaEvent('study_exit', {
+      mode: S.mode || '',
+      level: S.level || '',
+      progress_pct: S.items.length > 0 ? Math.round((S.idx / S.items.length) * 100) : 0,
+      questions_seen: S.idx || 0,
+      total_questions: S.items.length,
+      duration_sec: elapsed
+    });
+  }
+});
 
 function goSub(screen) {
   // Hide all subscreens
@@ -2440,6 +2482,14 @@ function startStudy() {
   S.lastMain='study_type'; S.cardFinishMsg='끝났습니다.\n다시 반복 할까요?';
   S.lastStudy=`${S.level} ${S.category} ${S.mode==='card'?'카드':S.mode==='quiz'?'퀴즈':'쓰기'}`;
   if(!S.items.length){toast('해당 데이터가 없습니다.');return;}
+  // GA: 학습 시작
+  gaEvent('study_start', {
+    level: S.level || '',
+    mode: S.mode==='card'?'카드':S.mode==='quiz'?'퀴즈':'쓰기',
+    category: S.category || '',
+    item_count: S.items.length,
+    range: (S.ranges||[]).join(',')
+  });
   startSession();
   goSub(S.mode==='card'?'card':S.mode==='write'?'write':'quiz');
 }
@@ -3127,6 +3177,8 @@ async function deductCoupon() {
     if (coupons - used <= 0) { toast('사용 가능한 쿠폰이 없어요'); return; }
     data.settings.usedCoupons = used + 1;
     await window._fbSetStudentData(_detailStudentId, data);
+    // GA: 쿠폰 사용
+    gaEvent('coupon_used', { student_id: _detailStudentId });
     toast('✅ 쿠폰 1장 사용 처리됐어요');
     await openCouponMgmt(_detailStudentId, '');
   } catch(e) { toast('오류: '+e.message); }
@@ -3323,6 +3375,15 @@ document.addEventListener('keydown', function(e) {
   else if (e.key === 'Enter') { doStudentLogin(); }
 });
 
+/* ── PIN 키보드 입력 지원 ── */
+document.addEventListener('keydown', function(e) {
+  const pinStep = document.getElementById('ls-student-pin');
+  if (!pinStep || pinStep.style.display === 'none') return;
+  if (e.key >= '0' && e.key <= '9') { pinInput(e.key); }
+  else if (e.key === 'Backspace') { pinDel(); }
+  else if (e.key === 'Enter') { doStudentLogin(); }
+});
+
 /* ── 학생 로그인 ── */
 async function doStudentLogin() {
   const errEl = document.getElementById('ls-pin-error');
@@ -3338,6 +3399,11 @@ async function doStudentLogin() {
     const s = snap[0];
     currentUser = { role:'student', id:s.id, name:s.name, teacherId:selectedTeacher.id, teacherName:selectedTeacher.name };
     sessionStorage.setItem('hanja_session', JSON.stringify(currentUser));
+    // GA: 학생 로그인
+    gaEvent('student_login', {
+      teacher_name: currentUser.teacherName || '',
+      student_name: currentUser.name || ''
+    });
     enterStudentApp();
   } catch(e) {
     errEl.textContent = '오류가 발생했어요. 다시 시도해 주세요.';
