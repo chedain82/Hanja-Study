@@ -4429,6 +4429,15 @@ document.addEventListener('visibilitychange', async () => {
     return snap.docs.map(d => ({ id: d.id, ...d.data() }));
   };
 
+  // 이름+PIN만으로 전체 검색 (선생님 선택 없이 로그인)
+  window._fbFindStudentByNamePin = async (name, pin) => {
+    const q = query(collection(db, 'students'),
+                    where('name', '==', name),
+                    where('pin',  '==', pin));
+    const snap = await getDocs(q);
+    return snap.docs.map(d => ({ id: d.id, ...d.data() }));
+  };
+
   window._fbGetTeacherStudents = async (teacherId) => {
     const q = query(collection(db, 'students'), where('teacherId', '==', teacherId));
     const snap = await getDocs(q);
