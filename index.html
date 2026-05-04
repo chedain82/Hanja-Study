@@ -1044,10 +1044,140 @@ body {
 .lv-bar-row[onclick]:hover { background:#F5F5F5; border-radius:6px; }
 .lv-bar-row[onclick]:active { background:#EEE; }
 
+
+/* ===== 반 확인 화면 ===== */
+#class-confirm-screen {
+  position:fixed;inset:0;background:var(--bg);
+  display:none;flex-direction:column;align-items:center;justify-content:center;
+  z-index:1000;padding:24px;
+}
+#class-confirm-screen.active{display:flex;}
+.confirm-card {
+  width:100%;max-width:340px;
+  background:white;border-radius:28px;
+  padding:36px 28px;
+  box-shadow:0 8px 32px rgba(0,0,0,.10);
+  display:flex;flex-direction:column;align-items:center;gap:12px;
+}
+.confirm-teacher-icon{font-size:56px;margin-bottom:4px;}
+.confirm-teacher-label{font-size:13px;font-weight:700;color:var(--gray);}
+.confirm-teacher-name{font-size:26px;font-weight:800;color:#222;text-align:center;}
+.confirm-student-name{font-size:18px;font-weight:700;color:var(--blue);}
+.confirm-divider{width:40px;height:2px;background:#EEE;margin:4px 0;}
+.confirm-start-btn{
+  width:100%;height:56px;border-radius:18px;border:none;
+  background:var(--blue);color:white;font-size:18px;font-weight:800;
+  cursor:pointer;font-family:inherit;margin-top:8px;
+  box-shadow:0 4px 16px rgba(59,125,224,.35);transition:all .2s;
+}
+.confirm-start-btn:active{transform:scale(.97);opacity:.9;}
+.confirm-back-btn{
+  background:none;border:none;color:var(--gray);
+  font-size:14px;font-weight:700;cursor:pointer;
+  font-family:inherit;margin-top:4px;
+}
+
+/* ===== 랜딩 페이지 ===== */
+#landing-screen{position:fixed;inset:0;background:var(--bg);display:none;flex-direction:column;align-items:center;z-index:1000;overflow-y:auto;}
+#landing-screen.active{display:flex;}
+.landing-hero{width:100%;display:flex;flex-direction:column;align-items:center;padding:56px 24px 36px;background:linear-gradient(160deg,#f8e8ee 0%,#ede8f8 100%);}
+.landing-logo{font-size:68px;font-weight:800;font-family:'Nanum Myeongjo',serif;margin-bottom:6px;cursor:pointer;user-select:none;}
+.landing-tagline{font-size:22px;font-weight:800;color:#222;text-align:center;line-height:1.4;margin-bottom:8px;}
+.landing-desc{font-size:14px;font-weight:600;color:var(--gray);text-align:center;line-height:1.7;}
+.landing-features{width:100%;max-width:420px;padding:28px 20px 8px;display:flex;flex-direction:column;gap:14px;}
+.landing-feature-card{background:white;border-radius:20px;padding:18px 20px;display:flex;align-items:center;gap:16px;box-shadow:0 2px 12px rgba(0,0,0,.07);}
+.landing-feature-icon{font-size:34px;flex-shrink:0;}
+.landing-feature-title{font-size:15px;font-weight:800;color:#222;margin-bottom:3px;}
+.landing-feature-desc{font-size:12px;font-weight:600;color:var(--gray);line-height:1.5;}
+.landing-levels{width:100%;max-width:420px;padding:20px 20px 8px;}
+.landing-levels-title{font-size:15px;font-weight:800;color:#222;margin-bottom:12px;text-align:center;}
+.landing-level-chips{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;}
+.landing-level-chip{background:white;border-radius:20px;padding:6px 16px;font-size:13px;font-weight:700;color:var(--blue);box-shadow:0 2px 8px rgba(0,0,0,.07);border:1.5px solid #e0eaff;}
+.landing-footer{width:100%;max-width:420px;padding:20px 20px 48px;display:flex;flex-direction:column;gap:12px;align-items:center;}
+.landing-btn-solo{width:100%;height:58px;border-radius:20px;border:none;background:var(--blue);color:white;font-size:17px;font-weight:800;cursor:pointer;font-family:inherit;box-shadow:0 6px 20px rgba(59,125,224,.35);transition:all .2s;}
+.landing-btn-solo:active{transform:scale(.97);opacity:.9;}
+.landing-btn-group{width:100%;height:58px;border-radius:20px;border:2px solid var(--blue);background:white;color:var(--blue);font-size:17px;font-weight:800;cursor:pointer;font-family:inherit;transition:all .2s;}
+.landing-btn-group:active{transform:scale(.97);opacity:.8;}
+.landing-guide-btn{background:none;border:none;color:var(--gray);font-size:14px;font-weight:700;cursor:pointer;font-family:inherit;text-decoration:underline;padding:4px 0;}
+.landing-teacher-link{background:none;border:none;color:#bbb;font-size:12px;font-weight:600;cursor:pointer;font-family:inherit;margin-top:4px;}
+#guide-popup{position:fixed;inset:0;z-index:2000;background:rgba(0,0,0,.45);display:none;align-items:flex-end;justify-content:center;}
+#guide-popup.active{display:flex;}
+.guide-sheet{width:100%;max-width:480px;max-height:85vh;background:white;border-radius:28px 28px 0 0;padding:28px 24px 40px;overflow-y:auto;animation:slideUp .3s ease;}
+@keyframes slideUp{from{transform:translateY(100%)}to{transform:translateY(0)}}
+.guide-handle{width:40px;height:4px;background:#DDD;border-radius:4px;margin:0 auto 20px;}
+.guide-title{font-size:22px;font-weight:800;margin-bottom:20px;text-align:center;}
+.guide-section{margin-bottom:24px;}
+.guide-section-title{font-size:15px;font-weight:800;color:var(--blue);margin-bottom:12px;padding:8px 14px;background:#f0f4ff;border-radius:12px;display:inline-block;}
+.guide-step{display:flex;gap:12px;align-items:flex-start;margin-bottom:12px;padding:12px 14px;background:#fafafa;border-radius:14px;}
+.guide-step-num{width:26px;height:26px;border-radius:50%;background:var(--blue);color:white;font-size:13px;font-weight:800;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.guide-step-title{font-size:14px;font-weight:800;color:#222;margin-bottom:3px;}
+.guide-step-desc{font-size:12px;font-weight:600;color:var(--gray);line-height:1.5;}
+.guide-close-btn{width:100%;height:52px;border-radius:16px;border:none;background:var(--blue);color:white;font-size:16px;font-weight:800;cursor:pointer;font-family:inherit;margin-top:8px;}
 </style>
 </head>
 <body>
 
+<!-- ===== 반 확인 화면 ===== -->
+<div id="class-confirm-screen">
+  <div class="confirm-card">
+    <div class="confirm-teacher-icon">👩‍🏫</div>
+    <div class="confirm-teacher-label">선생님 반</div>
+    <div class="confirm-teacher-name" id="confirm-teacher-name"></div>
+    <div class="confirm-divider"></div>
+    <div class="confirm-teacher-label">안녕하세요!</div>
+    <div class="confirm-student-name" id="confirm-student-name"></div>
+    <button class="confirm-start-btn" onclick="confirmEnterApp()">시작하기 🚀</button>
+    <button class="confirm-back-btn" onclick="cancelConfirm()">← 다시 선택하기</button>
+  </div>
+</div>
+
+<!-- ===== 랜딩 페이지 ===== -->
+<div id="landing-screen">
+  <div class="landing-hero">
+    <div class="landing-logo" id="landing-logo" onclick="landingLogoTap()">漢字</div>
+    <div class="landing-tagline">한자 급수시험,<br>쉽고 재미있게 준비하세요</div>
+    <div class="landing-desc">카드학습 · 퀴즈 · 쓰기 연습으로<br>8급부터 3급까지 체계적으로 공부해요</div>
+  </div>
+  <div class="landing-features">
+    <div class="landing-feature-card"><div class="landing-feature-icon">🃏</div><div><div class="landing-feature-title">카드 학습</div><div class="landing-feature-desc">플래시카드로 한자와 뜻을 빠르게 익혀요</div></div></div>
+    <div class="landing-feature-card"><div class="landing-feature-icon">✏️</div><div><div class="landing-feature-title">퀴즈 & 쓰기 연습</div><div class="landing-feature-desc">객관식 퀴즈와 직접 써보는 연습으로 실전 대비까지</div></div></div>
+    <div class="landing-feature-card"><div class="landing-feature-icon">📊</div><div><div class="landing-feature-title">오답노트 & 리포트</div><div class="landing-feature-desc">틀린 문제만 모아 복습하고 내 학습 현황을 한눈에</div></div></div>
+    <div class="landing-feature-card"><div class="landing-feature-icon">🏆</div><div><div class="landing-feature-title">주간 랭킹</div><div class="landing-feature-desc">친구들과 함께 공부하며 경쟁하면 더 재미있어요</div></div></div>
+  </div>
+  <div class="landing-levels">
+    <div class="landing-levels-title">📚 지원 급수</div>
+    <div class="landing-level-chips">
+      <span class="landing-level-chip">8급</span><span class="landing-level-chip">7급</span><span class="landing-level-chip">준6급</span><span class="landing-level-chip">6급</span><span class="landing-level-chip">준5급</span><span class="landing-level-chip">5급</span><span class="landing-level-chip">준4급</span><span class="landing-level-chip">4급</span><span class="landing-level-chip">준3급</span><span class="landing-level-chip">3급</span>
+    </div>
+  </div>
+  <div class="landing-footer">
+    <button class="landing-btn-solo" onclick="landingStartSolo()">🚀 혼자 시작하기</button>
+    <button class="landing-btn-group" onclick="landingStartGroup()">👨‍👩‍👧 선생님 반 학생이에요</button>
+    <button class="landing-guide-btn" onclick="openGuidePopup()">📖 사용 설명서 보기</button>
+    <button class="landing-teacher-link" onclick="landingStartTeacher()">선생님 로그인</button>
+  </div>
+</div>
+<div id="guide-popup" onclick="closeGuidePopup(event)">
+  <div class="guide-sheet">
+    <div class="guide-handle"></div>
+    <div class="guide-title">📖 사용 설명서</div>
+    <div class="guide-section">
+      <div class="guide-section-title">👤 혼자 공부할 때</div>
+      <div class="guide-step"><div class="guide-step-num">1</div><div><div class="guide-step-title">이름 입력하고 바로 시작</div><div class="guide-step-desc">"혼자 시작하기" → 이름(닉네임) 입력<br>회원가입 없이 바로 시작해요</div></div></div>
+      <div class="guide-step"><div class="guide-step-num">2</div><div><div class="guide-step-title">급수 & 학습 방법 선택</div><div class="guide-step-desc">8급~3급 중 원하는 급수 선택 →<br>카드학습 / 퀴즈 / 쓰기 중 선택</div></div></div>
+      <div class="guide-step"><div class="guide-step-num">3</div><div><div class="guide-step-title">오답노트로 복습</div><div class="guide-step-desc">틀린 문제는 자동으로 저장<br>반복 학습으로 완벽하게 익혀요</div></div></div>
+      <div class="guide-step"><div class="guide-step-num">4</div><div><div class="guide-step-title">리포트로 내 실력 확인</div><div class="guide-step-desc">학습 기록, 정답률, 연속 학습일을<br>리포트 탭에서 한눈에 확인해요</div></div></div>
+    </div>
+    <div class="guide-section">
+      <div class="guide-section-title">👥 선생님과 함께할 때</div>
+      <div class="guide-step"><div class="guide-step-num">1</div><div><div class="guide-step-title">선생님이 계정 만들기</div><div class="guide-step-desc">"선생님 로그인" → 회원가입으로<br>선생님 계정을 먼저 만들어요</div></div></div>
+      <div class="guide-step"><div class="guide-step-num">2</div><div><div class="guide-step-title">학생 등록</div><div class="guide-step-desc">선생님 대시보드에서<br>학생 이름과 PIN 4자리를 등록해요</div></div></div>
+      <div class="guide-step"><div class="guide-step-num">3</div><div><div class="guide-step-title">이름 + PIN으로 로그인</div><div class="guide-step-desc">"선생님 반 학생이에요" →<br>이름 입력 → PIN 입력하면 끝!</div></div></div>
+      <div class="guide-step"><div class="guide-step-num">4</div><div><div class="guide-step-title">주간 랭킹 & 선생님 관리</div><div class="guide-step-desc">반 친구들과 주간 랭킹 경쟁!<br>선생님은 학생 진도를 확인해요</div></div></div>
+    </div>
+    <button class="guide-close-btn" onclick="closeGuidePopup()">확인</button>
+  </div>
+</div>
 <!-- ===== LOGIN SCREEN ===== -->
 <div id="login-screen">
 
@@ -1157,6 +1287,15 @@ body {
     </div>
     <div class="login-error" id="ls-pin-error"></div>
     <button class="login-back-btn" onclick="lsBack('student-name')">← 뒤로</button>
+  </div>
+
+  <!-- STEP 3-B: 동명이인 선생님 선택 -->
+  <div class="login-form-wrap" id="ls-teacher-pick-dup">
+    <div class="login-form-title">선생님 선택</div>
+    <div class="login-form-sub">같은 이름의 학생이 여러 반에 있어요.<br>어느 반인지 선택해 주세요</div>
+    <div id="ls-dup-teacher-list" style="width:100%;display:flex;flex-direction:column;gap:10px;margin-top:4px;"></div>
+    <div class="login-error" id="ls-dup-error"></div>
+    <button class="login-back-btn" onclick="lsBack('student-pin')">← 뒤로</button>
   </div>
 
   <!-- STEP A (선생님): 로그인 -->
@@ -1697,6 +1836,7 @@ function _waitFirebaseRanking() {
     setTimeout(_waitFirebaseRanking, 400);
   }
 }
+
 
 /* ===== UTILITIES ===== */
 function todayStr() {
@@ -3226,13 +3366,20 @@ let teacherListCache = [];
 let teacherSearchKeyword = '';
 
 /* ── 스텝 이동 ── */
-const LS_ALL = ['role','student-teacher','student-name','student-pin','teacher-login','teacher-forgot','teacher-signup','free-student'];
+const LS_ALL = ['role','student-teacher','student-name','student-pin','teacher-pick-dup','teacher-login','teacher-forgot','teacher-signup','free-student'];
+/* ===== 랜딩 JS ===== */
+let _logoTapCount=0,_logoTapTimer=null;
+function landingLogoTap(){_logoTapCount++;if(_logoTapTimer)clearTimeout(_logoTapTimer);if(_logoTapCount>=3){_logoTapCount=0;landingStartTeacher();return;}_logoTapTimer=setTimeout(()=>{_logoTapCount=0;},800);}
+function landingStartSolo(){document.getElementById('landing-screen').classList.remove('active');document.getElementById('login-screen').classList.add('active');lsGo('free-student');gaEvent('landing_cta',{action:'혼자 시작하기'});}
+function landingStartGroup(){document.getElementById('landing-screen').classList.remove('active');document.getElementById('login-screen').classList.add('active');lsGo('student-name');gaEvent('landing_cta',{action:'선생님 반 학생'});}
+function landingStartTeacher(){document.getElementById('landing-screen').classList.remove('active');document.getElementById('login-screen').classList.add('active');lsGo('teacher-login');gaEvent('landing_cta',{action:'선생님 로그인'});}
+function openGuidePopup(){document.getElementById('guide-popup').classList.add('active');gaEvent('guide_open',{});}
+function closeGuidePopup(e){if(!e||e.target===document.getElementById('guide-popup'))document.getElementById('guide-popup').classList.remove('active');}
+
 function lsGo(step) {
   if (step === 'student-name') {
-    if (!selectedTeacher) { document.getElementById('ls-teacher-pick-error').textContent = '선생님을 선택해 주세요'; return; }
-    document.getElementById('ls-teacher-pick-error').textContent = '';
-    document.getElementById('ls-name-sub').textContent = selectedTeacher.name + ' 반 학생 이름을 입력하세요';
-    document.getElementById('ls-pin-sub').textContent  = selectedTeacher.name + ' 반 · PIN 4자리';
+    document.getElementById('ls-name-sub').textContent = '이름을 입력하세요';
+    document.getElementById('ls-pin-sub').textContent  = 'PIN 4자리를 입력하세요';
   }
   if (step === 'student-pin') {
     const name = document.getElementById('student-name-input').value.trim();
@@ -3365,6 +3512,13 @@ function pinDel()    { pinBuffer = pinBuffer.slice(0,-1); updatePinDisplay(); }
 function updatePinDisplay() {
   for (let i = 0; i < 4; i++) document.getElementById('pin-d'+i).classList.toggle('filled', i < pinBuffer.length);
 }
+document.addEventListener('keydown', function(e) {
+  const pinStep = document.getElementById('ls-student-pin');
+  if (!pinStep || pinStep.style.display === 'none') return;
+  if (e.key >= '0' && e.key <= '9') { pinInput(e.key); }
+  else if (e.key === 'Backspace') { pinDel(); }
+  else if (e.key === 'Enter') { doStudentLogin(); }
+});
 
 /* ── PIN 키보드 입력 지원 ── */
 document.addEventListener('keydown', function(e) {
@@ -3391,24 +3545,60 @@ async function doStudentLogin() {
   const name = document.getElementById('student-name-input').value.trim();
   errEl.textContent = '확인 중...';
   try {
-    const snap = await window._fbGetStudents(selectedTeacher.id, name, pinBuffer);
+    let snap = [];
+    if (window._fbFindStudentByNamePin) {
+      snap = await window._fbFindStudentByNamePin(name, pinBuffer);
+    } else if (selectedTeacher) {
+      snap = await window._fbGetStudents(selectedTeacher.id, name, pinBuffer);
+    }
     if (!snap || snap.length === 0) {
       errEl.textContent = '이름 또는 PIN이 맞지 않아요 🙅';
       pinBuffer = ''; updatePinDisplay(); return;
     }
-    const s = snap[0];
-    currentUser = { role:'student', id:s.id, name:s.name, teacherId:selectedTeacher.id, teacherName:selectedTeacher.name };
-    sessionStorage.setItem('hanja_session', JSON.stringify(currentUser));
-    // GA: 학생 로그인
-    gaEvent('student_login', {
-      teacher_name: currentUser.teacherName || '',
-      student_name: currentUser.name || ''
-    });
-    enterStudentApp();
+    // 동명이인 처리
+    if (snap.length > 1) { showDupTeacherPick(snap); return; }
+    loginWithStudent(snap[0]);
   } catch(e) {
     errEl.textContent = '오류가 발생했어요. 다시 시도해 주세요.';
     pinBuffer = ''; updatePinDisplay();
   }
+}
+
+function showDupTeacherPick(students) {
+  const list = document.getElementById('ls-dup-teacher-list');
+  list.innerHTML = students.map(s =>
+    `<button class="login-submit-btn" style="height:52px;font-size:16px;"
+      onclick='loginWithStudent(${JSON.stringify(s)})'>
+      👩‍🏫 ${s.teacherName || '선생님'} 반
+    </button>`
+  ).join('');
+  lsGo('teacher-pick-dup');
+}
+
+function loginWithStudent(s) {
+  currentUser = { role:'student', id:s.id, name:s.name, teacherId:s.teacherId, teacherName:s.teacherName||'' };
+  sessionStorage.setItem('hanja_session', JSON.stringify(currentUser));
+  gaEvent('student_login', { teacher_name: currentUser.teacherName||'', student_name: currentUser.name||'' });
+  // 선생님 반이면 확인 화면, 아니면 바로 입장
+  if (s.teacherId) {
+    document.getElementById('login-screen').classList.remove('active');
+    document.getElementById('confirm-teacher-name').textContent = (s.teacherName||'선생님') + ' 반';
+    document.getElementById('confirm-student-name').textContent = s.name + ' 님';
+    document.getElementById('class-confirm-screen').classList.add('active');
+  } else {
+    enterStudentApp();
+  }
+}
+
+function confirmEnterApp() {
+  document.getElementById('class-confirm-screen').classList.remove('active');
+  enterStudentApp();
+}
+
+function cancelConfirm() {
+  document.getElementById('class-confirm-screen').classList.remove('active');
+  document.getElementById('login-screen').classList.add('active');
+  lsGo('student-pin');
 }
 
 /* ── 자유 학생 로그인 (선생님 없음) ── */
@@ -3486,8 +3676,7 @@ function initLogin() {
     const loading = document.getElementById('loading');
     if (loading && loading.style.display !== 'none') {
       loading.style.display = 'none';
-      document.getElementById('login-screen').classList.add('active');
-      lsGo('role');
+      document.getElementById('landing-screen').classList.add('active');
     }
   }, 5000);
 
@@ -3500,8 +3689,7 @@ function initLogin() {
     }
   } catch(e) {}
   document.getElementById('loading').style.display = 'none';
-  document.getElementById('login-screen').classList.add('active');
-  lsGo('role');
+  document.getElementById('landing-screen').classList.add('active');
 }
 
 async function enterStudentApp() {
