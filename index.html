@@ -3314,6 +3314,15 @@ function updatePinDisplay() {
   for (let i = 0; i < 4; i++) document.getElementById('pin-d'+i).classList.toggle('filled', i < pinBuffer.length);
 }
 
+/* ── PIN 키보드 입력 지원 ── */
+document.addEventListener('keydown', function(e) {
+  const pinStep = document.getElementById('ls-student-pin');
+  if (!pinStep || pinStep.style.display === 'none') return;
+  if (e.key >= '0' && e.key <= '9') { pinInput(e.key); }
+  else if (e.key === 'Backspace') { pinDel(); }
+  else if (e.key === 'Enter') { doStudentLogin(); }
+});
+
 /* ── 학생 로그인 ── */
 async function doStudentLogin() {
   const errEl = document.getElementById('ls-pin-error');
@@ -3578,18 +3587,24 @@ async function renderTeacherRanking() {
   listEl.innerHTML = '<div class="t-rank-empty">🔄 불러오는 중...</div>';
   try {
     let items = [];
+    const currentWeek = getWeekStart();
     if (_teacherRankTab==='class') {
       const students = await window._fbGetTeacherStudents(currentUser.id);
       const results  = await Promise.allSettled(
         students.map(s => window._fbGetWeeklyRanking ? window._fbGetWeeklyRanking(s.id) : Promise.resolve(null))
       );
-      items = results.map((r,i) => ({
-        id: students[i].id,
-        name: students[i].name,
-        weeklyProblems: (r.status==='fulfilled' && r.value) ? (r.value.weeklyProblems||0) : 0
-      }));
+      items = results.map((r,i) => {
+        const d = (r.status==='fulfilled' && r.value) ? r.value : {};
+        // weekKey가 이번 주와 다르면 0점 처리
+        const score = (d.weekKey === currentWeek) ? (d.weeklyProblems||0) : 0;
+        return { id: students[i].id, name: students[i].name, weeklyProblems: score };
+      });
     } else {
-      items = window._fbGetAllWeeklyRanking ? await window._fbGetAllWeeklyRanking() : [];
+      const allData = window._fbGetAllWeeklyRanking ? await window._fbGetAllWeeklyRanking() : [];
+      items = allData.map(d => ({
+        ...d,
+        weeklyProblems: (d.weekKey === currentWeek) ? (d.weeklyProblems||0) : 0
+      }));
     }
     items.sort((a,b) => b.weeklyProblems - a.weeklyProblems);
     if (!items.length || items.every(x=>x.weeklyProblems===0)) {
