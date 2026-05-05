@@ -1874,14 +1874,19 @@ function playSound(type) {
 }
 
 /* ===== STORAGE ===== */
-function saveStudyLog() { try { localStorage.setItem('hanja_studyLog', JSON.stringify(studyLog)); } catch(e){} }
-function loadStudyLog() { try { return JSON.parse(localStorage.getItem('hanja_studyLog')) || []; } catch(e){ return []; } }
-function saveWrongNote() { try { localStorage.setItem('hanja_wrongNote', JSON.stringify(S.wrongNote)); } catch(e){} }
-function loadWrongNote() { try { return JSON.parse(localStorage.getItem('hanja_wrongNote')) || []; } catch(e){ return []; } }
-function saveSettings() { try { localStorage.setItem('hanja_settings', JSON.stringify(settings)); } catch(e){} }
-function loadSettings() { try { return JSON.parse(localStorage.getItem('hanja_settings')) || {streak:0,lastStudyDate:'',dailyGoal:20,totalCorrect:0,totalQuestions:0,totalTime:0,bestStreak:0,levelProgress:{},perfectStreak:0,lastPerfectDate:'',coupons:0,usedCoupons:0}; } catch(e){ return {streak:0,lastStudyDate:'',dailyGoal:20,totalCorrect:0,totalQuestions:0,totalTime:0,bestStreak:0,levelProgress:{},perfectStreak:0,lastPerfectDate:'',coupons:0,usedCoupons:0}; } }
-function saveBadges() { try { localStorage.setItem('hanja_badges', JSON.stringify(earnedBadges)); } catch(e){} }
-function loadBadges() { try { return JSON.parse(localStorage.getItem('hanja_badges')) || {}; } catch(e){ return {}; } }
+/* ── 학생별 localStorage 키 (같은 기기에서 여러 학생 사용 시 섞임 방지) ── */
+function _lsKey(base) {
+  const uid = (typeof currentUser !== 'undefined' && currentUser) ? currentUser.id : '';
+  return uid ? base + '_' + uid : base;
+}
+function saveStudyLog() { try { localStorage.setItem(_lsKey('hanja_studyLog'), JSON.stringify(studyLog)); } catch(e){} }
+function loadStudyLog() { try { return JSON.parse(localStorage.getItem(_lsKey('hanja_studyLog'))) || []; } catch(e){ return []; } }
+function saveWrongNote() { try { localStorage.setItem(_lsKey('hanja_wrongNote'), JSON.stringify(S.wrongNote)); } catch(e){} }
+function loadWrongNote() { try { return JSON.parse(localStorage.getItem(_lsKey('hanja_wrongNote'))) || []; } catch(e){ return []; } }
+function saveSettings() { try { localStorage.setItem(_lsKey('hanja_settings'), JSON.stringify(settings)); } catch(e){} }
+function loadSettings() { try { return JSON.parse(localStorage.getItem(_lsKey('hanja_settings'))) || {streak:0,lastStudyDate:'',dailyGoal:20,totalCorrect:0,totalQuestions:0,totalTime:0,bestStreak:0,levelProgress:{},perfectStreak:0,lastPerfectDate:'',coupons:0,usedCoupons:0}; } catch(e){ return {streak:0,lastStudyDate:'',dailyGoal:20,totalCorrect:0,totalQuestions:0,totalTime:0,bestStreak:0,levelProgress:{},perfectStreak:0,lastPerfectDate:'',coupons:0,usedCoupons:0}; } }
+function saveBadges() { try { localStorage.setItem(_lsKey('hanja_badges'), JSON.stringify(earnedBadges)); } catch(e){} }
+function loadBadges() { try { return JSON.parse(localStorage.getItem(_lsKey('hanja_badges'))) || {}; } catch(e){ return {}; } }
 
 /* ===== APP STATE ===== */
 let studyLog = loadStudyLog();
@@ -3672,12 +3677,26 @@ async function doTeacherSignup() {
 /* ── 앱 진입 ── */
 // 뒤로가기 버튼 처리
 window.addEventListener('popstate', function() {
-  // 로그인 상태면 아무것도 안 함
-  if (currentUser) return;
-  // 비로그인 상태면 모든 화면 숨기고 랜딩 표시
+  // 항상 login-screen, confirm-screen 숨기기
   document.getElementById('login-screen').classList.remove('active');
   document.getElementById('class-confirm-screen').classList.remove('active');
-  document.getElementById('landing-screen').classList.add('active');
+
+  if (currentUser) {
+    // 로그인 상태 → 앱 화면 유지 (student-app 또는 teacher-app)
+    const studentApp = document.getElementById('student-app');
+    const teacherApp = document.getElementById('teacher-app');
+    if (studentApp && !studentApp.classList.contains('active') &&
+        teacherApp && !teacherApp.classList.contains('active')) {
+      // 앱 화면이 없으면 다시 진입
+      if (currentUser.role === 'student') enterStudentApp();
+      else enterTeacherApp();
+    }
+    // 히스토리 다시 추가 (뒤로가기 루프 방지)
+    history.pushState({ page: 'app' }, '', '');
+  } else {
+    // 비로그인 → 랜딩 표시
+    document.getElementById('landing-screen').classList.add('active');
+  }
 });
 
 function initLogin() {
@@ -3712,20 +3731,12 @@ async function enterStudentApp() {
   history.pushState({ page: 'app' }, '', '');
   const nameEl = document.getElementById('profile-name');
   if (nameEl) nameEl.textContent = currentUser.name + ' 학생';
-  // 다른 학생이 같은 기기에서 로그인하면 로컬 데이터 초기화
-  const lastUserId = localStorage.getItem('hanja_last_user_id');
-  if (lastUserId && lastUserId !== currentUser.id) {
-    // 다른 학생 → localStorage 초기화 (Firestore에서 새로 로드)
-    localStorage.removeItem('hanja_settings');
-    localStorage.removeItem('hanja_studyLog');
-    localStorage.removeItem('hanja_wrongNote');
-    localStorage.removeItem('hanja_badges');
-    settings = loadSettings(); // 기본값으로 리셋
-    studyLog = [];
-    S.wrongNote = [];
-    earnedBadges = {};
-  }
-  localStorage.setItem('hanja_last_user_id', currentUser.id);
+  // 학생별 키 분리로 자동 처리됨 - 별도 초기화 불필요
+  // 이 학생의 로컬 데이터 로드 (학생별 키로 자동 분리)
+  settings = loadSettings();
+  studyLog = loadStudyLog ? loadStudyLog() : [];
+  S.wrongNote = loadWrongNote ? loadWrongNote() : [];
+  earnedBadges = loadBadges ? loadBadges() : {};
   await loadStudentDataFromFirestore();
   if (currentUser.teacherId) {
     try {
@@ -4029,7 +4040,8 @@ function doLogout() {
 /* ===== FIRESTORE: 학생 데이터 ===== */
 async function loadStudentDataFromFirestore() {
   if (!currentUser || currentUser.role !== 'student') return;
-  if (!currentUser.teacherId) return;
+  // teacherId 없는 free student도 Firebase에서 데이터 로드 (다기기 동기화)
+  if (!window._firebaseReady || !window._fbGetStudentData) return;
   try {
     const data = await window._fbGetStudentData(currentUser.id);
     if (data) {
@@ -4064,7 +4076,7 @@ async function loadStudentDataFromFirestore() {
 }
 async function syncToFirestore() {
   if (!currentUser || currentUser.role !== 'student') return;
-  if (!currentUser.teacherId) return;
+  if (!window._firebaseReady || !window._fbSetStudentData) return;
   try {
     // 주간 랭킹 업데이트
     const weekScore = getWeeklyScore();
