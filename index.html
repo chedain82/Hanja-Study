@@ -1875,15 +1875,28 @@ function playSound(type) {
 
 /* ===== STORAGE ===== */
 /* ── 학생별 localStorage 키 (같은 기기 여러 학생 섞임 방지) ── */
-function _lsKey(k) { return currentUser ? k+'_'+currentUser.id : k; }
-function saveStudyLog() { try { localStorage.setItem(_lsKey('hanja_studyLog'), JSON.stringify(studyLog)); } catch(e){} }
-function loadStudyLog() { try { return JSON.parse(localStorage.getItem(_lsKey('hanja_studyLog'))) || []; } catch(e){ return []; } }
-function saveWrongNote() { try { localStorage.setItem(_lsKey('hanja_wrongNote'), JSON.stringify(S.wrongNote)); } catch(e){} }
-function loadWrongNote() { try { return JSON.parse(localStorage.getItem(_lsKey('hanja_wrongNote'))) || []; } catch(e){ return []; } }
-function saveSettings() { try { localStorage.setItem(_lsKey('hanja_settings'), JSON.stringify(settings)); } catch(e){} }
-function loadSettings() { try { return JSON.parse(localStorage.getItem(_lsKey('hanja_settings'))) || {streak:0,lastStudyDate:'',dailyGoal:20,totalCorrect:0,totalQuestions:0,totalTime:0,bestStreak:0,levelProgress:{},perfectStreak:0,lastPerfectDate:'',coupons:0,usedCoupons:0}; } catch(e){ return {streak:0,lastStudyDate:'',dailyGoal:20,totalCorrect:0,totalQuestions:0,totalTime:0,bestStreak:0,levelProgress:{},perfectStreak:0,lastPerfectDate:'',coupons:0,usedCoupons:0}; } }
-function saveBadges() { try { localStorage.setItem(_lsKey('hanja_badges'), JSON.stringify(earnedBadges)); } catch(e){} }
-function loadBadges() { try { return JSON.parse(localStorage.getItem(_lsKey('hanja_badges'))) || {}; } catch(e){ return {}; } }
+function _lsKey(k) { return (currentUser && currentUser.id) ? k+'_'+currentUser.id : k; }
+
+/* 기존 공용 키 → 학생별 키로 마이그레이션 (기존 데이터 보존) */
+function _migrateLsKey(base) {
+  const newKey = _lsKey(base);
+  if (!currentUser || !currentUser.id) return;
+  if (localStorage.getItem(newKey)) return; // 이미 마이그레이션됨
+  const oldVal = localStorage.getItem(base);
+  if (oldVal) {
+    localStorage.setItem(newKey, oldVal);
+    // 기존 공용 키는 남겨둠 (다른 학생이 같은 기기 쓸 경우 대비)
+  }
+}
+
+function saveStudyLog()  { try { localStorage.setItem(_lsKey('hanja_studyLog'),  JSON.stringify(studyLog));     } catch(e){} }
+function loadStudyLog()  { try { _migrateLsKey('hanja_studyLog');  return JSON.parse(localStorage.getItem(_lsKey('hanja_studyLog')))  || []; } catch(e){ return []; } }
+function saveWrongNote() { try { localStorage.setItem(_lsKey('hanja_wrongNote'), JSON.stringify(S.wrongNote));  } catch(e){} }
+function loadWrongNote() { try { _migrateLsKey('hanja_wrongNote'); return JSON.parse(localStorage.getItem(_lsKey('hanja_wrongNote'))) || []; } catch(e){ return []; } }
+function saveSettings()  { try { localStorage.setItem(_lsKey('hanja_settings'),  JSON.stringify(settings));     } catch(e){} }
+function loadSettings()  { try { _migrateLsKey('hanja_settings');  return JSON.parse(localStorage.getItem(_lsKey('hanja_settings')))  || {streak:0,lastStudyDate:'',dailyGoal:20,totalCorrect:0,totalQuestions:0,totalTime:0,bestStreak:0,levelProgress:{},perfectStreak:0,lastPerfectDate:'',coupons:0,usedCoupons:0}; } catch(e){ return {streak:0,lastStudyDate:'',dailyGoal:20,totalCorrect:0,totalQuestions:0,totalTime:0,bestStreak:0,levelProgress:{},perfectStreak:0,lastPerfectDate:'',coupons:0,usedCoupons:0}; } }
+function saveBadges()    { try { localStorage.setItem(_lsKey('hanja_badges'),    JSON.stringify(earnedBadges)); } catch(e){} }
+function loadBadges()    { try { _migrateLsKey('hanja_badges');    return JSON.parse(localStorage.getItem(_lsKey('hanja_badges')))    || {}; } catch(e){ return {}; } }
 
 /* ===== APP STATE ===== */
 let studyLog = loadStudyLog();
@@ -3715,20 +3728,18 @@ async function enterStudentApp() {
   history.pushState({ page: 'app' }, '', '');
   const nameEl = document.getElementById('profile-name');
   if (nameEl) nameEl.textContent = currentUser.name + ' 학생';
-  // 메모리 초기화 (항상 깨끗하게 시작)
-  settings = { streak:0, lastStudyDate:'', dailyGoal:20, totalCorrect:0,
-    totalQuestions:0, totalTime:0, bestStreak:0, levelProgress:{},
-    perfectStreak:0, lastPerfectDate:'', coupons:0, usedCoupons:0 };
-  studyLog = [];
-  S.wrongNote = [];
-  earnedBadges = {};
+  // 1단계: 이 학생의 로컬 데이터 로드 (학생별 키로 분리됨)
+  settings    = loadSettings();
+  studyLog    = loadStudyLog();
+  S.wrongNote = loadWrongNote();
+  earnedBadges = loadBadges();
 
-  // Firestore에서 최신 데이터 로드 (항상 서버 데이터 우선)
+  // 2단계: Firestore에서 병합 로드 (로컬+원격 합치기)
   await loadStudentDataFromFirestore();
 
-  // Firestore 로드 후 로컬에도 저장 (오프라인 대비)
-  try { localStorage.setItem('hanja_studyLog_' + currentUser.id, JSON.stringify(studyLog)); } catch(e) {}
-  try { localStorage.setItem('hanja_settings_' + currentUser.id, JSON.stringify(settings)); } catch(e) {}
+  // 3단계: 병합된 최신 데이터 로컬에 저장
+  saveStudyLog();
+  saveSettings();
   if (currentUser.teacherId) {
     try {
       window._teacherSettings = await window._fbGetTeacherSettings(currentUser.teacherId);
@@ -4068,17 +4079,18 @@ async function syncToFirestore() {
   if (!currentUser || currentUser.role !== 'student') return;
   if (!currentUser.teacherId) return;
   try {
-    // 주간 랭킹 업데이트 (studyLog 기반 정확한 계산)
+    // 주간 랭킹 업데이트
     const weekScore = getWeeklyScore();
     if (window._fbUpdateWeeklyRanking && weekScore > 0) {
-      // 기존 점수와 비교해서 높은 값 유지 (다기기 동시 사용 시 덮어쓰기 방지)
+      // 기존 Firestore 점수와 비교해서 높은 값 유지 (다기기 동시 사용 보호)
       let finalScore = weekScore;
       try {
-        const existing = await window._fbGetWeeklyRanking(currentUser.id);
-        const currentWeek = getWeekStart();
-        if (existing && existing.weekKey === currentWeek && existing.weeklyProblems > weekScore) {
-          // 기존 점수가 더 높으면 유지 (다른 기기에서 더 많이 한 경우)
-          finalScore = existing.weeklyProblems;
+        if (window._fbGetWeeklyRanking) {
+          const existing = await window._fbGetWeeklyRanking(currentUser.id);
+          const currentWeek = getWeekStart();
+          if (existing && existing.weekKey === currentWeek && existing.weeklyProblems > weekScore) {
+            finalScore = existing.weeklyProblems;
+          }
         }
       } catch(e) {}
       window._fbUpdateWeeklyRanking(currentUser.id, {
