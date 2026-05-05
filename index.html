@@ -1876,19 +1876,12 @@ function playSound(type) {
 /* ===== STORAGE ===== */
 /* ── 학생별 localStorage 키 (같은 기기 여러 학생 섞임 방지) ── */
 function _lsKey(k) { return (currentUser && currentUser.id) ? k+'_'+currentUser.id : k; }
-
-/* 기존 공용 키 → 학생별 키로 마이그레이션 (기존 데이터 보존) */
 function _migrateLsKey(base) {
   const newKey = _lsKey(base);
-  if (!currentUser || !currentUser.id) return;
-  if (localStorage.getItem(newKey)) return; // 이미 마이그레이션됨
+  if (!currentUser || !currentUser.id || localStorage.getItem(newKey)) return;
   const oldVal = localStorage.getItem(base);
-  if (oldVal) {
-    localStorage.setItem(newKey, oldVal);
-    // 기존 공용 키는 남겨둠 (다른 학생이 같은 기기 쓸 경우 대비)
-  }
+  if (oldVal) localStorage.setItem(newKey, oldVal);
 }
-
 function saveStudyLog()  { try { localStorage.setItem(_lsKey('hanja_studyLog'),  JSON.stringify(studyLog));     } catch(e){} }
 function loadStudyLog()  { try { _migrateLsKey('hanja_studyLog');  return JSON.parse(localStorage.getItem(_lsKey('hanja_studyLog')))  || []; } catch(e){ return []; } }
 function saveWrongNote() { try { localStorage.setItem(_lsKey('hanja_wrongNote'), JSON.stringify(S.wrongNote));  } catch(e){} }
@@ -2634,6 +2627,7 @@ function startStudy() {
   S.showBack=false; S.quizSelected=null; S.quizChecked=false;
   S.quizChoices=[]; S.quizItemKey=null; S.quizResult='';
   S.correct=0; S.wrong=0; S.wrongItems=[]; S.unanswered=[]; S.writeWrongItems=[];
+  S.writeChecked=false; S.writeUserInput=''; S.writeCorrect=false;
   S.lastMain='study_type'; S.cardFinishMsg='끝났습니다.\n다시 반복 할까요?';
   S.lastStudy=`${S.level} ${S.category} ${S.mode==='card'?'카드':S.mode==='quiz'?'퀴즈':'쓰기'}`;
   if(!S.items.length){toast('해당 데이터가 없습니다.');return;}
@@ -2900,7 +2894,7 @@ function renderWrite() {
       <input class="write-input" id="write-input" type="text" placeholder="${getWritePlaceholder(it)}"
         value="${checked?(S.writeCorrect?correctDisplay:S.writeUserInput):''}"
         ${checked?'readonly':''}
-        autocomplete="off" autocorrect="off" spellcheck="false"
+        autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"
         onkeydown="handleWriteKey(event)" autofocus/>
       <div class="write-result ${checked?(S.writeCorrect?'ok':'fail'):''}">${checked?(S.writeCorrect?'✅ 정답입니다!':`❌ 정답: ${correctDisplay}`):''}</div>
       <div class="card-nav" style="padding:4px 0 4px;">
@@ -2910,7 +2904,13 @@ function renderWrite() {
     </div>
     <div class="back-wrap"><button class="btn btn-back" onclick="goSub(S.lastMain)">← 뒤로</button></div>
   `;
-  setTimeout(()=>{ const inp=document.getElementById('write-input'); if(inp)inp.focus(); },100);
+  setTimeout(()=>{
+    const inp=document.getElementById('write-input');
+    if(inp) {
+      if(!S.writeChecked) inp.value = ''; // 미확인 상태면 항상 비워줌
+      inp.focus();
+    }
+  },100);
 }
 function handleWriteKey(e) {
   // IME 한국어 입력 중 자동 Enter 차단 (keyCode 229 = 조합 중)
@@ -2941,8 +2941,9 @@ function checkWrite() {
 function nextWriteItem() { if(S.idx<S.items.length-1){S.idx++;S.writeChecked=false;S.writeCorrect=false;S.writeUserInput='';slideNext();}else S.isFinished=true; renderWrite();applySlide(); }
 function prevWriteItem() { if(S.idx>0){S.idx--;S.writeChecked=false;S.writeCorrect=false;S.writeUserInput='';slidePrev();renderWrite();applySlide();} }
 function restartWrite() {
-  S.reviewMode = false;           // 전체 다시는 항상 원본 문제로
-  S.items = buildItems();         // 오답 모드 해제 후 전체 문제 재빌드
+  S.reviewMode = false;
+  S.writeChecked=false; S.writeUserInput=''; S.writeCorrect=false;
+  S.items = buildItems();
   S.idx=0;S.isFinished=false;S.sessionLogged=false;
   S.correct=0;S.wrong=0;S.writeChecked=false;S.writeCorrect=false;S.writeUserInput='';S.writeWrongItems=[];
   startSession();renderWrite();
@@ -3728,18 +3729,16 @@ async function enterStudentApp() {
   history.pushState({ page: 'app' }, '', '');
   const nameEl = document.getElementById('profile-name');
   if (nameEl) nameEl.textContent = currentUser.name + ' 학생';
-  // 1단계: 이 학생의 로컬 데이터 로드 (학생별 키로 분리됨)
+  // 다른 학생이 같은 기기에서 로그인하면 로컬 데이터 초기화
+  // 1단계: 이 학생의 로컬 데이터 로드 (학생별 키로 자동 분리)
   settings    = loadSettings();
   studyLog    = loadStudyLog();
   S.wrongNote = loadWrongNote();
   earnedBadges = loadBadges();
-
   // 2단계: Firestore에서 병합 로드 (로컬+원격 합치기)
   await loadStudentDataFromFirestore();
-
-  // 3단계: 병합된 최신 데이터 로컬에 저장
-  saveStudyLog();
-  saveSettings();
+  // 3단계: 병합된 최신 데이터 로컬 저장
+  saveStudyLog(); saveSettings();
   if (currentUser.teacherId) {
     try {
       window._teacherSettings = await window._fbGetTeacherSettings(currentUser.teacherId);
@@ -4082,7 +4081,6 @@ async function syncToFirestore() {
     // 주간 랭킹 업데이트
     const weekScore = getWeeklyScore();
     if (window._fbUpdateWeeklyRanking && weekScore > 0) {
-      // 기존 Firestore 점수와 비교해서 높은 값 유지 (다기기 동시 사용 보호)
       let finalScore = weekScore;
       try {
         if (window._fbGetWeeklyRanking) {
