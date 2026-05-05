@@ -3622,8 +3622,8 @@ function updatePinDisplay() {
 document.addEventListener('keydown', function(e) {
   // 퀴즈 화면 활성화 체크
   if (!S || S.screen !== 'quiz' || S.isFinished) return;
-  const app = document.getElementById('student-app');
-  if (!app || !app.classList.contains('active')) return;
+  const app = document.getElementById('app');
+  if (!app) return;
   const quizEl = document.getElementById('quiz');
   if (!quizEl || !quizEl.classList.contains('active')) return;
 
