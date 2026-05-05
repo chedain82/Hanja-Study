@@ -1307,7 +1307,7 @@ body {
       onkeydown="if(event.key==='Enter')lsGo('student-pin')"/>
     <div class="login-error" id="ls-name-error"></div>
     <button class="login-submit-btn" onclick="lsGo('student-pin')">다음</button>
-    <button class="login-back-btn" onclick="lsBack('student-teacher')">← 뒤로</button>
+    <button class="login-back-btn" onclick="cancelToLanding()">← 뒤로</button>
   </div>
 
   <!-- STEP 3 (학생): PIN 입력 -->
@@ -3459,6 +3459,11 @@ function landingStartGroup(){document.getElementById('landing-screen').classList
 function landingStartTeacher(){document.getElementById('landing-screen').classList.remove('active');document.getElementById('login-screen').classList.add('active');lsGo('teacher-login');gaEvent('landing_cta',{action:'선생님 로그인'});}
 function openGuidePopup(){document.getElementById('guide-popup').classList.add('active');gaEvent('guide_open',{});}
 function closeGuidePopup(e){if(!e||e.target===document.getElementById('guide-popup'))document.getElementById('guide-popup').classList.remove('active');}
+
+function cancelToLanding() {
+  document.getElementById('login-screen').classList.remove('active');
+  document.getElementById('landing-screen').classList.add('active');
+}
 
 function lsGo(step) {
   if (step === 'student-name') {
