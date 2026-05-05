@@ -1926,7 +1926,6 @@ function playSound(type) {
 
 /* ===== STORAGE ===== */
 /* ── 학생별 localStorage 키 (같은 기기 여러 학생 섞임 방지) ── */
-/* ── 학생별 localStorage 키 (이름+PIN이 달라도 ID로 완전 분리) ── */
 function _lsKey(k) { return (currentUser && currentUser.id) ? k+'_'+currentUser.id : k; }
 function saveStudyLog()  { try { localStorage.setItem(_lsKey('hanja_studyLog'),  JSON.stringify(studyLog));     } catch(e){} }
 function loadStudyLog()  { try { return JSON.parse(localStorage.getItem(_lsKey('hanja_studyLog')))  || []; } catch(e){ return []; } }
@@ -3291,15 +3290,23 @@ function setRankTab(tab) {
 async function renderRankingTab() {
   const list = document.getElementById('rank-list');
   if (!list) return;
-  if (!currentUser || !currentUser.teacherId) {
-    list.innerHTML = '<div class="rank-empty">선생님 반에 속한 학생만<br>랭킹을 볼 수 있어요 🏆</div>';
-    return;
+  // 자유학습 학생도 전체 랭킹만 볼 수 있게
+  const isFreeStudent = currentUser && !currentUser.teacherId;
+  if (isFreeStudent) {
+    // 우리 반 탭 숨기고 전체만 표시
+    const classTab = document.getElementById('rank-tab-class');
+    if (classTab) classTab.style.display = 'none';
+    _rankTab = 'all';
+    document.getElementById('rank-tab-all').classList.add('active');
+  } else {
+    const classTab = document.getElementById('rank-tab-class');
+    if (classTab) classTab.style.display = '';
   }
   list.innerHTML = '<div class="rank-empty">🔄 불러오는 중...</div>';
   try {
     let items = [];
     const currentWeek = getWeekStart();
-    if (_rankTab === 'class') {
+    if (_rankTab === 'class' && currentUser.teacherId) {
       const students = await window._fbGetTeacherStudents(currentUser.teacherId);
       const results = await Promise.allSettled(students.map(s => window._fbGetWeeklyRanking(s.id)));
       items = results.map((r,i) => {
@@ -4194,7 +4201,7 @@ async function loadStudentDataFromFirestore() {
 }
 async function syncToFirestore() {
   if (!currentUser || currentUser.role !== 'student') return;
-  if (!currentUser.teacherId) return;
+  if (!window._firebaseReady || !window._fbSetStudentData) return;
   try {
     // 주간 랭킹 업데이트
     const weekScore = getWeeklyScore();
