@@ -1175,8 +1175,8 @@ body {
     <div class="confirm-divider"></div>
     <div class="confirm-teacher-label">안녕하세요!</div>
     <div class="confirm-student-name" id="confirm-student-name"></div>
-    <button class="confirm-start-btn" onclick="confirmEnterApp()">시작하기 🚀</button>
-    <button class="confirm-back-btn" onclick="cancelConfirm()">← 다시 선택하기</button>
+    <button class="confirm-start-btn" tabindex="-1" onclick="confirmEnterApp()">시작하기 🚀</button>
+    <button class="confirm-back-btn" tabindex="-1" onclick="cancelConfirm()">← 다시 선택하기</button>
   </div>
 </div>
 
@@ -3615,18 +3615,25 @@ function updatePinDisplay() {
 }
 /* ── 퀴즈 키보드 지원 ── */
 document.addEventListener('keydown', function(e) {
+  // 퀴즈 화면 활성화 체크
   if (!S || S.screen !== 'quiz' || S.isFinished) return;
-  if (!document.getElementById('student-app')?.classList.contains('active')) return;
-  if (!S._quizReady) return;
+  const app = document.getElementById('student-app');
+  if (!app || !app.classList.contains('active')) return;
+  const quizEl = document.getElementById('quiz');
+  if (!quizEl || !quizEl.classList.contains('active')) return;
+
   if (e.key==='1'||e.key==='2'||e.key==='3'||e.key==='4') {
-    const idx=parseInt(e.key)-1;
-    if (idx<(S.quizChoices||[]).length&&!S.quizChecked){e.preventDefault();chooseOpt(idx);}
+    const idx = parseInt(e.key)-1;
+    if (idx < (S.quizChoices||[]).length && !S.quizChecked) {
+      e.preventDefault(); e.stopPropagation();
+      chooseOpt(idx);
+    }
   } else if (e.key==='Enter') {
-    e.preventDefault();
+    e.preventDefault(); e.stopPropagation();
     if (S.quizChecked) nextItem();
-    else if (S.quizSelected!==null&&S.quizSelected!==undefined) checkAnswer();
+    else if (S.quizSelected !== null && S.quizSelected !== undefined) checkAnswer();
   } else if (e.key===' ') {
-    e.preventDefault();
+    e.preventDefault(); e.stopPropagation();
     if (S.quizChecked) nextItem();
   }
 });
@@ -3848,6 +3855,7 @@ async function enterStudentApp() {
   document.getElementById('loading').style.display = 'none';
   document.getElementById('login-screen').classList.remove('active');
   document.getElementById('landing-screen').classList.remove('active');
+  document.getElementById('class-confirm-screen').classList.remove('active');
   document.getElementById('class-confirm-screen').classList.remove('active');
   document.getElementById('teacher-app').classList.remove('active');
   // 뒤로가기 방지: 앱 진입 시 히스토리 추가
