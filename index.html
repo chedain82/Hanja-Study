@@ -350,14 +350,14 @@ body {
 .toggle.on { background: var(--blue); }
 .toggle.on::after { left: 21px; }
 
-.card-content-wrap { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: clamp(14px, 3vh, 28px); padding: 0; max-height: 64%; }
+.card-content-wrap { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; padding-top: clamp(20px, 6vh, 44px); gap: clamp(14px, 3vh, 28px); padding-bottom: 60px; }
 @media (max-height: 700px) {
-  .card-content-wrap { gap: 10px; max-height: 60%; }
+  .card-content-wrap { gap: 10px; padding-bottom: 40px; }
 }
 .hanja-display { text-align: center; font-family: 'Nanum Myeongjo', serif; font-weight: 800; line-height: 1.1; }
 .meaning-display { text-align: center; font-weight: 700; color: #1A73E8; min-height: 50px; display: flex; align-items: center; justify-content: center; }
 
-.card-nav { display: flex; align-items: center; justify-content: center; gap: 36px; padding: 8px 0 16px; flex-shrink: 0; }
+.card-nav { display: flex; align-items: center; justify-content: center; gap: 36px; padding: 20px 0 30px; margin-top: -30px; flex-shrink: 0; }
 .nav-arrow { width: 64px; height: 64px; border-radius: 50%; background: none; border: none; cursor: pointer; font-size: 44px; color: var(--blue); display: flex; align-items: center; justify-content: center; transition: all .15s; }
 .nav-arrow:disabled { color: #D7D7D7; cursor: default; }
 .nav-arrow:not(:disabled):active { transform: scale(.88); }
@@ -449,16 +449,8 @@ body {
 @keyframes slideRight { from { transform: translateX(-60px); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
 .slide-left .card-content-wrap, .slide-left .quiz-options { animation: slideLeft .28s ease-out; }
 .slide-right .card-content-wrap, .slide-right .quiz-options { animation: slideRight .28s ease-out; }
-/* 쓰기 화면 - 애니메이션 완전 제거 + 키보드 고정 */
+/* 쓰기 화면은 슬라이드 없음 */
 #write-inner.slide-left, #write-inner.slide-right { animation: none !important; }
-#write.active .card {
-  position: fixed !important;
-  top: 4px; left: 4px; right: 4px;
-  height: calc(var(--vvh, 100dvh) - 8px) !important;
-  max-height: none !important;
-  overflow: hidden;
-  transition: none !important;
-}
 
 @keyframes flashCorrect { 0%{box-shadow:inset 0 0 0 0 rgba(67,160,71,0);} 30%{box-shadow:inset 0 0 0 200px rgba(67,160,71,.12);} 100%{box-shadow:inset 0 0 0 200px rgba(67,160,71,0);} }
 @keyframes flashWrong { 0%{box-shadow:inset 0 0 0 0 rgba(198,40,40,0);} 30%{box-shadow:inset 0 0 0 200px rgba(198,40,40,.12);} 100%{box-shadow:inset 0 0 0 200px rgba(198,40,40,0);} }
@@ -1065,14 +1057,6 @@ body {
 }
 .lv-step-card {
   background:white; border-radius:10px; padding:8px 7px;
-  position:relative;
-}
-.lv-round-badge {
-  position:absolute; top:5px; left:5px;
-  background:var(--blue); color:white;
-  font-size:10px; font-weight:800;
-  border-radius:5px; padding:1px 5px;
-  line-height:1.4; min-width:16px; text-align:center;
 }
 .lv-step-title {
   font-size:12px; font-weight:800; color:#333;
@@ -1323,7 +1307,7 @@ body {
       onkeydown="if(event.key==='Enter')lsGo('student-pin')"/>
     <div class="login-error" id="ls-name-error"></div>
     <button class="login-submit-btn" onclick="lsGo('student-pin')">다음</button>
-    <button class="login-back-btn" onclick="cancelToLanding()">← 뒤로</button>
+    <button class="login-back-btn" onclick="lsBack('student-teacher')">← 뒤로</button>
   </div>
 
   <!-- STEP 3 (학생): PIN 입력 -->
@@ -1942,21 +1926,16 @@ function playSound(type) {
 
 /* ===== STORAGE ===== */
 /* ── 학생별 localStorage 키 (같은 기기 여러 학생 섞임 방지) ── */
+/* ── 학생별 localStorage 키 (이름+PIN이 달라도 ID로 완전 분리) ── */
 function _lsKey(k) { return (currentUser && currentUser.id) ? k+'_'+currentUser.id : k; }
-function _migrateLsKey(base) {
-  const newKey = _lsKey(base);
-  if (!currentUser || !currentUser.id || localStorage.getItem(newKey)) return;
-  const oldVal = localStorage.getItem(base);
-  if (oldVal) localStorage.setItem(newKey, oldVal);
-}
 function saveStudyLog()  { try { localStorage.setItem(_lsKey('hanja_studyLog'),  JSON.stringify(studyLog));     } catch(e){} }
-function loadStudyLog()  { try { _migrateLsKey('hanja_studyLog');  return JSON.parse(localStorage.getItem(_lsKey('hanja_studyLog')))  || []; } catch(e){ return []; } }
+function loadStudyLog()  { try { return JSON.parse(localStorage.getItem(_lsKey('hanja_studyLog')))  || []; } catch(e){ return []; } }
 function saveWrongNote() { try { localStorage.setItem(_lsKey('hanja_wrongNote'), JSON.stringify(S.wrongNote));  } catch(e){} }
-function loadWrongNote() { try { _migrateLsKey('hanja_wrongNote'); return JSON.parse(localStorage.getItem(_lsKey('hanja_wrongNote'))) || []; } catch(e){ return []; } }
+function loadWrongNote() { try { return JSON.parse(localStorage.getItem(_lsKey('hanja_wrongNote'))) || []; } catch(e){ return []; } }
 function saveSettings()  { try { localStorage.setItem(_lsKey('hanja_settings'),  JSON.stringify(settings));     } catch(e){} }
-function loadSettings()  { try { _migrateLsKey('hanja_settings');  return JSON.parse(localStorage.getItem(_lsKey('hanja_settings')))  || {streak:0,lastStudyDate:'',dailyGoal:20,totalCorrect:0,totalQuestions:0,totalTime:0,bestStreak:0,levelProgress:{},perfectStreak:0,lastPerfectDate:'',coupons:0,usedCoupons:0}; } catch(e){ return {streak:0,lastStudyDate:'',dailyGoal:20,totalCorrect:0,totalQuestions:0,totalTime:0,bestStreak:0,levelProgress:{},perfectStreak:0,lastPerfectDate:'',coupons:0,usedCoupons:0}; } }
+function loadSettings()  { try { return JSON.parse(localStorage.getItem(_lsKey('hanja_settings')))  || {streak:0,lastStudyDate:'',dailyGoal:20,totalCorrect:0,totalQuestions:0,totalTime:0,bestStreak:0,levelProgress:{},perfectStreak:0,lastPerfectDate:'',coupons:0,usedCoupons:0}; } catch(e){ return {streak:0,lastStudyDate:'',dailyGoal:20,totalCorrect:0,totalQuestions:0,totalTime:0,bestStreak:0,levelProgress:{},perfectStreak:0,lastPerfectDate:'',coupons:0,usedCoupons:0}; } }
 function saveBadges()    { try { localStorage.setItem(_lsKey('hanja_badges'),    JSON.stringify(earnedBadges)); } catch(e){} }
-function loadBadges()    { try { _migrateLsKey('hanja_badges');    return JSON.parse(localStorage.getItem(_lsKey('hanja_badges')))    || {}; } catch(e){ return {}; } }
+function loadBadges()    { try { return JSON.parse(localStorage.getItem(_lsKey('hanja_badges')))    || {}; } catch(e){ return {}; } }
 
 /* ===== APP STATE ===== */
 let studyLog = loadStudyLog();
@@ -2481,16 +2460,7 @@ function _buildLevelProgressHTML(wp, lp) {
       const tTxt = tScore>=100?'✅':'';
       // 해당 step이 속한 급수 찾기
       const stepLv = LEVEL_ORDER.find(l => (LEVEL_STEPS[l]||[]).includes(step)) || lv;
-      // 회차 데이터 (settings.rangeRounds)
-      const rounds = (settings.rangeRounds && settings.rangeRounds[step]) || 1;
-      const roundBadge = rounds > 1 ? `<div class="lv-round-badge">${rounds}</div>` : '';
-      // 꾹 누르기 - 100점 완료 시만 활성화
-      const bothDone = sScore >= 100 && tScore >= 100;
-      const longPressAttr = bothDone
-        ? `onmousedown="startRangeLongPress('${step}',event)" ontouchstart="startRangeLongPress('${step}',event)" onmouseup="cancelRangeLongPress()" ontouchend="cancelRangeLongPress()" onmouseleave="cancelRangeLongPress()"`
-        : '';
-      return `<div class="lv-step-card" ${longPressAttr}>
-        ${roundBadge}
+      return `<div class="lv-step-card">
         <div class="lv-step-title">${step}</div>
         <div class="lv-bar-row" style="cursor:pointer" onclick="goStudyFromProgress('${stepLv}','${step}','선정')">
           <div class="lv-bar-label">
@@ -2524,41 +2494,6 @@ function _buildLevelProgressHTML(wp, lp) {
       <div class="lv-steps-grid">${stepCards}</div>
     </div>`;
   }).join('');
-}
-
-/* ── 범위 반복 회차 기능 ── */
-let _rangeLongPressTimer = null;
-let _rangeLongPressStep = null;
-
-function startRangeLongPress(step, e) {
-  e.preventDefault();
-  _rangeLongPressStep = step;
-  _rangeLongPressTimer = setTimeout(() => {
-    showRangeRepeatConfirm(step);
-  }, 2000);
-}
-function cancelRangeLongPress() {
-  if (_rangeLongPressTimer) { clearTimeout(_rangeLongPressTimer); _rangeLongPressTimer = null; }
-  _rangeLongPressStep = null;
-}
-function showRangeRepeatConfirm(step) {
-  const rounds = (settings.rangeRounds && settings.rangeRounds[step]) || 1;
-  const nextRound = rounds + 1;
-  if (confirm(`${step} 범위를 ${nextRound}회차로 다시 시작할까요?\n\n현재 점수는 초기화되고 ${nextRound}회차로 표시됩니다.`)) {
-    resetRangeForRepeat(step, nextRound);
-  }
-}
-function resetRangeForRepeat(step, nextRound) {
-  if (!settings.rangeRounds) settings.rangeRounds = {};
-  settings.rangeRounds[step] = nextRound;
-  // 해당 step의 writeProgress 초기화
-  if (!settings.writeProgress) settings.writeProgress = {};
-  delete settings.writeProgress[step + '_선정'];
-  delete settings.writeProgress[step + '_교과서'];
-  saveSettings();
-  syncToFirestore();
-  renderLevelProgress();
-  toast(`${step} ${nextRound}회차 시작!`);
 }
 
 function renderLevelProgress() {
@@ -3525,11 +3460,6 @@ function landingStartTeacher(){document.getElementById('landing-screen').classLi
 function openGuidePopup(){document.getElementById('guide-popup').classList.add('active');gaEvent('guide_open',{});}
 function closeGuidePopup(e){if(!e||e.target===document.getElementById('guide-popup'))document.getElementById('guide-popup').classList.remove('active');}
 
-function cancelToLanding() {
-  document.getElementById('login-screen').classList.remove('active');
-  document.getElementById('landing-screen').classList.add('active');
-}
-
 function lsGo(step) {
   if (step === 'student-name') {
     document.getElementById('ls-name-sub').textContent = '이름을 입력하세요';
@@ -3689,18 +3619,43 @@ document.addEventListener('keydown', function(e) {
   }
 });
 
-/* ── 쓰기 화면 키보드 고정 - CSS 변수 방식 (튕김 없음) ── */
+/* ── 쓰기 화면 키보드 고정 (iOS/Android) ── */
 (function() {
-  function updateVVH() {
-    const h = window.visualViewport ? window.visualViewport.height : window.innerHeight;
-    document.documentElement.style.setProperty('--vvh', h + 'px');
+  function applyWriteViewport() {
+    if (!window.visualViewport) return;
+    const vvh = window.visualViewport.height;
+    const vvt = window.visualViewport.offsetTop || 0;
+    const writeEl = document.getElementById('write');
+    if (!writeEl || !writeEl.classList.contains('active')) return;
+    const card = writeEl.querySelector('.card');
+    if (card) {
+      card.style.position = 'fixed';
+      card.style.top      = vvt + 'px';
+      card.style.left     = '4px';
+      card.style.right    = '4px';
+      card.style.height   = (vvh - 8) + 'px';
+      card.style.maxHeight = (vvh - 8) + 'px';
+      card.style.overflow = 'hidden';
+    }
   }
-  updateVVH();
+  function resetWriteViewport() {
+    const writeEl = document.getElementById('write');
+    if (!writeEl) return;
+    const card = writeEl.querySelector('.card');
+    if (!card) return;
+    card.style.position = '';
+    card.style.top = ''; card.style.left = '';
+    card.style.right = ''; card.style.height = '';
+    card.style.maxHeight = ''; card.style.overflow = '';
+  }
   if (window.visualViewport) {
-    window.visualViewport.addEventListener('resize', updateVVH);
-    window.visualViewport.addEventListener('scroll', updateVVH);
+    window.visualViewport.addEventListener('resize', function() {
+      if (document.getElementById('write')?.classList.contains('active')) applyWriteViewport();
+      else resetWriteViewport();
+    });
   }
-  window.addEventListener('resize', updateVVH);
+  window._applyWriteViewport = applyWriteViewport;
+  window._resetWriteViewport = resetWriteViewport;
 })();
 
 /* ── PIN 키보드 입력 지원 (통합) ── */
@@ -4484,11 +4439,7 @@ async function showStudentDetail(studentId, studentName) {
 
     // 선생님 학생 상세 - writeProgress 기반 인라인 진도율
     const wp_student = st.writeProgress || {};
-    // 학생 rangeRounds를 settings에 임시 주입 후 빌드
-    const _origRounds = settings.rangeRounds;
-    settings.rangeRounds = st.rangeRounds || {};
     const levelRows = _buildLevelProgressHTML(wp_student, lp);
-    settings.rangeRounds = _origRounds;
 
     const wrongRows = top5.length
       ? top5.map(it => `
