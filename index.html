@@ -1307,7 +1307,7 @@ body {
       onkeydown="if(event.key==='Enter')lsGo('student-pin')"/>
     <div class="login-error" id="ls-name-error"></div>
     <button class="login-submit-btn" onclick="lsGo('student-pin')">다음</button>
-    <button class="login-back-btn" onclick="cancelToLanding()">← 뒤로</button>
+    <button class="login-back-btn" onclick="lsBack('student-teacher')">← 뒤로</button>
   </div>
 
   <!-- STEP 3 (학생): PIN 입력 -->
@@ -1927,14 +1927,20 @@ function playSound(type) {
 /* ===== STORAGE ===== */
 /* ── 학생별 localStorage 키 (같은 기기 여러 학생 섞임 방지) ── */
 function _lsKey(k) { return (currentUser && currentUser.id) ? k+'_'+currentUser.id : k; }
+function _migrateLsKey(base) {
+  const newKey = _lsKey(base);
+  if (!currentUser || !currentUser.id || localStorage.getItem(newKey)) return;
+  const oldVal = localStorage.getItem(base);
+  if (oldVal) localStorage.setItem(newKey, oldVal);
+}
 function saveStudyLog()  { try { localStorage.setItem(_lsKey('hanja_studyLog'),  JSON.stringify(studyLog));     } catch(e){} }
-function loadStudyLog()  { try { return JSON.parse(localStorage.getItem(_lsKey('hanja_studyLog')))  || []; } catch(e){ return []; } }
+function loadStudyLog()  { try { _migrateLsKey('hanja_studyLog');  return JSON.parse(localStorage.getItem(_lsKey('hanja_studyLog')))  || []; } catch(e){ return []; } }
 function saveWrongNote() { try { localStorage.setItem(_lsKey('hanja_wrongNote'), JSON.stringify(S.wrongNote));  } catch(e){} }
-function loadWrongNote() { try { return JSON.parse(localStorage.getItem(_lsKey('hanja_wrongNote'))) || []; } catch(e){ return []; } }
+function loadWrongNote() { try { _migrateLsKey('hanja_wrongNote'); return JSON.parse(localStorage.getItem(_lsKey('hanja_wrongNote'))) || []; } catch(e){ return []; } }
 function saveSettings()  { try { localStorage.setItem(_lsKey('hanja_settings'),  JSON.stringify(settings));     } catch(e){} }
-function loadSettings()  { try { return JSON.parse(localStorage.getItem(_lsKey('hanja_settings')))  || {streak:0,lastStudyDate:'',dailyGoal:20,totalCorrect:0,totalQuestions:0,totalTime:0,bestStreak:0,levelProgress:{},perfectStreak:0,lastPerfectDate:'',coupons:0,usedCoupons:0}; } catch(e){ return {streak:0,lastStudyDate:'',dailyGoal:20,totalCorrect:0,totalQuestions:0,totalTime:0,bestStreak:0,levelProgress:{},perfectStreak:0,lastPerfectDate:'',coupons:0,usedCoupons:0}; } }
+function loadSettings()  { try { _migrateLsKey('hanja_settings');  return JSON.parse(localStorage.getItem(_lsKey('hanja_settings')))  || {streak:0,lastStudyDate:'',dailyGoal:20,totalCorrect:0,totalQuestions:0,totalTime:0,bestStreak:0,levelProgress:{},perfectStreak:0,lastPerfectDate:'',coupons:0,usedCoupons:0}; } catch(e){ return {streak:0,lastStudyDate:'',dailyGoal:20,totalCorrect:0,totalQuestions:0,totalTime:0,bestStreak:0,levelProgress:{},perfectStreak:0,lastPerfectDate:'',coupons:0,usedCoupons:0}; } }
 function saveBadges()    { try { localStorage.setItem(_lsKey('hanja_badges'),    JSON.stringify(earnedBadges)); } catch(e){} }
-function loadBadges()    { try { return JSON.parse(localStorage.getItem(_lsKey('hanja_badges')))    || {}; } catch(e){ return {}; } }
+function loadBadges()    { try { _migrateLsKey('hanja_badges');    return JSON.parse(localStorage.getItem(_lsKey('hanja_badges')))    || {}; } catch(e){ return {}; } }
 
 /* ===== APP STATE ===== */
 let studyLog = loadStudyLog();
@@ -2867,13 +2873,25 @@ function renderQuiz() {
 }
 
 function buildChoices(it) {
-  const pool=ALL.filter(x=>x.타입===S.category);
   const dir=S.quizDir; let correct,getCand;
   if(dir==='한자→뜻'){correct=answerText(it);getCand=x=>answerText(x);}
   else{correct=it.한자;getCand=x=>x.한자;}
-  let cands=pool.map(getCand).filter(c=>c&&c!==correct);
-  cands=shuffle(cands).slice(0,3);
-  return shuffle([correct,...cands]).slice(0,4);
+  const correctLen = correct.length;
+  // 같은 타입 전체 데이터에서 같은 글자 수 보기 찾기
+  const pool = ALL.filter(x=>x.타입===S.category);
+  let cands = pool.map(getCand).filter(c=>c&&c!==correct);
+  // 같은 글자 수 우선, 부족하면 전체 ALL에서 보충
+  let sameLenCands = shuffle(cands.filter(c=>c.length===correctLen));
+  if (sameLenCands.length < 3) {
+    // 전체 ALL에서 같은 글자 수 추가 검색
+    const allCands = ALL.map(getCand).filter(c=>c&&c!==correct&&!sameLenCands.includes(c));
+    const extraSame = shuffle(allCands.filter(c=>c.length===correctLen));
+    sameLenCands = [...sameLenCands, ...extraSame];
+  }
+  // 여전히 부족하면 다른 글자 수로 보충
+  const otherCands = shuffle(cands.filter(c=>c.length!==correctLen));
+  const selected = [...sameLenCands, ...otherCands].slice(0,3);
+  return shuffle([correct,...selected]).slice(0,4);
 }
 
 function chooseOpt(i) {
@@ -3290,23 +3308,15 @@ function setRankTab(tab) {
 async function renderRankingTab() {
   const list = document.getElementById('rank-list');
   if (!list) return;
-  // 자유학습 학생도 전체 랭킹만 볼 수 있게
-  const isFreeStudent = currentUser && !currentUser.teacherId;
-  if (isFreeStudent) {
-    // 우리 반 탭 숨기고 전체만 표시
-    const classTab = document.getElementById('rank-tab-class');
-    if (classTab) classTab.style.display = 'none';
-    _rankTab = 'all';
-    document.getElementById('rank-tab-all').classList.add('active');
-  } else {
-    const classTab = document.getElementById('rank-tab-class');
-    if (classTab) classTab.style.display = '';
+  if (!currentUser || !currentUser.teacherId) {
+    list.innerHTML = '<div class="rank-empty">선생님 반에 속한 학생만<br>랭킹을 볼 수 있어요 🏆</div>';
+    return;
   }
   list.innerHTML = '<div class="rank-empty">🔄 불러오는 중...</div>';
   try {
     let items = [];
     const currentWeek = getWeekStart();
-    if (_rankTab === 'class' && currentUser.teacherId) {
+    if (_rankTab === 'class') {
       const students = await window._fbGetTeacherStudents(currentUser.teacherId);
       const results = await Promise.allSettled(students.map(s => window._fbGetWeeklyRanking(s.id)));
       items = results.map((r,i) => {
@@ -3467,11 +3477,6 @@ function landingStartTeacher(){document.getElementById('landing-screen').classLi
 function openGuidePopup(){document.getElementById('guide-popup').classList.add('active');gaEvent('guide_open',{});}
 function closeGuidePopup(e){if(!e||e.target===document.getElementById('guide-popup'))document.getElementById('guide-popup').classList.remove('active');}
 
-function cancelToLanding() {
-  document.getElementById('login-screen').classList.remove('active');
-  document.getElementById('landing-screen').classList.add('active');
-}
-
 function lsGo(step) {
   if (step === 'student-name') {
     document.getElementById('ls-name-sub').textContent = '이름을 입력하세요';
@@ -3610,22 +3615,17 @@ function updatePinDisplay() {
 }
 /* ── 퀴즈 키보드 지원 ── */
 document.addEventListener('keydown', function(e) {
-  const quizInner = document.getElementById('quiz-inner');
-  if (!quizInner || !quizInner.closest('#quiz-screen')?.classList.contains('active') &&
-      !document.getElementById('student-app')?.classList.contains('active')) return;
   if (!S || S.screen !== 'quiz' || S.isFinished) return;
-  if (!S._quizReady) return; // ghost click 방지
-
-  if (e.key === '1' || e.key === '2' || e.key === '3' || e.key === '4') {
-    const idx = parseInt(e.key) - 1;
-    if (idx < (S.quizChoices||[]).length && !S.quizChecked) {
-      e.preventDefault(); chooseOpt(idx);
-    }
-  } else if (e.key === 'Enter') {
+  if (!document.getElementById('student-app')?.classList.contains('active')) return;
+  if (!S._quizReady) return;
+  if (e.key==='1'||e.key==='2'||e.key==='3'||e.key==='4') {
+    const idx=parseInt(e.key)-1;
+    if (idx<(S.quizChoices||[]).length&&!S.quizChecked){e.preventDefault();chooseOpt(idx);}
+  } else if (e.key==='Enter') {
     e.preventDefault();
     if (S.quizChecked) nextItem();
-    else if (S.quizSelected !== null && S.quizSelected !== undefined) checkAnswer();
-  } else if (e.key === ' ') {
+    else if (S.quizSelected!==null&&S.quizSelected!==undefined) checkAnswer();
+  } else if (e.key===' ') {
     e.preventDefault();
     if (S.quizChecked) nextItem();
   }
@@ -4201,7 +4201,7 @@ async function loadStudentDataFromFirestore() {
 }
 async function syncToFirestore() {
   if (!currentUser || currentUser.role !== 'student') return;
-  if (!window._firebaseReady || !window._fbSetStudentData) return;
+  if (!currentUser.teacherId) return;
   try {
     // 주간 랭킹 업데이트
     const weekScore = getWeeklyScore();
