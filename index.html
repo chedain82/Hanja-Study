@@ -315,17 +315,22 @@ body {
 /* ===== EXISTING STUDY STYLES ===== */
 /* 급수 */
 .level-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; justify-content: center; margin: 16px 0; }
-.level-btn { width: 100%; height: 80px; border-radius: 20px; background: var(--blue); color: white; font-size: 20px; font-weight: 800; border: none; cursor: pointer; transition: all .2s; box-shadow: 0 4px 12px rgba(59,125,224,.3); }
-.level-btn.selected { background: #272222; color: #F2E8B8; box-shadow: 0 4px 14px rgba(0,0,0,.3); transform: scale(1.04); }
+.level-btn { width: 100%; height: 90px; border-radius: 20px; color: white; border: none; cursor: pointer; transition: all .2s; box-shadow: 0 4px 16px rgba(0,0,0,.2); display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2px; padding: 8px; position: relative; overflow: hidden; }
+.level-btn-hanja { font-size: 28px; font-weight: 800; font-family: 'Nanum Myeongjo', serif; line-height: 1; }
+.level-btn-name { font-size: 15px; font-weight: 800; }
+.level-btn-count { font-size: 11px; font-weight: 600; opacity: 0.85; }
+.level-btn-progress { position: absolute; bottom: 0; left: 0; height: 3px; background: rgba(255,255,255,0.6); border-radius: 0 2px 2px 0; }
+.level-btn.selected { transform: scale(1.06); box-shadow: 0 6px 20px rgba(0,0,0,.35); outline: 3px solid white; }
 .level-btn:active { transform: scale(.94); }
+.level-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin: 8px 0; }
 
 /* 범위 */
 #range .card { overflow: hidden; }
-.range-group { border: 1.3px solid var(--border); border-radius: 12px; padding: 14px 12px; margin-bottom: 12px; }
-.range-group-title { font-size: 16px; font-weight: 700; text-align: center; margin-bottom: 12px; }
-.range-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; justify-items: center; }
-.range-btn { width: 100%; height: 56px; border-radius: 10px; background: var(--blue); color: white; font-size: 16px; font-weight: 700; border: none; cursor: pointer; padding: 0 6px; transition: all .15s; }
-.range-btn.selected { background: var(--dark-blue); box-shadow: inset 0 0 0 2.5px #8BAAFF; }
+.range-group { background: white; border-radius: 16px; padding: 14px 12px; margin-bottom: 12px; box-shadow: 0 2px 10px rgba(0,0,0,.07); }
+.range-group-title { font-size: 14px; font-weight: 800; text-align: center; margin-bottom: 10px; color: var(--blue); background: #f0f4ff; padding: 4px 0; border-radius: 8px; }
+.range-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; justify-items: center; }
+.range-btn { width: 100%; height: 52px; border-radius: 12px; background: linear-gradient(135deg,#74b9ff,#0984e3); color: white; font-size: 15px; font-weight: 700; border: none; cursor: pointer; padding: 0 6px; transition: all .15s; box-shadow: 0 2px 8px rgba(9,132,227,.3); }
+.range-btn.selected { background: linear-gradient(135deg,#2d3436,#000); box-shadow: 0 3px 12px rgba(0,0,0,.4); transform: scale(1.04); }
 .range-btn:active { transform: scale(.92); }
 
 /* 공부 유형 */
@@ -353,7 +358,7 @@ body {
 .hanja-display { text-align: center; font-family: 'Nanum Myeongjo', serif; font-weight: 800; line-height: 1.1; }
 .meaning-display { text-align: center; font-weight: 700; color: #1A73E8; min-height: 50px; display: flex; align-items: center; justify-content: center; }
 
-.card-nav { display: flex; align-items: center; justify-content: center; gap: 36px; padding: 6px 0 10px; flex-shrink: 0; margin-top: auto; }
+.card-nav { display: flex; align-items: center; justify-content: center; gap: 36px; padding: 6px 0 16px; flex-shrink: 0; }
 .nav-arrow { width: 64px; height: 64px; border-radius: 50%; background: none; border: none; cursor: pointer; font-size: 44px; color: var(--blue); display: flex; align-items: center; justify-content: center; transition: all .15s; }
 .nav-arrow:disabled { color: #D7D7D7; cursor: default; }
 .nav-arrow:not(:disabled):active { transform: scale(.88); }
@@ -1727,8 +1732,9 @@ body {
   <!-- 급수 선택 -->
   <div id="level" class="subscreen">
     <div class="top-label">급수 선택</div>
-    <div class="card">
-      <div class="section-title mb-16">급수 선택하기</div>
+    <div class="card" style="background:linear-gradient(160deg,#f8e8ee 0%,#ede8f8 100%);">
+      <div class="section-title mb-8" style="font-size:clamp(22px,6vw,30px);">급수 선택하기</div>
+      <div style="font-size:13px;font-weight:600;color:var(--gray);text-align:center;margin-bottom:12px;">원하는 급수를 선택해 주세요</div>
       <div class="level-grid" id="level-grid"></div>
       <div style="flex:1;"></div>
       <div class="btn-row mb-12"><button class="btn btn-black" id="level-next-btn" onclick="goSub('range')" disabled>다음</button></div>
@@ -1739,10 +1745,14 @@ body {
   <!-- 범위 선택 -->
   <div id="range" class="subscreen">
     <div class="top-label">범위 선택</div>
-    <div class="card">
-      <div style="display:flex;align-items:center;gap:10px;margin-bottom:14px;flex-shrink:0;">
+    <div class="card" style="background:linear-gradient(160deg,#f8e8ee 0%,#ede8f8 100%);">
+      <div style="display:flex;align-items:center;gap:10px;margin-bottom:8px;flex-shrink:0;">
         <div class="badge" id="range-badge"></div>
         <div class="section-title" style="font-size:clamp(22px,6vw,32px);">범위 지정</div>
+      </div>
+      <div id="range-select-count" style="font-size:13px;font-weight:700;color:var(--blue);
+        text-align:center;margin-bottom:10px;background:#f0f4ff;padding:5px;border-radius:10px;flex-shrink:0;">
+        범위를 선택해 주세요
       </div>
       <div id="range-groups" style="overflow-y:auto;flex:1;"></div>
       <div style="padding-top:12px;display:flex;justify-content:center;flex-shrink:0;">
@@ -1781,6 +1791,12 @@ body {
   </div>
 
   <!-- 쓰기 퀴즈 -->
+  <!-- 쓰기 화면 플로팅 확인/다음 버튼 (키보드 위 고정) -->
+  <div id="write-float-btn" style="display:none;position:fixed;left:0;right:0;bottom:0;z-index:500;
+    background:white;border-top:1px solid #EEE;padding:10px 24px;gap:16px;
+    align-items:center;justify-content:center;">
+  </div>
+
   <div id="write" class="subscreen">
     <div class="top-label">쓰기</div>
     <div class="card" id="write-inner"></div>
@@ -2560,16 +2576,40 @@ function startWrongQuiz() {
 function clearWrongNote() { S.wrongNote = []; saveWrongNote(); toast('오답 노트를 비웠습니다.'); renderWrongNote(); }
 
 /* ===== LEVEL / RANGE / TYPE ===== */
+const LEVEL_META = {
+  '8급' : { hanja:'山', grad:'linear-gradient(135deg,#74b9ff,#0984e3)' },
+  '7급' : { hanja:'花', grad:'linear-gradient(135deg,#55efc4,#00b894)' },
+  '6급' : { hanja:'學', grad:'linear-gradient(135deg,#a29bfe,#6c5ce7)' },
+  '준5급': { hanja:'國', grad:'linear-gradient(135deg,#fd79a8,#e84393)' },
+  '5급' : { hanja:'道', grad:'linear-gradient(135deg,#fdcb6e,#e17055)' },
+  '준4급': { hanja:'強', grad:'linear-gradient(135deg,#e17055,#d63031)' },
+  '4급' : { hanja:'德', grad:'linear-gradient(135deg,#b2bec3,#636e72)' },
+  '준3급': { hanja:'義', grad:'linear-gradient(135deg,#636e72,#2d3436)' },
+  '3급' : { hanja:'漢', grad:'linear-gradient(135deg,#2d3436,#000)' },
+};
 function renderLevel() {
-  document.getElementById('level-grid').innerHTML = LEVEL_ORDER.map(lv =>
-    `<button class="level-btn${S.level===lv?' selected':''}" onclick="selectLevel('${lv}')">${lv}</button>`
-  ).join('');
+  const lp = settings.levelProgress || {};
+  document.getElementById('level-grid').innerHTML = LEVEL_ORDER.map(lv => {
+    const meta = LEVEL_META[lv] || { hanja:'字', grad:'linear-gradient(135deg,#74b9ff,#0984e3)' };
+    const prog = lp[lv] || 0;
+    const progW = prog > 0 ? Math.min(Math.round(prog / 5), 100) : 0;
+    const sel = S.level === lv ? ' selected' : '';
+    return `<button class="level-btn${sel}" onclick="selectLevel('${lv}')"
+      style="background:${meta.grad};">
+      <span class="level-btn-hanja">${meta.hanja}</span>
+      <span class="level-btn-name">${lv}</span>
+      ${prog > 0 ? `<div class="level-btn-progress" style="width:${progW}%"></div>` : ''}
+    </button>`;
+  }).join('');
   document.getElementById('level-next-btn').disabled = !S.level;
 }
 function selectLevel(lv) { S.level=lv; S.ranges=[]; renderLevel(); }
 
 function renderRange() {
   document.getElementById('range-badge').innerHTML = `${S.level} <span>+</span>`;
+  const selCount = S.ranges.length;
+  const countEl = document.getElementById('range-select-count');
+  if (countEl) countEl.textContent = selCount > 0 ? `${selCount}개 선택됨` : '범위를 선택해 주세요';
   const steps = LEVEL_STEPS[S.level]||[];
   const container = document.getElementById('range-groups');
   if (S.level==='준3급'||S.level==='3급') {
@@ -2905,17 +2945,28 @@ function renderWrite() {
         autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"
         onkeydown="handleWriteKey(event)" autofocus/>
       <div class="write-result ${checked?(S.writeCorrect?'ok':'fail'):''}">${checked?(S.writeCorrect?'✅ 정답입니다!':`❌ 정답: ${correctDisplay}`):''}</div>
-      <div class="card-nav" style="padding:4px 0 4px;">
+      <div class="card-nav" style="padding:8px 0 8px;width:100%;justify-content:center;">
         <button class="write-confirm-btn" onclick="${checked?'nextWriteItem()':'checkWrite()'}">${checked?'다음':'확인'}</button>
         <button class="nav-arrow" onclick="nextWriteItem()">▶</button>
       </div>
     </div>
     <div class="back-wrap"><button class="btn btn-back" onclick="goSub(S.lastMain)">← 뒤로</button></div>
   `;
+  // 플로팅 확인 버튼 업데이트
+  const floatBtn = document.getElementById('write-float-btn');
+  if (floatBtn) {
+    floatBtn.innerHTML = `
+      <button class="write-confirm-btn" onclick="${checked?'nextWriteItem()':'checkWrite()'}">
+        ${checked?'다음':'확인'}
+      </button>
+      <button class="nav-arrow" onclick="nextWriteItem()">▶</button>
+    `;
+  }
+  if (window._applyWriteViewport) setTimeout(_applyWriteViewport, 50);
   setTimeout(()=>{
     const inp=document.getElementById('write-input');
     if(inp) {
-      if(!S.writeChecked) inp.value = ''; // 미확인 상태면 항상 비워줌
+      if(!S.writeChecked) inp.value = '';
       inp.focus();
     }
   },100);
@@ -3559,22 +3610,47 @@ document.addEventListener('keydown', function(e) {
   }
 });
 
-/* ── 쓰기 화면 키보드 올라올 때 화면 고정 (iOS/Android) ── */
+/* ── 쓰기 화면 키보드 고정 (iOS/Android) ── */
 (function() {
-  function applyViewport() {
+  function applyWriteViewport() {
     if (!window.visualViewport) return;
-    const vh = window.visualViewport.height;
-    const card = document.querySelector('.card');
-    const writeInner = document.getElementById('write-inner');
-    if (writeInner && document.getElementById('student-app')?.classList.contains('active')) {
-      writeInner.style.height = vh + 'px';
-      writeInner.style.maxHeight = vh + 'px';
+    const vvh = window.visualViewport.height;
+    const vvt = window.visualViewport.offsetTop;
+    const writeScreen = document.getElementById('write');
+    const floatBtn   = document.getElementById('write-float-btn');
+    if (!writeScreen || !writeScreen.classList.contains('active')) return;
+    // 카드 전체 고정
+    const card = writeScreen.querySelector('.card');
+    if (card) {
+      card.style.position = 'fixed';
+      card.style.top      = vvt + 'px';
+      card.style.left     = '0';
+      card.style.right    = '0';
+      card.style.height   = vvh + 'px';
+      card.style.overflow = 'hidden';
+    }
+    // 확인/다음 버튼 키보드 바로 위에 고정
+    if (floatBtn) {
+      const keyboardH = window.innerHeight - vvh - vvt;
+      floatBtn.style.bottom = Math.max(keyboardH, 0) + 'px';
+      floatBtn.style.display = 'flex';
     }
   }
-  if (window.visualViewport) {
-    window.visualViewport.addEventListener('resize', applyViewport);
-    window.visualViewport.addEventListener('scroll', applyViewport);
+  function resetWriteViewport() {
+    const writeScreen = document.getElementById('write');
+    if (!writeScreen) return;
+    const card = writeScreen.querySelector('.card');
+    if (card) { card.style.position=''; card.style.top=''; card.style.height=''; card.style.overflow=''; }
+    const floatBtn = document.getElementById('write-float-btn');
+    if (floatBtn) { floatBtn.style.bottom=''; }
   }
+  if (window.visualViewport) {
+    window.visualViewport.addEventListener('resize', applyWriteViewport);
+    window.visualViewport.addEventListener('scroll', applyWriteViewport);
+  }
+  // write 화면 진입/이탈 감지
+  window._applyWriteViewport  = applyWriteViewport;
+  window._resetWriteViewport  = resetWriteViewport;
 })();
 
 /* ── PIN 키보드 입력 지원 (통합) ── */
