@@ -1874,11 +1874,8 @@ function playSound(type) {
 }
 
 /* ===== STORAGE ===== */
-/* ── 학생별 localStorage 키 (같은 기기에서 여러 학생 섞임 방지) ── */
-function _lsKey(base) {
-  const uid = (typeof currentUser !== 'undefined' && currentUser) ? currentUser.id : '';
-  return uid ? base + '_' + uid : base;
-}
+/* ── 학생별 localStorage 키 (같은 기기 여러 학생 섞임 방지) ── */
+function _lsKey(k) { return currentUser ? k+'_'+currentUser.id : k; }
 function saveStudyLog() { try { localStorage.setItem(_lsKey('hanja_studyLog'), JSON.stringify(studyLog)); } catch(e){} }
 function loadStudyLog() { try { return JSON.parse(localStorage.getItem(_lsKey('hanja_studyLog'))) || []; } catch(e){ return []; } }
 function saveWrongNote() { try { localStorage.setItem(_lsKey('hanja_wrongNote'), JSON.stringify(S.wrongNote)); } catch(e){} }
@@ -3680,13 +3677,6 @@ window.addEventListener('popstate', function() {
   document.getElementById('login-screen').classList.remove('active');
   document.getElementById('class-confirm-screen').classList.remove('active');
   if (currentUser) {
-    const studentApp = document.getElementById('student-app');
-    const teacherApp = document.getElementById('teacher-app');
-    if (studentApp && !studentApp.classList.contains('active') &&
-        teacherApp && !teacherApp.classList.contains('active')) {
-      if (currentUser.role === 'student') enterStudentApp();
-      else enterTeacherApp();
-    }
     history.pushState({ page: 'app' }, '', '');
   } else {
     document.getElementById('landing-screen').classList.add('active');
@@ -3725,21 +3715,20 @@ async function enterStudentApp() {
   history.pushState({ page: 'app' }, '', '');
   const nameEl = document.getElementById('profile-name');
   if (nameEl) nameEl.textContent = currentUser.name + ' 학생';
-  // 다른 학생이 같은 기기에서 로그인하면 로컬 데이터 초기화
-  const lastUserId = localStorage.getItem('hanja_last_user_id');
-  if (lastUserId && lastUserId !== currentUser.id) {
-    // 다른 학생 → localStorage 초기화 (Firestore에서 새로 로드)
-    localStorage.removeItem('hanja_settings');
-    localStorage.removeItem('hanja_studyLog');
-    localStorage.removeItem('hanja_wrongNote');
-    localStorage.removeItem('hanja_badges');
-    settings = loadSettings(); // 기본값으로 리셋
-    studyLog = [];
-    S.wrongNote = [];
-    earnedBadges = {};
-  }
-  localStorage.setItem('hanja_last_user_id', currentUser.id);
+  // 메모리 초기화 (항상 깨끗하게 시작)
+  settings = { streak:0, lastStudyDate:'', dailyGoal:20, totalCorrect:0,
+    totalQuestions:0, totalTime:0, bestStreak:0, levelProgress:{},
+    perfectStreak:0, lastPerfectDate:'', coupons:0, usedCoupons:0 };
+  studyLog = [];
+  S.wrongNote = [];
+  earnedBadges = {};
+
+  // Firestore에서 최신 데이터 로드 (항상 서버 데이터 우선)
   await loadStudentDataFromFirestore();
+
+  // Firestore 로드 후 로컬에도 저장 (오프라인 대비)
+  try { localStorage.setItem('hanja_studyLog_' + currentUser.id, JSON.stringify(studyLog)); } catch(e) {}
+  try { localStorage.setItem('hanja_settings_' + currentUser.id, JSON.stringify(settings)); } catch(e) {}
   if (currentUser.teacherId) {
     try {
       window._teacherSettings = await window._fbGetTeacherSettings(currentUser.teacherId);
@@ -4042,7 +4031,7 @@ function doLogout() {
 /* ===== FIRESTORE: 학생 데이터 ===== */
 async function loadStudentDataFromFirestore() {
   if (!currentUser || currentUser.role !== 'student') return;
-  if (!window._firebaseReady || !window._fbGetStudentData) return;
+  if (!currentUser.teacherId) return;
   try {
     const data = await window._fbGetStudentData(currentUser.id);
     if (data) {
@@ -4072,35 +4061,31 @@ async function loadStudentDataFromFirestore() {
       }
       if (data.earnedBadges) earnedBadges = data.earnedBadges;
       if (data.wrongNote)    S.wrongNote  = data.wrongNote;
-
-      // 🔑 핵심: Firestore 데이터 로드 후 weeklyRanking 즉시 올바른 점수로 업데이트
-      // 새 기기에서 로그인해도 누적 점수가 정확히 반영됨
-      if (window._fbUpdateWeeklyRanking && currentUser.teacherId) {
-        const correctScore = getWeeklyScore();
-        window._fbUpdateWeeklyRanking(currentUser.id, {
-          name: currentUser.name,
-          teacherId: currentUser.teacherId,
-          teacherName: currentUser.teacherName||'',
-          weeklyProblems: correctScore,
-          weekKey: getWeekStart(),
-          updatedAt: new Date().toISOString()
-        }).catch(()=>{});
-      }
     }
   } catch(e) { console.log('Firestore 로드 실패:', e); }
 }
 async function syncToFirestore() {
   if (!currentUser || currentUser.role !== 'student') return;
-  if (!window._firebaseReady || !window._fbSetStudentData) return;
+  if (!currentUser.teacherId) return;
   try {
-    // 주간 랭킹 업데이트
+    // 주간 랭킹 업데이트 (studyLog 기반 정확한 계산)
     const weekScore = getWeeklyScore();
-    if (window._fbUpdateWeeklyRanking) {
+    if (window._fbUpdateWeeklyRanking && weekScore > 0) {
+      // 기존 점수와 비교해서 높은 값 유지 (다기기 동시 사용 시 덮어쓰기 방지)
+      let finalScore = weekScore;
+      try {
+        const existing = await window._fbGetWeeklyRanking(currentUser.id);
+        const currentWeek = getWeekStart();
+        if (existing && existing.weekKey === currentWeek && existing.weeklyProblems > weekScore) {
+          // 기존 점수가 더 높으면 유지 (다른 기기에서 더 많이 한 경우)
+          finalScore = existing.weeklyProblems;
+        }
+      } catch(e) {}
       window._fbUpdateWeeklyRanking(currentUser.id, {
         name: currentUser.name,
         teacherId: currentUser.teacherId,
         teacherName: currentUser.teacherName||'',
-        weeklyProblems: weekScore,
+        weeklyProblems: finalScore,
         weekKey: getWeekStart(),
         updatedAt: new Date().toISOString()
       }).catch(()=>{});
