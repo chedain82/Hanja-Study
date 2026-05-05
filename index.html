@@ -2896,7 +2896,12 @@ function buildChoices(it) {
 
 function chooseOpt(i) {
   if(S.quizChecked)return;
-  if (!S._quizReady) return; // 렌더 직후 ghost click 방지
+  if (!S._quizReady) return; // 렌더 직후 ghost click 방지 (터치/마우스)
+  S.quizSelected=i; renderQuiz();
+}
+function chooseOptByKey(i) {
+  // 키보드 전용: _quizReady 체크 없음
+  if(S.quizChecked)return;
   S.quizSelected=i; renderQuiz();
 }
 function checkAnswer() {
@@ -3626,7 +3631,7 @@ document.addEventListener('keydown', function(e) {
     const idx = parseInt(e.key)-1;
     if (idx < (S.quizChoices||[]).length && !S.quizChecked) {
       e.preventDefault(); e.stopPropagation();
-      chooseOpt(idx);
+      chooseOptByKey(idx);
     }
   } else if (e.key==='Enter') {
     e.preventDefault(); e.stopPropagation();
