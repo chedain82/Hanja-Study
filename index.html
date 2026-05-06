@@ -2076,8 +2076,10 @@ function saveSessionLog(correct, wrong, total, desc, writePct) {
   }
   updateStreak();
   checkBadges();
-  // 10일 연속: 퀴즈 OR 쓰기에서 80점 이상
-  if ((mode === 'quiz' || mode === 'write') && total > 0 && pct >= 80) {
+  // 10일 연속: 퀴즈 OR 쓰기에서 80점 이상 (오답노트/오답 다시풀기 제외)
+  const isWrongNoteSession = S.lastMain === 'wrong_note';
+  const isRetrySession = S.reviewMode === true;
+  if ((mode === 'quiz' || mode === 'write') && total > 0 && pct >= 80 && !isWrongNoteSession && !isRetrySession) {
     checkPerfectStreak();
   }
   S.sessionStart = null;
@@ -3080,6 +3082,7 @@ function startExam() {
   if(!S.examItems.length){toast('해당 유형의 문제가 없습니다.');return;}
   S.examIdx=0;S.examChecked=false;S.examCorrect=false;S.examUserInput='';
   S.examCorrectCount=0;S.examWrongCount=0;S.examFinished=false;S.examWrongItems=[];S.sessionLogged=false;
+  S.mode = 'exam';
   startSession(); goSub('exam_write');
 }
 function renderExamWrite() {
@@ -3198,7 +3201,7 @@ function getWeeklyProblems() {
   return studyLog.filter(e => e.date >= ws).reduce((s,e)=>s+(e.total||0),0);
 }
 
-/* 랭킹 점수: 퀴즈 정답×1 + 쓰기 정답×2 */
+/* 랭킹 점수: 퀴즈 정답×1 + 쓰기 정답×2 + 기출 정답×2 */
 function getWeeklyScore() {
   const ws = getWeekStart();
   const weekLogs = studyLog.filter(e => e.date >= ws);
@@ -3207,15 +3210,15 @@ function getWeeklyScore() {
     const m = e.mode || '';
     if (m === 'quiz') {
       score += (e.correct||0) * 1;
-    } else if (m === 'write') {
+    } else if (m === 'write' || m === 'exam') {
       score += (e.correct||0) * 2;
     } else if (!m) {
       // 기존 데이터 (mode 없음) - desc로 판별
       const d = e.desc || '';
       if (d.includes('퀴즈') || d.includes('quiz')) score += (e.correct||0) * 1;
-      else if (d.includes('쓰기') || d.includes('write')) score += (e.correct||0) * 2;
+      else if (d.includes('쓰기') || d.includes('write') || d.includes('기출')) score += (e.correct||0) * 2;
     }
-    // 카드, 기출 등 = 0점
+    // 카드 등 = 0점
   }
   return score;
 }
@@ -3425,7 +3428,7 @@ async function deductCoupon() {
     await window._fbSetStudentData(_detailStudentId, data);
     // GA: 쿠폰 사용
     gaEvent('coupon_used', { student_id: _detailStudentId });
-    toast('✅ 쿠폰 1장 사용 처리됐어요');
+    toast('✅ 쿠폰 교환권 1개 처리 완료!');
     await openCouponMgmt(_detailStudentId, '');
   } catch(e) { toast('오류: '+e.message); }
 }
@@ -4453,8 +4456,6 @@ async function showStudentDetail(studentId, studentName) {
       '<div class="detail-today-badge ' + (isToday ? 'today' : 'not-today') + '">' +
       (isToday ? '✅ 오늘 학습함' : '⚠️ 마지막 접속: ' + (lastUpdated || '기록 없음')) +
       '</div>';
-    openCouponMgmt(studentId, studentName);
-
     const todayLogs    = sl.filter(e => e.date === todayStr);
     const todayTotal   = todayLogs.reduce((s,e) => s + (e.total||0), 0);
     const todayCorrect = todayLogs.reduce((s,e) => s + (e.correct||0), 0);
@@ -4513,6 +4514,7 @@ async function showStudentDetail(studentId, studentName) {
         <div class="detail-section-title">❌ 자주 틀린 한자 Top 5</div>
         ${wrongRows}
       </div>`;
+    openCouponMgmt(studentId, studentName);
   } catch(e) {
     document.getElementById('detail-body').innerHTML =
       `<div class="detail-empty" style="color:var(--wrong);">오류: ${e.message}</div>`;
