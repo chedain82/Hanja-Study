@@ -2512,7 +2512,7 @@ function renderLevelProgress() {
 }
 
 /* ===== WRONG NOTE FUNCTIONS ===== */
-function answerText(it) { if(it.타입==='선정') { if(it.뜻===it.독음) return it.뜻||''; return`${it.뜻} ${it.독음}`.trim(); } return it.독음||''; }
+function answerText(it) { if(it.타입==='선정') { if(it.단계==='A-6'||it.표시단계==='A6') return it.뜻||''; return`${it.뜻} ${it.독음}`.trim(); } return it.독음||''; }
 function itemKey(it) { return `${it.급수}_${it.단계}_${it.번호}_${it.타입}`; }
 
 function addToWrongNote(item) {
@@ -2943,8 +2943,8 @@ function retryWrong() {
 }
 
 /* ===== WRITE ===== */
-function getWriteAnswer(it) { if(it.타입==='선정') { if(it.뜻===it.독음) return it.뜻||''; return `${it.뜻} ${it.독음}`; } return it.독음; }
-function getWritePlaceholder(it) { if(it.타입==='선정') { if(it.뜻===it.독음) return '독음을 입력하세요'; return '뜻과 음을 입력하세요 (예: 한 일)'; } return '독음을 입력하세요'; }
+function getWriteAnswer(it) { if(it.타입==='선정') { if(it.단계==='A-6'||it.표시단계==='A6') return it.뜻||''; return `${it.뜻} ${it.독음}`; } return it.독음; }
+function getWritePlaceholder(it) { if(it.타입==='선정') { if(it.단계==='A-6'||it.표시단계==='A6') return '독음을 입력하세요'; return '뜻과 음을 입력하세요 (예: 한 일)'; } return '독음을 입력하세요'; }
 function compareWrite(u, c) { return u.replace(/\s/g,'')===c.replace(/\s/g,''); }
 
 function renderWrite() {
