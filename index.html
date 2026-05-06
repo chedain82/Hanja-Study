@@ -3149,7 +3149,11 @@ function checkExam() {
 }
 function nextExamItem() { if(S.examIdx<S.examItems.length-1){S.examIdx++;S.examChecked=false;S.examCorrect=false;S.examUserInput='';slideNext();}else S.examFinished=true;renderExamWrite();applySlide(); }
 function prevExamItem() { if(S.examIdx>0){S.examIdx--;S.examChecked=false;S.examCorrect=false;S.examUserInput='';slidePrev();renderExamWrite();applySlide();} }
-function restartExam() { S.examIdx=0;S.examChecked=false;S.examCorrect=false;S.examUserInput='';S.examCorrectCount=0;S.examWrongCount=0;S.examFinished=false;S.examWrongItems=[];S.sessionLogged=false;startSession();renderExamWrite(); }
+function restartExam() { 
+  if(S.examRound && EXAM_DATA[S.examRound]) {
+    S.examItems = EXAM_DATA[S.examRound].subj.filter(s=>s.type===S.examType);
+  }
+  S.examIdx=0;S.examChecked=false;S.examCorrect=false;S.examUserInput='';S.examCorrectCount=0;S.examWrongCount=0;S.examFinished=false;S.examWrongItems=[];S.sessionLogged=false;startSession();renderExamWrite(); }
 function retryExamWrong() { if(!S.examWrongItems.length){toast('오답이 없습니다.');return;} S.examItems=[...S.examWrongItems];S.examIdx=0;S.examChecked=false;S.examCorrect=false;S.examUserInput='';S.examCorrectCount=0;S.examWrongCount=0;S.examFinished=false;S.examWrongItems=[];S.sessionLogged=false;startSession();renderExamWrite(); }
 
 /* ===== 쿠폰 홈 카드 렌더 ===== */
