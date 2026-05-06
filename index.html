@@ -4198,7 +4198,12 @@ async function loadStudentDataFromFirestore() {
       // settings: Firestore가 우선, 단 writeProgress는 병합
       if (data.settings) {
         const localWP = (settings.writeProgress) ? {...settings.writeProgress} : {};
+        // 쿠폰/사용쿠폰은 로컬과 Firebase 중 더 큰 값 유지 (네트워크 오류로 유실 방지)
+        const localCoupons     = settings.coupons     || 0;
+        const localUsedCoupons = settings.usedCoupons || 0;
         settings = data.settings;
+        settings.coupons     = Math.max(settings.coupons     || 0, localCoupons);
+        settings.usedCoupons = Math.max(settings.usedCoupons || 0, localUsedCoupons);
         // writeProgress 병합: 더 높은 점수 유지
         if (!settings.writeProgress) settings.writeProgress = {};
         for (const k of Object.keys(localWP)) {
