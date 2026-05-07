@@ -2989,9 +2989,6 @@ function renderWrite() {
         autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"
         onkeydown="handleWriteKey(event)" autofocus/>
       <div class="write-result ${checked?(S.writeCorrect?'ok':'fail'):''}">${checked?(S.writeCorrect?'✅ 정답입니다!':`❌ 정답: ${correctDisplay}`):''}</div>
-      <div class="card-nav" id="write-card-nav">
-        <button class="write-confirm-btn" onclick="${checked?'nextWriteItem()':'checkWrite()'}">${checked?'다음':'확인'}</button>
-      </div>
     </div>
     <div class="back-wrap"><button class="btn btn-back" onclick="goSub(S.lastMain)">← 뒤로</button></div>
   `;
@@ -3022,13 +3019,15 @@ function handleWriteKey(e) {
 function checkWrite() {
   if(S.writeChecked)return;
   const inp=document.getElementById('write-input'); const val=inp?inp.value:'';
-  if (!val.trim()) { toast('답을 입력해 주세요 ✏️'); return; } // 빈 값 제출 방지
+  if (!val.trim()) { toast('답을 입력해 주세요 ✏️'); return; }
   const correctVal=getWriteAnswer(S.items[S.idx]);
   S.writeChecked=true; S.writeUserInput=val; S.writeCorrect=compareWrite(val,correctVal);
   const card=document.getElementById('write-inner');
   if(S.writeCorrect){S.correct++;playSound('correct');if(card){card.classList.remove('flash-correct','flash-wrong');void card.offsetWidth;card.classList.add('flash-correct');}}
   else{S.wrong++;playSound('wrong');addUnique(S.writeWrongItems,S.items[S.idx]);addToWrongNote(S.items[S.idx]);if(card){card.classList.remove('flash-correct','flash-wrong');void card.offsetWidth;card.classList.add('flash-wrong');}}
   renderWrite();
+  // 키보드 유지: readonly 설정 후 바로 재포커스
+  setTimeout(()=>{ const i=document.getElementById('write-input'); if(i) i.focus(); }, 30);
 }
 function nextWriteItem() { if(S.idx<S.items.length-1){S.idx++;S.writeChecked=false;S.writeCorrect=false;S.writeUserInput='';slideNext();}else S.isFinished=true; renderWrite();applySlide(); }
 function prevWriteItem() { if(S.idx>0){S.idx--;S.writeChecked=false;S.writeCorrect=false;S.writeUserInput='';slidePrev();renderWrite();applySlide();} }
@@ -3126,9 +3125,6 @@ function renderExamWrite() {
         ${checked?'readonly':''}
         onkeydown="handleExamKey(event)" autofocus/>
       <div class="write-result ${checked?(S.examCorrect?'ok':'fail'):''}">${checked?(S.examCorrect?'✅ 정답입니다!':`❌ 정답: ${it.answer}`):''}</div>
-      <div class="card-nav" style="padding:4px 0 4px;" id="exam-card-nav">
-        <button class="write-confirm-btn" onclick="${checked?'nextExamItem()':'checkExam()'}">${checked?'다음':'확인'}</button>
-      </div>
     </div>
     <div class="back-wrap"><button class="btn btn-back" onclick="goSub('exam_round')">← 뒤로</button></div>
   `;
@@ -3144,6 +3140,8 @@ function checkExam() {
   if(S.examCorrect){S.examCorrectCount++;playSound('correct');if(card){card.classList.remove('flash-correct','flash-wrong');void card.offsetWidth;card.classList.add('flash-correct');}}
   else{S.examWrongCount++;playSound('wrong');S.examWrongItems.push(it);if(card){card.classList.remove('flash-correct','flash-wrong');void card.offsetWidth;card.classList.add('flash-wrong');}}
   renderExamWrite();
+  // 키보드 유지
+  setTimeout(()=>{ const i=document.getElementById('exam-input'); if(i) i.focus(); }, 30);
 }
 function nextExamItem() { if(S.examIdx<S.examItems.length-1){S.examIdx++;S.examChecked=false;S.examCorrect=false;S.examUserInput='';slideNext();}else S.examFinished=true;renderExamWrite();applySlide(); }
 function prevExamItem() { if(S.examIdx>0){S.examIdx--;S.examChecked=false;S.examCorrect=false;S.examUserInput='';slidePrev();renderExamWrite();applySlide();} }
@@ -4731,13 +4729,7 @@ document.addEventListener('visibilitychange', async () => {
   function getWriteScreen() {
     if (!window.S) return null;
     if (S.screen === 'write') return 'write';
-    if (S.screen === 'quiz' && document.getElementById('exam_write') &&
-        document.getElementById('exam_write').classList.contains('active')) return 'exam';
-    // subscreen 체크
-    const ew = document.getElementById('exam_write');
-    if (ew && ew.classList.contains('active')) return 'exam';
-    const w = document.getElementById('write');
-    if (w && w.classList.contains('active')) return 'write';
+    if (S.screen === 'exam_write') return 'exam';
     return null;
   }
 
