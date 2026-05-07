@@ -3002,7 +3002,8 @@ function renderWrite() {
       inp.click();
       inp.focus();
     }
-  }, 50);
+    if(typeof showWriteFloatingBar==='function') showWriteFloatingBar('write');
+  }, 60);
 }
 function handleWriteKey(e) {
   // IME 한국어 입력 중 자동 Enter 차단 (keyCode 229 = 조합 중)
@@ -3134,7 +3135,9 @@ function renderExamWrite() {
     </div>
     <div class="back-wrap"><button class="btn btn-back" onclick="goSub('exam_round')">← 뒤로</button></div>
   `;
-  setTimeout(()=>{const inp=document.getElementById('exam-input');if(inp){inp.click();inp.focus();}},50);
+  setTimeout(()=>{const inp=document.getElementById('exam-input');if(inp){inp.click();inp.focus();}
+    if(typeof showWriteFloatingBar==='function') showWriteFloatingBar('exam');
+  },60);
 }
 function handleExamKey(e) { if(e.key==='Enter'){e.preventDefault();if(S.examChecked)nextExamItem();else checkExam();}else if(e.key===' '&&S.examChecked){e.preventDefault();nextExamItem();} }
 function checkExam() {
@@ -4758,29 +4761,5 @@ document.addEventListener('visibilitychange', async () => {
       S.examChecked ? nextExamItem() : checkExam();
     }
   };
-
-  // renderWrite / renderExamWrite 후 버튼 상태 갱신
-  const _origRenderWrite = window.renderWrite;
-  const _origRenderExamWrite = window.renderExamWrite;
-  if (typeof _origRenderWrite === 'function') {
-    window.renderWrite = function() {
-      _origRenderWrite.apply(this, arguments);
-      if (window.S && S.screen === 'write' && !S.isFinished) {
-        setTimeout(()=> showWriteFloatingBar('write'), 60);
-      } else {
-        hideWriteFloatingBar();
-      }
-    };
-  }
-  if (typeof _origRenderExamWrite === 'function') {
-    window.renderExamWrite = function() {
-      _origRenderExamWrite.apply(this, arguments);
-      if (window.S && S.screen === 'exam_write' && !S.examFinished) {
-        setTimeout(()=> showWriteFloatingBar('exam'), 60);
-      } else {
-        hideWriteFloatingBar();
-      }
-    };
-  }
 })();
 </script>
