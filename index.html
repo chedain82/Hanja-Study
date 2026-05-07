@@ -4761,5 +4761,38 @@ document.addEventListener('visibilitychange', async () => {
       S.examChecked ? nextExamItem() : checkExam();
     }
   };
+
+  // iOS touchstart로 버튼 클릭 보장
+  btn.addEventListener('touchstart', function(e) {
+    e.preventDefault();
+    writeFloatingAction();
+  }, { passive: false });
+
+  // visualViewport로 키보드 높이 감지 → 플로팅 바 위치 조정
+  function updateBarPosition() {
+    if (bar.style.display === 'none') return;
+    if (window.visualViewport) {
+      const vv = window.visualViewport;
+      const keyboardH = Math.max(0, window.innerHeight - vv.height - (vv.offsetTop || 0));
+      bar.style.bottom = keyboardH + 'px';
+    } else {
+      bar.style.bottom = '0px';
+    }
+  }
+
+  if (window.visualViewport) {
+    window.visualViewport.addEventListener('resize', updateBarPosition);
+    window.visualViewport.addEventListener('scroll', updateBarPosition);
+  }
+
+  window.showWriteFloatingBar = function(screen) {
+    if (isIPad()) return;
+    const checked = screen === 'write' ? (window.S && S.writeChecked) : (window.S && S.examChecked);
+    btn.textContent = checked ? '다음' : '확인';
+    bar.style.display = 'flex';
+    updateBarPosition();
+    const nav = document.getElementById(screen === 'write' ? 'write-card-nav' : 'exam-card-nav');
+    if (nav) nav.style.visibility = 'hidden';
+  };
 })();
 </script>
