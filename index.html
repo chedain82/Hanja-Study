@@ -521,6 +521,7 @@ body {
   border: 2px solid #DDD; padding: 0 18px;
   font-size: 18px; font-family: inherit; font-weight: 700;
   background: white; outline: none; transition: border .2s;
+  text-align: center;
 }
 .login-input:focus { border-color: var(--blue); }
 .login-error { color: var(--wrong); font-size: 14px; font-weight: 700; text-align: center; min-height: 20px; }
@@ -2061,8 +2062,9 @@ function saveSessionLog(correct, wrong, total, desc, writePct) {
     if (!settings.levelProgress) settings.levelProgress = {};
     settings.levelProgress[S.level] = (settings.levelProgress[S.level]||0) + (total||0);
   }
-  // 새 writeProgress: 쓰기 모드에서 단계×타입별 최고 점수 기록
-  if (mode === 'write' && category && total > 0 && S.ranges && S.ranges.length > 0) {
+  // 새 writeProgress: 쓰기 모드에서 단계×타입별 최고 점수 기록 (오답 다시풀기/오답노트 제외)
+  const isWrongSession = S.lastMain === 'wrong_note' || S.reviewMode === true;
+  if (mode === 'write' && category && total > 0 && S.ranges && S.ranges.length > 0 && !isWrongSession) {
     if (!settings.writeProgress) settings.writeProgress = {};
     // 단일 범위든 다중 범위든 선택된 모든 범위에 점수 기록
     const rangesToSave = S.ranges.length === 1
