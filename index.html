@@ -2,7 +2,7 @@
 <html lang="ko">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, interactive-widget=resizes-content">
 <title>漢字 공부</title>
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-G30WMXQDW6"></script>
 <script>
@@ -4703,10 +4703,10 @@ document.addEventListener('visibilitychange', async () => {
 <div id="write-floating-bar" style="
   display:none;
   position:fixed;
-  left:0; right:0;
+  left:0; right:0; bottom:0;
   background:rgba(255,255,255,0.97);
   border-top:1px solid #e0e0e0;
-  padding:8px 20px;
+  padding:8px 20px 12px;
   z-index:9999;
   justify-content:center;
   align-items:center;
@@ -4721,82 +4721,43 @@ document.addEventListener('visibilitychange', async () => {
 </div>
 
 <script>
-/* ── 키보드 위 고정 버튼 & 키보드 유지 ── */
+/* ── 쓰기 화면 플로팅 버튼 제어 ── */
 (function(){
   const bar = document.getElementById('write-floating-bar');
   const btn = document.getElementById('write-floating-btn');
-  let _isKeyboardUp = false;
 
   function isIPad() {
     return /iPad/.test(navigator.userAgent) ||
       (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
   }
 
-  function getWriteScreen() {
-    if (!window.S) return null;
-    if (S.screen === 'write') return 'write';
-    if (S.screen === 'exam_write') return 'exam';
-    return null;
-  }
-
-  function updateFloatingBar() {
-    if (!window.visualViewport) return;
-    const vv = window.visualViewport;
-    const keyboardH = Math.max(0, window.innerHeight - vv.height - vv.offsetTop);
-    _isKeyboardUp = keyboardH > 80;
-
-    const screen = getWriteScreen();
-    const isSmall = !isIPad(); // 아이패드 제외
-
-    if (_isKeyboardUp && screen && isSmall) {
-      // 버튼 텍스트 업데이트
-      const checked = screen === 'write' ? (window.S && S.writeChecked) : (window.S && S.examChecked);
-      btn.textContent = checked ? '다음' : '확인';
-      // 원래 버튼 숨기기
-      const origNav = document.getElementById(screen === 'write' ? 'write-card-nav' : 'exam-card-nav');
-      if (origNav) origNav.style.visibility = 'hidden';
-      // 플로팅 바 표시 (키보드 바로 위)
-      bar.style.display = 'flex';
-      bar.style.bottom = keyboardH + 'px';
-    } else {
-      // 원래 버튼 복원
-      const wn = document.getElementById('write-card-nav');
-      const en = document.getElementById('exam-card-nav');
-      if (wn) wn.style.visibility = 'visible';
-      if (en) en.style.visibility = 'visible';
-      bar.style.display = 'none';
-    }
-  }
-
-  window.writeFloatingAction = function() {
-    const screen = getWriteScreen();
-    if (!screen) return;
-    if (screen === 'write') {
-      if (window.S && S.writeChecked) nextWriteItem();
-      else checkWrite();
-    } else {
-      if (window.S && S.examChecked) nextExamItem();
-      else checkExam();
-    }
+  window.showWriteFloatingBar = function(screen) {
+    if (isIPad()) return; // 아이패드는 불필요
+    const checked = screen === 'write' ? (window.S && S.writeChecked) : (window.S && S.examChecked);
+    btn.textContent = checked ? '다음' : '확인';
+    bar.style.display = 'flex';
+    // 원래 버튼 숨기기
+    const nav = document.getElementById(screen === 'write' ? 'write-card-nav' : 'exam-card-nav');
+    if (nav) nav.style.visibility = 'hidden';
   };
 
-  // visualViewport 리사이즈로 키보드 감지
-  if (window.visualViewport) {
-    window.visualViewport.addEventListener('resize', updateFloatingBar);
-    window.visualViewport.addEventListener('scroll', updateFloatingBar);
-  }
+  window.hideWriteFloatingBar = function() {
+    bar.style.display = 'none';
+    const wn = document.getElementById('write-card-nav');
+    const en = document.getElementById('exam-card-nav');
+    if (wn) wn.style.visibility = 'visible';
+    if (en) en.style.visibility = 'visible';
+  };
 
-  // iOS 폴백: input focus/blur 이벤트로도 감지
-  document.addEventListener('focusin', function(e) {
-    if (e.target && (e.target.id === 'write-input' || e.target.id === 'exam-input')) {
-      setTimeout(updateFloatingBar, 300);
+  window.writeFloatingAction = function() {
+    if (!window.S) return;
+    const screen = S.screen;
+    if (screen === 'write') {
+      S.writeChecked ? nextWriteItem() : checkWrite();
+    } else if (screen === 'exam_write') {
+      S.examChecked ? nextExamItem() : checkExam();
     }
-  });
-  document.addEventListener('focusout', function(e) {
-    if (e.target && (e.target.id === 'write-input' || e.target.id === 'exam-input')) {
-      setTimeout(updateFloatingBar, 300);
-    }
-  });
+  };
 
   // renderWrite / renderExamWrite 후 버튼 상태 갱신
   const _origRenderWrite = window.renderWrite;
@@ -4804,38 +4765,20 @@ document.addEventListener('visibilitychange', async () => {
   if (typeof _origRenderWrite === 'function') {
     window.renderWrite = function() {
       _origRenderWrite.apply(this, arguments);
-      setTimeout(updateFloatingBar, 50);
+      if (window.S && S.screen === 'write' && !S.isFinished) {
+        setTimeout(()=> showWriteFloatingBar('write'), 60);
+      } else {
+        hideWriteFloatingBar();
+      }
     };
   }
   if (typeof _origRenderExamWrite === 'function') {
     window.renderExamWrite = function() {
       _origRenderExamWrite.apply(this, arguments);
-      setTimeout(updateFloatingBar, 50);
-    };
-  }
-
-  // 키보드 유지: 다음 문제로 넘어갈 때 input 포커스 유지
-  const _origNextWrite = window.nextWriteItem;
-  const _origNextExam = window.nextExamItem;
-  if (typeof _origNextWrite === 'function') {
-    window.nextWriteItem = function() {
-      _origNextWrite.apply(this, arguments);
-      if (_isKeyboardUp) {
-        setTimeout(()=>{
-          const inp = document.getElementById('write-input');
-          if (inp) inp.focus();
-        }, 30);
-      }
-    };
-  }
-  if (typeof _origNextExam === 'function') {
-    window.nextExamItem = function() {
-      _origNextExam.apply(this, arguments);
-      if (_isKeyboardUp) {
-        setTimeout(()=>{
-          const inp = document.getElementById('exam-input');
-          if (inp) inp.focus();
-        }, 30);
+      if (window.S && S.screen === 'exam_write' && !S.examFinished) {
+        setTimeout(()=> showWriteFloatingBar('exam'), 60);
+      } else {
+        hideWriteFloatingBar();
       }
     };
   }
