@@ -2989,6 +2989,9 @@ function renderWrite() {
         autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"
         onkeydown="handleWriteKey(event)" autofocus/>
       <div class="write-result ${checked?(S.writeCorrect?'ok':'fail'):''}">${checked?(S.writeCorrect?'✅ 정답입니다!':`❌ 정답: ${correctDisplay}`):''}</div>
+      <div class="card-nav" id="write-card-nav">
+        <button class="write-confirm-btn" onclick="${checked?'nextWriteItem()':'checkWrite()'}">${checked?'다음':'확인'}</button>
+      </div>
     </div>
     <div class="back-wrap"><button class="btn btn-back" onclick="goSub(S.lastMain)">← 뒤로</button></div>
   `;
@@ -3125,6 +3128,9 @@ function renderExamWrite() {
         ${checked?'readonly':''}
         onkeydown="handleExamKey(event)" autofocus/>
       <div class="write-result ${checked?(S.examCorrect?'ok':'fail'):''}">${checked?(S.examCorrect?'✅ 정답입니다!':`❌ 정답: ${it.answer}`):''}</div>
+      <div class="card-nav" style="padding:4px 0 4px;" id="exam-card-nav">
+        <button class="write-confirm-btn" onclick="${checked?'nextExamItem()':'checkExam()'}">${checked?'다음':'확인'}</button>
+      </div>
     </div>
     <div class="back-wrap"><button class="btn btn-back" onclick="goSub('exam_round')">← 뒤로</button></div>
   `;
@@ -4779,6 +4785,18 @@ document.addEventListener('visibilitychange', async () => {
     window.visualViewport.addEventListener('resize', updateFloatingBar);
     window.visualViewport.addEventListener('scroll', updateFloatingBar);
   }
+
+  // iOS 폴백: input focus/blur 이벤트로도 감지
+  document.addEventListener('focusin', function(e) {
+    if (e.target && (e.target.id === 'write-input' || e.target.id === 'exam-input')) {
+      setTimeout(updateFloatingBar, 300);
+    }
+  });
+  document.addEventListener('focusout', function(e) {
+    if (e.target && (e.target.id === 'write-input' || e.target.id === 'exam-input')) {
+      setTimeout(updateFloatingBar, 300);
+    }
+  });
 
   // renderWrite / renderExamWrite 후 버튼 상태 갱신
   const _origRenderWrite = window.renderWrite;
