@@ -1288,15 +1288,43 @@ body {
   <!-- STEP 1-F (자유 학생): 이름만 입력 -->
   <div class="login-form-wrap" id="ls-free-student">
     <div class="login-form-title">자유 학습</div>
-    <div class="login-form-sub">이름을 입력하고 바로 시작해요<br>
-      <span style="color:var(--blue);">데이터는 이 기기에 저장돼요</span>
+    <div class="login-form-sub">닉네임을 입력하고 시작해요<br>
+      <span style="color:var(--blue);">랭킹에도 참여할 수 있어요 🏆</span>
     </div>
     <input class="login-input" id="free-name-input" type="text"
-      placeholder="이름 또는 닉네임" maxlength="10"
-      onkeydown="if(event.key==='Enter')doFreeStudentLogin()"/>
+      placeholder="닉네임 (최대 10자)" maxlength="10"
+      onkeydown="if(event.key==='Enter')doFreeNicknameCheck()"/>
     <div class="login-error" id="ls-free-error"></div>
-    <button class="login-submit-btn" onclick="doFreeStudentLogin()">시작하기 🚀</button>
+    <button class="login-submit-btn" onclick="doFreeNicknameCheck()">다음</button>
     <button class="login-back-btn" onclick="lsBack('student-teacher')">← 뒤로</button>
+  </div>
+
+  <!-- 자유학습 PIN 설정/확인 -->
+  <div class="login-form-wrap" id="ls-free-pin">
+    <div class="login-form-title" id="ls-free-pin-title">PIN 설정</div>
+    <div class="login-form-sub" id="ls-free-pin-sub">비밀번호 4자리를 설정하세요</div>
+    <div class="pin-display">
+      <div class="pin-dot" id="free-pin-d0"></div>
+      <div class="pin-dot" id="free-pin-d1"></div>
+      <div class="pin-dot" id="free-pin-d2"></div>
+      <div class="pin-dot" id="free-pin-d3"></div>
+    </div>
+    <div class="pin-pad">
+      <button class="pin-key" onclick="freePinInput('1')">1</button>
+      <button class="pin-key" onclick="freePinInput('2')">2</button>
+      <button class="pin-key" onclick="freePinInput('3')">3</button>
+      <button class="pin-key" onclick="freePinInput('4')">4</button>
+      <button class="pin-key" onclick="freePinInput('5')">5</button>
+      <button class="pin-key" onclick="freePinInput('6')">6</button>
+      <button class="pin-key" onclick="freePinInput('7')">7</button>
+      <button class="pin-key" onclick="freePinInput('8')">8</button>
+      <button class="pin-key" onclick="freePinInput('9')">9</button>
+      <button class="pin-key del" onclick="freePinDel()">⌫</button>
+      <button class="pin-key" onclick="freePinInput('0')">0</button>
+      <button class="pin-key confirm" onclick="doFreePinConfirm()">✓</button>
+    </div>
+    <div class="login-error" id="ls-free-pin-error"></div>
+    <button class="login-back-btn" onclick="lsGo('free-student')">← 뒤로</button>
   </div>
 
   <!-- STEP 2 (학생): 이름 입력 -->
@@ -3478,7 +3506,7 @@ let teacherListCache = [];
 let teacherSearchKeyword = '';
 
 /* ── 스텝 이동 ── */
-const LS_ALL = ['role','student-teacher','student-name','student-pin','teacher-pick-dup','teacher-login','teacher-forgot','teacher-signup','free-student'];
+const LS_ALL = ['role','student-teacher','student-name','student-pin','teacher-pick-dup','teacher-login','teacher-forgot','teacher-signup','free-student','free-pin'];
 /* ===== 랜딩 JS ===== */
 let _logoTapCount=0,_logoTapTimer=null;
 function landingLogoTap(){_logoTapCount++;if(_logoTapTimer)clearTimeout(_logoTapTimer);if(_logoTapCount>=3){_logoTapCount=0;landingStartTeacher();return;}_logoTapTimer=setTimeout(()=>{_logoTapCount=0;},800);}
@@ -3770,12 +3798,111 @@ function cancelConfirm() {
 }
 
 /* ── 자유 학생 로그인 (선생님 없음) ── */
-function doFreeStudentLogin() {
+/* ── 자유학습 닉네임 확인 ── */
+let _freePinBuffer = '';
+let _freePinMode = 'set'; // 'set' | 'confirm'
+let _freePinAttempts = 0;
+const FREE_PIN_MAX = 5;
+
+async function doFreeNicknameCheck() {
   const name  = document.getElementById('free-name-input').value.trim();
   const errEl = document.getElementById('ls-free-error');
-  if (!name) { errEl.textContent = '이름을 입력해 주세요'; return; }
-  // teacherId 없음 → localStorage만 사용
-  currentUser = { role:'student', id:'free_'+name, name, teacherId:null };
+  if (!name) { errEl.textContent = '닉네임을 입력해 주세요'; return; }
+  errEl.textContent = '확인 중...';
+  try {
+    if (window._fbGetFreeUser) {
+      const existing = await window._fbGetFreeUser(name);
+      if (existing) {
+        // 기존 유저 → PIN 확인
+        _freePinMode = 'confirm';
+        _freePinAttempts = 0;
+        document.getElementById('ls-free-pin-title').textContent = 'PIN 확인';
+        document.getElementById('ls-free-pin-sub').textContent = '설정한 PIN 4자리를 입력하세요';
+      } else {
+        // 신규 유저 → PIN 설정
+        _freePinMode = 'set';
+        document.getElementById('ls-free-pin-title').textContent = 'PIN 설정';
+        document.getElementById('ls-free-pin-sub').textContent = '사용할 PIN 4자리를 설정하세요';
+      }
+    } else {
+      _freePinMode = 'set';
+    }
+    errEl.textContent = '';
+    _freePinBuffer = '';
+    _updateFreePinDots();
+    lsGo('free-pin');
+  } catch(e) {
+    errEl.textContent = '오류가 발생했어요. 다시 시도해 주세요';
+  }
+}
+
+function freePinInput(d) {
+  if (_freePinBuffer.length >= 4) return;
+  _freePinBuffer += d;
+  _updateFreePinDots();
+  if (_freePinBuffer.length === 4) setTimeout(doFreePinConfirm, 120);
+}
+
+function freePinDel() {
+  _freePinBuffer = _freePinBuffer.slice(0, -1);
+  _updateFreePinDots();
+}
+
+function _updateFreePinDots() {
+  for (let i = 0; i < 4; i++) {
+    const dot = document.getElementById('free-pin-d' + i);
+    if (dot) dot.classList.toggle('filled', i < _freePinBuffer.length);
+  }
+}
+
+async function doFreePinConfirm() {
+  const pin   = _freePinBuffer;
+  const name  = document.getElementById('free-name-input').value.trim();
+  const errEl = document.getElementById('ls-free-pin-error');
+  if (pin.length < 4) return;
+
+  if (_freePinMode === 'set') {
+    // 신규: Firebase에 저장 후 시작
+    try {
+      if (window._fbSetFreeUser) {
+        await window._fbSetFreeUser(name, pin);
+      }
+    } catch(e) {}
+    _startFreeUser(name);
+
+  } else {
+    // 기존: PIN 확인
+    try {
+      const data = await window._fbGetFreeUser(name);
+      if (data && data.pin === pin) {
+        errEl.textContent = '';
+        _startFreeUser(name);
+      } else {
+        _freePinAttempts++;
+        _freePinBuffer = '';
+        _updateFreePinDots();
+        if (_freePinAttempts >= FREE_PIN_MAX) {
+          errEl.textContent = `PIN을 ${FREE_PIN_MAX}번 틀렸어요. 새로 시작할게요.`;
+          setTimeout(() => {
+            // 새로 시작: 기존 닉네임 지우고 처음부터
+            document.getElementById('free-name-input').value = '';
+            errEl.textContent = '';
+            document.getElementById('ls-free-pin-error').textContent = '';
+            lsGo('free-student');
+          }, 2000);
+        } else {
+          errEl.textContent = `PIN이 틀렸어요 (${_freePinAttempts}/${FREE_PIN_MAX})`;
+        }
+      }
+    } catch(e) {
+      errEl.textContent = '오류가 발생했어요';
+    }
+  }
+}
+
+function _startFreeUser(name) {
+  const freeId = 'free_' + name;
+  currentUser = { role:'student', id: freeId, name, teacherId: null, isFree: true };
   sessionStorage.setItem('hanja_session', JSON.stringify(currentUser));
   enterStudentApp();
 }
@@ -4234,7 +4361,7 @@ async function loadStudentDataFromFirestore() {
 }
 async function syncToFirestore() {
   if (!currentUser || currentUser.role !== 'student') return;
-  if (!currentUser.teacherId) return;
+  if (!currentUser.teacherId && !currentUser.isFree) return;
   try {
     // 주간 랭킹 업데이트
     const weekScore = getWeeklyScore();
@@ -4251,8 +4378,8 @@ async function syncToFirestore() {
       } catch(e) {}
       window._fbUpdateWeeklyRanking(currentUser.id, {
         name: currentUser.name,
-        teacherId: currentUser.teacherId,
-        teacherName: currentUser.teacherName||'',
+        teacherId: currentUser.teacherId || 'free',
+        teacherName: currentUser.isFree ? '개인' : (currentUser.teacherName||''),
         weeklyProblems: finalScore,
         weekKey: getWeekStart(),
         updatedAt: new Date().toISOString()
@@ -4693,5 +4820,15 @@ document.addEventListener('visibilitychange', async () => {
 
   window._fbSetTeacherSettings = (teacherId, data) =>
     setDoc(doc(db, 'teacherSettings', teacherId), data, { merge: true });
+
+  /* 자유학습 유저 */
+  window._fbGetFreeUser = async (nickname) => {
+    const snap = await getDoc(doc(db, 'freeUsers', nickname));
+    return snap.exists() ? snap.data() : null;
+  };
+
+  window._fbSetFreeUser = async (nickname, pin) => {
+    await setDoc(doc(db, 'freeUsers', nickname), { pin, createdAt: new Date().toISOString() });
+  };
 
 </script>
