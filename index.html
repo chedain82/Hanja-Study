@@ -2,7 +2,7 @@
 <html lang="ko">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, interactive-widget=resizes-content">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <title>漢字 공부</title>
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-G30WMXQDW6"></script>
 <script>
@@ -512,8 +512,8 @@ body {
   display: none; flex-direction: column; align-items: center; gap: 14px;
 }
 .login-form-wrap.active { display: flex; }
-.login-form-title { font-size: 26px; font-weight: 800; margin-bottom: 4px; align-self: flex-start; }
-.login-form-sub   { font-size: 13px; font-weight: 700; color: var(--gray); align-self: flex-start; margin-top: -8px; margin-bottom: 2px; }
+.login-form-title { font-size: 26px; font-weight: 800; margin-bottom: 4px; align-self: center; text-align: center; }
+.login-form-sub   { font-size: 13px; font-weight: 700; color: var(--gray); align-self: center; text-align: center; margin-top: -8px; margin-bottom: 2px; }
 
 /* 입력창 */
 .login-input {
@@ -2989,7 +2989,7 @@ function renderWrite() {
         autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"
         onkeydown="handleWriteKey(event)" autofocus/>
       <div class="write-result ${checked?(S.writeCorrect?'ok':'fail'):''}">${checked?(S.writeCorrect?'✅ 정답입니다!':`❌ 정답: ${correctDisplay}`):''}</div>
-      <div class="card-nav" id="write-card-nav">
+      <div class="card-nav">
         <button class="write-confirm-btn" onclick="${checked?'nextWriteItem()':'checkWrite()'}">${checked?'다음':'확인'}</button>
       </div>
     </div>
@@ -2998,12 +2998,10 @@ function renderWrite() {
   setTimeout(()=>{
     const inp=document.getElementById('write-input');
     if(inp) {
-      if(!S.writeChecked) inp.value = '';
-      inp.click();
+      if(!S.writeChecked) inp.value = ''; // 미확인 상태면 항상 비워줌
       inp.focus();
     }
-    if(typeof showWriteFloatingBar==='function') showWriteFloatingBar('write');
-  }, 60);
+  },100);
 }
 function handleWriteKey(e) {
   // IME 한국어 입력 중 자동 Enter 차단 (keyCode 229 = 조합 중)
@@ -3023,15 +3021,13 @@ function handleWriteKey(e) {
 function checkWrite() {
   if(S.writeChecked)return;
   const inp=document.getElementById('write-input'); const val=inp?inp.value:'';
-  if (!val.trim()) { toast('답을 입력해 주세요 ✏️'); return; }
+  if (!val.trim()) { toast('답을 입력해 주세요 ✏️'); return; } // 빈 값 제출 방지
   const correctVal=getWriteAnswer(S.items[S.idx]);
   S.writeChecked=true; S.writeUserInput=val; S.writeCorrect=compareWrite(val,correctVal);
   const card=document.getElementById('write-inner');
   if(S.writeCorrect){S.correct++;playSound('correct');if(card){card.classList.remove('flash-correct','flash-wrong');void card.offsetWidth;card.classList.add('flash-correct');}}
   else{S.wrong++;playSound('wrong');addUnique(S.writeWrongItems,S.items[S.idx]);addToWrongNote(S.items[S.idx]);if(card){card.classList.remove('flash-correct','flash-wrong');void card.offsetWidth;card.classList.add('flash-wrong');}}
   renderWrite();
-  // 키보드 유지: readonly 설정 후 바로 재포커스
-  setTimeout(()=>{ const i=document.getElementById('write-input'); if(i) i.focus(); }, 30);
 }
 function nextWriteItem() { if(S.idx<S.items.length-1){S.idx++;S.writeChecked=false;S.writeCorrect=false;S.writeUserInput='';slideNext();}else S.isFinished=true; renderWrite();applySlide(); }
 function prevWriteItem() { if(S.idx>0){S.idx--;S.writeChecked=false;S.writeCorrect=false;S.writeUserInput='';slidePrev();renderWrite();applySlide();} }
@@ -3129,15 +3125,13 @@ function renderExamWrite() {
         ${checked?'readonly':''}
         onkeydown="handleExamKey(event)" autofocus/>
       <div class="write-result ${checked?(S.examCorrect?'ok':'fail'):''}">${checked?(S.examCorrect?'✅ 정답입니다!':`❌ 정답: ${it.answer}`):''}</div>
-      <div class="card-nav" style="padding:4px 0 4px;" id="exam-card-nav">
+      <div class="card-nav" style="padding:4px 0 4px;">
         <button class="write-confirm-btn" onclick="${checked?'nextExamItem()':'checkExam()'}">${checked?'다음':'확인'}</button>
       </div>
     </div>
     <div class="back-wrap"><button class="btn btn-back" onclick="goSub('exam_round')">← 뒤로</button></div>
   `;
-  setTimeout(()=>{const inp=document.getElementById('exam-input');if(inp){inp.click();inp.focus();}
-    if(typeof showWriteFloatingBar==='function') showWriteFloatingBar('exam');
-  },60);
+  setTimeout(()=>{const inp=document.getElementById('exam-input');if(inp)inp.focus();},100);
 }
 function handleExamKey(e) { if(e.key==='Enter'){e.preventDefault();if(S.examChecked)nextExamItem();else checkExam();}else if(e.key===' '&&S.examChecked){e.preventDefault();nextExamItem();} }
 function checkExam() {
@@ -3149,8 +3143,6 @@ function checkExam() {
   if(S.examCorrect){S.examCorrectCount++;playSound('correct');if(card){card.classList.remove('flash-correct','flash-wrong');void card.offsetWidth;card.classList.add('flash-correct');}}
   else{S.examWrongCount++;playSound('wrong');S.examWrongItems.push(it);if(card){card.classList.remove('flash-correct','flash-wrong');void card.offsetWidth;card.classList.add('flash-wrong');}}
   renderExamWrite();
-  // 키보드 유지
-  setTimeout(()=>{ const i=document.getElementById('exam-input'); if(i) i.focus(); }, 30);
 }
 function nextExamItem() { if(S.examIdx<S.examItems.length-1){S.examIdx++;S.examChecked=false;S.examCorrect=false;S.examUserInput='';slideNext();}else S.examFinished=true;renderExamWrite();applySlide(); }
 function prevExamItem() { if(S.examIdx>0){S.examIdx--;S.examChecked=false;S.examCorrect=false;S.examUserInput='';slidePrev();renderExamWrite();applySlide();} }
@@ -4700,99 +4692,4 @@ document.addEventListener('visibilitychange', async () => {
   window._fbSetTeacherSettings = (teacherId, data) =>
     setDoc(doc(db, 'teacherSettings', teacherId), data, { merge: true });
 
-</script>
-
-<!-- ── 키보드 위 고정 버튼 (아이폰/갤럭시) ── -->
-<div id="write-floating-bar" style="
-  display:none;
-  position:fixed;
-  left:0; right:0; bottom:0;
-  background:rgba(255,255,255,0.97);
-  border-top:1px solid #e0e0e0;
-  padding:8px 20px 12px;
-  z-index:9999;
-  justify-content:center;
-  align-items:center;
-  box-shadow:0 -2px 8px rgba(0,0,0,0.08);
-">
-  <button id="write-floating-btn" style="
-    width:140px; height:48px; border-radius:22px;
-    background:#1a1a2e; color:white;
-    font-size:19px; font-weight:700;
-    border:none; cursor:pointer; font-family:inherit;
-  " onclick="writeFloatingAction()">확인</button>
-</div>
-
-<script>
-/* ── 쓰기 화면 플로팅 버튼 제어 ── */
-(function(){
-  const bar = document.getElementById('write-floating-bar');
-  const btn = document.getElementById('write-floating-btn');
-
-  function isIPad() {
-    return /iPad/.test(navigator.userAgent) ||
-      (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
-  }
-
-  window.showWriteFloatingBar = function(screen) {
-    if (isIPad()) return; // 아이패드는 불필요
-    const checked = screen === 'write' ? (window.S && S.writeChecked) : (window.S && S.examChecked);
-    btn.textContent = checked ? '다음' : '확인';
-    bar.style.display = 'flex';
-    // 원래 버튼 숨기기
-    const nav = document.getElementById(screen === 'write' ? 'write-card-nav' : 'exam-card-nav');
-    if (nav) nav.style.visibility = 'hidden';
-  };
-
-  window.hideWriteFloatingBar = function() {
-    bar.style.display = 'none';
-    const wn = document.getElementById('write-card-nav');
-    const en = document.getElementById('exam-card-nav');
-    if (wn) wn.style.visibility = 'visible';
-    if (en) en.style.visibility = 'visible';
-  };
-
-  window.writeFloatingAction = function() {
-    if (!window.S) return;
-    const screen = S.screen;
-    if (screen === 'write') {
-      S.writeChecked ? nextWriteItem() : checkWrite();
-    } else if (screen === 'exam_write') {
-      S.examChecked ? nextExamItem() : checkExam();
-    }
-  };
-
-  // iOS touchstart로 버튼 클릭 보장
-  btn.addEventListener('touchstart', function(e) {
-    e.preventDefault();
-    writeFloatingAction();
-  }, { passive: false });
-
-  // visualViewport로 키보드 높이 감지 → 플로팅 바 위치 조정
-  function updateBarPosition() {
-    if (bar.style.display === 'none') return;
-    if (window.visualViewport) {
-      const vv = window.visualViewport;
-      const keyboardH = Math.max(0, window.innerHeight - vv.height - (vv.offsetTop || 0));
-      bar.style.bottom = keyboardH + 'px';
-    } else {
-      bar.style.bottom = '0px';
-    }
-  }
-
-  if (window.visualViewport) {
-    window.visualViewport.addEventListener('resize', updateBarPosition);
-    window.visualViewport.addEventListener('scroll', updateBarPosition);
-  }
-
-  window.showWriteFloatingBar = function(screen) {
-    if (isIPad()) return;
-    const checked = screen === 'write' ? (window.S && S.writeChecked) : (window.S && S.examChecked);
-    btn.textContent = checked ? '다음' : '확인';
-    bar.style.display = 'flex';
-    updateBarPosition();
-    const nav = document.getElementById(screen === 'write' ? 'write-card-nav' : 'exam-card-nav');
-    if (nav) nav.style.visibility = 'hidden';
-  };
-})();
 </script>
