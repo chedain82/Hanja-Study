@@ -1296,7 +1296,7 @@ body {
       onkeydown="if(event.key==='Enter')doFreeNicknameCheck()"/>
     <div class="login-error" id="ls-free-error"></div>
     <button class="login-submit-btn" onclick="doFreeNicknameCheck()">다음</button>
-    <button class="login-back-btn" onclick="lsBack('student-teacher')">← 뒤로</button>
+    <button class="login-back-btn" onclick="document.getElementById('login-screen').classList.remove('active');document.getElementById('landing-screen').classList.add('active');">← 뒤로</button>
   </div>
 
   <!-- 자유학습 PIN 설정/확인 -->
@@ -2090,18 +2090,32 @@ function saveSessionLog(correct, wrong, total, desc, writePct) {
     if (!settings.levelProgress) settings.levelProgress = {};
     settings.levelProgress[S.level] = (settings.levelProgress[S.level]||0) + (total||0);
   }
-  // 새 writeProgress: 쓰기 모드에서 단계×타입별 최고 점수 기록 (오답 다시풀기/오답노트 제외)
+  // 새 writeProgress: 쓰기 모드에서 단계×타입별 회차+점수 기록 (오답 다시풀기/오답노트 제외)
   const isWrongSession = S.lastMain === 'wrong_note' || S.reviewMode === true;
   if (mode === 'write' && category && total > 0 && S.ranges && S.ranges.length > 0 && !isWrongSession) {
     if (!settings.writeProgress) settings.writeProgress = {};
-    // 단일 범위든 다중 범위든 선택된 모든 범위에 점수 기록
     const rangesToSave = S.ranges.length === 1
       ? S.ranges
-      : _getRangesFromItems(S.items || [], S.ranges); // 실제 학습한 범위 기준
+      : _getRangesFromItems(S.items || [], S.ranges);
     for (const r of rangesToSave) {
       const wpKey = r + '_' + category;
-      const existing = settings.writeProgress[wpKey] || 0;
-      settings.writeProgress[wpKey] = Math.max(existing, pct);
+      const existing = wpGet(settings.writeProgress, wpKey);
+      let newRound = existing.round;
+      let newScore = existing.score;
+      // 이전 회차에서 100점이면 → 새 회차 시작 (점수 갱신)
+      if (existing.score >= 100 && pct < 100) {
+        newRound = existing.round + 1;
+        newScore = pct;
+      } else if (existing.score >= 100 && pct >= 100) {
+        // 이전도 100점, 이번도 100점 → 회차 유지, 100점 그대로
+        newRound = existing.round;
+        newScore = 100;
+      } else {
+        // 같은 회차 내에서 최고 점수 유지
+        newScore = Math.max(existing.score, pct);
+        newRound = existing.round;
+      }
+      settings.writeProgress[wpKey] = { round: newRound, score: newScore };
     }
   }
   updateStreak();
@@ -2463,6 +2477,16 @@ function renderBadgesGrid() {
   }).join('');
 }
 
+/* ── writeProgress 회차 헬퍼 ── */
+function wpGet(wp, key) {
+  const v = wp[key];
+  if (!v) return { round: 1, score: 0 };
+  if (typeof v === 'number') return { round: 1, score: v }; // 구버전 호환
+  return v;
+}
+function wpScore(wp, key) { return wpGet(wp, key).score; }
+function wpRound(wp, key) { return wpGet(wp, key).round; }
+
 /* 인라인 진도율 렌더 (wp: writeProgress 객체, 기본은 본인, 선생님 보기 시 학생 wp 전달) */
 function _buildLevelProgressHTML(wp, lp) {
   wp = wp || {};
@@ -2472,9 +2496,9 @@ function _buildLevelProgressHTML(wp, lp) {
     const totalCells = steps.length * 2;
     let completedCells = 0, hasAny = false;
     for (const step of steps) {
-      if ((wp[step+'_선정']||0) >= 100) completedCells++;
-      if ((wp[step+'_교과서']||0) >= 100) completedCells++;
-      if ((wp[step+'_선정']||0) > 0 || (wp[step+'_교과서']||0) > 0) hasAny = true;
+      if (wpScore(wp, step+'_선정') >= 100) completedCells++;
+      if (wpScore(wp, step+'_교과서') >= 100) completedCells++;
+      if (wpScore(wp, step+'_선정') > 0 || wpScore(wp, step+'_교과서') > 0) hasAny = true;
     }
     let pct, pctLabel, pctCls;
     if (hasAny) {
@@ -2487,15 +2511,17 @@ function _buildLevelProgressHTML(wp, lp) {
         pctLabel = pct + '%·참고'; pctCls = '';
       } else { pct = 0; pctLabel = '미학습'; pctCls = 'none'; }
     }
-    // 3개씩 그리드로 단계 표시
     const stepCards = steps.map(step => {
-      const sScore = wp[step+'_선정'] || 0;
-      const tScore = wp[step+'_교과서'] || 0;
+      const sData = wpGet(wp, step+'_선정');
+      const tData = wpGet(wp, step+'_교과서');
+      const sScore = sData.score, sRound = sData.round;
+      const tScore = tData.score, tRound = tData.round;
       const sCls = sScore>=100?'done':sScore>0?'ing':'none';
       const tCls = tScore>=100?'done':tScore>0?'ing':'none';
       const sTxt = sScore>=100?'✅':'';
       const tTxt = tScore>=100?'✅':'';
-      // 해당 step이 속한 급수 찾기
+      const sNum = sScore>0 ? (sRound>1?`${sRound}회 ${sScore}점`:`${sScore}점`) : '';
+      const tNum = tScore>0 ? (tRound>1?`${tRound}회 ${tScore}점`:`${tScore}점`) : '';
       const stepLv = LEVEL_ORDER.find(l => (LEVEL_STEPS[l]||[]).includes(step)) || lv;
       return `<div class="lv-step-card">
         <div class="lv-step-title">${step}</div>
@@ -2505,8 +2531,8 @@ function _buildLevelProgressHTML(wp, lp) {
             <span class="lv-bar-score ${sCls}">${sTxt}</span>
           </div>
           <div class="lv-bar-with-score">
-            <div class="lv-mini-bar" style="flex:1"><div class="lv-mini-fill-blue" style="width:${sScore}%"></div></div>
-            <span class="lv-bar-num">${sScore>0?sScore+'점':''}</span>
+            <div class="lv-mini-bar" style="flex:1"><div class="lv-mini-fill-blue" style="width:${Math.min(sScore,100)}%"></div></div>
+            <span class="lv-bar-num">${sNum}</span>
           </div>
         </div>
         <div class="lv-bar-row" style="cursor:pointer" onclick="goStudyFromProgress('${stepLv}','${step}','교과서')">
@@ -2515,8 +2541,8 @@ function _buildLevelProgressHTML(wp, lp) {
             <span class="lv-bar-score ${tCls}">${tTxt}</span>
           </div>
           <div class="lv-bar-with-score">
-            <div class="lv-mini-bar" style="flex:1"><div class="lv-mini-fill-pink" style="width:${tScore}%"></div></div>
-            <span class="lv-bar-num">${tScore>0?tScore+'점':''}</span>
+            <div class="lv-mini-bar" style="flex:1"><div class="lv-mini-fill-pink" style="width:${Math.min(tScore,100)}%"></div></div>
+            <span class="lv-bar-num">${tNum}</span>
           </div>
         </div>
       </div>`;
@@ -4341,10 +4367,16 @@ async function loadStudentDataFromFirestore() {
         settings = data.settings;
         settings.coupons     = Math.max(settings.coupons     || 0, localCoupons);
         settings.usedCoupons = Math.max(settings.usedCoupons || 0, localUsedCoupons);
-        // writeProgress 병합: 더 높은 점수 유지
+        // writeProgress 병합: 더 높은 회차+점수 유지
         if (!settings.writeProgress) settings.writeProgress = {};
         for (const k of Object.keys(localWP)) {
-          settings.writeProgress[k] = Math.max(settings.writeProgress[k]||0, localWP[k]||0);
+          const localEntry = wpGet(localWP, k);
+          const remoteEntry = wpGet(settings.writeProgress, k);
+          // 회차가 높은 쪽 우선, 같은 회차면 점수 높은 쪽
+          if (localEntry.round > remoteEntry.round ||
+             (localEntry.round === remoteEntry.round && localEntry.score > remoteEntry.score)) {
+            settings.writeProgress[k] = localEntry;
+          }
         }
       }
       // studyLog 병합: id 기반으로 중복 제거
