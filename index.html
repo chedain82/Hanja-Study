@@ -3347,8 +3347,13 @@ function setRankTab(tab) {
 async function renderRankingTab() {
   const list = document.getElementById('rank-list');
   if (!list) return;
-  if (!currentUser || !currentUser.teacherId) {
+  if (!currentUser || (!currentUser.teacherId && !currentUser.isFree)) {
     list.innerHTML = '<div class="rank-empty">선생님 반에 속한 학생만<br>랭킹을 볼 수 있어요 🏆</div>';
+    return;
+  }
+  // 자유학습 유저는 전체 탭만 보여줌
+  if (currentUser.isFree && _rankTab === 'class') {
+    list.innerHTML = '<div class="rank-empty">자유 학습은 전체 랭킹만<br>볼 수 있어요 🏆</div>';
     return;
   }
   list.innerHTML = '<div class="rank-empty">🔄 불러오는 중...</div>';
