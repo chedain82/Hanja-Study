@@ -3810,29 +3810,31 @@ async function doFreeNicknameCheck() {
   if (!name) { errEl.textContent = '닉네임을 입력해 주세요'; return; }
   errEl.textContent = '확인 중...';
   try {
+    let existing = null;
     if (window._fbGetFreeUser) {
-      const existing = await window._fbGetFreeUser(name);
-      if (existing) {
-        // 기존 유저 → PIN 확인
-        _freePinMode = 'confirm';
-        _freePinAttempts = 0;
-        document.getElementById('ls-free-pin-title').textContent = 'PIN 확인';
-        document.getElementById('ls-free-pin-sub').textContent = '설정한 PIN 4자리를 입력하세요';
-      } else {
-        // 신규 유저 → PIN 설정
-        _freePinMode = 'set';
-        document.getElementById('ls-free-pin-title').textContent = 'PIN 설정';
-        document.getElementById('ls-free-pin-sub').textContent = '사용할 PIN 4자리를 설정하세요';
-      }
+      try { existing = await window._fbGetFreeUser(name); } catch(e) {}
+    }
+    if (existing) {
+      _freePinMode = 'confirm';
+      _freePinAttempts = 0;
+      document.getElementById('ls-free-pin-title').textContent = 'PIN 확인';
+      document.getElementById('ls-free-pin-sub').textContent = '설정한 PIN 4자리를 입력하세요';
     } else {
       _freePinMode = 'set';
+      document.getElementById('ls-free-pin-title').textContent = 'PIN 설정';
+      document.getElementById('ls-free-pin-sub').textContent = '사용할 PIN 4자리를 설정하세요';
     }
     errEl.textContent = '';
     _freePinBuffer = '';
     _updateFreePinDots();
     lsGo('free-pin');
   } catch(e) {
-    errEl.textContent = '오류가 발생했어요. 다시 시도해 주세요';
+    // 오류 시 신규로 처리
+    _freePinMode = 'set';
+    errEl.textContent = '';
+    _freePinBuffer = '';
+    _updateFreePinDots();
+    lsGo('free-pin');
   }
 }
 
