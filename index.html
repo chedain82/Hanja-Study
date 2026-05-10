@@ -4402,7 +4402,7 @@ async function syncToFirestore() {
   if (!currentUser || currentUser.role !== 'student') return;
   if (!currentUser.teacherId && !currentUser.isFree) return;
   try {
-    // 주간 랭킹 업데이트
+    // 주간 랭킹 업데이트: 로컬 weekScore와 Firebase 중 항상 큰 값 사용
     const weekScore = getWeeklyScore();
     if (window._fbUpdateWeeklyRanking && weekScore > 0) {
       let finalScore = weekScore;
@@ -4410,8 +4410,10 @@ async function syncToFirestore() {
         if (window._fbGetWeeklyRanking) {
           const existing = await window._fbGetWeeklyRanking(currentUser.id);
           const currentWeek = getWeekStart();
-          if (existing && existing.weekKey === currentWeek && existing.weeklyProblems > weekScore) {
-            finalScore = existing.weeklyProblems;
+          // 같은 주차일 때만 비교, 다른 주차면 로컬값 사용
+          if (existing && existing.weekKey === currentWeek) {
+            // 로컬과 Firebase 중 항상 더 큰 값 사용
+            finalScore = Math.max(weekScore, existing.weeklyProblems || 0);
           }
         }
       } catch(e) {}
