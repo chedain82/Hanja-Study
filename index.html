@@ -4372,7 +4372,6 @@ async function loadStudentDataFromFirestore() {
         for (const k of Object.keys(localWP)) {
           const localEntry = wpGet(localWP, k);
           const remoteEntry = wpGet(settings.writeProgress, k);
-          // 회차가 높은 쪽 우선, 같은 회차면 점수 높은 쪽
           if (localEntry.round > remoteEntry.round ||
              (localEntry.round === remoteEntry.round && localEntry.score > remoteEntry.score)) {
             settings.writeProgress[k] = localEntry;
@@ -4383,19 +4382,32 @@ async function loadStudentDataFromFirestore() {
       if (data.studyLog) {
         const remoteLog = data.studyLog;
         const localIds = new Set(studyLog.map(e => e.id).filter(Boolean));
-        // 로컬에 없는 원격 항목 추가
         const newFromRemote = remoteLog.filter(e => !e.id || !localIds.has(e.id));
-        // 로컬에 있는 항목 중 원격에 없는 것 (오프라인 중 작성)
         const remoteIds = new Set(remoteLog.map(e => e.id).filter(Boolean));
         const localOnly = studyLog.filter(e => e.id && !remoteIds.has(e.id));
-        // 원격 + 로컬만 있는 것 병합 후 날짜순 정렬
         studyLog = [...remoteLog, ...localOnly].sort((a,b) => (a.date||'').localeCompare(b.date||''));
-        // 최근 300개만 유지
         if (studyLog.length > 300) studyLog = studyLog.slice(-300);
       }
       if (data.earnedBadges) earnedBadges = data.earnedBadges;
       if (data.wrongNote)    S.wrongNote  = data.wrongNote;
     }
+    // weeklyRanking에서 현재 점수 불러와서 settings.weeklyScore의 바닥값으로 설정
+    // 이렇게 해야 수동 수정값이나 다른 기기에서 쌓인 점수가 보호됨
+    try {
+      if (window._fbGetWeeklyRanking) {
+        const ranking = await window._fbGetWeeklyRanking(currentUser.id);
+        const currentWeek = getWeekStart();
+        if (ranking && ranking.weekKey === currentWeek && ranking.weeklyProblems > 0) {
+          const studyLogScore = getWeeklyScore();
+          settings.weeklyScore = Math.max(
+            ranking.weeklyProblems,
+            studyLogScore,
+            settings.weeklyScoreKey === currentWeek ? (settings.weeklyScore||0) : 0
+          );
+          settings.weeklyScoreKey = currentWeek;
+        }
+      }
+    } catch(e) {}
   } catch(e) { console.log('Firestore 로드 실패:', e); }
 }
 async function syncToFirestore() {
