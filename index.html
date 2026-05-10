@@ -2085,33 +2085,42 @@ function saveSessionLog(correct, wrong, total, desc, writePct) {
   settings.totalCorrect   = (settings.totalCorrect||0)   + (correct||0);
   settings.totalQuestions = (settings.totalQuestions||0) + (total||0);
   settings.totalTime      = (settings.totalTime||0)      + entry.duration;
+
+  // 주간 누적 점수 직접 저장 (기기 전환/앱 재시작해도 절대 안 내려감)
+  const _wk = getWeekStart();
+  if (settings.weeklyScoreKey !== _wk) {
+    settings.weeklyScore = 0;
+    settings.weeklyScoreKey = _wk;
+  }
+  let _sessionScore = 0;
+  if (mode === 'quiz')  _sessionScore = (correct||0) * 1;
+  else if (mode === 'write' || mode === 'exam') _sessionScore = (correct||0) * 2;
+  settings.weeklyScore = (settings.weeklyScore||0) + _sessionScore;
   // 기존 levelProgress 유지 (하위 호환)
   if (desc && S.level) {
     if (!settings.levelProgress) settings.levelProgress = {};
     settings.levelProgress[S.level] = (settings.levelProgress[S.level]||0) + (total||0);
   }
-  // 새 writeProgress: 쓰기 모드에서 단계×타입별 회차+점수 기록 (오답 다시풀기/오답노트 제외)
+  // 새 writeProgress: 쓰기 모드에서 단계×타입별 최고 점수 기록 (오답 다시풀기/오답노트 제외)
   const isWrongSession = S.lastMain === 'wrong_note' || S.reviewMode === true;
   if (mode === 'write' && category && total > 0 && S.ranges && S.ranges.length > 0 && !isWrongSession) {
     if (!settings.writeProgress) settings.writeProgress = {};
+    // 단일 범위든 다중 범위든 선택된 모든 범위에 점수 기록
     const rangesToSave = S.ranges.length === 1
       ? S.ranges
-      : _getRangesFromItems(S.items || [], S.ranges);
+      : _getRangesFromItems(S.items || [], S.ranges); // 실제 학습한 범위 기준
     for (const r of rangesToSave) {
       const wpKey = r + '_' + category;
       const existing = wpGet(settings.writeProgress, wpKey);
       let newRound = existing.round;
       let newScore = existing.score;
-      // 이전 회차에서 100점이면 → 새 회차 시작 (점수 갱신)
       if (existing.score >= 100 && pct < 100) {
         newRound = existing.round + 1;
         newScore = pct;
       } else if (existing.score >= 100 && pct >= 100) {
-        // 이전도 100점, 이번도 100점 → 회차 유지, 100점 그대로
         newRound = existing.round;
         newScore = 100;
       } else {
-        // 같은 회차 내에서 최고 점수 유지
         newScore = Math.max(existing.score, pct);
         newRound = existing.round;
       }
@@ -3377,7 +3386,6 @@ async function renderRankingTab() {
     list.innerHTML = '<div class="rank-empty">선생님 반에 속한 학생만<br>랭킹을 볼 수 있어요 🏆</div>';
     return;
   }
-  // 자유학습 유저는 전체 탭만 보여줌
   if (currentUser.isFree && _rankTab === 'class') {
     list.innerHTML = '<div class="rank-empty">자유 학습은 전체 랭킹만<br>볼 수 있어요 🏆</div>';
     return;
@@ -4362,17 +4370,24 @@ async function loadStudentDataFromFirestore() {
       if (data.settings) {
         const localWP = (settings.writeProgress) ? {...settings.writeProgress} : {};
         // 쿠폰/사용쿠폰은 로컬과 Firebase 중 더 큰 값 유지 (네트워크 오류로 유실 방지)
-        const localCoupons     = settings.coupons     || 0;
-        const localUsedCoupons = settings.usedCoupons || 0;
+        const localCoupons       = settings.coupons       || 0;
+        const localUsedCoupons   = settings.usedCoupons   || 0;
+        const localWeeklyScore   = settings.weeklyScore   || 0;
+        const localWeeklyKey     = settings.weeklyScoreKey || '';
         settings = data.settings;
         settings.coupons     = Math.max(settings.coupons     || 0, localCoupons);
         settings.usedCoupons = Math.max(settings.usedCoupons || 0, localUsedCoupons);
+        // weeklyScore: 같은 주차면 더 큰 값 유지 (기기 전환 시 누락 방지)
+        const currentWeek = getWeekStart();
+        if (localWeeklyKey === currentWeek) {
+          settings.weeklyScoreKey = currentWeek;
+          settings.weeklyScore = Math.max(settings.weeklyScore || 0, localWeeklyScore);
+        }
         // writeProgress 병합: 더 높은 회차+점수 유지
         if (!settings.writeProgress) settings.writeProgress = {};
         for (const k of Object.keys(localWP)) {
           const localEntry = wpGet(localWP, k);
           const remoteEntry = wpGet(settings.writeProgress, k);
-          // 회차가 높은 쪽 우선, 같은 회차면 점수 높은 쪽
           if (localEntry.round > remoteEntry.round ||
              (localEntry.round === remoteEntry.round && localEntry.score > remoteEntry.score)) {
             settings.writeProgress[k] = localEntry;
@@ -4402,15 +4417,16 @@ async function syncToFirestore() {
   if (!currentUser || currentUser.role !== 'student') return;
   if (!currentUser.teacherId && !currentUser.isFree) return;
   try {
-    // 주간 랭킹 업데이트: 비교 없이 항상 로컬 weekScore로 업데이트
-    const weekScore = getWeeklyScore();
-    if (window._fbUpdateWeeklyRanking && weekScore > 0) {
+    // 주간 랭킹: settings.weeklyScore 누적값 사용 (절대 안 내려감)
+    const weekScore = settings.weeklyScore || 0;
+    const weekKey = settings.weeklyScoreKey || getWeekStart();
+    if (window._fbUpdateWeeklyRanking && weekScore > 0 && weekKey === getWeekStart()) {
       window._fbUpdateWeeklyRanking(currentUser.id, {
         name: currentUser.name,
         teacherId: currentUser.teacherId || 'free',
         teacherName: currentUser.isFree ? '개인' : (currentUser.teacherName||''),
         weeklyProblems: weekScore,
-        weekKey: getWeekStart(),
+        weekKey: weekKey,
         updatedAt: new Date().toISOString()
       }).catch(()=>{});
     }
