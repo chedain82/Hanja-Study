@@ -298,6 +298,25 @@ body {
 .badges-wrap { padding: 0 14px 14px; }
 .badges-label { font-size: 14px; font-weight: 800; color: #222; margin-bottom: 10px; }
 .badges-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 9px; }
+/* 배지 설명 팝업 */
+#badge-popup-overlay {
+  display:none; position:fixed; inset:0; background:rgba(0,0,0,0.45); z-index:9000;
+  justify-content:center; align-items:center;
+}
+#badge-popup-overlay.active { display:flex; }
+#badge-popup-box {
+  background:white; border-radius:20px; padding:28px 24px 20px;
+  width:80%; max-width:300px; text-align:center;
+  box-shadow:0 8px 32px rgba(0,0,0,0.18); position:relative;
+}
+#badge-popup-icon { font-size:52px; margin-bottom:8px; }
+#badge-popup-name { font-size:20px; font-weight:800; margin-bottom:6px; }
+#badge-popup-desc { font-size:14px; color:var(--gray); line-height:1.5; margin-bottom:6px; }
+#badge-popup-date { font-size:12px; color:var(--blue); font-weight:700; margin-bottom:14px; }
+#badge-popup-close {
+  background:var(--blue); color:white; border:none; border-radius:12px;
+  padding:10px 32px; font-size:15px; font-weight:700; cursor:pointer; font-family:inherit;
+}
 .badge-tile { background: white; border-radius: 12px; padding: 10px 6px; text-align: center; }
 .badge-tile.locked { opacity: .3; filter: grayscale(1); }
 .badge-tile .badge-ico { font-size: 26px; }
@@ -1737,6 +1756,17 @@ body {
     <div class="badges-wrap">
       <div class="badges-label">🏅 획득한 배지</div>
       <div class="badges-grid" id="badges-grid"></div>
+
+<!-- 배지 설명 팝업 -->
+<div id="badge-popup-overlay" onclick="closeBadgePopup(event)">
+  <div id="badge-popup-box">
+    <div id="badge-popup-icon">🏅</div>
+    <div id="badge-popup-name"></div>
+    <div id="badge-popup-desc"></div>
+    <div id="badge-popup-date"></div>
+    <button id="badge-popup-close" onclick="closeBadgePopup()">확인</button>
+  </div>
+</div>
     </div>
 
     <!-- 쿠폰 지갑 -->
@@ -1967,7 +1997,7 @@ function loadStudyLog()  { try { _migrateLsKey('hanja_studyLog');  return JSON.p
 function saveWrongNote() { try { localStorage.setItem(_lsKey('hanja_wrongNote'), JSON.stringify(S.wrongNote));  } catch(e){} }
 function loadWrongNote() { try { _migrateLsKey('hanja_wrongNote'); return JSON.parse(localStorage.getItem(_lsKey('hanja_wrongNote'))) || []; } catch(e){ return []; } }
 function saveSettings()  { try { localStorage.setItem(_lsKey('hanja_settings'),  JSON.stringify(settings));     } catch(e){} }
-function loadSettings()  { try { _migrateLsKey('hanja_settings');  return JSON.parse(localStorage.getItem(_lsKey('hanja_settings')))  || {streak:0,lastStudyDate:'',dailyGoal:20,totalCorrect:0,totalQuestions:0,totalTime:0,bestStreak:0,levelProgress:{},perfectStreak:0,lastPerfectDate:'',coupons:0,usedCoupons:0}; } catch(e){ return {streak:0,lastStudyDate:'',dailyGoal:20,totalCorrect:0,totalQuestions:0,totalTime:0,bestStreak:0,levelProgress:{},perfectStreak:0,lastPerfectDate:'',coupons:0,usedCoupons:0}; } }
+function loadSettings()  { try { _migrateLsKey('hanja_settings');  return JSON.parse(localStorage.getItem(_lsKey('hanja_settings')))  || {streak:0,lastStudyDate:'',dailyGoal:100,totalCorrect:0,totalQuestions:0,totalTime:0,bestStreak:0,levelProgress:{},perfectStreak:0,lastPerfectDate:'',coupons:0,usedCoupons:0}; } catch(e){ return {streak:0,lastStudyDate:'',dailyGoal:100,totalCorrect:0,totalQuestions:0,totalTime:0,bestStreak:0,levelProgress:{},perfectStreak:0,lastPerfectDate:'',coupons:0,usedCoupons:0}; } }
 function saveBadges()    { try { localStorage.setItem(_lsKey('hanja_badges'),    JSON.stringify(earnedBadges)); } catch(e){} }
 function loadBadges()    { try { _migrateLsKey('hanja_badges');    return JSON.parse(localStorage.getItem(_lsKey('hanja_badges')))    || {}; } catch(e){ return {}; } }
 
@@ -2009,19 +2039,52 @@ let ALL = [];
 
 /* ===== BADGE DEFINITIONS ===== */
 const BADGES = [
-  {id:'first', icon:'🌱', name:'첫 걸음', desc:'첫 학습', check: ()=> settings.totalQuestions >= 1},
-  {id:'q50', icon:'🌿', name:'50문제', desc:'50문제 달성', check: ()=> settings.totalQuestions >= 50},
-  {id:'q200', icon:'🌳', name:'200문제', desc:'200문제 달성', check: ()=> settings.totalQuestions >= 200},
-  {id:'q500', icon:'🌲', name:'500문제', desc:'500문제', check: ()=> settings.totalQuestions >= 500},
-  {id:'q1000', icon:'🏔️', name:'1000문제', desc:'1000문제', check: ()=> settings.totalQuestions >= 1000},
-  {id:'streak3', icon:'🔥', name:'3일 연속', desc:'3일 연속', check: ()=> settings.streak >= 3},
-  {id:'streak7', icon:'⚡', name:'7일 연속', desc:'7일 연속', check: ()=> settings.streak >= 7},
-  {id:'streak30', icon:'💎', name:'한 달', desc:'30일 연속', check: ()=> settings.streak >= 30},
-  {id:'acc90', icon:'🎯', name:'정확도 달인', desc:'정답률 90%+', check: ()=> settings.totalQuestions>30 && (settings.totalCorrect/settings.totalQuestions)*100 >= 90},
-  {id:'wrongFree', icon:'✨', name:'무결점', desc:'오답 0', check: ()=> S.wrongNote.length === 0 && settings.totalQuestions > 0},
-  {id:'allLevel', icon:'👑', name:'전 급수', desc:'모든 급수 학습', check: ()=> Object.keys(settings.levelProgress||{}).length >= 9},
-  {id:'examFirst', icon:'📜', name:'기출 도전', desc:'기출 첫 도전', check: ()=> (settings.examAttempts||0) >= 1},
+  // 학습량
+  {id:'first',   icon:'🌱', name:'첫 걸음',    desc:'처음으로 학습을 시작했어요!',            check: ()=> settings.totalQuestions >= 1},
+  {id:'q50',     icon:'🌿', name:'50문제',      desc:'누적 50문제를 풀었어요',                check: ()=> settings.totalQuestions >= 50},
+  {id:'q200',    icon:'🌳', name:'200문제',     desc:'누적 200문제를 풀었어요',               check: ()=> settings.totalQuestions >= 200},
+  {id:'q500',    icon:'🌲', name:'500문제',     desc:'누적 500문제를 풀었어요',               check: ()=> settings.totalQuestions >= 500},
+  {id:'q1000',   icon:'🏔️', name:'1000문제',   desc:'누적 1000문제를 풀었어요',              check: ()=> settings.totalQuestions >= 1000},
+  {id:'q2000',   icon:'⭐', name:'2000문제',    desc:'누적 2000문제를 풀었어요',              check: ()=> settings.totalQuestions >= 2000},
+  {id:'q5000',   icon:'🚀', name:'5000문제',    desc:'누적 5000문제를 풀었어요',              check: ()=> settings.totalQuestions >= 5000},
+  {id:'q10000',  icon:'💎', name:'10000문제',   desc:'누적 10000문제를 풀었어요',             check: ()=> settings.totalQuestions >= 10000},
+  // 연속 학습
+  {id:'streak3',  icon:'🔥', name:'3일 연속',   desc:'3일 연속으로 학습했어요',               check: ()=> settings.streak >= 3},
+  {id:'streak7',  icon:'⚡', name:'7일 연속',   desc:'7일 연속으로 학습했어요',               check: ()=> settings.streak >= 7},
+  {id:'streak30', icon:'💎', name:'한 달',      desc:'30일 연속으로 학습했어요',              check: ()=> settings.streak >= 30},
+  {id:'streak50', icon:'🌙', name:'50일 연속',  desc:'50일 연속으로 학습했어요',              check: ()=> settings.streak >= 50},
+  {id:'streak100',icon:'👑', name:'100일 연속', desc:'100일 연속으로 학습했어요. 전설!',      check: ()=> settings.streak >= 100},
+  // 실력
+  {id:'acc90',    icon:'🎯', name:'정확도 달인', desc:'전체 정답률 90% 이상 달성',            check: ()=> settings.totalQuestions>30 && (settings.totalCorrect/settings.totalQuestions)*100 >= 90},
+  {id:'wrongFree',icon:'✨', name:'무결점',      desc:'오답노트가 비어있을 때 달성',           check: ()=> S.wrongNote.length === 0 && settings.totalQuestions > 0},
+  {id:'allLevel', icon:'📚', name:'전 급수',     desc:'모든 급수(8급~3급)를 학습했어요',      check: ()=> Object.keys(settings.levelProgress||{}).length >= 9},
+  {id:'examFirst',icon:'📜', name:'기출 도전',   desc:'기출문제에 처음 도전했어요',            check: ()=> (settings.examAttempts||0) >= 1},
+  // 급수 마스터 (선정+교과서 모든 단계 100점)
+  {id:'master8',  icon:'🎖️', name:'8급 마스터',  desc:'8급 모든 단계 선정+교과서 100점 달성', check: ()=> _checkLevelMaster('8급')},
+  {id:'master7',  icon:'🎖️', name:'7급 마스터',  desc:'7급 모든 단계 선정+교과서 100점 달성', check: ()=> _checkLevelMaster('7급')},
+  {id:'master6',  icon:'🥈', name:'6급 마스터',  desc:'6급 모든 단계 선정+교과서 100점 달성', check: ()=> _checkLevelMaster('6급')},
+  {id:'master준5', icon:'🥈', name:'준5급 마스터',desc:'준5급 모든 단계 선정+교과서 100점 달성',check: ()=> _checkLevelMaster('준5급')},
+  {id:'master5',  icon:'🥇', name:'5급 마스터',  desc:'5급 모든 단계 선정+교과서 100점 달성', check: ()=> _checkLevelMaster('5급')},
+  {id:'master준4', icon:'🥇', name:'준4급 마스터',desc:'준4급 모든 단계 선정+교과서 100점 달성',check: ()=> _checkLevelMaster('준4급')},
+  {id:'master4',  icon:'🏅', name:'4급 마스터',  desc:'4급 모든 단계 선정+교과서 100점 달성', check: ()=> _checkLevelMaster('4급')},
+  {id:'master준3', icon:'🏅', name:'준3급 마스터',desc:'준3급 모든 단계 선정+교과서 100점 달성',check: ()=> _checkLevelMaster('준3급')},
+  {id:'master3',  icon:'🏆', name:'3급 마스터',  desc:'3급 모든 단계 선정+교과서 100점 달성', check: ()=> _checkLevelMaster('3급')},
+  // 랭킹 1위 누적
+  {id:'rank1_1',  icon:'🥇', name:'1위 달성',    desc:'반 주간 랭킹 1위를 달성했어요!',       check: ()=> (settings.rank1Count||0) >= 1},
+  {id:'rank1_3',  icon:'🥇', name:'1위 3회',     desc:'반 주간 랭킹 1위를 3번 달성했어요!',   check: ()=> (settings.rank1Count||0) >= 3},
+  {id:'rank1_5',  icon:'🥇', name:'1위 5회',     desc:'반 주간 랭킹 1위를 5번 달성했어요!',   check: ()=> (settings.rank1Count||0) >= 5},
+  {id:'rank1_10', icon:'🏆', name:'1위 10회',    desc:'반 주간 랭킹 1위를 10번 달성했어요!',  check: ()=> (settings.rank1Count||0) >= 10},
 ];
+
+/* 급수 마스터 체크: 해당 급수 모든 단계 선정+교과서 100점 */
+function _checkLevelMaster(lv) {
+  const steps = LEVEL_STEPS[lv] || [];
+  if (!steps.length) return false;
+  const wp = settings.writeProgress || {};
+  return steps.every(step =>
+    wpScore(wp, step+'_선정') >= 100 && wpScore(wp, step+'_교과서') >= 100
+  );
+}
 
 function checkBadges() {
   let newBadge = null;
@@ -2470,11 +2533,33 @@ function renderBadgesGrid() {
   const grid = document.getElementById('badges-grid');
   grid.innerHTML = BADGES.map(b => {
     const earned = !!earnedBadges[b.id];
-    return `<div class="badge-tile ${earned?'':'locked'}">
+    return `<div class="badge-tile ${earned?'':'locked'}" onclick="showBadgePopup('${b.id}')">
       <div class="badge-ico">${b.icon}</div>
       <div class="badge-nm">${b.name}</div>
     </div>`;
   }).join('');
+}
+
+function showBadgePopup(badgeId) {
+  const b = BADGES.find(x => x.id === badgeId);
+  if (!b) return;
+  const earned = !!earnedBadges[b.id];
+  document.getElementById('badge-popup-icon').textContent = earned ? b.icon : '🔒';
+  document.getElementById('badge-popup-name').textContent = b.name;
+  document.getElementById('badge-popup-desc').textContent = b.desc;
+  const dateEl = document.getElementById('badge-popup-date');
+  if (earned) {
+    dateEl.textContent = `🎉 ${earnedBadges[b.id]} 획득!`;
+  } else {
+    dateEl.textContent = '아직 획득하지 못했어요';
+    dateEl.style.color = 'var(--gray)';
+  }
+  document.getElementById('badge-popup-overlay').classList.add('active');
+}
+
+function closeBadgePopup(e) {
+  if (e && e.target !== document.getElementById('badge-popup-overlay')) return;
+  document.getElementById('badge-popup-overlay').classList.remove('active');
 }
 
 /* ── writeProgress 회차 헬퍼 ── */
@@ -3403,7 +3488,16 @@ async function renderRankingTab() {
     }
     items.sort((a,b)=>b.weeklyProblems-a.weeklyProblems);
     if (!items.length) { list.innerHTML='<div class="rank-empty">아직 데이터가 없어요 🏆</div>'; return; }
-    // MVP: 1위
+    // MVP: 1위 — 내가 반 랭킹 1위면 rank1Count 누적
+    if (_rankTab === 'class' && items.length > 0 && items[0].id === currentUser.id && items[0].weeklyProblems > 0) {
+      const currentWeek = getWeekStart();
+      if (settings.rank1LastWeek !== currentWeek) {
+        settings.rank1LastWeek = currentWeek;
+        settings.rank1Count = (settings.rank1Count||0) + 1;
+        saveSettings();
+        checkBadges();
+      }
+    }
     const weekStart = getWeekStart();
     list.innerHTML = items.map((item,i) => {
       const rank = i+1;
@@ -3508,7 +3602,7 @@ function getMvpStudentId(cacheArr) {
 /* ===== DATA RESET =====
 function resetAllData() {
   if (!confirm('모든 학습 데이터를 삭제할까요? 이 작업은 되돌릴 수 없습니다.')) return;
-  studyLog = []; settings = {streak:0,lastStudyDate:'',dailyGoal:20,totalCorrect:0,totalQuestions:0,totalTime:0,bestStreak:0,levelProgress:{}};
+  studyLog = []; settings = {streak:0,lastStudyDate:'',dailyGoal:100,totalCorrect:0,totalQuestions:0,totalTime:0,bestStreak:0,levelProgress:{}};
   earnedBadges = {}; S.wrongNote = [];
   saveStudyLog(); saveSettings(); saveBadges(); saveWrongNote();
   toast('데이터가 초기화되었습니다.');
@@ -4846,8 +4940,19 @@ document.addEventListener('visibilitychange', async () => {
   };
 
   /* 주간 랭킹 */
-  window._fbUpdateWeeklyRanking = (studentId, data) =>
-    setDoc(doc(db, 'weeklyRanking', studentId), data);
+  window._fbUpdateWeeklyRanking = async (studentId, data) => {
+    try {
+      const snap = await getDoc(doc(db, 'weeklyRanking', studentId));
+      if (snap.exists()) {
+        const old = snap.data();
+        // 같은 주차면 항상 더 큰 값만 저장 (절대 내려가지 않음)
+        if (old.weekKey === data.weekKey) {
+          data.weeklyProblems = Math.max(old.weeklyProblems||0, data.weeklyProblems||0);
+        }
+      }
+    } catch(e) {}
+    return setDoc(doc(db, 'weeklyRanking', studentId), data);
+  };
 
   window._fbGetWeeklyRanking = async (studentId) => {
     const snap = await getDoc(doc(db, 'weeklyRanking', studentId));
