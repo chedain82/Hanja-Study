@@ -3768,7 +3768,8 @@ async function renderRankingTab() {
       }));
     }
     items.sort((a,b)=>b.weeklyProblems-a.weeklyProblems);
-    if (!items.length) { list.innerHTML='<div class="rank-empty">아직 데이터가 없어요 🏆</div>'; return; }
+    items = items.filter(item => item.weeklyProblems > 0);  // 0점 제외
+    if (!items.length) { list.innerHTML='<div class="rank-empty">아직 이번 주 기록이 없어요 🏆</div>'; return; }
     // MVP: 1위 — 내가 반 랭킹 1위면 rank1Count 누적
     if (_rankTab === 'class' && items.length > 0 && items[0].id === currentUser.id && items[0].weeklyProblems > 0) {
       const currentWeek = getWeekStart();
