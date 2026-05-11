@@ -1202,6 +1202,152 @@ body {
 .landing-btn-group:active{transform:scale(.97);opacity:.8;}
 .landing-guide-btn{background:none;border:none;color:var(--gray);font-size:14px;font-weight:700;cursor:pointer;font-family:inherit;text-decoration:underline;padding:4px 0;}
 .landing-teacher-link{background:none;border:none;color:#bbb;font-size:12px;font-weight:600;cursor:pointer;font-family:inherit;margin-top:4px;}
+
+/* ===== 메인 두 카드 ===== */
+.landing-two-cards{width:100%;max-width:420px;padding:0 20px 4px;display:flex;flex-direction:column;gap:14px;}
+.landing-big-card{
+  display:flex;align-items:center;gap:18px;
+  background:white;border-radius:20px;
+  padding:20px 20px;cursor:pointer;
+  box-shadow:0 2px 12px rgba(0,0,0,.08);
+  transition:transform .15s,box-shadow .15s;
+  text-align:left;border:none;width:100%;
+  box-sizing:border-box;font-family:inherit;
+}
+.landing-big-card:active{transform:scale(.97);box-shadow:0 1px 6px rgba(0,0,0,.07);}
+.landing-big-card-icon{font-size:34px;flex-shrink:0;}
+.landing-big-card-title{font-size:15px;font-weight:800;color:#222;margin-bottom:3px;}
+.landing-big-card-desc{font-size:12px;font-weight:600;color:var(--gray);line-height:1.5;}
+.landing-big-card-arrow{font-size:20px;color:#ccc;flex-shrink:0;margin-left:auto;}
+
+/* ===== 학습하기 선택 화면 ===== */
+#study-select-screen{
+  position:fixed;inset:0;background:var(--bg);
+  display:none;flex-direction:column;
+  align-items:center;justify-content:center;
+  z-index:300;padding:24px;
+}
+#study-select-screen.active{display:flex;}
+.study-select-logo{font-size:52px;font-weight:800;font-family:'Nanum Myeongjo',serif;margin-bottom:6px;}
+.study-select-title{font-size:18px;font-weight:800;color:#222;margin-bottom:32px;}
+.study-select-btns{width:100%;max-width:320px;display:flex;flex-direction:column;gap:14px;}
+
+/* ===== 기출문제 자료실 화면 ===== */
+#exam-library-screen{
+  position:fixed;inset:0;
+  background:var(--bg,#F1DADF);
+  display:none;flex-direction:column;
+  overflow:hidden;z-index:300;
+}
+#exam-library-screen.active{display:flex;}
+.exam-lib-header{
+  display:flex;align-items:center;gap:12px;
+  padding:18px 20px 14px;
+  background:white;box-shadow:0 2px 8px rgba(0,0,0,.07);flex-shrink:0;
+}
+.exam-lib-back{background:none;border:none;font-size:26px;cursor:pointer;padding:0;line-height:1;}
+.exam-lib-title{font-size:18px;font-weight:800;color:#222;}
+.exam-lib-content{flex:1;overflow-y:auto;padding:16px;}
+
+/* ===== 기출문제 자료실 레이아웃 ===== */
+.exam-lib-scroll{flex:1;overflow-y:auto;}
+.exam-lib-center{max-width:480px;margin:0 auto;padding:20px 16px 40px;}
+.exam-section-label{font-size:13px;font-weight:800;color:#555;margin-bottom:12px;display:flex;align-items:center;gap:6px;}
+
+/* 교재 카드 가로 스크롤 */
+.exam-books-row{
+  display:flex;gap:14px;overflow-x:auto;padding-bottom:4px;
+}
+.exam-books-row::-webkit-scrollbar{display:none;}
+.exam-book-card{
+  flex-shrink:0;border-radius:16px;overflow:hidden;
+  background:white;box-shadow:0 3px 12px rgba(0,0,0,.10);
+  display:flex;flex-direction:column;align-items:center;
+  padding:12px 10px 10px;width:110px;
+  text-decoration:none;transition:transform .15s;cursor:pointer;
+}
+.exam-book-card:active{transform:scale(.96);}
+.exam-book-iframe-wrap{width:80px;height:105px;overflow:hidden;border-radius:8px;pointer-events:none;position:relative;}
+.exam-book-iframe-wrap iframe{width:120px;height:240px;border:none;transform:scale(0.667) translateY(-33px);transform-origin:top left;}
+.exam-book-grade-badge{
+  display:inline-block;background:#3B7DE0;color:white;
+  font-size:11px;font-weight:800;padding:3px 10px;
+  border-radius:20px;margin-top:8px;
+}
+.exam-coupang-notice{font-size:10px;color:#bbb;margin-top:10px;text-align:center;line-height:1.6;}
+
+/* 급수 탭 */
+.exam-grade-tabs-wrap{
+  position:relative;margin-bottom:14px;
+}
+.exam-grade-tabs-wrap::after{
+  content:'';position:absolute;right:0;top:0;bottom:0;
+  width:40px;pointer-events:none;
+  background:linear-gradient(to right, transparent, var(--bg,#F1DADF));
+  border-radius:0 16px 16px 0;
+}
+.exam-lib-grade-tabs{
+  display:flex;gap:8px;overflow-x:auto;
+  padding:12px 16px;
+  background:white;border-radius:16px;
+  box-shadow:0 2px 8px rgba(0,0,0,.06);
+  scrollbar-width:thin;scrollbar-color:#ddd transparent;
+}
+.exam-lib-grade-tabs::-webkit-scrollbar{height:3px;}
+.exam-lib-grade-tabs::-webkit-scrollbar-track{background:transparent;}
+.exam-lib-grade-tabs::-webkit-scrollbar-thumb{background:#ddd;border-radius:4px;}
+.exam-grade-tab{
+  padding:8px 18px;border-radius:20px;border:1.5px solid #eee;
+  background:#f8f8f8;font-size:13px;font-weight:700;color:#888;
+  cursor:pointer;white-space:nowrap;flex-shrink:0;
+  transition:all .15s;font-family:inherit;
+}
+.exam-grade-tab.active{background:#3B7DE0;border-color:#3B7DE0;color:white;}
+
+/* PDF 그리드 카드 */
+.exam-pdf-grid{
+  display:grid;grid-template-columns:repeat(3,1fr);gap:12px;
+}
+.exam-pdf-card{
+  background:white;border-radius:14px;
+  padding:16px 10px 12px;
+  box-shadow:0 2px 8px rgba(0,0,0,.08);
+  display:flex;flex-direction:column;align-items:center;gap:6px;
+  cursor:pointer;transition:transform .15s;border:none;
+  font-family:inherit;
+}
+.exam-pdf-card:active{transform:scale(.95);}
+.exam-pdf-icon{font-size:36px;line-height:1;}
+.exam-pdf-card-title{font-size:12px;font-weight:800;color:#333;text-align:center;}
+.exam-pdf-card-grade{font-size:11px;color:#3B7DE0;font-weight:700;}
+.exam-pdf-empty{text-align:center;color:#bbb;font-size:14px;padding:32px 20px;line-height:2;grid-column:1/-1;}
+.exam-lib-loading{text-align:center;color:#999;font-size:14px;padding:40px 20px;grid-column:1/-1;}
+
+/* PDF 팝업 */
+#exam-pdf-popup{
+  position:fixed;inset:0;background:rgba(0,0,0,.5);
+  display:none;align-items:center;justify-content:center;
+  z-index:500;padding:24px;
+}
+#exam-pdf-popup.active{display:flex;}
+.exam-pdf-popup-box{
+  background:white;border-radius:24px;
+  padding:28px 24px;width:100%;max-width:320px;
+  display:flex;flex-direction:column;align-items:center;gap:14px;
+  text-align:center;
+}
+.exam-pdf-popup-title{font-size:17px;font-weight:800;color:#222;}
+.exam-pdf-popup-sub{font-size:13px;color:#999;line-height:1.6;}
+.exam-pdf-popup-btn{
+  background:#3B7DE0;color:white;border-radius:14px;
+  padding:14px 0;width:100%;font-size:15px;font-weight:800;
+  text-decoration:none;display:block;transition:transform .15s;
+}
+.exam-pdf-popup-btn:active{transform:scale(.97);}
+.exam-pdf-popup-close{
+  background:none;border:none;color:#bbb;font-size:14px;
+  font-weight:600;cursor:pointer;font-family:inherit;
+}
 #guide-popup{position:fixed;inset:0;z-index:2000;background:rgba(0,0,0,.45);display:none;align-items:flex-end;justify-content:center;}
 #guide-popup.active{display:flex;}
 .guide-sheet{width:100%;max-width:480px;max-height:85vh;background:white;border-radius:28px 28px 0 0;padding:28px 24px 40px;overflow-y:auto;animation:slideUp .3s ease;}
@@ -1238,14 +1384,29 @@ body {
   <div class="landing-hero">
     <div class="landing-logo" id="landing-logo" onclick="landingLogoTap()">漢字</div>
     <div class="landing-tagline">한자 급수시험,<br>쉽고 재미있게 준비하세요</div>
-    <div class="landing-desc">카드학습 · 퀴즈 · 쓰기 연습으로<br>8급부터 3급까지 체계적으로 공부해요</div>
+    <div class="landing-desc">8급부터 3급까지 · 무료 학습 & 기출문제</div>
   </div>
-  <div class="landing-features">
-    <div class="landing-feature-card"><div class="landing-feature-icon">🃏</div><div><div class="landing-feature-title">카드 학습</div><div class="landing-feature-desc">플래시카드로 한자와 뜻을 빠르게 익혀요</div></div></div>
-    <div class="landing-feature-card"><div class="landing-feature-icon">✏️</div><div><div class="landing-feature-title">퀴즈 & 쓰기 연습</div><div class="landing-feature-desc">객관식 퀴즈와 직접 써보는 연습으로 실전 대비까지</div></div></div>
-    <div class="landing-feature-card"><div class="landing-feature-icon">📊</div><div><div class="landing-feature-title">오답노트 & 리포트</div><div class="landing-feature-desc">틀린 문제만 모아 복습하고 내 학습 현황을 한눈에</div></div></div>
-    <div class="landing-feature-card"><div class="landing-feature-icon">🏆</div><div><div class="landing-feature-title">주간 랭킹</div><div class="landing-feature-desc">친구들과 함께 공부하며 경쟁하면 더 재미있어요</div></div></div>
+
+  <!-- 두 가지 큰 카드 -->
+  <div class="landing-two-cards">
+    <button class="landing-big-card" onclick="openExamLibrary()">
+      <span class="landing-big-card-icon">📄</span>
+      <div>
+        <div class="landing-big-card-title">기출문제 자료실</div>
+        <div class="landing-big-card-desc">급수별 기출문제 프린트 · 교재 구매</div>
+      </div>
+      <span class="landing-big-card-arrow">›</span>
+    </button>
+    <button class="landing-big-card" onclick="openStudySection()">
+      <span class="landing-big-card-icon">📚</span>
+      <div>
+        <div class="landing-big-card-title">학습하기</div>
+        <div class="landing-big-card-desc">카드 · 퀴즈 · 쓰기 · 오답노트 · 랭킹</div>
+      </div>
+      <span class="landing-big-card-arrow">›</span>
+    </button>
   </div>
+
   <div class="landing-levels">
     <div class="landing-levels-title">📚 지원 급수</div>
     <div class="landing-level-chips">
@@ -1253,10 +1414,91 @@ body {
     </div>
   </div>
   <div class="landing-footer">
-    <button class="landing-btn-solo" onclick="landingStartSolo()">🚀 혼자 시작하기</button>
-    <button class="landing-btn-group" onclick="landingStartGroup()">👨‍👩‍👧 선생님 반 학생이에요</button>
     <button class="landing-guide-btn" onclick="openGuidePopup()">📖 사용 설명서 보기</button>
     <button class="landing-teacher-link" onclick="landingStartTeacher()">선생님 로그인</button>
+  </div>
+</div>
+
+<!-- ===== 기출문제 자료실 화면 ===== -->
+<div id="exam-library-screen">
+  <div class="exam-lib-header">
+    <button class="exam-lib-back" onclick="closeExamLibrary()">←</button>
+    <div class="exam-lib-title">📄 기출문제 자료실</div>
+  </div>
+
+  <div class="exam-lib-scroll">
+    <div class="exam-lib-center">
+
+      <!-- 추천 교재 고정 섹션 -->
+      <div class="exam-section-label">📦 추천 교재</div>
+      <div class="exam-books-row">
+
+        <a class="exam-book-card" href="https://link.coupang.com/a/dFlyhKjzC8" target="_blank" rel="noopener" onclick="gaEvent('coupang_click',{grade:'3급'})">
+          <div class="exam-book-iframe-wrap">
+            <iframe src="https://coupa.ng/cmPEFS" scrolling="no" referrerpolicy="unsafe-url"></iframe>
+          </div>
+          <span class="exam-book-grade-badge">3급</span>
+        </a>
+
+        <a class="exam-book-card" href="https://link.coupang.com/a/dFlPem3p3Q" target="_blank" rel="noopener" onclick="gaEvent('coupang_click',{grade:'준3급'})">
+          <div class="exam-book-iframe-wrap">
+            <iframe src="https://coupa.ng/cmPERW" scrolling="no" referrerpolicy="unsafe-url"></iframe>
+          </div>
+          <span class="exam-book-grade-badge">준3급</span>
+        </a>
+
+        <a class="exam-book-card" href="https://link.coupang.com/a/dFmam9X0sm" target="_blank" rel="noopener" onclick="gaEvent('coupang_click',{grade:'4급'})">
+          <div class="exam-book-iframe-wrap">
+            <iframe src="https://coupa.ng/cmPE7u" scrolling="no" referrerpolicy="unsafe-url"></iframe>
+          </div>
+          <span class="exam-book-grade-badge">4급</span>
+        </a>
+
+      </div>
+      <div class="exam-coupang-notice">이 포스팅은 쿠팡 파트너스 활동의 일환으로, 이에 따른 일정액의 수수료를 제공받습니다.</div>
+
+      <!-- 기출문제 프린트 섹션 -->
+      <div class="exam-section-label" style="margin-top:24px;">🖨️ 기출문제 프린트</div>
+      <div class="exam-grade-tabs-wrap">
+        <div class="exam-lib-grade-tabs">
+          <button class="exam-grade-tab active" onclick="selectExamGrade('3급',this)">3급</button>
+          <button class="exam-grade-tab" onclick="selectExamGrade('준3급',this)">준3급</button>
+          <button class="exam-grade-tab" onclick="selectExamGrade('4급',this)">4급</button>
+          <button class="exam-grade-tab" onclick="selectExamGrade('준4급',this)">준4급</button>
+          <button class="exam-grade-tab" onclick="selectExamGrade('5급',this)">5급</button>
+          <button class="exam-grade-tab" onclick="selectExamGrade('준5급',this)">준5급</button>
+          <button class="exam-grade-tab" onclick="selectExamGrade('6급',this)">6급</button>
+          <button class="exam-grade-tab" onclick="selectExamGrade('준6급',this)">준6급</button>
+          <button class="exam-grade-tab" onclick="selectExamGrade('7급',this)">7급</button>
+          <button class="exam-grade-tab" onclick="selectExamGrade('8급',this)">8급</button>
+        </div>
+      </div>
+      <div class="exam-pdf-grid" id="exam-pdf-grid">
+        <div class="exam-lib-loading">⏳ 불러오는 중...</div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- PDF 팝업 -->
+  <div id="exam-pdf-popup" onclick="closeExamPdfPopup(event)">
+    <div class="exam-pdf-popup-box">
+      <div class="exam-pdf-popup-title" id="exam-pdf-popup-title"></div>
+      <div class="exam-pdf-popup-sub">아래 버튼을 눌러 파일을 열고 프린트하세요</div>
+      <a class="exam-pdf-popup-btn" id="exam-pdf-popup-link" href="#" target="_blank">🖨️ 프린트 하기</a>
+      <button class="exam-pdf-popup-close" onclick="closeExamPdfPopup()">닫기</button>
+    </div>
+  </div>
+</div>
+
+<!-- ===== 학습하기 선택 화면 ===== -->
+<div id="study-select-screen">
+  <div class="study-select-logo">漢字</div>
+  <div class="study-select-title">어떻게 시작할까요?</div>
+  <div class="study-select-btns">
+    <button class="landing-btn-solo" onclick="landingStartSolo()">🚀 혼자 시작하기</button>
+    <button class="landing-btn-group" onclick="landingStartGroup()">👨‍👩‍👧 선생님 반 학생이에요</button>
+    <button class="landing-guide-btn" onclick="closeStudySelect()">← 뒤로</button>
   </div>
 </div>
 <div id="guide-popup" onclick="closeGuidePopup(event)">
@@ -3668,8 +3910,77 @@ const LS_ALL = ['role','student-teacher','student-name','student-pin','teacher-p
 /* ===== 랜딩 JS ===== */
 let _logoTapCount=0,_logoTapTimer=null;
 function landingLogoTap(){_logoTapCount++;if(_logoTapTimer)clearTimeout(_logoTapTimer);if(_logoTapCount>=3){_logoTapCount=0;landingStartTeacher();return;}_logoTapTimer=setTimeout(()=>{_logoTapCount=0;},800);}
-function landingStartSolo(){document.getElementById('landing-screen').classList.remove('active');document.getElementById('login-screen').classList.add('active');lsGo('free-student');gaEvent('landing_cta',{action:'혼자 시작하기'});}
-function landingStartGroup(){document.getElementById('landing-screen').classList.remove('active');document.getElementById('login-screen').classList.add('active');lsGo('student-name');gaEvent('landing_cta',{action:'선생님 반 학생'});}
+/* ===== 기출문제 자료실 ===== */
+const COUPANG_BOOKS = {
+  '3급':   { url:'https://link.coupang.com/a/dFlyhKjzC8', iframe:'https://coupa.ng/cmPEFS', desc:'진흥회 한자자격시험 3급 한 권으로 끝내기' },
+  '준3급': { url:'https://link.coupang.com/a/dFlPem3p3Q', iframe:'https://coupa.ng/cmPERW', desc:'한자자격시험 준3급 교재' },
+  '4급':   { url:'https://link.coupang.com/a/dFmam9X0sm', iframe:'https://coupa.ng/cmPE7u', desc:'급수한자 4급 빨리따기 세트' },
+};
+
+function openExamLibrary() {
+  document.getElementById('landing-screen').classList.remove('active');
+  document.getElementById('exam-library-screen').classList.add('active');
+  selectExamGrade('3급', document.querySelector('#exam-library-screen .exam-grade-tab'));
+  gaEvent('exam_library_open', {});
+}
+
+function closeExamLibrary() {
+  document.getElementById('exam-library-screen').classList.remove('active');
+  document.getElementById('landing-screen').classList.add('active');
+}
+
+function openStudySection() {
+  document.getElementById('landing-screen').classList.remove('active');
+  document.getElementById('study-select-screen').classList.add('active');
+  gaEvent('landing_cta', {action:'학습하기'});
+}
+
+function closeStudySelect() {
+  document.getElementById('study-select-screen').classList.remove('active');
+  document.getElementById('landing-screen').classList.add('active');
+}
+
+async function selectExamGrade(grade, btn) {
+  document.querySelectorAll('.exam-grade-tab').forEach(t => t.classList.remove('active'));
+  if (btn) btn.classList.add('active');
+
+  const grid = document.getElementById('exam-pdf-grid');
+  grid.innerHTML = '<div class="exam-lib-loading">⏳ 불러오는 중...</div>';
+
+  let pdfs = [];
+  if (window._fbListExamPdfs) {
+    pdfs = await window._fbListExamPdfs(grade);
+  }
+
+  if (pdfs.length === 0) {
+    grid.innerHTML = `<div class="exam-pdf-empty">📋 준비 중입니다<br><span style="font-size:12px;color:#ccc">곧 업로드될 예정이에요</span></div>`;
+  } else {
+    grid.innerHTML = pdfs.map(pdf => {
+      const name = pdf.name.replace('.pdf','').replace(/_/g,' ');
+      return `<button class="exam-pdf-card" onclick="openExamPdfPopup('${name}','${pdf.url}','${grade}')">
+        <span class="exam-pdf-icon">📄</span>
+        <span class="exam-pdf-card-title">${name}</span>
+        <span class="exam-pdf-card-grade">${grade}</span>
+      </button>`;
+    }).join('');
+  }
+}
+
+function openExamPdfPopup(name, url, grade) {
+  document.getElementById('exam-pdf-popup-title').textContent = '📄 ' + name;
+  document.getElementById('exam-pdf-popup-link').href = url;
+  document.getElementById('exam-pdf-popup').classList.add('active');
+  gaEvent('pdf_popup_open', {grade, file: name});
+}
+
+function closeExamPdfPopup(e) {
+  if (!e || e.target === document.getElementById('exam-pdf-popup')) {
+    document.getElementById('exam-pdf-popup').classList.remove('active');
+  }
+}
+
+function landingStartSolo(){document.getElementById('landing-screen').classList.remove('active');document.getElementById('study-select-screen').classList.remove('active');document.getElementById('login-screen').classList.add('active');lsGo('free-student');gaEvent('landing_cta',{action:'혼자 시작하기'});}
+function landingStartGroup(){document.getElementById('landing-screen').classList.remove('active');document.getElementById('study-select-screen').classList.remove('active');document.getElementById('login-screen').classList.add('active');lsGo('student-name');gaEvent('landing_cta',{action:'선생님 반 학생'});}
 function landingStartTeacher(){document.getElementById('landing-screen').classList.remove('active');document.getElementById('login-screen').classList.add('active');lsGo('teacher-login');gaEvent('landing_cta',{action:'선생님 로그인'});}
 function openGuidePopup(){document.getElementById('guide-popup').classList.add('active');gaEvent('guide_open',{});}
 function closeGuidePopup(e){if(!e||e.target===document.getElementById('guide-popup'))document.getElementById('guide-popup').classList.remove('active');}
@@ -4886,6 +5197,8 @@ document.addEventListener('visibilitychange', async () => {
            getDocs, getDoc, setDoc, addDoc, deleteDoc,
            query, where, serverTimestamp }
     from "https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore.js";
+  import { getStorage, ref, listAll, getDownloadURL, uploadBytes, deleteObject }
+    from "https://www.gstatic.com/firebasejs/10.14.1/firebase-storage.js";
 
   const firebaseConfig = {
     apiKey: "AIzaSyBq8rbc8KsA41Ckr_lxWWK6omaj1T1FYbo",
@@ -4897,14 +5210,42 @@ document.addEventListener('visibilitychange', async () => {
     measurementId: "G-6NP6VJKLRJ"
   };
 
-  const app  = initializeApp(firebaseConfig);
-  const auth = getAuth(app);
-  const db   = getFirestore(app);
+  const app     = initializeApp(firebaseConfig);
+  const auth    = getAuth(app);
+  const db      = getFirestore(app);
+  const storage = getStorage(app);
 
   window.fbLogin  = (email, pw) => signInWithEmailAndPassword(auth, email, pw);
   window.fbSignup = (email, pw) => createUserWithEmailAndPassword(auth, email, pw);
   window.fbLogout = ()          => signOut(auth);
   window._firebaseReady = true;
+
+  /* ===== PDF 자료실 함수 ===== */
+  // PDF 목록 가져오기 (Firebase Storage)
+  window._fbListExamPdfs = async (grade) => {
+    try {
+      const folderRef = ref(storage, 'exam_pdfs/' + grade);
+      const result = await listAll(folderRef);
+      const files = await Promise.all(result.items.map(async (itemRef) => {
+        const url = await getDownloadURL(itemRef);
+        return { name: itemRef.name, url };
+      }));
+      return files;
+    } catch(e) { return []; }
+  };
+
+  // PDF 업로드 (선생님용)
+  window._fbUploadExamPdf = async (grade, file) => {
+    const fileRef = ref(storage, 'exam_pdfs/' + grade + '/' + file.name);
+    await uploadBytes(fileRef, file);
+    return await getDownloadURL(fileRef);
+  };
+
+  // PDF 삭제 (선생님용)
+  window._fbDeleteExamPdf = async (grade, fileName) => {
+    const fileRef = ref(storage, 'exam_pdfs/' + grade + '/' + fileName);
+    await deleteObject(fileRef);
+  };
 
   window._fbSaveTeacher = (uid, data) =>
     setDoc(doc(db, 'teachers', uid), data);
