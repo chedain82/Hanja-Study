@@ -1582,7 +1582,7 @@ body {
       style="background:white;color:#555;border:2px solid #DDD;font-size:15px;">
       👤 선생님 없이 시작하기
     </button>
-    <button class="login-back-btn" onclick="lsBack('role')">← 뒤로</button>
+    <button class="login-back-btn" onclick="document.getElementById('login-screen').classList.remove('active');document.getElementById('study-select-screen').classList.add('active');">← 뒤로</button>
   </div>
 
   <!-- STEP 1-F (자유 학생): 이름만 입력 -->
@@ -1691,7 +1691,7 @@ body {
     <button class="login-link-btn" onclick="lsGo('teacher-forgot')" style="margin-top:-4px;font-size:13px;color:var(--gray);">
       🔑 비밀번호를 잊으셨나요?
     </button>
-    <button class="login-back-btn" onclick="lsBack('role')">← 뒤로</button>
+    <button class="login-back-btn" onclick="document.getElementById('login-screen').classList.remove('active');document.getElementById('landing-screen').classList.add('active');">← 뒤로</button>
   </div>
 
   <!-- STEP A-F (선생님): 비밀번호 찾기 -->
