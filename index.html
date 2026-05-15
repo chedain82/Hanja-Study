@@ -482,6 +482,40 @@ body {
 
 
 /* 기출문제 */
+/* ===== 쓰기 연습 카드 ===== */
+.sw-card {
+  background:white; border-radius:20px;
+  box-shadow:0 4px 20px rgba(0,0,0,.10);
+  display:flex; flex-direction:column;
+  align-items:center; justify-content:center;
+  padding:32px 24px; margin-bottom:16px;
+  min-height:200px; cursor:pointer;
+  transition:transform .15s;
+  position:relative;
+}
+.sw-card:active { transform:scale(.98); }
+.sw-counter { font-size:13px; font-weight:700; color:#aaa; margin-bottom:8px; }
+.sw-question { font-size:72px; font-weight:900; color:#222; line-height:1.1; text-align:center; }
+.sw-question.word { font-size:42px; }
+.sw-hint { font-size:14px; color:#aaa; margin-top:8px; }
+.sw-answer-box {
+  background:#f0f5ff; border-radius:16px;
+  padding:18px 24px; text-align:center;
+  margin-bottom:16px; width:100%;
+}
+.sw-answer-label { font-size:12px; color:#3B7DE0; font-weight:700; margin-bottom:6px; }
+.sw-answer-text { font-size:28px; font-weight:800; color:#222; }
+.sw-answer-sub { font-size:16px; color:#555; margin-top:4px; }
+.sw-nav { display:flex; gap:12px; justify-content:center; }
+.sw-nav-btn {
+  background:white; border:2px solid #ddd; border-radius:14px;
+  padding:12px 24px; font-size:15px; font-weight:700;
+  cursor:pointer; font-family:inherit; transition:all .15s;
+}
+.sw-nav-btn.primary { background:#3B7DE0; border-color:#3B7DE0; color:white; }
+.sw-progress { width:100%; background:#eee; border-radius:10px; height:6px; margin-bottom:16px; }
+.sw-progress-bar { background:#3B7DE0; height:6px; border-radius:10px; transition:width .3s; }
+.sw-flip-hint { font-size:12px; color:#bbb; text-align:center; margin-bottom:8px; }
 .exam-round-btn { width: 100%; height: 56px; border-radius: 14px; background: white; border: 2px solid #DDD; font-size: 17px; font-weight: 700; color: #333; cursor: pointer; transition: all .15s; display: flex; align-items: center; justify-content: center; gap: 8px; font-family: inherit; }
 .exam-round-btn:active { transform: scale(.96); }
 .exam-round-btn.selected { background: var(--blue); color: white; border-color: var(--blue); }
@@ -2182,6 +2216,9 @@ body {
       <div style="display:flex;flex-direction:column;gap:14px;align-items:center;">
         <button class="btn btn-black" onclick="goExamType('huneum')" style="width:220px;height:64px;font-size:19px;">한자 훈음 쓰기</button>
         <button class="btn btn-black" onclick="goExamType('reading')" style="width:220px;height:64px;font-size:19px;">한자어 독음 쓰기</button>
+        <div style="width:220px;height:1px;background:#ddd;margin:4px 0;"></div>
+        <button class="btn btn-black" onclick="startStudyWrite('db1')" style="width:220px;height:64px;font-size:19px;background:#1a3a8f;">한자 보기용 쓰기</button>
+        <button class="btn btn-black" onclick="startStudyWrite('db2')" style="width:220px;height:64px;font-size:19px;background:#1a3a8f;">한자 만들기 쓰기</button>
       </div>
       <div style="flex:1;"></div>
       <div class="back-wrap"><button class="btn btn-back" onclick="showTab('study')">← 뒤로</button></div>
@@ -2207,6 +2244,12 @@ body {
   <div id="exam_write" class="subscreen">
     <div class="top-label">기출문제</div>
     <div class="card" id="exam-write-inner"></div>
+  </div>
+
+  <!-- 쓰기 연습 (DB-1, DB-2) -->
+  <div id="study_write" class="subscreen">
+    <div class="top-label">쓰기 연습</div>
+    <div class="card" id="study-write-inner"></div>
   </div>
 
   <!-- 오답 노트 (subscreen for review) -->
@@ -3482,6 +3525,58 @@ let EXAM_DATA = {};
 async function loadExamData() {
   try { const r=await fetch('exam_data.json'); EXAM_DATA=await r.json(); } catch(e){ console.log('exam_data.json load failed'); }
 }
+/* ===== 쓰기 연습 (DB-1, DB-2) ===== */
+const SW_DB1 = [{"hanja": "鋼", "meaning": "강철", "reading": "강"}, {"hanja": "架", "meaning": "시렁", "reading": "가"}, {"hanja": "座", "meaning": "자리", "reading": "좌"}, {"hanja": "孔", "meaning": "구멍", "reading": "공"}, {"hanja": "鎭", "meaning": "진압할", "reading": "진"}, {"hanja": "苟", "meaning": "진실로", "reading": "구"}, {"hanja": "刻", "meaning": "새길", "reading": "각"}, {"hanja": "周", "meaning": "두루", "reading": "주"}, {"hanja": "離", "meaning": "떠날", "reading": "리"}, {"hanja": "訟", "meaning": "송사할", "reading": "송"}, {"hanja": "派", "meaning": "물갈래", "reading": "파"}, {"hanja": "供", "meaning": "이바지할", "reading": "공"}, {"hanja": "系", "meaning": "이을", "reading": "계"}, {"hanja": "銳", "meaning": "날카로울", "reading": "예"}, {"hanja": "梅", "meaning": "매화", "reading": "매"}, {"hanja": "銘", "meaning": "새길", "reading": "명"}, {"hanja": "券", "meaning": "문서", "reading": "권"}, {"hanja": "測", "meaning": "잴", "reading": "측"}, {"hanja": "帶", "meaning": "띠", "reading": "대"}, {"hanja": "劍", "meaning": "칼", "reading": "검"}, {"hanja": "兼", "meaning": "겸할", "reading": "겸"}, {"hanja": "欺", "meaning": "속일", "reading": "기"}, {"hanja": "被", "meaning": "입을", "reading": "피"}, {"hanja": "雜", "meaning": "섞일", "reading": "잡"}, {"hanja": "邊", "meaning": "가", "reading": "변"}, {"hanja": "組", "meaning": "짤", "reading": "조"}, {"hanja": "症", "meaning": "증세", "reading": "증"}, {"hanja": "督", "meaning": "감독할", "reading": "독"}, {"hanja": "總", "meaning": "거느릴", "reading": "총"}, {"hanja": "演", "meaning": "멀리흐를", "reading": "연"}, {"hanja": "威", "meaning": "위엄", "reading": "위"}, {"hanja": "紛", "meaning": "어지러울", "reading": "분"}, {"hanja": "委", "meaning": "맡길", "reading": "위"}, {"hanja": "閉", "meaning": "닫을", "reading": "폐"}, {"hanja": "缺", "meaning": "이지러질", "reading": "결"}, {"hanja": "架", "meaning": "시렁", "reading": "가"}, {"hanja": "破", "meaning": "깨뜨릴", "reading": "파"}, {"hanja": "裕", "meaning": "넉넉할", "reading": "유"}, {"hanja": "宇", "meaning": "집", "reading": "우"}, {"hanja": "熟", "meaning": "익을", "reading": "숙"}, {"hanja": "恨", "meaning": "한할", "reading": "한"}, {"hanja": "渴", "meaning": "목마를", "reading": "갈"}, {"hanja": "鎭", "meaning": "진압할", "reading": "진"}, {"hanja": "慕", "meaning": "그리워할", "reading": "모"}, {"hanja": "塔", "meaning": "탑", "reading": "탑"}, {"hanja": "澤", "meaning": "못", "reading": "택"}, {"hanja": "譜", "meaning": "족보", "reading": "보"}, {"hanja": "緣", "meaning": "인연", "reading": "연"}, {"hanja": "帶", "meaning": "띠", "reading": "대"}, {"hanja": "複", "meaning": "겹칠", "reading": "복"}, {"hanja": "械", "meaning": "기계", "reading": "계"}, {"hanja": "盟", "meaning": "맹세할", "reading": "맹"}, {"hanja": "嶺", "meaning": "고개", "reading": "령"}, {"hanja": "壁", "meaning": "벽", "reading": "벽"}, {"hanja": "焦", "meaning": "탈", "reading": "초"}, {"hanja": "銃", "meaning": "총", "reading": "총"}, {"hanja": "評", "meaning": "평할", "reading": "평"}, {"hanja": "賊", "meaning": "도둑", "reading": "적"}, {"hanja": "供", "meaning": "이바지할", "reading": "공"}, {"hanja": "傑", "meaning": "뛰어날", "reading": "걸"}, {"hanja": "歸", "meaning": "돌아갈", "reading": "귀"}, {"hanja": "條", "meaning": "가지", "reading": "조"}, {"hanja": "覺", "meaning": "깨달을", "reading": "각"}, {"hanja": "婚", "meaning": "혼인할", "reading": "혼"}, {"hanja": "墨", "meaning": "먹", "reading": "묵"}, {"hanja": "倒", "meaning": "넘어질", "reading": "도"}];
+const SW_DB2 = [{"hanja": "高架", "reading": "고가"}, {"hanja": "空孔", "reading": "공공"}, {"hanja": "十字架", "reading": "십자가"}, {"hanja": "頭痛", "reading": "두통"}, {"hanja": "文苟", "reading": "문구"}, {"hanja": "鎭火", "reading": "진화"}, {"hanja": "鋼鐵", "reading": "강철"}, {"hanja": "製座", "reading": "제좌"}, {"hanja": "鋼板", "reading": "강판"}, {"hanja": "供給", "reading": "공급"}, {"hanja": "提供", "reading": "제공"}, {"hanja": "養供米", "reading": "양공미"}, {"hanja": "周邊", "reading": "주변"}, {"hanja": "一周", "reading": "일주"}, {"hanja": "低周波", "reading": "저주파"}, {"hanja": "學派", "reading": "학파"}, {"hanja": "流派", "reading": "유파"}, {"hanja": "薰陶", "reading": "훈도"}, {"hanja": "精銳", "reading": "정예"}, {"hanja": "銳利", "reading": "예리"}, {"hanja": "新銳", "reading": "신예"}, {"hanja": "測量", "reading": "측량"}, {"hanja": "推測", "reading": "추측"}, {"hanja": "測定", "reading": "측정"}, {"hanja": "家系", "reading": "가계"}, {"hanja": "系列", "reading": "계열"}, {"hanja": "太陽系", "reading": "태양계"}, {"hanja": "被告", "reading": "피고"}, {"hanja": "被害", "reading": "피해"}, {"hanja": "虐殺", "reading": "학살"}, {"hanja": "聲帶", "reading": "성대"}, {"hanja": "帶分數", "reading": "대분수"}, {"hanja": "連帶", "reading": "연대"}, {"hanja": "複雜", "reading": "복잡"}, {"hanja": "雜穀", "reading": "잡곡"}, {"hanja": "混雜", "reading": "혼잡"}, {"hanja": "獨立", "reading": "독립"}, {"hanja": "勞組", "reading": "노조"}, {"hanja": "組合", "reading": "조합"}, {"hanja": "演藝", "reading": "연예"}, {"hanja": "出演", "reading": "출연"}, {"hanja": "演技", "reading": "연기"}, {"hanja": "底邊", "reading": "저변"}, {"hanja": "境遇", "reading": "경우"}, {"hanja": "身體", "reading": "신체"}, {"hanja": "威橋", "reading": "위교"}, {"hanja": "十字架", "reading": "십자가"}, {"hanja": "架設", "reading": "가설"}, {"hanja": "紛爭", "reading": "분쟁"}, {"hanja": "內紛", "reading": "내분"}, {"hanja": "缺失", "reading": "결실"}, {"hanja": "威禮", "reading": "위례"}, {"hanja": "出委", "reading": "출위"}, {"hanja": "缺航", "reading": "결항"}, {"hanja": "渴望", "reading": "갈망"}, {"hanja": "消渴", "reading": "소갈"}, {"hanja": "渴症", "reading": "갈증"}, {"hanja": "富裕", "reading": "부유"}, {"hanja": "裕福", "reading": "유복"}, {"hanja": "餘裕", "reading": "여유"}, {"hanja": "成熟", "reading": "성숙"}, {"hanja": "熟練", "reading": "숙련"}, {"hanja": "未熟", "reading": "미숙"}, {"hanja": "鐵鎭", "reading": "철진"}, {"hanja": "佛塔", "reading": "불탑"}, {"hanja": "多寶塔", "reading": "다보탑"}, {"hanja": "鎭痛", "reading": "진통"}, {"hanja": "重鎭", "reading": "중진"}, {"hanja": "點火", "reading": "점화"}, {"hanja": "樂譜", "reading": "악보"}, {"hanja": "族譜", "reading": "족보"}, {"hanja": "畫譜", "reading": "화보"}, {"hanja": "壁畫", "reading": "벽화"}, {"hanja": "嚴壁", "reading": "엄벽"}, {"hanja": "盟邦", "reading": "맹방"}, {"hanja": "形式", "reading": "형식"}, {"hanja": "重複", "reading": "중복"}, {"hanja": "複寫", "reading": "복사"}, {"hanja": "連帶", "reading": "연대"}, {"hanja": "帶分數", "reading": "대분수"}, {"hanja": "聲帶", "reading": "성대"}, {"hanja": "人傑", "reading": "인걸"}, {"hanja": "傑出", "reading": "걸출"}, {"hanja": "英雄傑", "reading": "영걸"}, {"hanja": "銳利", "reading": "예리"}, {"hanja": "精銳", "reading": "정예"}, {"hanja": "敏銳", "reading": "민예"}, {"hanja": "供給", "reading": "공급"}, {"hanja": "提供", "reading": "제공"}, {"hanja": "供覽", "reading": "공람"}, {"hanja": "歸置", "reading": "귀치"}, {"hanja": "打倒", "reading": "타도"}, {"hanja": "倒産", "reading": "도산"}, {"hanja": "歸目", "reading": "귀목"}, {"hanja": "約條", "reading": "약조"}, {"hanja": "法規", "reading": "법규"}, {"hanja": "覺悟", "reading": "각오"}, {"hanja": "感覺", "reading": "감각"}, {"hanja": "味覺", "reading": "미각"}];
+let swIdx = 0, swShowAnswer = false, swData = [];
+
+function startStudyWrite(db) {
+  swData = db === 'db1' ? [...SW_DB1] : [...SW_DB2];
+  swIdx = 0; swShowAnswer = false;
+  goSub('study_write');
+  renderStudyWrite();
+}
+
+function renderStudyWrite() {
+  const inner = document.getElementById('study-write-inner');
+  if (!swData.length) return;
+  const item = swData[swIdx];
+  const isDB1 = !!item.meaning;
+  const pct = Math.round((swIdx+1)/swData.length*100);
+  const questionHTML = isDB1
+    ? `<div class="sw-question">${item.hanja}</div><div class="sw-hint">훈음을 써보세요</div>`
+    : `<div class="sw-question word">${item.reading}</div><div class="sw-hint">한자로 써보세요</div>`;
+  const answerHTML = isDB1
+    ? `<div class="sw-answer-text">${item.meaning} ${item.reading}</div>`
+    : `<div class="sw-answer-text">${item.hanja}</div><div class="sw-answer-sub">독음: ${item.reading}</div>`;
+
+  inner.innerHTML = `
+    <div class="sw-counter">${swIdx+1} / ${swData.length}</div>
+    <div class="sw-progress"><div class="sw-progress-bar" style="width:${pct}%"></div></div>
+    <div class="sw-card" onclick="swToggleAnswer()">${questionHTML}</div>
+    <div id="sw-answer-area" style="display:${swShowAnswer?'block':'none'};width:100%;">
+      <div class="sw-answer-box"><div class="sw-answer-label">✅ 정답</div>${answerHTML}</div>
+    </div>
+    <div class="sw-flip-hint">${swShowAnswer?'':'카드를 눌러 정답 확인'}</div>
+    <div class="sw-nav">
+      <button class="sw-nav-btn" onclick="swMove(-1)" ${swIdx===0?'disabled':''}>← 이전</button>
+      ${!swShowAnswer
+        ? `<button class="sw-nav-btn primary" onclick="swToggleAnswer()">정답 보기</button>`
+        : `<button class="sw-nav-btn primary" onclick="swMove(1)">${swIdx===swData.length-1?'완료 🎉':'다음 →'}</button>`
+      }
+    </div>
+    <div class="back-wrap" style="margin-top:16px;">
+      <button class="btn btn-back" onclick="goSub('exam_select')">← 뒤로</button>
+    </div>`;
+}
+function swToggleAnswer() { swShowAnswer=!swShowAnswer; renderStudyWrite(); }
+function swMove(dir) {
+  const next = swIdx+dir;
+  if (next>=swData.length) { goSub('exam_select'); return; }
+  if (next<0) return;
+  swIdx=next; swShowAnswer=false; renderStudyWrite();
+}
+
 function goExamType(type) { S.examType=type; S.examRound=null; goSub('exam_round'); }
 function renderExamRound() {
   const title=document.getElementById('exam-round-title');
