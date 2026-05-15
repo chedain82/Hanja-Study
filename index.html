@@ -3569,9 +3569,9 @@ function renderStudyWrite() {
   const isDB1 = swType==='db1';
 
   // 문제/정답 설정
-  const question = isDB1 ? it.hanja : it.reading;
-  const answer = isDB1 ? (it.meaning+' '+it.reading) : it.hanja;
-  const placeholder = isDB1 ? '훈음을 쓰세요 (예: 강철 강)' : '한자로 쓰세요 (예: 高架)';
+  const question = it.hanja;  // 항상 한자 표시
+  const answer = isDB1 ? (it.meaning+' '+it.reading) : it.reading;
+  const placeholder = isDB1 ? '훈음을 쓰세요 (예: 강철 강)' : '독음을 쓰세요 (예: 고가)';
   const typeLabel = isDB1 ? '보기용 쓰기' : '만들기 쓰기';
   const hSize = isDB1 ? (question.length>2?60:80) : 36;
   const checked = swChecked;
