@@ -3573,7 +3573,7 @@ function renderStudyWrite() {
   const answer = isDB1 ? (it.meaning+' '+it.reading) : it.reading;
   const placeholder = isDB1 ? '훈음을 쓰세요 (예: 강철 강)' : '독음을 쓰세요 (예: 고가)';
   const typeLabel = isDB1 ? '보기용 쓰기' : '만들기 쓰기';
-  const hSize = isDB1 ? (question.length>2?60:80) : 36;
+  const hSize = hanjaFontSize(question);
   const checked = swChecked;
 
   box.innerHTML = `
@@ -3614,7 +3614,7 @@ function swCheck() {
   const inp = document.getElementById('sw-input');
   const val = inp ? inp.value : '';
   const it = swData[swIdx];
-  const answer = swType==='db1' ? (it.meaning+' '+it.reading) : it.hanja;
+  const answer = swType==='db1' ? (it.meaning+' '+it.reading) : it.reading;
   swChecked=true; swUserInput=val;
   swCorrect = val.replace(/\s/g,'') === answer.replace(/\s/g,'');
   const card = document.getElementById('study-write-inner');
