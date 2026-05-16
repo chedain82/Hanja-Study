@@ -1519,7 +1519,8 @@ body {
     <div class="exam-pdf-popup-box">
       <div class="exam-pdf-popup-title" id="exam-pdf-popup-title"></div>
       <div class="exam-pdf-popup-sub">아래 버튼을 눌러 파일을 열고 프린트하세요</div>
-      <a class="exam-pdf-popup-btn" id="exam-pdf-popup-link" href="#" target="_blank">🖨️ 프린트 하기</a>
+      <button class="exam-pdf-popup-btn" id="exam-pdf-popup-print-btn" onclick="handlePdfPrint()">🖨️ 프린트 하기</button>
+      <div class="exam-coupang-notice" style="margin-top:10px;">이 서비스는 쿠팡 파트너스 활동의 일환으로,<br>이에 따른 일정액의 수수료를 제공받습니다.</div>
       <button class="exam-pdf-popup-close" onclick="closeExamPdfPopup()">닫기</button>
     </div>
   </div>
@@ -4135,11 +4136,36 @@ async function selectExamGrade(grade, btn) {
   }
 }
 
+let _currentPdfUrl = '';
+let _currentPdfGrade = '';
+
 function openExamPdfPopup(name, url, grade) {
+  _currentPdfUrl = url;
+  _currentPdfGrade = grade;
   document.getElementById('exam-pdf-popup-title').textContent = '📄 ' + name;
-  document.getElementById('exam-pdf-popup-link').href = url;
   document.getElementById('exam-pdf-popup').classList.add('active');
   gaEvent('pdf_popup_open', {grade, file: name});
+}
+
+function handlePdfPrint() {
+  const today = new Date().toISOString().slice(0,10);
+  const visitKey = 'coupang_visit_' + today;
+  const visited = localStorage.getItem(visitKey);
+
+  if (!visited) {
+    // 오늘 첫 방문 → 쿠팡 새 탭으로 열고 + PDF도 바로 열기
+    const coupangUrl = COUPANG_BOOKS[_currentPdfGrade]
+      ? COUPANG_BOOKS[_currentPdfGrade].url
+      : 'https://link.coupang.com/a/dFlyhKjzC8'; // 기본 링크
+    window.open(coupangUrl, '_blank');
+    localStorage.setItem(visitKey, '1');
+    gaEvent('coupang_pdf_visit', {grade: _currentPdfGrade});
+  }
+
+  // 쿠팡 방문 여부 관계없이 PDF 바로 열기
+  window.open(_currentPdfUrl, '_blank');
+  gaEvent('pdf_print', {grade: _currentPdfGrade});
+  closeExamPdfPopup();
 }
 
 function closeExamPdfPopup(e) {
