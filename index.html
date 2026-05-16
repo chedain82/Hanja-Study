@@ -4812,7 +4812,8 @@ async function renderTeacherRanking() {
       }));
     }
     items.sort((a,b) => b.weeklyProblems - a.weeklyProblems);
-    if (!items.length || items.every(x=>x.weeklyProblems===0)) {
+    items = items.filter(item => item.weeklyProblems > 0);  // 0점 제외
+    if (!items.length) {
       listEl.innerHTML='<div class="t-rank-empty">이번 주 학습 데이터가 없어요<br>학생들이 학습하면 나타나요 🏆</div>'; return;
     }
     const icons=['🥇','🥈','🥉'];
