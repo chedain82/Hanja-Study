@@ -2445,7 +2445,7 @@ function saveSessionLog(correct, wrong, total, desc, writePct) {
   //       아니면 correct/total로 계산
   const pct = (writePct !== undefined && writePct !== null)
     ? writePct
-    : (total > 0 ? Math.ceil((correct||0) / total * 100) : 0);
+    : (total > 0 ? Math.min(100, Math.ceil((correct||0) / total * 100)) : 0);
   // 고유 ID (크로스 디바이스 병합용)
   const entryId = Date.now() + '_' + Math.random().toString(36).substr(2,6);
   const entry = {
@@ -3283,7 +3283,7 @@ function renderQuiz() {
   if(S.isFinished){
     // 전체 문항 기준 점수 (미응답/건너띄기 포함)
     const quizTotalItems = S.items.length || 1;
-    const quizScore = Math.ceil(S.correct / quizTotalItems * 100);
+    const quizScore = Math.min(100, Math.ceil(S.correct / quizTotalItems * 100));
     const quizSkipped = S.unanswered.length;
     if (!S.sessionLogged) saveSessionLog(S.correct, S.wrong, quizTotalItems, S.lastStudy||'퀴즈', quizScore);
     const scoreColor = quizScore>=100?'var(--correct)':quizScore>=80?'var(--blue)':'var(--wrong)';
@@ -3420,7 +3420,7 @@ function renderWrite() {
   if(S.isFinished){
     // 전체 문항 수 기준 점수 (넘기기=오답 처리)
     const writeTotalItems = S.items.length || 1;
-    const writeScore = Math.ceil(S.correct / writeTotalItems * 100);
+    const writeScore = Math.min(100, Math.ceil(S.correct / writeTotalItems * 100));
     const writeSkipped = writeTotalItems - S.correct - S.wrong;
     if (!S.sessionLogged) saveSessionLog(S.correct, S.wrong, writeTotalItems, S.lastStudy||'쓰기', writeScore);
     const scoreColor = writeScore>=100?'var(--correct)':writeScore>=80?'var(--blue)':'var(--wrong)';
