@@ -4996,7 +4996,7 @@ async function loadStudentDataFromFirestore() {
         const remoteIds = new Set(remoteLog.map(e => e.id).filter(Boolean));
         const localOnly = studyLog.filter(e => e.id && !remoteIds.has(e.id));
         studyLog = [...remoteLog, ...localOnly].sort((a,b) => (a.date||'').localeCompare(b.date||''));
-        if (studyLog.length > 300) studyLog = studyLog.slice(-300);
+        if (studyLog.length > 1000) studyLog = studyLog.slice(-1000);
       }
       if (data.earnedBadges) earnedBadges = data.earnedBadges;
       if (data.wrongNote)    S.wrongNote  = data.wrongNote;
@@ -5043,7 +5043,7 @@ async function syncToFirestore() {
     settings.weeklyScore = Math.max(settingsScore, studyLogScore);
     settings.weeklyScoreKey = getWeekStart();
     await window._fbSetStudentData(currentUser.id, {
-      settings, studyLog: studyLog.slice(-300), earnedBadges, wrongNote: S.wrongNote,
+      settings, studyLog: studyLog.slice(-1000), earnedBadges, wrongNote: S.wrongNote,
       lastUpdated: new Date().toISOString(), studentName: currentUser.name, teacherId: currentUser.teacherId
     });
   } catch(e) { console.log('Firestore 저장 실패:', e); }
