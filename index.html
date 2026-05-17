@@ -4821,7 +4821,6 @@ let hgState = {
   spawnCount: 0,
   correctCount: 0,
   lives: 5,
-  hintInterval: null,
 };
 
 function openHanjaGame() {
@@ -4931,14 +4930,8 @@ function hgStartGame() {
   hgState.fallInterval = setInterval(() => {
     if (!hgState.active) return;
     hgSpawn();
-    hgCheckHints();
   }, 2800);
 
-  // 힌트 체크 (500ms마다)
-  hgState.hintInterval = setInterval(() => {
-    if (!hgState.active) return;
-    hgCheckHints();
-  }, 500);
 }
 
 function hgGetItems() {
@@ -4977,26 +4970,11 @@ function hgSpawn() {
   el.style.left = left + 'px';
   el.style.setProperty('--fall-dist', (fieldH + 80) + 'px');
   el.style.animationDuration = fallDuration + 's';
-  // 힌트 생성 (교과서: 독음 한글 기준, 선정: 뜻 또는 독음)
-  let hintText = '';
-  if (isEdu) {
-    const reading = item['독음']; // 한글 독음 (예: 주의, 문장)
-    const chars = [...reading];
-    if (chars.length >= 2) {
-      const hideIdx = Math.random() < 0.5 ? 0 : chars.length - 1;
-      hintText = chars.map((c,i) => i === hideIdx ? 'ㅁ' : c).join('');
-    } else {
-      hintText = reading;
-    }
-  } else {
-    hintText = item['뜻']; // 선정한자는 뜻만 힌트
-  }
+
 
   const answer = isEdu ? item['독음'] : (item['뜻'] + ' ' + item['독음']);
 
-  el.innerHTML = `<div class="hg-char">${item['한자']}</div>
-    <div class="hg-type-badge">${isEdu ? '독음' : '훈음'}</div>
-    <div class="hg-hint" id="hint_${id}">${hintText}</div>`;
+  el.innerHTML = `<div class="hg-char">${item['한자']}</div>`;
 
   el.dataset.answer = answer;
   el.dataset.char = item['한자'];
@@ -5073,24 +5051,7 @@ function hgActivateChance(chance, el, id) {
   }
 }
 
-function hgCheckHints() {
-  const field = document.getElementById('hg-field');
-  if (!field) return;
-  const fieldH = field.clientHeight;
-  const midPoint = fieldH * 0.45; // 화면 45% 지점
 
-  document.querySelectorAll('.hg-hanja').forEach(el => {
-    const rect = el.getBoundingClientRect();
-    const fieldRect = field.getBoundingClientRect();
-    const relTop = rect.top - fieldRect.top;
-    if (relTop >= midPoint) {
-      const hintEl = el.querySelector('.hg-hint');
-      if (hintEl && !hintEl.classList.contains('visible')) {
-        hintEl.classList.add('visible');
-      }
-    }
-  });
-}
 
 let _hgCurrentEl = null;
 
@@ -5353,7 +5314,7 @@ function hgStopGame() {
   hgState.active = false;
   clearInterval(hgState.timerInterval);
   clearInterval(hgState.fallInterval);
-  clearInterval(hgState.hintInterval);
+
   hgHideChoices();
   HG_Sound.stopBGM();
   if (window.visualViewport && hgState._hgResize) {
