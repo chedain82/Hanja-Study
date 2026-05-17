@@ -1299,8 +1299,7 @@ body {
 
 /* ===== 한자 게임 ===== */
 #hanja-game-screen {
-  position:fixed; top:0; left:0; right:0;
-  height: 100svh;
+  position:fixed; inset:0;
   background:#1a1a2e;
   display:none; flex-direction:column;
   align-items:center; justify-content:center;
@@ -1492,6 +1491,53 @@ body {
   color:#4eff91; pointer-events:none;
   animation: hgCorrect .5s ease-out forwards;
   z-index:10;
+}
+
+/* 객관식 보기 팝업 */
+#hg-choices-overlay {
+  position:absolute; inset:0;
+  background:rgba(0,0,0,.75);
+  display:flex; align-items:flex-end;
+  justify-content:center;
+  z-index:20; padding:16px;
+  backdrop-filter: blur(3px);
+}
+.hg-choices-box {
+  background:#1a2040; border-radius:20px 20px 20px 20px;
+  padding:20px 16px; width:100%; max-width:400px;
+  display:flex; flex-direction:column; gap:12px;
+  border:1px solid rgba(255,255,255,.15);
+}
+.hg-choices-question {
+  font-size:44px; font-weight:900; color:white;
+  text-align:center; line-height:1.1;
+  text-shadow:0 0 16px rgba(100,180,255,.8);
+  font-family:'Nanum Myeongjo',serif;
+}
+.hg-choices-grid {
+  display:grid; grid-template-columns:1fr 1fr;
+  gap:10px;
+}
+.hg-choice-btn {
+  background:rgba(255,255,255,.1); border:1.5px solid rgba(255,255,255,.2);
+  border-radius:14px; padding:14px 10px;
+  color:white; font-size:16px; font-weight:700;
+  cursor:pointer; font-family:inherit;
+  transition:all .15s; text-align:center;
+}
+.hg-choice-btn:active { transform:scale(.96); }
+.hg-choice-btn.correct {
+  background:rgba(78,255,145,.3); border-color:#4eff91;
+  color:#4eff91;
+}
+.hg-choice-btn.wrong {
+  background:rgba(255,80,80,.3); border-color:#ff5050;
+  color:#ff5050;
+}
+.hg-choices-cancel {
+  background:none; border:1px solid rgba(255,255,255,.2);
+  color:rgba(255,255,255,.5); border-radius:12px; padding:10px;
+  font-size:14px; cursor:pointer; font-family:inherit;
 }
 
 /* 게임 오버 */
@@ -1796,11 +1842,16 @@ body {
     <div class="hg-field" id="hg-field">
       <div class="hg-deadline" id="hg-deadline"></div>
     </div>
-    <div class="hg-input-area">
-      <input type="text" id="hg-input" class="hg-input" placeholder="여기 눌러서 입력..." autocomplete="off" autocorrect="off" autocapitalize="none" spellcheck="false"/>
-      <button class="hg-submit-btn" onclick="hgSubmit()">확인</button>
-    </div>
     <div class="hg-combo" id="hg-combo"></div>
+
+    <!-- 객관식 보기 팝업 -->
+    <div id="hg-choices-overlay" style="display:none;">
+      <div class="hg-choices-box">
+        <div class="hg-choices-question" id="hg-choices-q"></div>
+        <div class="hg-choices-grid" id="hg-choices-grid"></div>
+        <button class="hg-choices-cancel" onclick="hgHideChoices()">취소</button>
+      </div>
+    </div>
   </div>
 
   <!-- 게임 오버 -->
@@ -4608,7 +4659,6 @@ function hgStartGame() {
   document.getElementById('hg-timer').textContent = '0';
   document.getElementById('hg-combo').textContent = '';
   document.getElementById('hg-field').innerHTML = '<div class="hg-deadline"></div>';
-  document.getElementById('hg-input').value = '';
   hgUpdateLives();
   // 화면 높이 조정 함수
   function _hgResize() {
@@ -4702,15 +4752,18 @@ function hgSpawn() {
     hintText = item['뜻']; // 선정한자는 뜻만 힌트
   }
 
+  const answer = isEdu ? item['독음'] : (item['뜻'] + ' ' + item['독음']);
+
   el.innerHTML = `<div class="hg-char">${item['한자']}</div>
     <div class="hg-type-badge">${isEdu ? '독음' : '훈음'}</div>
     <div class="hg-hint" id="hint_${id}">${hintText}</div>`;
 
-  const answer = isEdu ? item['독음'] : (item['뜻'] + ' ' + item['독음']);
   el.dataset.answer = answer;
   el.dataset.char = item['한자'];
   el.dataset.id = id;
   el.dataset.hint = hintText;
+  el.dataset.isEdu = isEdu ? '1' : '0';
+  el.onclick = () => hgShowChoices(el);
 
   field.appendChild(el);
   hgState.hanjas.push({id, el, answer, char:item['한자'], isEdu});
@@ -4798,29 +4851,68 @@ function hgCheckHints() {
   });
 }
 
-function hgSubmit() {
-  const input = document.getElementById('hg-input');
-  const val = input.value.trim();
-  if (!val) return;
-  input.value = '';
+let _hgCurrentEl = null;
 
-  // 정답 확인
-  const hanjas = document.querySelectorAll('.hg-hanja');
-  let matched = false;
-  hanjas.forEach(el => {
-    if (matched) return;
-    const answer = el.dataset.answer;
-    if (val === answer || val.replace(/\s/g,'') === answer.replace(/\s/g,'')) {
-      matched = true;
-      hgCorrect(el);
-    }
-  });
-  if (!matched) {
+function hgShowChoices(el) {
+  if (!hgState.active) return;
+  _hgCurrentEl = el;
+  const answer = el.dataset.answer;
+  const isEdu = el.dataset.isEdu === '1';
+  const char = el.dataset.char;
+
+  // 오답 보기 생성 (같은 급수에서 랜덤 3개)
+  const gradeItems = HG_DATA[hgState.grade] || [];
+  const wrongPool = gradeItems
+    .filter(d => {
+      const a = isEdu ? d['독음'] : (d['뜻'] + ' ' + d['독음']);
+      return a !== answer;
+    })
+    .sort(() => Math.random() - 0.5)
+    .slice(0, 3)
+    .map(d => isEdu ? d['독음'] : (d['뜻'] + ' ' + d['독음']));
+
+  // 4개 보기 섞기
+  const choices = [answer, ...wrongPool].sort(() => Math.random() - 0.5);
+
+  // 문제 표시
+  document.getElementById('hg-choices-q').textContent = char;
+
+  // 보기 버튼 생성
+  document.getElementById('hg-choices-grid').innerHTML = choices.map(c =>
+    `<button class="hg-choice-btn" onclick="hgSelectAnswer('${c.replace(/'/g,"\'")}', '${answer.replace(/'/g,"\'")}', this)">${c}</button>`
+  ).join('');
+
+  document.getElementById('hg-choices-overlay').style.display = 'flex';
+}
+
+function hgHideChoices() {
+  document.getElementById('hg-choices-overlay').style.display = 'none';
+  _hgCurrentEl = null;
+}
+
+function hgSelectAnswer(selected, answer, btn) {
+  const allBtns = document.querySelectorAll('.hg-choice-btn');
+  allBtns.forEach(b => b.onclick = null); // 중복 클릭 방지
+
+  if (selected === answer) {
+    btn.classList.add('correct');
+    setTimeout(() => {
+      const targetEl = _hgCurrentEl; // null 되기 전에 저장
+      hgHideChoices();
+      if (targetEl) hgCorrect(targetEl);
+    }, 400);
+  } else {
+    btn.classList.add('wrong');
+    // 정답 표시
+    allBtns.forEach(b => {
+      if (b.textContent === answer) b.classList.add('correct');
+    });
     hgState.combo = 0;
-    input.classList.add('hg-shake');
-    setTimeout(() => input.classList.remove('hg-shake'), 400);
+    hgShowCombo('❌ 틀렸어요!');
+    setTimeout(() => {
+      hgHideChoices();
+    }, 1000);
   }
-  input.focus();
 }
 
 function hgCorrect(el) {
@@ -4989,6 +5081,7 @@ function hgStopGame() {
   clearInterval(hgState.timerInterval);
   clearInterval(hgState.fallInterval);
   clearInterval(hgState.hintInterval);
+  hgHideChoices();
   if (window.visualViewport && hgState._hgResize) {
     window.visualViewport.removeEventListener('resize', hgState._hgResize);
     window.visualViewport.removeEventListener('scroll', hgState._hgResize);
@@ -4997,13 +5090,7 @@ function hgStopGame() {
   if (screen) { screen.style.height = ''; screen.style.top = ''; }
 }
 
-// 입력창 엔터
-document.addEventListener('DOMContentLoaded', () => {
-  const inp = document.getElementById('hg-input');
-  if (inp) inp.addEventListener('keydown', e => {
-    if (e.key === 'Enter') hgSubmit();
-  });
-});
+// 객관식 모드 - 키보드 이벤트 불필요
 
 function closeStudySelect() {
   document.getElementById('study-select-screen').classList.remove('active');
