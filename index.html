@@ -1422,7 +1422,7 @@ const HG_Sound = (() => {
   background:#1a1a2e;
   display:none; flex-direction:column;
   align-items:center; justify-content:center;
-  z-index:300; overflow:hidden;
+  z-index:9999; overflow:hidden;
   font-family:'Nanum Myeongjo',serif;
 }
 #hanja-game-screen.active { display:flex; }
@@ -4824,15 +4824,29 @@ let hgState = {
 };
 
 function openHanjaGame() {
-  document.getElementById('landing-screen').classList.remove('active');
-  document.getElementById('hanja-game-screen').classList.add('active');
+  // 모든 화면 숨기기
+  ['landing-screen','login-screen','app','teacher-app'].forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.style.display = 'none';
+  });
+  // 게임 화면만 표시
+  const game = document.getElementById('hanja-game-screen');
+  game.style.cssText = 'display:flex !important; position:fixed; inset:0; z-index:9999; background:#1a1a2e; flex-direction:column; align-items:center; justify-content:center; overflow:hidden; font-family:Nanum Myeongjo,serif;';
   hgShowSelect();
 }
 
 function closeHanjaGame() {
   hgStopGame();
-  document.getElementById('hanja-game-screen').classList.remove('active');
-  document.getElementById('landing-screen').classList.add('active');
+  const game = document.getElementById('hanja-game-screen');
+  game.style.cssText = '';
+  game.classList.remove('active');
+  ['app','teacher-app'].forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.style.display = '';
+  });
+  const landing = document.getElementById('landing-screen');
+  landing.style.display = '';
+  landing.classList.add('active');
 }
 
 function hgShowSelect() {
@@ -4979,7 +4993,6 @@ function hgSpawn() {
   el.dataset.answer = answer;
   el.dataset.char = item['한자'];
   el.dataset.id = id;
-  el.dataset.hint = hintText;
   el.dataset.isEdu = isEdu ? '1' : '0';
   el.onclick = () => hgShowChoices(el);
 
