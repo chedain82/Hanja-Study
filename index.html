@@ -1299,7 +1299,8 @@ body {
 
 /* ===== 한자 게임 ===== */
 #hanja-game-screen {
-  position:fixed; top:0; left:0; right:0; bottom:0;
+  position:fixed; top:0; left:0; right:0;
+  height: 100svh;
   background:#1a1a2e;
   display:none; flex-direction:column;
   align-items:center; justify-content:center;
@@ -4609,10 +4610,24 @@ function hgStartGame() {
   document.getElementById('hg-field').innerHTML = '<div class="hg-deadline"></div>';
   document.getElementById('hg-input').value = '';
   hgUpdateLives();
-  // 키보드 올라와도 게임화면 높이 고정
-  const _screen = document.getElementById('hanja-game-screen');
-  const _fixedH = window.screen.height || window.innerHeight;
-  _screen.style.height = _fixedH + 'px';
+  // 화면 높이 조정 함수
+  function _hgResize() {
+    const s = document.getElementById('hanja-game-screen');
+    if (!s) return;
+    const vp = window.visualViewport;
+    if (vp) {
+      s.style.height = vp.height + 'px';
+      s.style.top = vp.offsetTop + 'px';
+    } else {
+      s.style.height = window.innerHeight + 'px';
+    }
+  }
+  _hgResize();
+  if (window.visualViewport) {
+    window.visualViewport.addEventListener('resize', _hgResize);
+    window.visualViewport.addEventListener('scroll', _hgResize);
+    hgState._hgResize = _hgResize;
+  }
 
   // 타이머
   hgState.timerInterval = setInterval(() => {
@@ -4974,7 +4989,10 @@ function hgStopGame() {
   clearInterval(hgState.timerInterval);
   clearInterval(hgState.fallInterval);
   clearInterval(hgState.hintInterval);
-  if (window.visualViewport) window.visualViewport.onresize = null;
+  if (window.visualViewport && hgState._hgResize) {
+    window.visualViewport.removeEventListener('resize', hgState._hgResize);
+    window.visualViewport.removeEventListener('scroll', hgState._hgResize);
+  }
   const screen = document.getElementById('hanja-game-screen');
   if (screen) { screen.style.height = ''; screen.style.top = ''; }
 }
