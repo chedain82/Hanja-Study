@@ -1299,7 +1299,9 @@ body {
 
 /* ===== 한자 게임 ===== */
 #hanja-game-screen {
-  position:fixed; inset:0; background:#1a1a2e;
+  position:fixed; top:0; left:0; right:0;
+  height: 100%; height: 100dvh;
+  background:#1a1a2e;
   display:none; flex-direction:column;
   align-items:center; justify-content:center;
   z-index:300; overflow:hidden;
@@ -1343,7 +1345,7 @@ body {
 }
 
 /* 플레이 화면 */
-#hg-play { display:flex; flex-direction:column; width:100%; height:100%; }
+#hg-play { display:flex; flex-direction:column; width:100%; flex:1; min-height:0; }
 .hg-play-header {
   display:flex; justify-content:space-between; align-items:center;
   padding:12px 16px; background:rgba(0,0,0,.3); flex-shrink:0;
@@ -1430,7 +1432,8 @@ body {
 /* 입력창 */
 .hg-input-area {
   display:flex; gap:8px; padding:12px 16px;
-  background:rgba(0,0,0,.4); flex-shrink:0;
+  background:rgba(0,0,0,.6); flex-shrink:0;
+  position:relative; z-index:10;
 }
 .hg-input {
   flex:1; background:rgba(255,255,255,.1); border:1.5px solid rgba(255,255,255,.2);
@@ -4598,6 +4601,16 @@ function hgStartGame() {
   hgState.spawnCount=0; hgState.correctCount=0;
 
   hgState.lives = 5;
+  // 키보드 올라올 때 게임 화면 높이 조정
+  if (window.visualViewport) {
+    window.visualViewport.onresize = () => {
+      const screen = document.getElementById('hanja-game-screen');
+      if (screen && screen.classList.contains('active')) {
+        screen.style.height = window.visualViewport.height + 'px';
+        screen.style.top = window.visualViewport.offsetTop + 'px';
+      }
+    };
+  }
   document.getElementById('hg-grade-label').textContent = hgState.grade;
   document.getElementById('hg-score').textContent = '0';
   document.getElementById('hg-timer').textContent = '0';
@@ -4840,7 +4853,17 @@ function hgNextStage() {
   const cur = HG_GRADES.indexOf(hgState.grade);
   if (cur < HG_GRADES.length - 1) {
     hgState.grade = HG_GRADES[cur + 1];
-    document.getElementById('hg-grade-label').textContent = hgState.grade;
+    // 키보드 올라올 때 게임 화면 높이 조정
+  if (window.visualViewport) {
+    window.visualViewport.onresize = () => {
+      const screen = document.getElementById('hanja-game-screen');
+      if (screen && screen.classList.contains('active')) {
+        screen.style.height = window.visualViewport.height + 'px';
+        screen.style.top = window.visualViewport.offsetTop + 'px';
+      }
+    };
+  }
+  document.getElementById('hg-grade-label').textContent = hgState.grade;
     hgShowCombo(`🎉 ${hgState.grade} 돌입!`);
   }
 }
@@ -4967,6 +4990,9 @@ function hgStopGame() {
   clearInterval(hgState.timerInterval);
   clearInterval(hgState.fallInterval);
   clearInterval(hgState.hintInterval);
+  if (window.visualViewport) window.visualViewport.onresize = null;
+  const screen = document.getElementById('hanja-game-screen');
+  if (screen) { screen.style.height = ''; screen.style.top = ''; }
 }
 
 // 입력창 엔터
