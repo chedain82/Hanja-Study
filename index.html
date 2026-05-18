@@ -1943,6 +1943,7 @@ const HG_Sound = (() => {
   <div id="hg-play" style="display:none;">
     <div class="hg-play-header">
       <div class="hg-play-info">
+        <button onclick="hgAskQuit()" style="background:rgba(255,255,255,.15);border:none;color:white;font-size:13px;font-weight:700;border-radius:10px;padding:5px 10px;cursor:pointer;">✕ 나가기</button>
         <span id="hg-grade-label">8급</span>
         <span id="hg-stage-label">1단계</span>
       </div>
@@ -2014,6 +2015,17 @@ const HG_Sound = (() => {
       <div class="hg-name-sub">랭킹에 표시될 이름이에요</div>
       <input type="text" id="hg-name-input" class="hg-input" placeholder="닉네임 (최대 8자)" maxlength="8"/>
       <button class="hg-btn-retry" onclick="hgConfirmName()">게임 시작!</button>
+    </div>
+  </div>
+  <!-- 나가기 확인 팝업 -->
+  <div id="hg-quit-popup" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.7);align-items:center;justify-content:center;z-index:10000;padding:24px;">
+    <div style="background:#1a2040;border-radius:20px;padding:28px 24px;width:100%;max-width:300px;text-align:center;border:1px solid rgba(255,255,255,.15);">
+      <div style="font-size:20px;font-weight:800;color:white;margin-bottom:8px;">게임을 그만할까요?</div>
+      <div style="font-size:13px;color:#aaa;margin-bottom:24px;">지금까지의 점수는 저장되지 않아요</div>
+      <div style="display:flex;gap:10px;">
+        <button onclick="hgQuitConfirm()" style="flex:1;background:#ff5555;color:white;border:none;border-radius:12px;padding:14px;font-size:15px;font-weight:800;cursor:pointer;">그만하기</button>
+        <button onclick="hgQuitCancel()" style="flex:1;background:rgba(255,255,255,.1);color:white;border:1px solid rgba(255,255,255,.2);border-radius:12px;padding:14px;font-size:15px;font-weight:700;cursor:pointer;">계속하기</button>
+      </div>
     </div>
   </div>
 </div>
@@ -4673,6 +4685,7 @@ function closeExamLibrary() {
 }
 
 function openStudySection() {
+  hgForceHide();
   document.getElementById('landing-screen').classList.remove('active');
   document.getElementById('study-select-screen').classList.add('active');
   gaEvent('landing_cta', {action:'학습하기'});
@@ -4822,6 +4835,16 @@ let hgState = {
   correctCount: 0,
   lives: 5,
 };
+
+// 게임 화면 항상 숨기기
+function hgForceHide() {
+  const game = document.getElementById('hanja-game-screen');
+  if (game) {
+    game.style.cssText = 'display:none !important;';
+    game.classList.remove('active');
+  }
+  hgStopGame();
+}
 
 function openHanjaGame() {
   // 모든 화면 숨기기
@@ -5203,6 +5226,33 @@ function hgShowCombo(msg) {
   if (msg) setTimeout(() => { if(el.textContent === msg) el.textContent=''; }, 1500);
 }
 
+function hgAskQuit() {
+  // 게임 일시정지
+  hgState.active = false;
+  clearInterval(hgState.timerInterval);
+  clearInterval(hgState.fallInterval);
+  document.getElementById('hg-quit-popup').style.display = 'flex';
+}
+function hgQuitConfirm() {
+  document.getElementById('hg-quit-popup').style.display = 'none';
+  hgStopGame();
+  hgShowSelect();
+}
+function hgQuitCancel() {
+  document.getElementById('hg-quit-popup').style.display = 'none';
+  // 게임 재개
+  hgState.active = true;
+  hgState.timerInterval = setInterval(() => {
+    if (!hgState.active) return;
+    hgState.elapsed++;
+    document.getElementById('hg-timer').textContent = hgState.elapsed;
+  }, 1000);
+  hgState.fallInterval = setInterval(() => {
+    if (!hgState.active) return;
+    hgSpawn();
+  }, 2800);
+}
+
 let _hgBGMOn = true;
 function hgToggleBGM() {
   _hgBGMOn = !_hgBGMOn;
@@ -5411,9 +5461,9 @@ function closeExamPdfPopup(e) {
   }
 }
 
-function landingStartSolo(){document.getElementById('landing-screen').classList.remove('active');document.getElementById('study-select-screen').classList.remove('active');document.getElementById('login-screen').classList.add('active');lsGo('free-student');gaEvent('landing_cta',{action:'혼자 시작하기'});}
-function landingStartGroup(){document.getElementById('landing-screen').classList.remove('active');document.getElementById('study-select-screen').classList.remove('active');document.getElementById('login-screen').classList.add('active');lsGo('student-name');gaEvent('landing_cta',{action:'선생님 반 학생'});}
-function landingStartTeacher(){document.getElementById('landing-screen').classList.remove('active');document.getElementById('login-screen').classList.add('active');lsGo('teacher-login');gaEvent('landing_cta',{action:'선생님 로그인'});}
+function landingStartSolo(){hgForceHide();document.getElementById('landing-screen').classList.remove('active');document.getElementById('study-select-screen').classList.remove('active');document.getElementById('login-screen').classList.add('active');lsGo('free-student');gaEvent('landing_cta',{action:'혼자 시작하기'});}
+function landingStartGroup(){hgForceHide();document.getElementById('landing-screen').classList.remove('active');document.getElementById('study-select-screen').classList.remove('active');document.getElementById('login-screen').classList.add('active');lsGo('student-name');gaEvent('landing_cta',{action:'선생님 반 학생'});}
+function landingStartTeacher(){hgForceHide();document.getElementById('landing-screen').classList.remove('active');document.getElementById('login-screen').classList.add('active');lsGo('teacher-login');gaEvent('landing_cta',{action:'선생님 로그인'});}
 function openGuidePopup(){document.getElementById('guide-popup').classList.add('active');gaEvent('guide_open',{});}
 function closeGuidePopup(e){if(!e||e.target===document.getElementById('guide-popup'))document.getElementById('guide-popup').classList.remove('active');}
 
