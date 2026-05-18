@@ -1936,7 +1936,10 @@ const HG_Sound = (() => {
       <div>교과서한자 → 독음만 입력 <span style="color:#e05c3b">(예: 공부)</span></div>
       <div style="margin-top:6px;">⏰ 100초 이상 생존 시 보너스 점수!</div>
     </div>
-    <button class="hg-back-btn" onclick="closeHanjaGame()">← 메인으로</button>
+    <div style="display:flex;gap:10px;width:100%;max-width:340px;">
+      <button class="hg-back-btn" style="flex:1;" onclick="closeHanjaGame()">← 메인으로</button>
+      <button class="hg-back-btn" style="flex:1;border-color:rgba(255,215,0,.4);color:#FFD700;" onclick="hgShowRanking()">🏆 랭킹</button>
+    </div>
   </div>
 
   <!-- 게임 플레이 -->
@@ -1986,7 +1989,7 @@ const HG_Sound = (() => {
     </div>
     <div class="hg-over-btns">
       <button class="hg-btn-retry" onclick="hgRetry()">🔄 다시하기</button>
-      <button class="hg-btn-rank" onclick="hgShowRanking()">🏆 랭킹 보기</button>
+      <button class="hg-btn-rank" onclick="document.getElementById('hg-over')._fromOver=true;hgShowRanking()">🏆 랭킹 보기</button>
       <button class="hg-btn-home" onclick="closeHanjaGame()">🏠 메인으로</button>
     </div>
   </div>
@@ -1998,12 +2001,7 @@ const HG_Sound = (() => {
       <span>🏆 한자 게임 랭킹</span>
     </div>
     <div class="hg-rank-tabs">
-      <button class="hg-rank-tab active" onclick="hgLoadRanking('all',this)">전체</button>
-      <button class="hg-rank-tab" onclick="hgLoadRanking('8급',this)">8급</button>
-      <button class="hg-rank-tab" onclick="hgLoadRanking('7급',this)">7급</button>
-      <button class="hg-rank-tab" onclick="hgLoadRanking('6급',this)">6급</button>
-      <button class="hg-rank-tab" onclick="hgLoadRanking('준5급',this)">준5급</button>
-      <button class="hg-rank-tab" onclick="hgLoadRanking('5급',this)">5급</button>
+      <button class="hg-rank-tab active" onclick="hgLoadRanking('all',this)">🏆 전체 랭킹</button>
     </div>
     <div class="hg-rank-list" id="hg-rank-list"></div>
   </div>
@@ -4894,6 +4892,7 @@ function hgRenderGradeList() {
 
 function hgSelectGrade(grade) {
   hgState.grade = grade;
+  hgState.correctCount = 0; // 카운트 초기화
   const user = typeof currentUser !== 'undefined' && currentUser && currentUser.name;
   if (user) {
     hgState.nickname = user;
@@ -5215,8 +5214,19 @@ function hgNextStage() {
   if (cur < HG_GRADES.length - 1) {
     hgState.grade = HG_GRADES[cur + 1];
     document.getElementById('hg-grade-label').textContent = hgState.grade;
+    // 레벨업 보너스 점수
+    hgState.score += 50;
+    document.getElementById('hg-score').textContent = hgState.score;
     HG_Sound.levelUp();
-    hgShowCombo(`🎉 ${hgState.grade} 돌입!`);
+    hgShowCombo(`🎉 ${hgState.grade} 돌입! +50점`);
+    // 기존 한자들 제거하고 새 급수로 새로 시작
+    document.querySelectorAll('.hg-hanja, .hg-chance').forEach(el => el.remove());
+  } else {
+    // 3급까지 모두 클리어!
+    hgState.score += 500;
+    document.getElementById('hg-score').textContent = hgState.score;
+    HG_Sound.levelUp();
+    hgShowCombo('🎊 전 급수 클리어! +500점');
   }
 }
 
@@ -5316,7 +5326,7 @@ async function hgSaveScore(score) {
     await addDoc(collection(db, 'gameRanking'), {
       nickname: hgState.nickname || '익명',
       score,
-      grade: hgState.grade,
+      maxGrade: hgState.grade,
       elapsed: hgState.elapsed,
       timestamp: serverTimestamp(),
     });
@@ -5350,7 +5360,7 @@ async function hgLoadRanking(filter, btn) {
         <div class="hg-rank-row">
           <div class="hg-rank-num">${icons[i]||i+1}</div>
           <div class="hg-rank-name">${r.nickname}<br>
-            <span class="hg-rank-grade">${r.grade} · ${r.elapsed}초</span></div>
+            <span class="hg-rank-grade">최고 ${r.maxGrade||r.grade} · ${r.elapsed}초</span></div>
           <div class="hg-rank-score">${r.score}</div>
         </div>`).join('');
   } catch(e) {
@@ -5359,6 +5369,7 @@ async function hgLoadRanking(filter, btn) {
 }
 
 function hgShowRanking() {
+  document.getElementById('hg-select').style.display='none';
   document.getElementById('hg-over').style.display='none';
   document.getElementById('hg-ranking').style.display='flex';
   hgLoadRanking('all', document.querySelector('.hg-rank-tab'));
@@ -5366,7 +5377,13 @@ function hgShowRanking() {
 
 function hgHideRanking() {
   document.getElementById('hg-ranking').style.display='none';
-  document.getElementById('hg-over').style.display='flex';
+  // 게임오버 화면에서 왔으면 게임오버로, 선택화면에서 왔으면 선택화면으로
+  if (document.getElementById('hg-over')._fromOver) {
+    document.getElementById('hg-over').style.display='flex';
+    document.getElementById('hg-over')._fromOver = false;
+  } else {
+    document.getElementById('hg-select').style.display='flex';
+  }
 }
 
 function hgRetry() {
