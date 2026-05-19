@@ -5321,15 +5321,15 @@ function hgGameOver() {
 
 async function hgSaveScore(score) {
   try {
-    if (typeof db === 'undefined') return;
-    const {collection, addDoc, serverTimestamp} = await import('https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore.js');
-    await addDoc(collection(db, 'gameRanking'), {
+    if (!window._db || !window._fsAddDoc) return;
+    await window._fsAddDoc(window._fsCollection(window._db, 'gameRanking'), {
       nickname: hgState.nickname || '익명',
       score,
       maxGrade: hgState.grade,
       elapsed: hgState.elapsed,
-      timestamp: serverTimestamp(),
+      timestamp: window._fsServerTimestamp(),
     });
+    console.log('랭킹 저장 성공!');
   } catch(e) { console.log('랭킹 저장 실패', e); }
 }
 
@@ -5341,15 +5341,10 @@ async function hgLoadRanking(filter, btn) {
   list.innerHTML = '<div style="color:#aaa;text-align:center;padding:32px">⏳ 불러오는 중...</div>';
 
   try {
-    const {collection, query, orderBy, limit, where, getDocs} =
-      await import('https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore.js');
-    let q;
-    if (filter === 'all') {
-      q = query(collection(db,'gameRanking'), orderBy('score','desc'), limit(30));
-    } else {
-      q = query(collection(db,'gameRanking'), where('grade','==',filter), orderBy('score','desc'), limit(20));
-    }
-    const snap = await getDocs(q);
+    if (!window._db) { list.innerHTML = '<div style="color:#aaa;text-align:center;padding:32px">Firebase 연결 중... 잠시 후 다시 시도하세요</div>'; return; }
+    const col = window._fsCollection;
+    const q = window._fsQuery(col(window._db,'gameRanking'), window._fsOrderBy('score','desc'), window._fsLimit(30));
+    const snap = await window._fsGetDocs(q);
     const rows = [];
     snap.forEach(d => rows.push(d.data()));
 
@@ -6695,7 +6690,7 @@ document.addEventListener('visibilitychange', async () => {
     from "https://www.gstatic.com/firebasejs/10.14.1/firebase-auth.js";
   import { getFirestore, collection, doc,
            getDocs, getDoc, setDoc, addDoc, deleteDoc,
-           query, where, serverTimestamp }
+           query, where, orderBy, limit, serverTimestamp }
     from "https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore.js";
   import { getStorage, ref, listAll, getDownloadURL, uploadBytes, deleteObject }
     from "https://www.gstatic.com/firebasejs/10.14.1/firebase-storage.js";
@@ -6714,10 +6709,19 @@ document.addEventListener('visibilitychange', async () => {
   const auth    = getAuth(app);
   const db      = getFirestore(app);
   const storage = getStorage(app);
+  window._db = db; // 게임 랭킹용으로 전역 노출
 
   window.fbLogin  = (email, pw) => signInWithEmailAndPassword(auth, email, pw);
   window.fbSignup = (email, pw) => createUserWithEmailAndPassword(auth, email, pw);
   window.fbLogout = ()          => signOut(auth);
+  // Firestore 함수들 게임용으로 노출
+  window._fsCollection = collection;
+  window._fsQuery = query;
+  window._fsOrderBy = orderBy;
+  window._fsLimit = limit;
+  window._fsGetDocs = getDocs;
+  window._fsAddDoc = addDoc;
+  window._fsServerTimestamp = serverTimestamp;
   window._firebaseReady = true;
 
   /* ===== PDF 자료실 함수 ===== */
