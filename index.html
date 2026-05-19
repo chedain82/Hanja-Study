@@ -2010,7 +2010,7 @@ const HG_Sound = (() => {
   <div id="hg-name-popup">
     <div class="hg-name-box">
       <div class="hg-name-title">닉네임 입력</div>
-      <div class="hg-name-sub">랭킹에 표시될 이름이에요</div>
+      <div class="hg-name-sub">랭킹에 표시될 닉네임을 입력하세요<br><span style="font-size:11px;color:#555;">이전 닉네임이 있으면 자동 입력돼요</span></div>
       <input type="text" id="hg-name-input" class="hg-input" placeholder="닉네임 (최대 8자)" maxlength="8"/>
       <button class="hg-btn-retry" onclick="hgConfirmName()">게임 시작!</button>
     </div>
@@ -4892,21 +4892,25 @@ function hgRenderGradeList() {
 
 function hgSelectGrade(grade) {
   hgState.grade = grade;
-  hgState.correctCount = 0; // 카운트 초기화
+  hgState.correctCount = 0;
+
+  // 로그인된 학생이면 이름 자동 사용
   const user = typeof currentUser !== 'undefined' && currentUser && currentUser.name;
   if (user) {
     hgState.nickname = user;
     hgStartGame();
-  } else {
-    const saved = localStorage.getItem('hg_nickname');
-    if (saved) { hgState.nickname = saved; hgStartGame(); }
-    else { hgShowNamePopup(); }
+    return;
   }
+  // 비로그인은 항상 닉네임 팝업 표시
+  hgShowNamePopup();
 }
 
 function hgShowNamePopup() {
+  const saved = localStorage.getItem('hg_nickname') || '';
+  const input = document.getElementById('hg-name-input');
+  input.value = saved;
   document.getElementById('hg-name-popup').classList.add('active');
-  setTimeout(() => document.getElementById('hg-name-input').focus(), 100);
+  setTimeout(() => { input.focus(); input.select(); }, 100);
 }
 
 function hgConfirmName() {
