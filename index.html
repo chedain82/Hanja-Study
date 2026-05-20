@@ -5646,41 +5646,71 @@ document.addEventListener('keydown', function(e) {
   }
 });
 
-/* ── 쓰기 화면 키보드 고정 (iOS/Android) ── */
+/* ── 쓰기/기출 화면 키보드 고정 (iOS/Android) ── */
 (function() {
+  const WRITE_IDS = ['write', 'exam_write', 'study_write'];
+
+  function getActiveWriteEl() {
+    for (const id of WRITE_IDS) {
+      const el = document.getElementById(id);
+      if (el && el.classList.contains('active')) return el;
+    }
+    return null;
+  }
+
   function applyWriteViewport() {
     if (!window.visualViewport) return;
+    const writeEl = getActiveWriteEl();
+    if (!writeEl) return;
     const vvh = window.visualViewport.height;
     const vvt = window.visualViewport.offsetTop || 0;
-    const writeEl = document.getElementById('write');
-    if (!writeEl || !writeEl.classList.contains('active')) return;
-    const card = writeEl.querySelector('.card');
-    if (card) {
-      card.style.position = 'fixed';
-      card.style.top      = vvt + 'px';
-      card.style.left     = '4px';
-      card.style.right    = '4px';
-      card.style.height   = (vvh - 8) + 'px';
-      card.style.maxHeight = (vvh - 8) + 'px';
-      card.style.overflow = 'hidden';
-    }
+    const card = writeEl.querySelector('.card') || writeEl;
+    card.style.position = 'fixed';
+    card.style.top      = vvt + 'px';
+    card.style.left     = '4px';
+    card.style.right    = '4px';
+    card.style.height   = (vvh - 8) + 'px';
+    card.style.maxHeight = (vvh - 8) + 'px';
+    card.style.overflow = 'hidden';
   }
+
   function resetWriteViewport() {
-    const writeEl = document.getElementById('write');
-    if (!writeEl) return;
-    const card = writeEl.querySelector('.card');
-    if (!card) return;
-    card.style.position = '';
-    card.style.top = ''; card.style.left = '';
-    card.style.right = ''; card.style.height = '';
-    card.style.maxHeight = ''; card.style.overflow = '';
-  }
-  if (window.visualViewport) {
-    window.visualViewport.addEventListener('resize', function() {
-      if (document.getElementById('write')?.classList.contains('active')) applyWriteViewport();
-      else resetWriteViewport();
+    WRITE_IDS.forEach(id => {
+      const el = document.getElementById(id);
+      if (!el) return;
+      const card = el.querySelector('.card') || el;
+      card.style.position = '';
+      card.style.top = ''; card.style.left = '';
+      card.style.right = ''; card.style.height = '';
+      card.style.maxHeight = ''; card.style.overflow = '';
     });
   }
+
+  if (window.visualViewport) {
+    window.visualViewport.addEventListener('resize', function() {
+      if (getActiveWriteEl()) applyWriteViewport();
+      else resetWriteViewport();
+    });
+    window.visualViewport.addEventListener('scroll', function() {
+      if (getActiveWriteEl()) applyWriteViewport();
+    });
+  }
+
+  // input focus 시 즉시 적용
+  document.addEventListener('focusin', function(e) {
+    if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') {
+      setTimeout(() => {
+        if (getActiveWriteEl()) applyWriteViewport();
+      }, 300);
+    }
+  });
+
+  document.addEventListener('focusout', function(e) {
+    if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') {
+      setTimeout(resetWriteViewport, 100);
+    }
+  });
+
   window._applyWriteViewport = applyWriteViewport;
   window._resetWriteViewport = resetWriteViewport;
 })();
