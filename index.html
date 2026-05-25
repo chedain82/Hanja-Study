@@ -445,6 +445,27 @@ body {
 .write-result.fail { color: var(--wrong); }
 .write-confirm-btn { width: 120px; height: 52px; border-radius: 22px; background: var(--black-btn); color: white; font-size: 20px; font-weight: 700; border: none; cursor: pointer; font-family: inherit; }
 
+/* 키보드 클 때 자동 축소 */
+.card[data-kb="large"] .card-content-wrap {
+  gap: 6px !important;
+  padding-top: 8px !important;
+  padding-bottom: 20px !important;
+}
+.card[data-kb="large"] .hanja-char,
+.card[data-kb="large"] [style*="font-size: 1"] {
+  font-size: clamp(48px, 10vw, 80px) !important;
+}
+.card[data-kb="large"] .write-input {
+  font-size: 20px !important;
+}
+.card[data-kb="large"] .counter {
+  font-size: 12px !important;
+}
+.card[data-kb="large"] .write-confirm-btn {
+  height: 44px !important;
+  font-size: 15px !important;
+}
+
 .write-content-fixed {
   flex: 1;
   display: flex;
@@ -476,7 +497,28 @@ body {
   margin-top: 8px !important;
 }
 @media (max-height: 700px) {
-  .write-content-fixed { padding-top: 26px; gap: 10px; }
+  /* 키보드 클 때 자동 축소 */
+.card[data-kb="large"] .card-content-wrap {
+  gap: 6px !important;
+  padding-top: 8px !important;
+  padding-bottom: 20px !important;
+}
+.card[data-kb="large"] .hanja-char,
+.card[data-kb="large"] [style*="font-size: 1"] {
+  font-size: clamp(48px, 10vw, 80px) !important;
+}
+.card[data-kb="large"] .write-input {
+  font-size: 20px !important;
+}
+.card[data-kb="large"] .counter {
+  font-size: 12px !important;
+}
+.card[data-kb="large"] .write-confirm-btn {
+  height: 44px !important;
+  font-size: 15px !important;
+}
+
+.write-content-fixed { padding-top: 26px; gap: 10px; }
   .write-content-fixed .card-nav { margin-top: 2px !important; }
 }
 
@@ -5672,6 +5714,17 @@ document.addEventListener('keydown', function(e) {
     card.style.height   = (vvh - 8) + 'px';
     card.style.maxHeight = (vvh - 8) + 'px';
     card.style.overflow = 'hidden';
+
+    // 남은 높이에 따라 한자 크기 자동 조정
+    const hanjaEl = card.querySelector('.hanja-char, [style*="font-size"]');
+    const screenH = window.screen.height;
+    const ratio = vvh / screenH;
+    if (ratio < 0.5) {
+      // 키보드가 절반 이상 차지 → 한자 작게
+      card.setAttribute('data-kb', 'large');
+    } else {
+      card.removeAttribute('data-kb');
+    }
   }
 
   function resetWriteViewport() {
