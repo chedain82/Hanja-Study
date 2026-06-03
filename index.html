@@ -270,9 +270,13 @@ body {
 .lv-preview-hanja { font-size: 30px; font-weight: 700; color: #2b2b2b; line-height: 1; }
 .lv-preview-mini-label { font-size: 9px; font-weight: 700; color: #9aa0a6; margin-top: 4px; }
 .lv-preview-quiz-opt {
-  width: 78%; height: 9px; border-radius: 3px; background: #EDEFF2; margin-top: 4px;
+  width: 80%; height: 11px; border-radius: 3px; background: #EDEFF2; margin-top: 4px;
+  display: flex; align-items: center; padding-left: 4px; box-sizing: border-box;
 }
 .lv-preview-quiz-opt.correct { background: #CDEBD3; }
+.lv-preview-quiz-num {
+  font-size: 6px; font-weight: 800; color: #9aa0a6;
+}
 .lv-preview-write-line {
   width: 60%; height: 0; border-bottom: 2px solid #3B7DE0; margin-top: 6px;
 }
@@ -2658,9 +2662,10 @@ const HG_Sound = (() => {
           </div>
           <div class="lv-preview-item">
             <div class="lv-preview-thumb">
-              <span class="lv-preview-hanja" style="font-size:24px;">補</span>
-              <span class="lv-preview-quiz-opt correct"></span>
-              <span class="lv-preview-quiz-opt"></span>
+              <span class="lv-preview-hanja" style="font-size:20px;">補</span>
+              <span class="lv-preview-quiz-opt"><span class="lv-preview-quiz-num">1</span></span>
+              <span class="lv-preview-quiz-opt correct"><span class="lv-preview-quiz-num">2</span></span>
+              <span class="lv-preview-quiz-opt"><span class="lv-preview-quiz-num">3</span></span>
             </div>
             <span class="lv-preview-cap">✏️ 퀴즈</span>
           </div>
@@ -6942,7 +6947,7 @@ document.addEventListener('visibilitychange', async () => {
 
   window._fbListWritingPdfs = async (grade) => {
     try {
-      const folderRef = ref(storage, 'hanja_Writing Practice');
+      const folderRef = ref(storage, 'hanja_writing_practice');
       const result = await listAll(folderRef);
       const prefix = grade === '준3급' ? '준3급' : '3급_';
       const files = await Promise.all(
