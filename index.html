@@ -2108,6 +2108,18 @@ const HG_Sound = (() => {
       </div>
       <div class="exam-coupang-notice">이 포스팅은 쿠팡 파트너스 활동의 일환으로, 이에 따른 일정액의 수수료를 제공받습니다.</div>
 
+      <!-- 쓰기 연습 프린트 섹션 -->
+      <div class="exam-section-label" style="margin-top:24px;">✏️ 쓰기 연습 프린트</div>
+      <div class="exam-grade-tabs-wrap">
+        <div class="exam-lib-grade-tabs">
+          <button class="writing-grade-tab active" onclick="selectWritingGrade('준3급',this)">준3급</button>
+          <button class="writing-grade-tab" onclick="selectWritingGrade('3급',this)">3급</button>
+        </div>
+      </div>
+      <div class="exam-pdf-grid" id="writing-pdf-grid">
+        <div class="exam-lib-loading">⏳ 불러오는 중...</div>
+      </div>
+
       <!-- 기출문제 프린트 섹션 -->
       <div class="exam-section-label" style="margin-top:24px;">🖨️ 기출문제 프린트</div>
       <div class="exam-grade-tabs-wrap">
@@ -2119,6 +2131,7 @@ const HG_Sound = (() => {
           <button class="exam-grade-tab" onclick="selectExamGrade('5급',this)">5급</button>
           <button class="exam-grade-tab" onclick="selectExamGrade('준5급',this)">준5급</button>
           <button class="exam-grade-tab" onclick="selectExamGrade('6급',this)">6급</button>
+          <button class="exam-grade-tab" onclick="selectExamGrade('준6급',this)">준6급</button>
           <button class="exam-grade-tab" onclick="selectExamGrade('7급',this)">7급</button>
           <button class="exam-grade-tab" onclick="selectExamGrade('8급',this)">8급</button>
         </div>
@@ -4728,6 +4741,7 @@ function openExamLibrary() {
   document.getElementById('landing-screen').classList.remove('active');
   document.getElementById('exam-library-screen').classList.add('active');
   selectExamGrade('3급', document.querySelector('#exam-library-screen .exam-grade-tab'));
+  selectWritingGrade('준3급', document.querySelector('.writing-grade-tab'));
   gaEvent('exam_library_open', {});
 }
 
@@ -5463,6 +5477,32 @@ function hgStopGame() {
 function closeStudySelect() {
   document.getElementById('study-select-screen').classList.remove('active');
   document.getElementById('landing-screen').classList.add('active');
+}
+
+async function selectWritingGrade(grade, btn) {
+  document.querySelectorAll('.writing-grade-tab').forEach(t => t.classList.remove('active'));
+  if (btn) btn.classList.add('active');
+
+  const grid = document.getElementById('writing-pdf-grid');
+  grid.innerHTML = '<div class="exam-lib-loading">⏳ 불러오는 중...</div>';
+
+  let pdfs = [];
+  if (window._fbListWritingPdfs) {
+    pdfs = await window._fbListWritingPdfs(grade);
+  }
+
+  if (pdfs.length === 0) {
+    grid.innerHTML = `<div class="exam-pdf-empty">📋 준비 중입니다<br><span style="font-size:12px;color:#ccc">곧 업로드될 예정이에요</span></div>`;
+  } else {
+    grid.innerHTML = pdfs.map(pdf => {
+      const name = pdf.name.replace('.pdf','').replace(/_/g,' ');
+      return `<button class="exam-pdf-card" onclick="openExamPdfPopup('${name}','${pdf.url}','${grade}')">
+        <span class="exam-pdf-icon">📄</span>
+        <span class="exam-pdf-card-title">${name}</span>
+        <span class="exam-pdf-card-grade">${grade}</span>
+      </button>`;
+    }).join('');
+  }
 }
 
 async function selectExamGrade(grade, btn) {
@@ -6833,6 +6873,24 @@ document.addEventListener('visibilitychange', async () => {
         const url = await getDownloadURL(itemRef);
         return { name: itemRef.name, url };
       }));
+      return files;
+    } catch(e) { return []; }
+  };
+
+  window._fbListWritingPdfs = async (grade) => {
+    try {
+      const folderRef = ref(storage, 'hanja_Writing Practice');
+      const result = await listAll(folderRef);
+      const prefix = grade === '준3급' ? '준3급' : '3급_';
+      const files = await Promise.all(
+        result.items
+          .filter(itemRef => itemRef.name.startsWith(prefix))
+          .map(async (itemRef) => {
+            const url = await getDownloadURL(itemRef);
+            return { name: itemRef.name, url };
+          })
+      );
+      files.sort((a,b) => a.name.localeCompare(b.name));
       return files;
     } catch(e) { return []; }
   };
