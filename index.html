@@ -2112,8 +2112,8 @@ const HG_Sound = (() => {
       <div class="exam-section-label" style="margin-top:24px;">✏️ 쓰기 연습 프린트</div>
       <div class="exam-grade-tabs-wrap">
         <div class="exam-lib-grade-tabs">
-          <button class="writing-grade-tab active" onclick="selectWritingGrade('준3급',this)">준3급</button>
-          <button class="writing-grade-tab" onclick="selectWritingGrade('3급',this)">3급</button>
+          <button class="exam-grade-tab active" onclick="selectWritingGrade('준3급',this)">준3급</button>
+          <button class="exam-grade-tab" onclick="selectWritingGrade('3급',this)">3급</button>
         </div>
       </div>
       <div class="exam-pdf-grid" id="writing-pdf-grid">
@@ -5480,7 +5480,11 @@ function closeStudySelect() {
 }
 
 async function selectWritingGrade(grade, btn) {
-  document.querySelectorAll('.writing-grade-tab').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('#exam-library-screen .exam-lib-grade-tabs .exam-grade-tab').forEach(t => {
+    if (t.getAttribute('onclick') && t.getAttribute('onclick').includes('selectWritingGrade')) {
+      t.classList.remove('active');
+    }
+  });
   if (btn) btn.classList.add('active');
 
   const grid = document.getElementById('writing-pdf-grid');
@@ -6892,7 +6896,7 @@ document.addEventListener('visibilitychange', async () => {
       );
       files.sort((a,b) => a.name.localeCompare(b.name));
       return files;
-    } catch(e) { return []; }
+    } catch(e) { console.error('writing pdfs error:', e); return []; }
   };
 
   // PDF 업로드 (선생님용)
