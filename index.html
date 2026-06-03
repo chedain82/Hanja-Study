@@ -6949,6 +6949,8 @@ document.addEventListener('visibilitychange', async () => {
     try {
       const folderRef = ref(storage, 'hanja_writing_practice');
       const result = await listAll(folderRef);
+      console.log('[쓰기연습] 전체 파일 수:', result.items.length);
+      console.log('[쓰기연습] 파일명들:', result.items.map(i => i.name));
       const prefix = grade === '준3급' ? '준3급' : '3급_';
       const files = await Promise.all(
         result.items
