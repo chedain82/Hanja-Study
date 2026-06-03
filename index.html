@@ -6947,18 +6947,13 @@ document.addEventListener('visibilitychange', async () => {
 
   window._fbListWritingPdfs = async (grade) => {
     try {
-      const folderRef = ref(storage, 'hanja_writing_practice');
+      const folderRef = ref(storage, 'hanja_writing_practice/' + grade);
       const result = await listAll(folderRef);
-      console.log('[쓰기연습] 전체 파일 수:', result.items.length);
-      console.log('[쓰기연습] 파일명들:', result.items.map(i => i.name));
-      const prefix = grade === '준3급' ? '준3급' : '3급_';
       const files = await Promise.all(
-        result.items
-          .filter(itemRef => itemRef.name.startsWith(prefix))
-          .map(async (itemRef) => {
-            const url = await getDownloadURL(itemRef);
-            return { name: itemRef.name, url };
-          })
+        result.items.map(async (itemRef) => {
+          const url = await getDownloadURL(itemRef);
+          return { name: itemRef.name, url };
+        })
       );
       files.sort((a,b) => a.name.localeCompare(b.name));
       return files;
