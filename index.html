@@ -248,6 +248,37 @@ body {
 .sm-sub { font-size: 12px; font-weight: 700; color: var(--gray); margin-top: 3px; }
 .sm-arrow { font-size: 18px; color: #CCC; }
 
+/* 급수별 학습 카드 (미리보기 포함) */
+.study-menu-card.lv-preview-card {
+  flex-direction: column; align-items: stretch; gap: 0; padding: 16px 18px 18px;
+}
+.lv-preview-head { display: flex; align-items: center; gap: 14px; }
+.lv-preview-head .sm-body { flex: 1; }
+.lv-preview-grid {
+  display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px; margin-top: 14px;
+}
+.lv-preview-item {
+  background: #F7F8FA; border-radius: 12px; padding: 12px 6px 10px;
+  display: flex; flex-direction: column; align-items: center; gap: 7px;
+  border: 1px solid #EEF0F3;
+}
+.lv-preview-thumb {
+  width: 100%; aspect-ratio: 1/1; border-radius: 9px; background: #fff;
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  border: 1px solid #E8EAEE; position: relative; overflow: hidden;
+}
+.lv-preview-hanja { font-size: 30px; font-weight: 700; color: #2b2b2b; line-height: 1; }
+.lv-preview-mini-label { font-size: 9px; font-weight: 700; color: #9aa0a6; margin-top: 4px; }
+.lv-preview-quiz-opt {
+  width: 78%; height: 9px; border-radius: 3px; background: #EDEFF2; margin-top: 4px;
+}
+.lv-preview-quiz-opt.correct { background: #CDEBD3; }
+.lv-preview-write-line {
+  width: 60%; height: 0; border-bottom: 2px solid #3B7DE0; margin-top: 6px;
+}
+.lv-preview-cap { font-size: 11px; font-weight: 800; color: #555; }
+.lv-preview-foot { font-size: 11px; font-weight: 700; color: var(--gray); text-align: center; margin-top: 12px; }
+
 /* ===== REPORT TAB ===== */
 .report-section { padding: 0 14px 14px; }
 .report-card { background: white; border-radius: 14px; padding: 14px; margin-bottom: 12px; }
@@ -1929,8 +1960,8 @@ const HG_Sound = (() => {
     <button class="landing-big-card" onclick="openExamLibrary()">
       <span class="landing-big-card-icon">📄</span>
       <div>
-        <div class="landing-big-card-title">기출문제 자료실</div>
-        <div class="landing-big-card-desc">급수별 기출문제 프린트 · 교재 구매</div>
+        <div class="landing-big-card-title">자료실 (기출문제, 쓰기연습)</div>
+        <div class="landing-big-card-desc">급수별 기출문제 프린트 · 쓰기연습 · 교재 구매</div>
       </div>
       <span class="landing-big-card-arrow">›</span>
     </button>
@@ -2608,13 +2639,41 @@ const HG_Sound = (() => {
   <div id="tab-study" class="tab-pane">
     <div class="tab-header">학습</div>
     <div class="study-menu">
-      <button class="study-menu-card" onclick="goSub('level')">
-        <span class="sm-icon">📚</span>
-        <div class="sm-body">
-          <div class="sm-title">급수별 학습</div>
-          <div class="sm-sub">8급 ~ 3급 · 카드 / 퀴즈 / 쓰기</div>
+      <button class="study-menu-card lv-preview-card" onclick="goSub('level')">
+        <div class="lv-preview-head">
+          <span class="sm-icon">📚</span>
+          <div class="sm-body">
+            <div class="sm-title">급수별 학습</div>
+            <div class="sm-sub">8급 ~ 3급 · 카드 / 퀴즈 / 쓰기</div>
+          </div>
+          <span class="sm-arrow">›</span>
         </div>
-        <span class="sm-arrow">›</span>
+        <div class="lv-preview-grid">
+          <div class="lv-preview-item">
+            <div class="lv-preview-thumb">
+              <span class="lv-preview-hanja">壁</span>
+              <span class="lv-preview-mini-label">탭하면 뜻·음</span>
+            </div>
+            <span class="lv-preview-cap">📇 카드학습</span>
+          </div>
+          <div class="lv-preview-item">
+            <div class="lv-preview-thumb">
+              <span class="lv-preview-hanja" style="font-size:24px;">補</span>
+              <span class="lv-preview-quiz-opt correct"></span>
+              <span class="lv-preview-quiz-opt"></span>
+            </div>
+            <span class="lv-preview-cap">✏️ 퀴즈</span>
+          </div>
+          <div class="lv-preview-item">
+            <div class="lv-preview-thumb">
+              <span class="lv-preview-hanja" style="font-size:24px;">辨</span>
+              <span class="lv-preview-write-line"></span>
+              <span class="lv-preview-mini-label">뜻·음 쓰기</span>
+            </div>
+            <span class="lv-preview-cap">🖌️ 쓰기</span>
+          </div>
+        </div>
+        <div class="lv-preview-foot">급수를 선택하고 나에게 맞는 방식으로 학습해요</div>
       </button>
       <button class="study-menu-card" onclick="goSub('exam_select')">
         <span class="sm-icon">📝</span>
