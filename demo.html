@@ -1,0 +1,521 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>漢字+ 무료 체험 | 한자 급수시험 학습앱</title>
+<meta name="description" content="8급부터 3급까지, 카드학습과 퀴즈로 한자 급수시험을 재미있게 준비하세요. 지금 바로 무료 체험!">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  :root {
+    --pink-bg: #fdf0f3;
+    --pink-light: #fce4ea;
+    --pink-mid: #f8c8d4;
+    --blue: #3b82f6;
+    --blue-dark: #2563eb;
+    --dark: #1a1a2e;
+    --gray: #6b7280;
+    --gray-light: #f3f4f6;
+    --white: #ffffff;
+    --correct: #22c55e;
+    --wrong: #ef4444;
+    --shadow: 0 4px 24px rgba(0,0,0,0.08);
+  }
+
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif;
+    background: var(--white);
+    color: var(--dark);
+    line-height: 1.6;
+  }
+
+  /* ===== HERO ===== */
+  .hero {
+    background: var(--pink-bg);
+    text-align: center;
+    padding: 60px 20px 48px;
+  }
+  .hero-badge {
+    display: inline-block;
+    background: var(--pink-mid);
+    color: #c0385a;
+    font-size: 13px;
+    font-weight: 700;
+    padding: 4px 14px;
+    border-radius: 20px;
+    margin-bottom: 20px;
+  }
+  .hero h1 {
+    font-size: clamp(36px, 8vw, 64px);
+    font-weight: 900;
+    letter-spacing: -2px;
+    line-height: 1.1;
+    margin-bottom: 16px;
+  }
+  .hero h1 span {
+    color: var(--blue);
+  }
+  .hero p {
+    font-size: 17px;
+    color: var(--gray);
+    max-width: 480px;
+    margin: 0 auto 32px;
+  }
+  .hero-btns {
+    display: flex;
+    gap: 12px;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+  .btn-primary {
+    background: var(--blue);
+    color: white;
+    border: none;
+    padding: 14px 28px;
+    border-radius: 12px;
+    font-size: 16px;
+    font-weight: 700;
+    cursor: pointer;
+    text-decoration: none;
+    display: inline-block;
+    transition: background 0.2s, transform 0.1s;
+  }
+  .btn-primary:hover { background: var(--blue-dark); transform: translateY(-1px); }
+  .btn-secondary {
+    background: white;
+    color: var(--blue);
+    border: 2px solid var(--blue);
+    padding: 14px 28px;
+    border-radius: 12px;
+    font-size: 16px;
+    font-weight: 700;
+    cursor: pointer;
+    text-decoration: none;
+    display: inline-block;
+    transition: all 0.2s;
+  }
+  .btn-secondary:hover { background: var(--pink-bg); }
+
+  /* ===== GRADES ===== */
+  .grades {
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+    flex-wrap: wrap;
+    padding: 24px 20px;
+    background: var(--pink-light);
+  }
+  .grade-tag {
+    background: white;
+    border-radius: 20px;
+    padding: 6px 14px;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--dark);
+    box-shadow: 0 1px 4px rgba(0,0,0,0.08);
+  }
+
+  /* ===== SECTION ===== */
+  .section {
+    padding: 60px 20px;
+    max-width: 640px;
+    margin: 0 auto;
+  }
+  .section-label {
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    color: var(--blue);
+    text-transform: uppercase;
+    margin-bottom: 8px;
+  }
+  .section h2 {
+    font-size: clamp(22px, 5vw, 30px);
+    font-weight: 800;
+    margin-bottom: 8px;
+    letter-spacing: -0.5px;
+  }
+  .section-desc {
+    color: var(--gray);
+    margin-bottom: 32px;
+    font-size: 15px;
+  }
+  .divider {
+    height: 1px;
+    background: var(--gray-light);
+    max-width: 640px;
+    margin: 0 auto;
+  }
+
+  /* ===== CARD DEMO ===== */
+  .card-demo {
+    background: var(--pink-bg);
+    border-radius: 20px;
+    padding: 32px 24px;
+    text-align: center;
+    box-shadow: var(--shadow);
+  }
+  .card-counter {
+    font-size: 13px;
+    color: var(--gray);
+    margin-bottom: 16px;
+  }
+  .card-progress {
+    height: 4px;
+    background: var(--pink-mid);
+    border-radius: 4px;
+    margin-bottom: 32px;
+    overflow: hidden;
+  }
+  .card-progress-fill {
+    height: 100%;
+    background: var(--blue);
+    border-radius: 4px;
+    transition: width 0.4s ease;
+  }
+  .hanja-char {
+    font-size: 96px;
+    font-weight: 900;
+    line-height: 1;
+    margin-bottom: 16px;
+    font-family: 'HYSMyeongJo-Medium', 'STSong-Light', serif;
+    cursor: pointer;
+    user-select: none;
+  }
+  .hanja-answer {
+    font-size: 24px;
+    color: var(--blue);
+    font-weight: 700;
+    min-height: 36px;
+    margin-bottom: 8px;
+    transition: opacity 0.3s;
+  }
+  .hanja-hint {
+    font-size: 13px;
+    color: var(--gray);
+    margin-bottom: 28px;
+  }
+  .card-btns {
+    display: flex;
+    gap: 12px;
+    justify-content: center;
+  }
+  .card-btn {
+    width: 52px;
+    height: 52px;
+    border-radius: 50%;
+    border: none;
+    font-size: 22px;
+    cursor: pointer;
+    transition: transform 0.15s, box-shadow 0.15s;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.12);
+  }
+  .card-btn:hover { transform: scale(1.08); }
+  .card-btn.prev { background: white; }
+  .card-btn.flip { background: var(--blue); color: white; width: 64px; height: 64px; font-size: 15px; font-weight: 700; }
+  .card-btn.next { background: white; }
+
+  /* ===== QUIZ DEMO ===== */
+  .quiz-demo {
+    background: var(--pink-bg);
+    border-radius: 20px;
+    padding: 32px 24px;
+    box-shadow: var(--shadow);
+  }
+  .quiz-score {
+    display: flex;
+    gap: 12px;
+    margin-bottom: 20px;
+    font-size: 14px;
+    font-weight: 600;
+  }
+  .score-correct { color: var(--correct); }
+  .score-wrong { color: var(--wrong); }
+  .quiz-hanja {
+    font-size: 72px;
+    font-weight: 900;
+    text-align: center;
+    margin-bottom: 8px;
+    font-family: 'HYSMyeongJo-Medium', 'STSong-Light', serif;
+  }
+  .quiz-result-msg {
+    text-align: center;
+    font-size: 14px;
+    font-weight: 600;
+    min-height: 22px;
+    margin-bottom: 20px;
+  }
+  .quiz-result-msg.correct { color: var(--correct); }
+  .quiz-result-msg.wrong { color: var(--wrong); }
+  .quiz-choices {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-bottom: 20px;
+  }
+  .quiz-choice {
+    background: white;
+    border: 2px solid transparent;
+    border-radius: 12px;
+    padding: 14px 18px;
+    font-size: 16px;
+    font-weight: 600;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.15s;
+  }
+  .quiz-choice:hover:not(:disabled) { border-color: var(--blue); background: #eff6ff; }
+  .quiz-choice.correct { background: #dcfce7; border-color: var(--correct); color: #166534; }
+  .quiz-choice.wrong { background: #fee2e2; border-color: var(--wrong); color: #991b1b; }
+  .quiz-choice:disabled { cursor: default; }
+  .quiz-next {
+    width: 100%;
+    padding: 14px;
+    background: var(--blue);
+    color: white;
+    border: none;
+    border-radius: 12px;
+    font-size: 16px;
+    font-weight: 700;
+    cursor: pointer;
+    display: none;
+    transition: background 0.2s;
+  }
+  .quiz-next:hover { background: var(--blue-dark); }
+
+  /* ===== CTA ===== */
+  .cta {
+    background: var(--dark);
+    color: white;
+    text-align: center;
+    padding: 64px 20px;
+  }
+  .cta h2 {
+    font-size: clamp(24px, 5vw, 36px);
+    font-weight: 800;
+    margin-bottom: 12px;
+    letter-spacing: -0.5px;
+  }
+  .cta p {
+    color: #9ca3af;
+    margin-bottom: 32px;
+    font-size: 16px;
+  }
+  .cta .btn-primary {
+    font-size: 18px;
+    padding: 16px 36px;
+    border-radius: 14px;
+  }
+
+  /* ===== FOOTER ===== */
+  footer {
+    background: var(--gray-light);
+    text-align: center;
+    padding: 24px;
+    font-size: 13px;
+    color: var(--gray);
+  }
+
+  @media (max-width: 480px) {
+    .hero { padding: 48px 16px 36px; }
+    .hanja-char { font-size: 80px; }
+    .quiz-hanja { font-size: 56px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-badge">✨ 무료 체험</div>
+  <h1>漢字<span>+</span><br>한자 공부,<br>이렇게 쉬웠어?</h1>
+  <p>카드학습과 퀴즈로<br>한자 급수시험을 재미있게 준비하세요</p>
+  <div class="hero-btns">
+    <a href="https://hanjaplus.kr" class="btn-primary">무료로 시작하기 →</a>
+    <a href="#demo-card" class="btn-secondary">체험해보기</a>
+  </div>
+</section>
+
+<!-- GRADES -->
+<div class="grades">
+  <span class="grade-tag">8급</span>
+  <span class="grade-tag">7급</span>
+  <span class="grade-tag">준6급</span>
+  <span class="grade-tag">6급</span>
+  <span class="grade-tag">준5급</span>
+  <span class="grade-tag">5급</span>
+  <span class="grade-tag">준4급</span>
+  <span class="grade-tag">4급</span>
+  <span class="grade-tag">준3급</span>
+  <span class="grade-tag">3급</span>
+</div>
+
+<!-- CARD DEMO -->
+<section class="section" id="demo-card">
+  <div class="section-label">카드 학습</div>
+  <h2>한자 카드를 넘기며<br>뜻과 음을 익혀요</h2>
+  <p class="section-desc">카드를 탭하면 뜻과 음이 나타나요</p>
+
+  <div class="card-demo">
+    <div class="card-counter" id="card-counter">1 / 5</div>
+    <div class="card-progress">
+      <div class="card-progress-fill" id="card-progress" style="width:20%"></div>
+    </div>
+    <div class="hanja-char" id="card-hanja" onclick="flipCard()">家</div>
+    <div class="hanja-answer" id="card-answer" style="opacity:0">집 가</div>
+    <div class="hanja-hint">탭하면 정답이 나타나요</div>
+    <div class="card-btns">
+      <button class="card-btn prev" onclick="prevCard()">◀</button>
+      <button class="card-btn flip" onclick="flipCard()">보기</button>
+      <button class="card-btn next" onclick="nextCard()">▶</button>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- QUIZ DEMO -->
+<section class="section" id="demo-quiz">
+  <div class="section-label">퀴즈</div>
+  <h2>4지선다 퀴즈로<br>실력을 확인해요</h2>
+  <p class="section-desc">한자를 보고 알맞은 뜻과 음을 고르세요</p>
+
+  <div class="quiz-demo">
+    <div class="quiz-score">
+      <span class="score-correct">✅ <span id="q-correct">0</span></span>
+      <span class="score-wrong">❌ <span id="q-wrong">0</span></span>
+    </div>
+    <div class="quiz-hanja" id="quiz-hanja">學</div>
+    <div class="quiz-result-msg" id="quiz-msg"></div>
+    <div class="quiz-choices" id="quiz-choices"></div>
+    <button class="quiz-next" id="quiz-next" onclick="nextQuiz()">다음 문제</button>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="cta">
+  <h2>8급부터 3급까지<br>모두 무료로!</h2>
+  <p>카드학습 · 퀴즈 · 쓰기 · 오답노트 · 기출문제<br>지금 바로 시작하세요</p>
+  <a href="https://hanjaplus.kr" class="btn-primary">漢字+ 시작하기 →</a>
+</section>
+
+<footer>
+  © 2026 HanjaPlus · <a href="https://hanjaplus.kr" style="color:inherit;">hanjaplus.kr</a>
+</footer>
+
+<script>
+// ===== 카드 데이터 =====
+const cards = [
+  { hanja: '家', answer: '집 가' },
+  { hanja: '學', answer: '배울 학' },
+  { hanja: '山', answer: '뫼 산' },
+  { hanja: '水', answer: '물 수' },
+  { hanja: '國', answer: '나라 국' },
+];
+
+let cardIdx = 0;
+let cardFlipped = false;
+
+function updateCard() {
+  const c = cards[cardIdx];
+  document.getElementById('card-hanja').textContent = c.hanja;
+  document.getElementById('card-answer').style.opacity = '0';
+  document.getElementById('card-counter').textContent = `${cardIdx + 1} / ${cards.length}`;
+  document.getElementById('card-progress').style.width = `${(cardIdx + 1) / cards.length * 100}%`;
+  cardFlipped = false;
+}
+
+function flipCard() {
+  const ans = document.getElementById('card-answer');
+  if (!cardFlipped) {
+    ans.textContent = cards[cardIdx].answer;
+    ans.style.opacity = '1';
+    cardFlipped = true;
+  } else {
+    ans.style.opacity = '0';
+    cardFlipped = false;
+  }
+}
+
+function nextCard() {
+  cardIdx = (cardIdx + 1) % cards.length;
+  updateCard();
+}
+
+function prevCard() {
+  cardIdx = (cardIdx - 1 + cards.length) % cards.length;
+  updateCard();
+}
+
+// ===== 퀴즈 데이터 =====
+const quizData = [
+  { hanja: '學', answer: '배울 학', choices: ['집 가', '배울 학', '물 수', '나라 국'] },
+  { hanja: '山', answer: '뫼 산',   choices: ['뫼 산', '불 화', '쇠 금', '흙 토'] },
+  { hanja: '國', answer: '나라 국', choices: ['배울 학', '집 가', '나라 국', '사람 인'] },
+  { hanja: '水', answer: '물 수',   choices: ['물 수', '뫼 산', '나무 목', '날 일'] },
+  { hanja: '火', answer: '불 화',   choices: ['흙 토', '쇠 금', '물 수', '불 화'] },
+];
+
+let qIdx = 0;
+let qCorrect = 0;
+let qWrong = 0;
+let qAnswered = false;
+
+function renderQuiz() {
+  const q = quizData[qIdx % quizData.length];
+  document.getElementById('quiz-hanja').textContent = q.hanja;
+  document.getElementById('quiz-msg').textContent = '';
+  document.getElementById('quiz-msg').className = 'quiz-result-msg';
+  document.getElementById('quiz-next').style.display = 'none';
+  qAnswered = false;
+
+  const container = document.getElementById('quiz-choices');
+  container.innerHTML = '';
+  const shuffled = [...q.choices].sort(() => Math.random() - 0.5);
+  shuffled.forEach(choice => {
+    const btn = document.createElement('button');
+    btn.className = 'quiz-choice';
+    btn.textContent = choice;
+    btn.onclick = () => selectChoice(btn, choice, q.answer);
+    container.appendChild(btn);
+  });
+}
+
+function selectChoice(btn, choice, answer) {
+  if (qAnswered) return;
+  qAnswered = true;
+
+  const allBtns = document.querySelectorAll('.quiz-choice');
+  allBtns.forEach(b => {
+    b.disabled = true;
+    if (b.textContent === answer) b.classList.add('correct');
+  });
+
+  const msg = document.getElementById('quiz-msg');
+  if (choice === answer) {
+    btn.classList.add('correct');
+    msg.textContent = '✅ 정답이에요!';
+    msg.className = 'quiz-result-msg correct';
+    qCorrect++;
+    document.getElementById('q-correct').textContent = qCorrect;
+  } else {
+    btn.classList.add('wrong');
+    msg.textContent = `❌ 정답: ${answer}`;
+    msg.className = 'quiz-result-msg wrong';
+    qWrong++;
+    document.getElementById('q-wrong').textContent = qWrong;
+  }
+
+  document.getElementById('quiz-next').style.display = 'block';
+}
+
+function nextQuiz() {
+  qIdx++;
+  renderQuiz();
+}
+
+renderQuiz();
+</script>
+</body>
+</html>
