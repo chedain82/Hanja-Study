@@ -407,7 +407,29 @@ body {
 .level-btn-progress { position:absolute;bottom:0;left:0;height:3px;background:rgba(255,255,255,.6);border-radius:0 2px 2px 0; }
 .level-btn.selected { transform:scale(1.06);box-shadow:0 6px 20px rgba(0,0,0,.35);outline:3px solid white; }
 .level-btn:active { transform:scale(.94); }
+.level-btn.disabled { opacity:0.38; cursor:not-allowed; pointer-events:none; }
 .level-grid { display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin:8px 0; }
+
+/* 단어예시 팝업 */
+#examples-popup-overlay {
+  display:none; position:fixed; inset:0; background:rgba(0,0,0,0.5); z-index:9000;
+  justify-content:center; align-items:center;
+}
+#examples-popup-overlay.active { display:flex; }
+#examples-popup-box {
+  background:white; border-radius:20px; padding:20px 20px 16px;
+  width:88%; max-width:340px;
+  box-shadow:0 8px 32px rgba(0,0,0,0.2);
+}
+#examples-popup-hanja { font-size:36px; font-weight:800; text-align:center; margin-bottom:8px; font-family:'Nanum Myeongjo',serif; }
+#examples-popup-list { font-size:14px; font-weight:600; line-height:2; color:#333; border-top:1.5px solid #eee; padding-top:10px; }
+#examples-popup-list strong { color:#1a237e; }
+#examples-popup-close {
+  display:block; width:100%; background:var(--blue); color:white; border:none;
+  border-radius:12px; padding:10px 0; font-size:15px; font-weight:700;
+  cursor:pointer; font-family:inherit; margin-top:14px;
+}
+.card-nav.has-examples { gap:18px; }
 
 /* 범위 */
 #range .card { overflow: hidden; }
@@ -2766,6 +2788,15 @@ const HG_Sound = (() => {
       <div class="badges-label">🏅 획득한 배지</div>
       <div class="badges-grid" id="badges-grid"></div>
 
+<!-- 단어예시 팝업 -->
+<div id="examples-popup-overlay" onclick="if(event.target===this)closeExamples()">
+  <div id="examples-popup-box">
+    <div id="examples-popup-hanja"></div>
+    <div id="examples-popup-list"></div>
+    <button id="examples-popup-close" onclick="closeExamples()">닫기</button>
+  </div>
+</div>
+
 <!-- 배지 설명 팝업 -->
 <div id="badge-popup-overlay" onclick="closeBadgePopup(event)">
   <div id="badge-popup-box">
@@ -3042,7 +3073,7 @@ const S = {
   sessionStart: null, sessionLogged: false
 };
 
-const LEVEL_ORDER = ['8급','7급','6급','준5급','5급','준4급','4급','준3급','3급'];
+const LEVEL_ORDER = ['8급','7급','6급','준5급','5급','준4급','4급','준3급','3급','2급','1급','사범'];
 const LEVEL_STEPS = {
   '8급':['A-1','A-2','A-3'],'7급':['A-4','A-5','A-6'],
   '6급':['B-1','B-2','B-3','B-4','B-5','B-6'],
@@ -3054,6 +3085,8 @@ const LEVEL_STEPS = {
   '3급':['K1-1','K1-2','K1-3','K2-1','K2-2','K2-3','K3-1','K3-2','K3-3','K4-1','K4-2','K4-3','K5-1','K5-2','K5-3']
 };
 let ALL = [];
+let ALL2 = {};
+let ALL2_FLAT = [];
 
 /* ===== BADGE DEFINITIONS ===== */
 const BADGES = [
@@ -3775,16 +3808,22 @@ const LEVEL_META = {
   '4급' :{'hanja':'理','grad':'linear-gradient(135deg,#b2bec3,#636e72)'},
   '준3급':{'hanja':'智','grad':'linear-gradient(135deg,#636e72,#2d3436)'},
   '3급' :{'hanja':'道','grad':'linear-gradient(135deg,#2d3436,#000)'},
+  '2급' :{'hanja':'識','grad':'linear-gradient(135deg,#3949ab,#1a237e)'},
+  '1급' :{'hanja':'賢','grad':'linear-gradient(135deg,#546e7a,#37474f)'},
+  '사범':{'hanja':'師','grad':'linear-gradient(135deg,#78909c,#546e7a)'},
 };
+const LEVEL_DISABLED = new Set(['1급','사범']);
 function renderLevel() {
   const lp = settings.levelProgress||{};
   document.getElementById('level-grid').innerHTML = LEVEL_ORDER.map(lv => {
     const m = LEVEL_META[lv]||{hanja:'字',grad:'linear-gradient(135deg,#74b9ff,#0984e3)'};
     const prog = lp[lv]||0;
     const pw = prog>0 ? Math.min(Math.round(prog/5),100) : 0;
-    return `<button class="level-btn${S.level===lv?' selected':''}" onclick="selectLevel('${lv}')" style="background:${m.grad};">
+    const isDisabled = LEVEL_DISABLED.has(lv);
+    return `<button class="level-btn${S.level===lv?' selected':''}${isDisabled?' disabled':''}" ${isDisabled?'':'onclick="selectLevel(\''+lv+'\')"'} style="background:${m.grad};">
       <span class="level-btn-name">${lv}</span>
       <span class="level-btn-hanja">${m.hanja}</span>
+      ${isDisabled?'<span style="font-size:9px;opacity:0.75;margin-top:1px;">준비중</span>':''}
       ${prog>0?`<div class="level-btn-progress" style="width:${pw}%"></div>`:''}
     </button>`;
   }).join('');
@@ -3796,16 +3835,29 @@ function renderRange() {
   document.getElementById('range-badge').innerHTML = `${S.level} <span>+</span>`;
   const el = document.getElementById('range-select-count');
   if (el) el.textContent = S.ranges.length>0 ? `${S.ranges.length}개 선택됨` : '범위를 선택해 주세요';
-  const steps = LEVEL_STEPS[S.level]||[];
   const container = document.getElementById('range-groups');
-  if (S.level==='준3급'||S.level==='3급') {
+  if (S.level==='2급') {
+    if (Object.keys(ALL2).length === 0) {
+      container.innerHTML = '<div style="text-align:center;padding:30px 0;color:var(--gray);font-size:14px;font-weight:700;">데이터 로딩 중...</div>';
+      setTimeout(() => { if (S.screen==='range' && S.level==='2급') renderRange(); }, 300);
+      return;
+    }
     const groups = {};
-    steps.forEach(s=>{ const m=s.match(/^([A-Z]\d+)/i); const g=m?m[1]:s.split('-')[0]; (groups[g]=groups[g]||[]).push(s); });
+    ['L1','L2','L3','L4','L5'].forEach(lk => {
+      if (ALL2[lk]) groups[lk] = Object.keys(ALL2[lk]).sort((a,b)=>a.localeCompare(b,undefined,{numeric:true}));
+    });
     container.innerHTML = Object.entries(groups).map(([g,ss])=>`<div class="range-group"><div class="range-group-title">📖 파트 ${g}</div><div class="range-grid">${ss.map(s=>rangeBtn(s)).join('')}</div></div>`).join('');
   } else {
-    const groups = {};
-    steps.forEach(s=>{ const g=s.split('-')[0][0]; (groups[g]=groups[g]||[]).push(s); });
-    container.innerHTML = Object.entries(groups).map(([g,ss])=>`<div class="range-group"><div class="range-group-title">📖 파트 ${g}</div><div class="range-grid">${ss.map(s=>rangeBtn(s)).join('')}</div></div>`).join('');
+    const steps = LEVEL_STEPS[S.level]||[];
+    if (S.level==='준3급'||S.level==='3급') {
+      const groups = {};
+      steps.forEach(s=>{ const m=s.match(/^([A-Z]\d+)/i); const g=m?m[1]:s.split('-')[0]; (groups[g]=groups[g]||[]).push(s); });
+      container.innerHTML = Object.entries(groups).map(([g,ss])=>`<div class="range-group"><div class="range-group-title">📖 파트 ${g}</div><div class="range-grid">${ss.map(s=>rangeBtn(s)).join('')}</div></div>`).join('');
+    } else {
+      const groups = {};
+      steps.forEach(s=>{ const g=s.split('-')[0][0]; (groups[g]=groups[g]||[]).push(s); });
+      container.innerHTML = Object.entries(groups).map(([g,ss])=>`<div class="range-group"><div class="range-group-title">📖 파트 ${g}</div><div class="range-grid">${ss.map(s=>rangeBtn(s)).join('')}</div></div>`).join('');
+    }
   }
   document.getElementById('range-next-btn').disabled = S.ranges.length===0;
 }
@@ -3815,17 +3867,22 @@ function toggleRange(s) { const i=S.ranges.indexOf(s); if(i>=0)S.ranges.splice(i
 function renderStudyType() {
   document.getElementById('type-badge').innerHTML = `${S.level} <span>+</span>`;
   const modeInfo = {card:{icon:'🃏',label:'카드 외우기'}, quiz:{icon:'❓',label:'퀴즈'}, write:{icon:'✏️',label:'쓰기'}};
+  const is2급 = S.level === '2급';
   document.getElementById('type-blocks').innerHTML = [
-    {cat:'선정',label:'선정 한자'},
-    {cat:'교과서',label:'교과서 한자'}
-  ].map(({cat,label})=>{
+    {cat:'선정',label:'선정 한자', disabled:false},
+    {cat:'교과서',label:'교과서 한자', disabled:is2급}
+  ].map(({cat,label,disabled})=>{
     const isSel = S.category===cat;
     const btns = ['card','quiz','write'].map(mode =>
-      `<button class="type-mode-btn${isSel&&S.mode===mode?' selected':''}" onclick="selectMode('${cat}','${mode}')">
-        <span class="mode-icon">${modeInfo[mode].icon}</span>${modeInfo[mode].label}
-      </button>`
+      disabled
+        ? `<button class="type-mode-btn" disabled style="opacity:0.3;cursor:not-allowed;">
+            <span class="mode-icon">${modeInfo[mode].icon}</span>${modeInfo[mode].label}
+           </button>`
+        : `<button class="type-mode-btn${isSel&&S.mode===mode?' selected':''}" onclick="selectMode('${cat}','${mode}')">
+            <span class="mode-icon">${modeInfo[mode].icon}</span>${modeInfo[mode].label}
+           </button>`
     ).join('');
-    return `<div class="type-block"><div class="type-block-title">✏️ ${label}</div><div class="type-btns-3">${btns}</div></div>`;
+    return `<div class="type-block"${disabled?' style="opacity:0.45;"':''}><div class="type-block-title">✏️ ${label}${disabled?' <span style="font-size:11px;color:var(--gray);">(준비중)</span>':''}</div><div class="type-btns-3">${btns}</div></div>`;
   }).join('');
   document.getElementById('type-start-btn').disabled = !(S.category&&S.mode);
 }
@@ -3848,6 +3905,16 @@ function hanjaFontSize(h) { const l=h.replace(/\s/g,'').length; const w=window.i
 function meaningFontSize(t) { const l=t.replace(/\s/g,'').length; const w=window.innerWidth; if(l<=2)return Math.min(Math.max(Math.round(w*.13),48),62); if(l<=4)return Math.min(Math.max(Math.round(w*.11),38),52); if(l<=6)return Math.min(Math.max(Math.round(w*.09),32),44); return Math.min(Math.max(Math.round(w*.08),26),36); }
 
 function buildItems() {
+  if (S.level === '2급') {
+    const rangeSet = new Set(S.ranges);
+    let items = ALL2_FLAT.filter(it => rangeSet.has(it.단계));
+    if (S.random) items = shuffle(items);
+    else items.sort((a,b) => {
+      if (a.단계 !== b.단계) return a.단계.localeCompare(b.단계, undefined, {numeric:true});
+      return (parseInt(a.번호)||0) - (parseInt(b.번호)||0);
+    });
+    return items;
+  }
   const compRanges=S.ranges.map(r=>r.replace('-','').toUpperCase());
   let items=ALL.filter(it=>it.급수===S.level&&compRanges.includes(it.표시단계)&&it.타입===S.category);
   if(S.random)items=shuffle(items);
@@ -3931,9 +3998,10 @@ function renderCard() {
       <div class="hanja-display" style="font-size:${hSize}px;">${it.한자}</div>
       <div class="meaning-display" style="font-size:${mSize}px;height:80px;min-height:unset;transition:opacity .2s;opacity:${S.showBack?1:0};">${back}</div>
     </div>
-    <div class="card-nav">
+    <div class="card-nav${S.level==='2급'?' has-examples':''}">
       <button class="nav-arrow" onclick="prevItem()" ${S.idx===0?'disabled':''}>◀</button>
       <button class="reveal-btn" onclick="toggleBack()" style="font-size:${S.showBack?'18px':'46px'};">${S.showBack?'닫기':'?'}</button>
+      ${S.level==='2급'?`<button class="nav-arrow" onclick="showExamples()" title="단어예시" style="font-size:28px;">📖</button>`:''}
       <button class="nav-arrow" onclick="nextItem()">▶</button>
     </div>
     <div class="back-wrap"><button class="btn btn-back" onclick="goSub(S.lastMain)">← 뒤로</button></div>
@@ -4039,13 +4107,15 @@ function buildChoices(it) {
   else{correct=it.한자;getCand=x=>x.한자;}
   const correctLen = correct.length;
   // 같은 타입 전체 데이터에서 같은 글자 수 보기 찾기
-  const pool = ALL.filter(x=>x.타입===S.category);
+  const basePool = S.level==='2급' ? ALL2_FLAT : ALL.filter(x=>x.타입===S.category);
+  const pool = S.level==='2급' ? ALL2_FLAT : basePool;
   let cands = pool.map(getCand).filter(c=>c&&c!==correct);
-  // 같은 글자 수 우선, 부족하면 전체 ALL에서 보충
+  // 같은 글자 수 우선, 부족하면 전체에서 보충
   let sameLenCands = shuffle(cands.filter(c=>c.length===correctLen));
   if (sameLenCands.length < 3) {
-    // 전체 ALL에서 같은 글자 수 추가 검색
-    const allCands = ALL.map(getCand).filter(c=>c&&c!==correct&&!sameLenCands.includes(c));
+    // 전체에서 같은 글자 수 추가 검색
+    const globalPool = S.level==='2급' ? ALL2_FLAT : ALL;
+    const allCands = globalPool.map(getCand).filter(c=>c&&c!==correct&&!sameLenCands.includes(c));
     const extraSame = shuffle(allCands.filter(c=>c.length===correctLen));
     sameLenCands = [...sameLenCands, ...extraSame];
   }
@@ -4771,6 +4841,59 @@ async function loadData() {
   } catch(e) {
     document.getElementById('loading').innerHTML = '<div style="font-size:17px;font-weight:700;color:#C62828;padding:24px;text-align:center;">데이터를 불러오지 못했습니다.<br>hanja_data.json 파일을 확인해 주세요.</div>';
   }
+}
+
+async function load2급Data() {
+  const paths = ['hanja_2level_data.json', '../00 기본 자료/hanja_2level_data.json'];
+  let loaded = false;
+  for (const path of paths) {
+    try {
+      const r = await fetch(path);
+      if (!r.ok) continue;
+      ALL2 = await r.json();
+      loaded = true;
+      break;
+    } catch(e) { /* 다음 경로 시도 */ }
+  }
+  if (!loaded) { console.error('hanja_2level_data.json 로드 실패 (모든 경로 시도함)'); return; }
+
+  LEVEL_STEPS['2급'] = [];
+  let idx = 1;
+  ['L1','L2','L3','L4','L5'].forEach(lk => {
+    if (!ALL2[lk]) return;
+    Object.keys(ALL2[lk]).sort((a,b)=>a.localeCompare(b,undefined,{numeric:true})).forEach(sk => {
+      LEVEL_STEPS['2급'].push(sk);
+      ALL2[lk][sk].forEach(d => {
+        ALL2_FLAT.push({
+          번호: String(idx++),
+          한자: d.hanja,
+          뜻: d.meaning,
+          독음: d.sound,
+          급수: '2급',
+          단계: sk,
+          표시단계: sk.replace('-',''),
+          타입: '선정',
+          examples: d.examples || []
+        });
+      });
+    });
+  });
+  // 범위 화면이 2급으로 열려 있으면 즉시 재렌더
+  if (S.screen === 'range' && S.level === '2급') renderRange();
+}
+
+function showExamples() {
+  const it = S.items[S.idx];
+  if (!it || !it.examples || !it.examples.length) { toast('단어예시가 없습니다.'); return; }
+  document.getElementById('examples-popup-hanja').textContent = it.한자;
+  document.getElementById('examples-popup-list').innerHTML = it.examples.map(e => {
+    if (e.raw) return `<div>${e.raw}</div>`;
+    return `<div><strong>${e.word}(${e.reading})</strong> : ${e.meaning}</div>`;
+  }).join('');
+  document.getElementById('examples-popup-overlay').classList.add('active');
+}
+function closeExamples() {
+  document.getElementById('examples-popup-overlay').classList.remove('active');
 }
 
 /* ===== LOGIN ===== */
@@ -6201,7 +6324,7 @@ async function enterStudentApp() {
       window._myPersonalMsg = await window._fbGetPersonalMsg(currentUser.id);
     } catch(e) { window._myPersonalMsg = null; }
   }
-  loadData(); loadExamData();
+  loadData(); loadExamData(); load2급Data();
 }
 
 function enterTeacherApp() {
@@ -6788,7 +6911,7 @@ async function showStudentDetail(studentId, studentName) {
     const acc     = totalQ > 0 ? Math.round(totalC / totalQ * 100) : 0;
     const streak  = st.streak    || 0;
     const totalDays = new Set(sl.map(e => e.date)).size;
-    const LEVEL_ORDER = ['8급','7급','6급','준5급','5급','준4급','4급','준3급','3급'];
+    const LEVEL_ORDER = ['8급','7급','6급','준5급','5급','준4급','4급','준3급','3급','2급','1급','사범'];
     const LEVEL_STEPS = {'8급':3,'7급':3,'6급':6,'준5급':6,'5급':12,'준4급':12,'4급':12,'준3급':15,'3급':15};
     const lp = st.levelProgress || {};
     const wrongArr = Array.isArray(wn) ? wn : Object.values(wn);
