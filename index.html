@@ -2206,7 +2206,6 @@ const HG_Sound = (() => {
       <div class="exam-pdf-popup-title" id="exam-pdf-popup-title"></div>
       <div class="exam-pdf-popup-sub">아래 버튼을 눌러 파일을 열고 프린트하세요</div>
       <button class="exam-pdf-popup-btn" id="exam-pdf-popup-print-btn" onclick="handlePdfPrint()">🖨️ 프린트 하기</button>
-      <div class="exam-coupang-notice" style="margin-top:10px;">이 서비스는 쿠팡 파트너스 활동의 일환으로,<br>이에 따른 일정액의 수수료를 제공받습니다.</div>
       <button class="exam-pdf-popup-close" onclick="closeExamPdfPopup()">닫기</button>
     </div>
   </div>
@@ -2555,6 +2554,14 @@ const HG_Sound = (() => {
 
 <div id="loading"><div class="spinner"></div><div style="font-size:16px;font-weight:700;color:#555;">데이터 불러오는 중...</div></div>
 <div id="toast"></div>
+<!-- 단어예시 팝업 -->
+<div id="examples-popup-overlay" onclick="if(event.target===this)closeExamples()">
+  <div id="examples-popup-box">
+    <div id="examples-popup-hanja"></div>
+    <div id="examples-popup-list"></div>
+    <button id="examples-popup-close" onclick="closeExamples()">닫기</button>
+  </div>
+</div>
 <div id="coupon-overlay">
   <div class="coupon-ov-box">
     <div style="font-size:60px;">🎉</div>
@@ -2787,15 +2794,6 @@ const HG_Sound = (() => {
     <div class="badges-wrap">
       <div class="badges-label">🏅 획득한 배지</div>
       <div class="badges-grid" id="badges-grid"></div>
-
-<!-- 단어예시 팝업 -->
-<div id="examples-popup-overlay" onclick="if(event.target===this)closeExamples()">
-  <div id="examples-popup-box">
-    <div id="examples-popup-hanja"></div>
-    <div id="examples-popup-list"></div>
-    <button id="examples-popup-close" onclick="closeExamples()">닫기</button>
-  </div>
-</div>
 
 <!-- 배지 설명 팝업 -->
 <div id="badge-popup-overlay" onclick="closeBadgePopup(event)">
@@ -3812,7 +3810,7 @@ const LEVEL_META = {
   '1급' :{'hanja':'賢','grad':'linear-gradient(135deg,#546e7a,#37474f)'},
   '사범':{'hanja':'師','grad':'linear-gradient(135deg,#78909c,#546e7a)'},
 };
-const LEVEL_DISABLED = new Set(['1급','사범']);
+const LEVEL_DISABLED = new Set(['2급','1급','사범']);
 function renderLevel() {
   const lp = settings.levelProgress||{};
   document.getElementById('level-grid').innerHTML = LEVEL_ORDER.map(lv => {
@@ -5734,23 +5732,6 @@ function openExamPdfPopup(name, url, grade) {
 }
 
 function handlePdfPrint() {
-  const now = Date.now();
-  const HOURS_24 = 24 * 60 * 60 * 1000; // 24시간(밀리초)
-  const visitKey = 'coupang_visit_ts';
-  const lastVisit = parseInt(localStorage.getItem(visitKey) || '0');
-  const elapsed = now - lastVisit;
-
-  if (elapsed >= HOURS_24) {
-    // 마지막 방문으로부터 24시간 이상 지남 → 쿠팡 연결
-    const coupangUrl = COUPANG_BOOKS[_currentPdfGrade]
-      ? COUPANG_BOOKS[_currentPdfGrade].url
-      : COUPANG_DEFAULT;
-    window.open(coupangUrl, '_blank');
-    localStorage.setItem(visitKey, String(now)); // 방문 시각 저장
-    gaEvent('coupang_pdf_visit', {grade: _currentPdfGrade});
-  }
-
-  // 쿠팡 방문 여부 관계없이 PDF 바로 열기
   window.open(_currentPdfUrl, '_blank');
   gaEvent('pdf_print', {grade: _currentPdfGrade});
   closeExamPdfPopup();
