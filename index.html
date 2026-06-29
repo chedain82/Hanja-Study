@@ -3085,6 +3085,8 @@ const LEVEL_STEPS = {
 let ALL = [];
 let ALL2 = {};
 let ALL2_FLAT = [];
+let ALL_HIGH = [];
+const HIGH_LEVELS = new Set(['2급','1급','사범']);
 
 /* ===== BADGE DEFINITIONS ===== */
 const BADGES = [
@@ -3810,7 +3812,7 @@ const LEVEL_META = {
   '1급' :{'hanja':'賢','grad':'linear-gradient(135deg,#546e7a,#37474f)'},
   '사범':{'hanja':'師','grad':'linear-gradient(135deg,#78909c,#546e7a)'},
 };
-const LEVEL_DISABLED = new Set(['2급','1급','사범']);
+const LEVEL_DISABLED = new Set([]);
 function renderLevel() {
   const lp = settings.levelProgress||{};
   document.getElementById('level-grid').innerHTML = LEVEL_ORDER.map(lv => {
@@ -3834,17 +3836,22 @@ function renderRange() {
   const el = document.getElementById('range-select-count');
   if (el) el.textContent = S.ranges.length>0 ? `${S.ranges.length}개 선택됨` : '범위를 선택해 주세요';
   const container = document.getElementById('range-groups');
-  if (S.level==='2급') {
-    if (Object.keys(ALL2).length === 0) {
+  if (HIGH_LEVELS.has(S.level)) {
+    if (ALL_HIGH.length === 0) {
       container.innerHTML = '<div style="text-align:center;padding:30px 0;color:var(--gray);font-size:14px;font-weight:700;">데이터 로딩 중...</div>';
-      setTimeout(() => { if (S.screen==='range' && S.level==='2급') renderRange(); }, 300);
+      setTimeout(() => { if (HIGH_LEVELS.has(S.screen==='range'&&S.level)) renderRange(); }, 300);
       return;
     }
+    const steps = LEVEL_STEPS[S.level] || [];
     const groups = {};
-    ['L1','L2','L3','L4','L5'].forEach(lk => {
-      if (ALL2[lk]) groups[lk] = Object.keys(ALL2[lk]).sort((a,b)=>a.localeCompare(b,undefined,{numeric:true}));
+    const GROUP_SIZE = 10;
+    steps.forEach((s, i) => {
+      const g = `${Math.floor(i / GROUP_SIZE) + 1}`;
+      (groups[g] = groups[g] || []).push(s);
     });
-    container.innerHTML = Object.entries(groups).map(([g,ss])=>`<div class="range-group"><div class="range-group-title">📖 파트 ${g}</div><div class="range-grid">${ss.map(s=>rangeBtn(s)).join('')}</div></div>`).join('');
+    container.innerHTML = Object.entries(groups).map(([g, ss]) =>
+      `<div class="range-group"><div class="range-group-title">📖 파트 ${g}</div><div class="range-grid">${ss.map(s => rangeBtn(s)).join('')}</div></div>`
+    ).join('');
   } else {
     const steps = LEVEL_STEPS[S.level]||[];
     if (S.level==='준3급'||S.level==='3급') {
@@ -3865,10 +3872,10 @@ function toggleRange(s) { const i=S.ranges.indexOf(s); if(i>=0)S.ranges.splice(i
 function renderStudyType() {
   document.getElementById('type-badge').innerHTML = `${S.level} <span>+</span>`;
   const modeInfo = {card:{icon:'🃏',label:'카드 외우기'}, quiz:{icon:'❓',label:'퀴즈'}, write:{icon:'✏️',label:'쓰기'}};
-  const is2급 = S.level === '2급';
+  const isHighLevel = HIGH_LEVELS.has(S.level);
   document.getElementById('type-blocks').innerHTML = [
     {cat:'선정',label:'선정 한자', disabled:false},
-    {cat:'교과서',label:'교과서 한자', disabled:is2급}
+    {cat:'교과서',label:'교과서 한자', disabled:isHighLevel}
   ].map(({cat,label,disabled})=>{
     const isSel = S.category===cat;
     const btns = ['card','quiz','write'].map(mode =>
@@ -3903,9 +3910,9 @@ function hanjaFontSize(h) { const l=h.replace(/\s/g,'').length; const w=window.i
 function meaningFontSize(t) { const l=t.replace(/\s/g,'').length; const w=window.innerWidth; if(l<=2)return Math.min(Math.max(Math.round(w*.13),48),62); if(l<=4)return Math.min(Math.max(Math.round(w*.11),38),52); if(l<=6)return Math.min(Math.max(Math.round(w*.09),32),44); return Math.min(Math.max(Math.round(w*.08),26),36); }
 
 function buildItems() {
-  if (S.level === '2급') {
+  if (HIGH_LEVELS.has(S.level)) {
     const rangeSet = new Set(S.ranges);
-    let items = ALL2_FLAT.filter(it => rangeSet.has(it.단계));
+    let items = ALL_HIGH.filter(it => it.급수 === S.level && rangeSet.has(it.단계));
     if (S.random) items = shuffle(items);
     else items.sort((a,b) => {
       if (a.단계 !== b.단계) return a.단계.localeCompare(b.단계, undefined, {numeric:true});
@@ -3996,10 +4003,9 @@ function renderCard() {
       <div class="hanja-display" style="font-size:${hSize}px;">${it.한자}</div>
       <div class="meaning-display" style="font-size:${mSize}px;height:80px;min-height:unset;transition:opacity .2s;opacity:${S.showBack?1:0};">${back}</div>
     </div>
-    <div class="card-nav${S.level==='2급'?' has-examples':''}">
+    <div class="card-nav">
       <button class="nav-arrow" onclick="prevItem()" ${S.idx===0?'disabled':''}>◀</button>
       <button class="reveal-btn" onclick="toggleBack()" style="font-size:${S.showBack?'18px':'46px'};">${S.showBack?'닫기':'?'}</button>
-      ${S.level==='2급'?`<button class="nav-arrow" onclick="showExamples()" title="단어예시" style="font-size:28px;">📖</button>`:''}
       <button class="nav-arrow" onclick="nextItem()">▶</button>
     </div>
     <div class="back-wrap"><button class="btn btn-back" onclick="goSub(S.lastMain)">← 뒤로</button></div>
@@ -4105,14 +4111,14 @@ function buildChoices(it) {
   else{correct=it.한자;getCand=x=>x.한자;}
   const correctLen = correct.length;
   // 같은 타입 전체 데이터에서 같은 글자 수 보기 찾기
-  const basePool = S.level==='2급' ? ALL2_FLAT : ALL.filter(x=>x.타입===S.category);
-  const pool = S.level==='2급' ? ALL2_FLAT : basePool;
+  const basePool = HIGH_LEVELS.has(S.level) ? ALL_HIGH.filter(x=>x.급수===S.level) : ALL.filter(x=>x.타입===S.category);
+  const pool = basePool;
   let cands = pool.map(getCand).filter(c=>c&&c!==correct);
   // 같은 글자 수 우선, 부족하면 전체에서 보충
   let sameLenCands = shuffle(cands.filter(c=>c.length===correctLen));
   if (sameLenCands.length < 3) {
     // 전체에서 같은 글자 수 추가 검색
-    const globalPool = S.level==='2급' ? ALL2_FLAT : ALL;
+    const globalPool = HIGH_LEVELS.has(S.level) ? ALL_HIGH.filter(x=>x.급수===S.level) : ALL;
     const allCands = globalPool.map(getCand).filter(c=>c&&c!==correct&&!sameLenCands.includes(c));
     const extraSame = shuffle(allCands.filter(c=>c.length===correctLen));
     sameLenCands = [...sameLenCands, ...extraSame];
@@ -4841,43 +4847,34 @@ async function loadData() {
   }
 }
 
-async function load2급Data() {
-  const paths = ['hanja_2level_data.json', '../00 기본 자료/hanja_2level_data.json'];
-  let loaded = false;
+async function loadHighLevelData() {
+  const paths = ['hanja_high_level_data.json', '../00 기본 자료/hanja_high_level_data.json'];
+  let data = null;
   for (const path of paths) {
     try {
       const r = await fetch(path);
       if (!r.ok) continue;
-      ALL2 = await r.json();
-      loaded = true;
+      data = await r.json();
       break;
     } catch(e) { /* 다음 경로 시도 */ }
   }
-  if (!loaded) { console.error('hanja_2level_data.json 로드 실패 (모든 경로 시도함)'); return; }
+  if (!data) { console.error('hanja_high_level_data.json 로드 실패'); return; }
 
-  LEVEL_STEPS['2급'] = [];
-  let idx = 1;
-  ['L1','L2','L3','L4','L5'].forEach(lk => {
-    if (!ALL2[lk]) return;
-    Object.keys(ALL2[lk]).sort((a,b)=>a.localeCompare(b,undefined,{numeric:true})).forEach(sk => {
-      LEVEL_STEPS['2급'].push(sk);
-      ALL2[lk][sk].forEach(d => {
-        ALL2_FLAT.push({
-          번호: String(idx++),
-          한자: d.hanja,
-          뜻: d.meaning,
-          독음: d.sound,
-          급수: '2급',
-          단계: sk,
-          표시단계: sk.replace('-',''),
-          타입: '선정',
-          examples: d.examples || []
-        });
+  ALL_HIGH = data;
+
+  // 급수별 단계 목록을 데이터에서 자동 추출
+  ['2급','1급','사범'].forEach(grade => {
+    const steps = [...new Set(data.filter(x=>x.급수===grade).map(x=>x.단계))]
+      .sort((a,b) => {
+        const [pa, ia] = a.split('-'); const [pb, ib] = b.split('-');
+        if (pa !== pb) return pa.localeCompare(pb);
+        return (parseInt(ia)||0) - (parseInt(ib)||0);
       });
-    });
+    LEVEL_STEPS[grade] = steps;
   });
-  // 범위 화면이 2급으로 열려 있으면 즉시 재렌더
-  if (S.screen === 'range' && S.level === '2급') renderRange();
+
+  // 범위 화면이 고급 급수로 열려 있으면 즉시 재렌더
+  if (S.screen === 'range' && HIGH_LEVELS.has(S.level)) renderRange();
 }
 
 function showExamples() {
@@ -6305,7 +6302,7 @@ async function enterStudentApp() {
       window._myPersonalMsg = await window._fbGetPersonalMsg(currentUser.id);
     } catch(e) { window._myPersonalMsg = null; }
   }
-  loadData(); loadExamData(); load2급Data();
+  loadData(); loadExamData(); loadHighLevelData();
 }
 
 function enterTeacherApp() {
