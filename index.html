@@ -283,6 +283,19 @@ body {
 .lv-preview-cap { font-size: 11px; font-weight: 800; color: #555; }
 .lv-preview-foot { font-size: 11px; font-weight: 700; color: var(--gray); text-align: center; margin-top: 12px; }
 
+/* 홈 학습 숏컷 */
+.hs-grade-row { display:flex;align-items:center;gap:8px;margin:12px 0 10px;padding:0 2px; }
+.hs-badge-btn { height:32px;padding:0 14px;border-radius:16px;background:#fff;color:#0071e3;border:1.5px solid #0071e3;font-size:13px;font-weight:700;cursor:pointer;font-family:inherit;white-space:nowrap; }
+.hs-badge-btn:active { opacity:.7; }
+.hs-type-block { margin-bottom:10px;padding:0 2px; }
+.hs-type-title { font-size:12px;font-weight:700;color:#444;margin-bottom:6px; }
+.hs-type-btns { display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px; }
+.hs-mode-btn { height:48px;font-size:12px;font-weight:600;border-radius:14px;padding:4px 4px;background:#fff;color:#0071e3;border:1.5px solid #0071e3;cursor:pointer;font-family:inherit;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;transition:all .15s;width:100%; }
+.hs-mode-icon { font-size:18px;line-height:1; }
+.hs-mode-btn.selected { background:#0071e3;color:#fff; }
+.hs-mode-btn:active:not(:disabled) { transform:scale(.95); }
+.hs-mode-btn:disabled { opacity:.35;cursor:not-allowed; }
+
 /* ===== REPORT TAB ===== */
 .report-section { padding: 0 14px 14px; }
 .report-card { background: white; border-radius: 14px; padding: 14px; margin-bottom: 12px; }
@@ -1229,11 +1242,11 @@ body {
 .lv-section-title { font-size:14px; font-weight:800; color:#222; margin-bottom:10px; padding-top:4px; }
 .lv-level-block { margin-bottom:16px; }
 .lv-level-header {
-  display:flex; align-items:center; justify-content:space-between;
+  display:flex; align-items:center;
   margin-bottom:6px;
 }
 .lv-level-name { font-size:16px; font-weight:800; color:#222; }
-.lv-level-pct  { font-size:14px; font-weight:800; color:var(--blue); }
+.lv-level-pct  { font-size:14px; font-weight:800; color:var(--blue); margin-left:auto; }
 .lv-level-pct.done { color:var(--correct); }
 .lv-level-pct.none { color:var(--gray); }
 .lv-level-bar-bg { height:5px; background:#EEE; border-radius:3px; overflow:hidden; margin-bottom:8px; }
@@ -1959,7 +1972,7 @@ const HG_Sound = (() => {
 .range-popup-box .range-btn{height:36px;font-size:12px;}
 /* ===== 아코디언 ===== */
 .lv-level-header{cursor:pointer;user-select:none;}
-.lv-level-toggle{font-size:13px;color:#aaa;margin-left:4px;}
+.lv-level-toggle{font-size:13px;color:#0071e3;margin-left:4px;}
 .lv-steps-grid.collapsed{display:none;}
 #guide-popup{position:fixed;inset:0;z-index:2000;background:rgba(0,0,0,.45);display:none;align-items:flex-end;justify-content:center;}
 #guide-popup.active{display:flex;}
@@ -2049,7 +2062,7 @@ const HG_Sound = (() => {
 </div>
 
 <!-- ===== 한자 게임 화면 ===== -->
-<div id="hanja-game-screen">
+<div id="hanja-game-screen" style="display:none">
 
   <!-- 게임 시작/급수 선택 -->
   <div id="hg-select">
@@ -2699,43 +2712,27 @@ const HG_Sound = (() => {
   <div id="tab-study" class="tab-pane">
     <div class="tab-header">학습</div>
     <div class="study-menu">
-      <button class="study-menu-card lv-preview-card" onclick="goSub('level')">
+      <div class="study-menu-card lv-preview-card" id="home-level-shortcut">
         <div class="lv-preview-head">
           <span class="sm-icon">📚</span>
           <div class="sm-body">
             <div class="sm-title">급수별 학습</div>
             <div class="sm-sub">8급 ~ 사범 · 카드 / 퀴즈 / 쓰기</div>
           </div>
-          <span class="sm-arrow">›</span>
         </div>
-        <div class="lv-preview-grid">
-          <div class="lv-preview-item">
-            <div class="lv-preview-thumb">
-              <span class="lv-preview-hanja">壁</span>
-              <span class="lv-preview-mini-label">탭하면 뜻·음</span>
-            </div>
-            <span class="lv-preview-cap">📇 카드학습</span>
-          </div>
-          <div class="lv-preview-item">
-            <div class="lv-preview-thumb">
-              <span class="lv-preview-hanja" style="font-size:20px;">補</span>
-              <span class="lv-preview-quiz-opt"><span class="lv-preview-quiz-num">1</span></span>
-              <span class="lv-preview-quiz-opt correct"><span class="lv-preview-quiz-num">2</span></span>
-              <span class="lv-preview-quiz-opt"><span class="lv-preview-quiz-num">3</span></span>
-            </div>
-            <span class="lv-preview-cap">✏️ 퀴즈</span>
-          </div>
-          <div class="lv-preview-item">
-            <div class="lv-preview-thumb">
-              <span class="lv-preview-hanja" style="font-size:24px;">辨</span>
-              <span class="lv-preview-write-line"></span>
-              <span class="lv-preview-mini-label">뜻·음 쓰기</span>
-            </div>
-            <span class="lv-preview-cap">🖌️ 쓰기</span>
-          </div>
+        <div class="hs-grade-row">
+          <button class="hs-badge-btn" id="hs-grade-badge" onclick="event.stopPropagation();openGradePicker()">급수 ▾</button>
+          <button class="hs-badge-btn" id="hs-range-badge" onclick="event.stopPropagation();openRangePopup()">범위 ▾</button>
         </div>
-        <div class="lv-preview-foot">급수를 선택하고 나에게 맞는 방식으로 학습해요</div>
-      </button>
+        <div class="hs-type-block">
+          <div class="hs-type-title">✏️ 선정 한자</div>
+          <div class="hs-type-btns" id="hs-type-btns-선정"></div>
+        </div>
+        <div class="hs-type-block">
+          <div class="hs-type-title">📖 교과서 한자</div>
+          <div class="hs-type-btns" id="hs-type-btns-교과서"></div>
+        </div>
+      </div>
       <button class="study-menu-card" onclick="goSub('exam_select')">
         <span class="sm-icon">📝</span>
         <div class="sm-body">
@@ -3100,14 +3097,17 @@ function saveSettings()  { try { localStorage.setItem(_lsKey('hanja_settings'), 
 function loadSettings()  { try { _migrateLsKey('hanja_settings');  return JSON.parse(localStorage.getItem(_lsKey('hanja_settings')))  || {streak:0,lastStudyDate:'',dailyGoal:100,totalCorrect:0,totalQuestions:0,totalTime:0,bestStreak:0,levelProgress:{},perfectStreak:0,lastPerfectDate:'',coupons:0,usedCoupons:0}; } catch(e){ return {streak:0,lastStudyDate:'',dailyGoal:100,totalCorrect:0,totalQuestions:0,totalTime:0,bestStreak:0,levelProgress:{},perfectStreak:0,lastPerfectDate:'',coupons:0,usedCoupons:0}; } }
 function saveBadges()    { try { localStorage.setItem(_lsKey('hanja_badges'),    JSON.stringify(earnedBadges)); } catch(e){} }
 function loadBadges()    { try { _migrateLsKey('hanja_badges');    return JSON.parse(localStorage.getItem(_lsKey('hanja_badges')))    || {}; } catch(e){ return {}; } }
+function saveLastLevelRange() { try { localStorage.setItem(_lsKey('hanja_lastLevelRange'), JSON.stringify({level:S.level,ranges:S.ranges})); } catch(e){} }
+function loadLastLevelRange() { try { _migrateLsKey('hanja_lastLevelRange'); return JSON.parse(localStorage.getItem(_lsKey('hanja_lastLevelRange'))) || null; } catch(e){ return null; } }
 
 /* ===== APP STATE ===== */
 let studyLog = loadStudyLog();
 let settings = loadSettings();
 let earnedBadges = loadBadges();
 
+const _savedLR = loadLastLevelRange();
 const S = {
-  screen:'home', level:null, ranges:[], category:null, mode:null,
+  screen:'home', level:(_savedLR&&_savedLR.level)||null, ranges:(_savedLR&&Array.isArray(_savedLR.ranges)&&_savedLR.ranges)||[], category:null, mode:null,
   items:[], idx:0, showBack:false,
   quizChoices:[], quizSelected:null, quizChecked:false,
   quizResult:'', quizItemKey:null, quizDir:'한자→뜻',
@@ -3447,6 +3447,7 @@ function renderStudyTab() {
   const wrongCount = S.wrongNote.length;
   const sub = document.getElementById('study-wrong-sub');
   if (sub) sub.textContent = wrongCount > 0 ? `${wrongCount}개 한자 복습 대기 중` : '퀴즈에서 틀린 문제 모음';
+  renderHomeShortcut();
 }
 
 /* ===== REPORT TAB RENDER ===== */
@@ -3740,7 +3741,8 @@ function _buildLevelProgressHTML(wp, lp) {
     const isOpen = pct > 0;
     return `<div class="lv-level-block">
       <div class="lv-level-header" id="lv-hdr-${lv}" onclick="toggleLevelBlock('${lv}')">
-        <span class="lv-level-name">${lv} <span class="lv-level-toggle">${isOpen ? '▼' : '▶'}</span></span>
+        <span class="lv-level-name">${lv}</span>
+        <span class="lv-level-toggle">${isOpen ? '▼' : '▶'}</span>
         <span class="lv-level-pct ${pctCls}">${pctLabel}</span>
       </div>
       <div class="lv-level-bar-bg"><div class="lv-level-bar-fill" style="width:${pct}%"></div></div>
@@ -3883,7 +3885,7 @@ function renderLevel() {
   }).join('');
   document.getElementById('level-next-btn').disabled = !S.level;
 }
-function selectLevel(lv) { S.level=lv; S.ranges=[]; renderLevel(); }
+function selectLevel(lv) { S.level=lv; S.ranges=[]; saveLastLevelRange(); renderLevel(); }
 
 function renderRange() {
   document.getElementById('range-badge').innerHTML = `${S.level} <span>+</span>`;
@@ -3921,7 +3923,7 @@ function renderRange() {
   document.getElementById('range-next-btn').disabled = S.ranges.length===0;
 }
 function rangeBtn(s) { return `<button class="range-btn${S.ranges.includes(s)?' selected':''}" onclick="toggleRange('${s}')">${s}</button>`; }
-function toggleRange(s) { const i=S.ranges.indexOf(s); if(i>=0)S.ranges.splice(i,1); else S.ranges.push(s); document.getElementById('range-next-btn').disabled=S.ranges.length===0; renderRange(); }
+function toggleRange(s) { const i=S.ranges.indexOf(s); if(i>=0)S.ranges.splice(i,1); else S.ranges.push(s); saveLastLevelRange(); document.getElementById('range-next-btn').disabled=S.ranges.length===0; renderRange(); }
 
 function renderStudyType() {
   document.getElementById('type-badge').innerHTML = `${S.level} <span>+</span>`;
@@ -5796,35 +5798,121 @@ function closeExamPdfPopup(e) {
 
 /* ===== 급수 드럼롤 피커 ===== */
 let _pickerGrade = null;
+let _pickerDragging = false, _pickerDragStartY = 0, _pickerDragStartScroll = 0;
+let _pickerLastWheelTime = 0;
+const _PICKER_H = 44;
 
-function openGradePicker() {
-  _pickerGrade = S.level;
-  const track = document.getElementById('grade-picker-track');
-  track.innerHTML = LEVEL_ORDER.map(lv =>
-    `<div class="grade-picker-item${lv===S.level?' active-item':''}" data-lv="${lv}">${lv}</div>`
-  ).join('');
-  document.getElementById('grade-picker-overlay').classList.add('active');
-  // 현재 급수로 스크롤
-  const idx = LEVEL_ORDER.indexOf(S.level);
-  if (idx >= 0) track.scrollTop = idx * 44;
-  track.addEventListener('scroll', _onPickerScroll);
+function _pickerTrack() { return document.getElementById('grade-picker-track'); }
+function _pickerIdx() { return Math.max(0, LEVEL_ORDER.indexOf(_pickerGrade)); }
+
+function _setPickerIdx(idx, smooth) {
+  idx = Math.max(0, Math.min(idx, LEVEL_ORDER.length - 1));
+  _pickerGrade = LEVEL_ORDER[idx];
+  const track = _pickerTrack();
+  track.scrollTo({top: idx * _PICKER_H, behavior: smooth ? 'smooth' : 'auto'});
+  track.querySelectorAll('.grade-picker-item').forEach((el, i) => el.classList.toggle('active-item', i === idx));
 }
 
+function _movePicker(delta) { _setPickerIdx(_pickerIdx() + delta, true); }
+
 function _onPickerScroll() {
-  const track = document.getElementById('grade-picker-track');
-  const idx = Math.round(track.scrollTop / 44);
+  const track = _pickerTrack();
+  const idx = Math.round(track.scrollTop / _PICKER_H);
   const lv = LEVEL_ORDER[Math.max(0, Math.min(idx, LEVEL_ORDER.length - 1))];
   if (lv !== _pickerGrade) {
     _pickerGrade = lv;
-    track.querySelectorAll('.grade-picker-item').forEach((el, i) => {
-      el.classList.toggle('active-item', LEVEL_ORDER[i] === lv);
-    });
+    track.querySelectorAll('.grade-picker-item').forEach((el, i) => el.classList.toggle('active-item', LEVEL_ORDER[i] === lv));
   }
 }
 
+function _onPickerWheel(e) {
+  e.preventDefault();
+  const now = Date.now();
+  if (now - _pickerLastWheelTime < 120) return;
+  _pickerLastWheelTime = now;
+  _movePicker(e.deltaY > 0 ? 1 : -1);
+}
+
+function _onPickerKeydown(e) {
+  if (e.key === 'ArrowUp') { e.preventDefault(); _movePicker(-1); }
+  else if (e.key === 'ArrowDown') { e.preventDefault(); _movePicker(1); }
+  else if (e.key === 'Enter') { e.preventDefault(); confirmGradePicker(); }
+  else if (e.key === 'Escape') { e.preventDefault(); closeGradePicker(); }
+}
+
+function _onPickerItemClick(e) {
+  const item = e.target.closest('.grade-picker-item');
+  if (!item) return;
+  const idx = LEVEL_ORDER.indexOf(item.dataset.lv);
+  if (idx >= 0) _setPickerIdx(idx, true);
+}
+
+function _onPickerMouseDown(e) {
+  _pickerDragging = true;
+  _pickerDragStartY = e.clientY;
+  _pickerDragStartScroll = _pickerTrack().scrollTop;
+  document.addEventListener('mousemove', _onPickerMouseMove);
+  document.addEventListener('mouseup', _onPickerMouseUp);
+  e.preventDefault();
+}
+function _onPickerMouseMove(e) {
+  if (!_pickerDragging) return;
+  _pickerTrack().scrollTop = _pickerDragStartScroll - (e.clientY - _pickerDragStartY);
+}
+function _onPickerMouseUp() {
+  if (!_pickerDragging) return;
+  _pickerDragging = false;
+  document.removeEventListener('mousemove', _onPickerMouseMove);
+  document.removeEventListener('mouseup', _onPickerMouseUp);
+  _setPickerIdx(_pickerIdx(), true);
+}
+
+function _onPickerTouchStart(e) {
+  _pickerDragging = true;
+  _pickerDragStartY = e.touches[0].clientY;
+  _pickerDragStartScroll = _pickerTrack().scrollTop;
+}
+function _onPickerTouchMove(e) {
+  if (!_pickerDragging) return;
+  e.preventDefault();
+  _pickerTrack().scrollTop = _pickerDragStartScroll - (e.touches[0].clientY - _pickerDragStartY);
+}
+function _onPickerTouchEnd() {
+  if (!_pickerDragging) return;
+  _pickerDragging = false;
+  _setPickerIdx(_pickerIdx(), true);
+}
+
+function openGradePicker() {
+  _pickerGrade = S.level || LEVEL_ORDER[0];
+  const track = _pickerTrack();
+  track.innerHTML = LEVEL_ORDER.map(lv =>
+    `<div class="grade-picker-item${lv===_pickerGrade?' active-item':''}" data-lv="${lv}">${lv}</div>`
+  ).join('');
+  document.getElementById('grade-picker-overlay').classList.add('active');
+  track.scrollTop = LEVEL_ORDER.indexOf(_pickerGrade) * _PICKER_H;
+  track.addEventListener('scroll', _onPickerScroll);
+  track.addEventListener('wheel', _onPickerWheel, {passive:false});
+  track.addEventListener('click', _onPickerItemClick);
+  track.addEventListener('mousedown', _onPickerMouseDown);
+  track.addEventListener('touchstart', _onPickerTouchStart, {passive:true});
+  track.addEventListener('touchmove', _onPickerTouchMove, {passive:false});
+  track.addEventListener('touchend', _onPickerTouchEnd);
+  document.addEventListener('keydown', _onPickerKeydown);
+}
+
 function closeGradePicker() {
-  const track = document.getElementById('grade-picker-track');
+  const track = _pickerTrack();
   track.removeEventListener('scroll', _onPickerScroll);
+  track.removeEventListener('wheel', _onPickerWheel);
+  track.removeEventListener('click', _onPickerItemClick);
+  track.removeEventListener('mousedown', _onPickerMouseDown);
+  track.removeEventListener('touchstart', _onPickerTouchStart);
+  track.removeEventListener('touchmove', _onPickerTouchMove);
+  track.removeEventListener('touchend', _onPickerTouchEnd);
+  document.removeEventListener('keydown', _onPickerKeydown);
+  document.removeEventListener('mousemove', _onPickerMouseMove);
+  document.removeEventListener('mouseup', _onPickerMouseUp);
   document.getElementById('grade-picker-overlay').classList.remove('active');
 }
 
@@ -5832,8 +5920,10 @@ function confirmGradePicker() {
   if (_pickerGrade && _pickerGrade !== S.level) {
     S.level = _pickerGrade;
     S.ranges = [];
+    saveLastLevelRange();
     document.getElementById('type-badge').innerHTML = `${S.level} <span>+</span>`;
     renderStudyType();
+    renderHomeShortcut();
   }
   closeGradePicker();
 }
@@ -5870,9 +5960,12 @@ function _toggleRangePopup(s) {
   if (i >= 0) S.ranges.splice(i, 1); else S.ranges.push(s);
   _renderRangePopupGroups();
   document.getElementById('range-next-btn').disabled = S.ranges.length === 0;
+  saveLastLevelRange();
+  renderHomeShortcut();
 }
 
 function openRangePopup() {
+  if (!S.level) { toast('급수를 먼저 선택해 주세요.'); openGradePicker(); return; }
   _renderRangePopupGroups();
   document.getElementById('range-popup-overlay').classList.add('active');
 }
@@ -5880,6 +5973,34 @@ function openRangePopup() {
 function closeRangePopup() {
   document.getElementById('range-popup-overlay').classList.remove('active');
   document.getElementById('type-start-btn').disabled = !(S.category && S.mode && S.ranges.length > 0);
+  renderHomeShortcut();
+}
+
+/* ===== 홈 학습 숏컷 ===== */
+function renderHomeShortcut() {
+  const gradeBadge = document.getElementById('hs-grade-badge');
+  const rangeBadge = document.getElementById('hs-range-badge');
+  if (!gradeBadge) return;
+  gradeBadge.textContent = (S.level || '급수') + ' ▾';
+  rangeBadge.textContent = S.ranges.length > 0 ? `범위 ${S.ranges.length}개 ▾` : '범위 ▾';
+  const isHigh = S.level && HIGH_LEVELS.has(S.level);
+  const modes = [{key:'card',icon:'🃏',label:'카드 외우기'},{key:'quiz',icon:'❓',label:'퀴즈'},{key:'write',icon:'✏️',label:'쓰기'}];
+  ['선정','교과서'].forEach(cat => {
+    const box = document.getElementById('hs-type-btns-' + cat);
+    if (!box) return;
+    const disabled = cat === '교과서' && isHigh;
+    box.innerHTML = modes.map(({key,icon,label}) => {
+      const dis = disabled ? ' disabled' : '';
+      return `<button class="hs-mode-btn"${dis} onclick="event.stopPropagation();startHomeShortcut('${cat}','${key}')"><span class="hs-mode-icon">${icon}</span>${label}</button>`;
+    }).join('');
+  });
+}
+
+function startHomeShortcut(cat, mode) {
+  if (!S.level) { toast('급수를 먼저 선택해 주세요.'); openGradePicker(); return; }
+  if (!S.ranges.length) { toast('범위를 먼저 선택해 주세요.'); openRangePopup(); return; }
+  S.category = cat; S.mode = mode;
+  startStudy();
 }
 
 /* ===== 아코디언 (급수별 학습 현황) ===== */
