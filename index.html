@@ -58,7 +58,7 @@
   --card: #F4F4F4;
   --blue: #3B7DE0;
   --dark-blue: #233D99;
-  --black-btn: #272222;
+  --black-btn: #4A90D9;
   --gray: #9A9A9A;
   --border: #2A2A2A;
   --correct: #43A047;
@@ -258,9 +258,9 @@ body {
   display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px; margin-top: 14px;
 }
 .lv-preview-item {
-  background: #F7F8FA; border-radius: 12px; padding: 12px 6px 10px;
+  background: #EEF4FF; border-radius: 12px; padding: 12px 6px 10px;
   display: flex; flex-direction: column; align-items: center; gap: 7px;
-  border: 1px solid #EEF0F3;
+  border: 1px solid #D4E4FF;
 }
 .lv-preview-thumb {
   width: 100%; aspect-ratio: 1/1; border-radius: 9px; background: #fff;
@@ -401,14 +401,14 @@ body {
 /* ===== EXISTING STUDY STYLES ===== */
 /* 급수 */
 .level-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; justify-content: center; margin: 16px 0; }
-.level-btn { width:100%;height:90px;border-radius:20px;color:white;border:none;cursor:pointer;transition:all .2s;box-shadow:0 4px 16px rgba(0,0,0,.2);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;padding:8px;position:relative;overflow:hidden; }
-.level-btn-hanja { font-size:22px;font-weight:800;font-family:'Nanum Myeongjo',serif;line-height:1;opacity:.92; }
-.level-btn-name { font-size:28px;font-weight:800;line-height:1.05; }
-.level-btn-progress { position:absolute;bottom:0;left:0;height:3px;background:rgba(255,255,255,.6);border-radius:0 2px 2px 0; }
-.level-btn.selected { transform:scale(1.06);box-shadow:0 6px 20px rgba(0,0,0,.35);outline:3px solid white; }
-.level-btn:active { transform:scale(.94); }
+.level-btn { width:100%;height:76px;border-radius:16px;color:var(--level-color,#333);background:#fff;border:2px solid var(--level-color,#ccc);cursor:pointer;transition:all .18s;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;padding:8px;position:relative;overflow:hidden; }
+.level-btn-hanja { font-size:26px;font-weight:800;font-family:'Nanum Myeongjo',serif;line-height:1;opacity:.95; }
+.level-btn-name { font-size:13px;font-weight:700;line-height:1;opacity:.85;letter-spacing:.5px; }
+.level-btn-progress { position:absolute;bottom:0;left:0;height:3px;background:rgba(255,255,255,.55);border-radius:0 2px 2px 0; }
+.level-btn.selected { background:var(--level-color,#4A90D9);color:#fff;border-color:var(--level-color,#4A90D9);transform:scale(1.05);box-shadow:0 5px 18px rgba(0,0,0,.2); }
+.level-btn:active { transform:scale(.93); }
 .level-btn.disabled { opacity:0.38; cursor:not-allowed; pointer-events:none; }
-.level-grid { display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin:8px 0; }
+.level-grid { display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:8px 0; }
 
 /* 단어예시 팝업 */
 #examples-popup-overlay {
@@ -433,19 +433,19 @@ body {
 
 /* 범위 */
 #range .card { overflow: hidden; }
-.range-group { background:white;border-radius:16px;padding:14px 12px;margin-bottom:12px;box-shadow:0 2px 10px rgba(0,0,0,.07); }
-.range-group-title { font-size:14px;font-weight:800;text-align:center;margin-bottom:10px;color:var(--blue);background:#f0f4ff;padding:4px 0;border-radius:8px; }
-.range-grid { display:grid;grid-template-columns:repeat(3,1fr);gap:8px;justify-items:center; }
-.range-btn { width:100%;height:52px;border-radius:12px;background:linear-gradient(135deg,#74b9ff,#0984e3);color:white;font-size:15px;font-weight:700;border:none;cursor:pointer;padding:0 6px;transition:all .15s;box-shadow:0 2px 8px rgba(9,132,227,.3); }
-.range-btn.selected { background:linear-gradient(135deg,#2d3436,#000);box-shadow:0 3px 12px rgba(0,0,0,.4);transform:scale(1.04); }
-.range-btn:active { transform:scale(.92); }
+.range-group { background:#f9f9fb;border-radius:14px;padding:12px 10px;margin-bottom:10px;border:1px solid #ebebef; }
+.range-group-title { font-size:12px;font-weight:700;text-align:center;margin-bottom:8px;color:#888;letter-spacing:.5px;text-transform:uppercase; }
+.range-grid { display:grid;grid-template-columns:repeat(3,1fr);gap:8px; }
+.range-btn { width:100%;height:44px;border-radius:22px;background:#fff;color:#4A90D9;font-size:14px;font-weight:600;border:1.5px solid #4A90D9;cursor:pointer;transition:all .15s;padding:0; }
+.range-btn.selected { background:#2171C7;color:#fff;border-color:#2171C7;font-weight:700; }
+.range-btn:active { transform:scale(.93); }
 
 /* 공부 유형 */
 .type-block { background: white; border-radius: 18px; padding: 18px 14px 16px; margin-bottom: 16px; box-shadow: 0 2px 8px rgba(0,0,0,.06); }
-.type-block-title { text-align: center; font-size: 16px; font-weight: 700; margin-bottom: 14px; color: #555; }
+.type-block-title { text-align: center; font-size: 16px; font-weight: 700; margin-bottom: 14px; color: #333; }
 .type-btns { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
-.type-btns-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; }
-.type-mode-btn { height: 88px; border-radius: 16px; background: #F0F5FF; color: var(--dark-blue); font-size: 16px; font-weight: 800; border: 2px solid transparent; cursor: pointer; transition: all .18s; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 6px; }
+.type-btns-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; justify-content: center; }
+.type-mode-btn { height: 88px; border-radius: 16px; background: #EEF4FF; color: #4A90D9; font-size: 16px; font-weight: 800; border: 1.5px solid #4A90D9; cursor: pointer; transition: all .18s; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 6px; }
 .type-mode-btn .mode-icon { font-size: 24px; }
 .type-mode-btn.selected { background: var(--blue); color: white; border-color: var(--dark-blue); box-shadow: 0 4px 12px rgba(59,125,224,.35); transform: scale(1.03); }
 .type-mode-btn:active { transform: scale(.94); }
@@ -1934,6 +1934,33 @@ const HG_Sound = (() => {
   background:none;border:none;color:#bbb;font-size:14px;
   font-weight:600;cursor:pointer;font-family:inherit;
 }
+/* ===== 급수 드럼롤 피커 ===== */
+#grade-picker-overlay{position:fixed;inset:0;z-index:500;background:rgba(0,0,0,.45);backdrop-filter:blur(3px);display:none;align-items:center;justify-content:center;}
+#grade-picker-overlay.active{display:flex;}
+.grade-picker-box{width:80%;max-width:320px;max-height:60vh;background:#fff;border-radius:20px;padding:20px 0 20px;display:flex;flex-direction:column;gap:0;overflow:hidden;}
+.grade-picker-title{text-align:center;font-size:16px;font-weight:800;color:#222;padding:0 0 14px;}
+.grade-picker-wrap{position:relative;height:220px;overflow:hidden;}
+.grade-picker-highlight{position:absolute;top:50%;left:16px;right:16px;transform:translateY(-50%);height:44px;background:rgba(74,144,217,.1);border-radius:10px;border-top:1.5px solid #4A90D9;border-bottom:1.5px solid #4A90D9;pointer-events:none;z-index:1;}
+.grade-picker-track{height:100%;overflow-y:scroll;scroll-snap-type:y mandatory;-webkit-overflow-scrolling:touch;scrollbar-width:none;padding:88px 16px;}
+.grade-picker-track::-webkit-scrollbar{display:none;}
+.grade-picker-item{height:44px;display:flex;align-items:center;justify-content:center;scroll-snap-align:center;font-size:20px;font-weight:700;color:#bbb;cursor:pointer;transition:color .15s,font-size .15s;border-radius:10px;}
+.grade-picker-item.active-item{color:#4A90D9;font-size:22px;font-weight:800;}
+.grade-picker-actions{display:flex;gap:12px;padding:16px 20px 0;}
+.grade-picker-cancel{flex:1;height:48px;border-radius:24px;background:#f5f5f5;color:#888;font-size:16px;font-weight:700;border:none;cursor:pointer;font-family:inherit;}
+.grade-picker-confirm{flex:2;height:48px;border-radius:24px;background:#4A90D9;color:#fff;font-size:16px;font-weight:800;border:none;cursor:pointer;font-family:inherit;}
+/* ===== 범위 팝업 (center modal) ===== */
+#range-popup-overlay{position:fixed;inset:0;z-index:400;background:rgba(0,0,0,.4);backdrop-filter:blur(3px);display:none;align-items:center;justify-content:center;}
+#range-popup-overlay.active{display:flex;}
+.range-popup-box{width:90%;max-width:400px;max-height:70vh;background:#fff;border-radius:20px;padding:20px 16px 20px;display:flex;flex-direction:column;gap:10px;overflow:hidden;}
+.range-popup-title{font-size:16px;font-weight:800;color:#222;text-align:center;}
+.range-popup-groups{overflow-y:auto;flex:1;}
+.range-popup-count{font-size:13px;font-weight:700;color:#4A90D9;text-align:center;background:#EEF4FF;padding:5px;border-radius:10px;}
+.range-popup-confirm{width:100%;height:50px;border-radius:25px;background:#4A90D9;color:#fff;font-size:17px;font-weight:800;border:none;cursor:pointer;font-family:inherit;flex-shrink:0;}
+.range-popup-box .range-btn{height:36px;font-size:12px;}
+/* ===== 아코디언 ===== */
+.lv-level-header{cursor:pointer;user-select:none;}
+.lv-level-toggle{font-size:13px;color:#aaa;margin-left:4px;}
+.lv-steps-grid.collapsed{display:none;}
 #guide-popup{position:fixed;inset:0;z-index:2000;background:rgba(0,0,0,.45);display:none;align-items:flex-end;justify-content:center;}
 #guide-popup.active{display:flex;}
 .guide-sheet{width:100%;max-width:480px;max-height:85vh;background:white;border-radius:28px 28px 0 0;padding:28px 24px 40px;overflow-y:auto;animation:slideUp .3s ease;}
@@ -2677,7 +2704,7 @@ const HG_Sound = (() => {
           <span class="sm-icon">📚</span>
           <div class="sm-body">
             <div class="sm-title">급수별 학습</div>
-            <div class="sm-sub">8급 ~ 3급 · 카드 / 퀴즈 / 쓰기</div>
+            <div class="sm-sub">8급 ~ 사범 · 카드 / 퀴즈 / 쓰기</div>
           </div>
           <span class="sm-arrow">›</span>
         </div>
@@ -2899,8 +2926,9 @@ const HG_Sound = (() => {
     <div class="top-label">공부 유형</div>
     <div class="card">
       <div style="display:flex;align-items:center;gap:10px;margin-bottom:16px;">
-        <div class="badge" id="type-badge"></div>
+        <div class="badge" id="type-badge" onclick="openGradePicker()" style="cursor:pointer;" title="급수 변경"></div>
         <div class="section-title" style="font-size:clamp(22px,6vw,32px);">공부 유형</div>
+        <button onclick="openRangePopup()" style="margin-left:auto;height:34px;padding:0 14px;border-radius:17px;background:#EEF4FF;color:#4A90D9;border:1.5px solid #4A90D9;font-size:13px;font-weight:700;cursor:pointer;white-space:nowrap;font-family:inherit;">범위 ▼</button>
       </div>
       <div id="type-blocks"></div>
       <div style="flex:1;"></div>
@@ -2979,6 +3007,31 @@ const HG_Sound = (() => {
   <div id="wrong_note" class="subscreen">
     <div class="top-label">오답 노트</div>
     <div class="card" id="wrong-note-inner"></div>
+  </div>
+
+  <!-- 급수 드럼롤 피커 -->
+  <div id="grade-picker-overlay" onclick="if(event.target===this)closeGradePicker()">
+    <div class="grade-picker-box">
+      <div class="grade-picker-title">급수 선택</div>
+      <div class="grade-picker-wrap">
+        <div class="grade-picker-highlight"></div>
+        <div class="grade-picker-track" id="grade-picker-track"></div>
+      </div>
+      <div class="grade-picker-actions">
+        <button class="grade-picker-cancel" onclick="closeGradePicker()">취소</button>
+        <button class="grade-picker-confirm" onclick="confirmGradePicker()">확인</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 범위 팝업 (bottom sheet) -->
+  <div id="range-popup-overlay" onclick="if(event.target===this)closeRangePopup()">
+    <div class="range-popup-box">
+      <div class="range-popup-title">범위 선택</div>
+      <div class="range-popup-count" id="range-popup-count">범위를 선택해 주세요</div>
+      <div class="range-popup-groups" id="range-popup-groups"></div>
+      <button class="range-popup-confirm" onclick="closeRangePopup()">적용 완료</button>
+    </div>
   </div>
 
 </div><!-- end #app -->
@@ -3684,13 +3737,14 @@ function _buildLevelProgressHTML(wp, lp) {
       </div>`;
     }).join('');
 
+    const isOpen = pct > 0;
     return `<div class="lv-level-block">
-      <div class="lv-level-header">
-        <span class="lv-level-name">${lv}</span>
+      <div class="lv-level-header" id="lv-hdr-${lv}" onclick="toggleLevelBlock('${lv}')">
+        <span class="lv-level-name">${lv} <span class="lv-level-toggle">${isOpen ? '▼' : '▶'}</span></span>
         <span class="lv-level-pct ${pctCls}">${pctLabel}</span>
       </div>
       <div class="lv-level-bar-bg"><div class="lv-level-bar-fill" style="width:${pct}%"></div></div>
-      <div class="lv-steps-grid">${stepCards}</div>
+      <div class="lv-steps-grid${isOpen ? '' : ' collapsed'}" id="lv-grid-${lv}">${stepCards}</div>
     </div>`;
   }).join('');
 }
@@ -3799,30 +3853,30 @@ function clearWrongNote() { S.wrongNote = []; saveWrongNote(); toast('오답 노
 
 /* ===== LEVEL / RANGE / TYPE ===== */
 const LEVEL_META = {
-  '8급' :{'hanja':'字','grad':'linear-gradient(135deg,#74b9ff,#0984e3)'},
-  '7급' :{'hanja':'文','grad':'linear-gradient(135deg,#55efc4,#00b894)'},
-  '6급' :{'hanja':'學','grad':'linear-gradient(135deg,#a29bfe,#6c5ce7)'},
-  '준5급':{'hanja':'知','grad':'linear-gradient(135deg,#fd79a8,#e84393)'},
-  '5급' :{'hanja':'思','grad':'linear-gradient(135deg,#fdcb6e,#e17055)'},
-  '준4급':{'hanja':'問','grad':'linear-gradient(135deg,#e17055,#d63031)'},
-  '4급' :{'hanja':'理','grad':'linear-gradient(135deg,#b2bec3,#636e72)'},
-  '준3급':{'hanja':'智','grad':'linear-gradient(135deg,#636e72,#2d3436)'},
-  '3급' :{'hanja':'道','grad':'linear-gradient(135deg,#2d3436,#000)'},
-  '2급' :{'hanja':'識','grad':'linear-gradient(135deg,#3949ab,#1a237e)'},
-  '1급' :{'hanja':'賢','grad':'linear-gradient(135deg,#546e7a,#37474f)'},
-  '사범':{'hanja':'師','grad':'linear-gradient(135deg,#78909c,#546e7a)'},
+  '8급' :{'hanja':'字','color':'#0984e3'},
+  '7급' :{'hanja':'文','color':'#00b894'},
+  '6급' :{'hanja':'學','color':'#6c5ce7'},
+  '준5급':{'hanja':'知','color':'#e84393'},
+  '5급' :{'hanja':'思','color':'#e17055'},
+  '준4급':{'hanja':'問','color':'#d63031'},
+  '4급' :{'hanja':'理','color':'#636e72'},
+  '준3급':{'hanja':'智','color':'#2d3436'},
+  '3급' :{'hanja':'道','color':'#1a1a1a'},
+  '2급' :{'hanja':'識','color':'#1a3a8f'},
+  '1급' :{'hanja':'賢','color':'#2d4a6e'},
+  '사범' :{'hanja':'師','color':'#4a6572'},
 };
 const LEVEL_DISABLED = new Set([]);
 function renderLevel() {
   const lp = settings.levelProgress||{};
   document.getElementById('level-grid').innerHTML = LEVEL_ORDER.map(lv => {
-    const m = LEVEL_META[lv]||{hanja:'字',grad:'linear-gradient(135deg,#74b9ff,#0984e3)'};
+    const m = LEVEL_META[lv]||{hanja:'字',color:'#4A90D9'};
     const prog = lp[lv]||0;
     const pw = prog>0 ? Math.min(Math.round(prog/5),100) : 0;
     const isDisabled = LEVEL_DISABLED.has(lv);
-    return `<button class="level-btn${S.level===lv?' selected':''}${isDisabled?' disabled':''}" ${isDisabled?'':'onclick="selectLevel(\''+lv+'\')"'} style="background:${m.grad};">
-      <span class="level-btn-name">${lv}</span>
+    return `<button class="level-btn${S.level===lv?' selected':''}${isDisabled?' disabled':''}" ${isDisabled?'':'onclick="selectLevel(\''+lv+'\')"'} style="--level-color:${m.color};">
       <span class="level-btn-hanja">${m.hanja}</span>
+      <span class="level-btn-name">${lv}</span>
       ${isDisabled?'<span style="font-size:9px;opacity:0.75;margin-top:1px;">준비중</span>':''}
       ${prog>0?`<div class="level-btn-progress" style="width:${pw}%"></div>`:''}
     </button>`;
@@ -3889,7 +3943,7 @@ function renderStudyType() {
     ).join('');
     return `<div class="type-block"${disabled?' style="opacity:0.45;"':''}><div class="type-block-title">✏️ ${label}${disabled?' <span style="font-size:11px;color:var(--gray);">(준비중)</span>':''}</div><div class="type-btns-3">${btns}</div></div>`;
   }).join('');
-  document.getElementById('type-start-btn').disabled = !(S.category&&S.mode);
+  document.getElementById('type-start-btn').disabled = !(S.category && S.mode && S.ranges.length > 0);
 }
 function selectMode(cat, mode) { S.category=cat; S.mode=mode; renderStudyType(); }
 
@@ -5738,6 +5792,104 @@ function closeExamPdfPopup(e) {
   if (!e || e.target === document.getElementById('exam-pdf-popup')) {
     document.getElementById('exam-pdf-popup').classList.remove('active');
   }
+}
+
+/* ===== 급수 드럼롤 피커 ===== */
+let _pickerGrade = null;
+
+function openGradePicker() {
+  _pickerGrade = S.level;
+  const track = document.getElementById('grade-picker-track');
+  track.innerHTML = LEVEL_ORDER.map(lv =>
+    `<div class="grade-picker-item${lv===S.level?' active-item':''}" data-lv="${lv}">${lv}</div>`
+  ).join('');
+  document.getElementById('grade-picker-overlay').classList.add('active');
+  // 현재 급수로 스크롤
+  const idx = LEVEL_ORDER.indexOf(S.level);
+  if (idx >= 0) track.scrollTop = idx * 44;
+  track.addEventListener('scroll', _onPickerScroll);
+}
+
+function _onPickerScroll() {
+  const track = document.getElementById('grade-picker-track');
+  const idx = Math.round(track.scrollTop / 44);
+  const lv = LEVEL_ORDER[Math.max(0, Math.min(idx, LEVEL_ORDER.length - 1))];
+  if (lv !== _pickerGrade) {
+    _pickerGrade = lv;
+    track.querySelectorAll('.grade-picker-item').forEach((el, i) => {
+      el.classList.toggle('active-item', LEVEL_ORDER[i] === lv);
+    });
+  }
+}
+
+function closeGradePicker() {
+  const track = document.getElementById('grade-picker-track');
+  track.removeEventListener('scroll', _onPickerScroll);
+  document.getElementById('grade-picker-overlay').classList.remove('active');
+}
+
+function confirmGradePicker() {
+  if (_pickerGrade && _pickerGrade !== S.level) {
+    S.level = _pickerGrade;
+    S.ranges = [];
+    document.getElementById('type-badge').innerHTML = `${S.level} <span>+</span>`;
+    renderStudyType();
+  }
+  closeGradePicker();
+}
+
+/* ===== 범위 팝업 ===== */
+function _renderRangePopupGroups() {
+  const steps = LEVEL_STEPS[S.level] || [];
+  const countEl = document.getElementById('range-popup-count');
+  const groupsEl = document.getElementById('range-popup-groups');
+  countEl.textContent = S.ranges.length > 0 ? `${S.ranges.length}개 선택됨` : '범위를 선택해 주세요';
+
+  const groups = {};
+  if (HIGH_LEVELS.has(S.level)) {
+    const GROUP_SIZE = 10;
+    steps.forEach((s, i) => {
+      const g = `파트 ${Math.floor(i / GROUP_SIZE) + 1}`;
+      (groups[g] = groups[g] || []).push(s);
+    });
+  } else if (S.level === '준3급' || S.level === '3급') {
+    steps.forEach(s => { const m = s.match(/^([A-Z]\d+)/i); const g = m ? m[1] : s.split('-')[0]; (groups[g] = groups[g] || []).push(s); });
+  } else {
+    steps.forEach(s => { const g = s.split('-')[0][0]; (groups[g] = groups[g] || []).push(s); });
+  }
+
+  groupsEl.innerHTML = Object.entries(groups).map(([g, ss]) =>
+    `<div class="range-group"><div class="range-group-title">${g}</div><div class="range-grid">${
+      ss.map(s => `<button class="range-btn${S.ranges.includes(s) ? ' selected' : ''}" onclick="_toggleRangePopup('${s}')">${s}</button>`).join('')
+    }</div></div>`
+  ).join('');
+}
+
+function _toggleRangePopup(s) {
+  const i = S.ranges.indexOf(s);
+  if (i >= 0) S.ranges.splice(i, 1); else S.ranges.push(s);
+  _renderRangePopupGroups();
+  document.getElementById('range-next-btn').disabled = S.ranges.length === 0;
+}
+
+function openRangePopup() {
+  _renderRangePopupGroups();
+  document.getElementById('range-popup-overlay').classList.add('active');
+}
+
+function closeRangePopup() {
+  document.getElementById('range-popup-overlay').classList.remove('active');
+  document.getElementById('type-start-btn').disabled = !(S.category && S.mode && S.ranges.length > 0);
+}
+
+/* ===== 아코디언 (급수별 학습 현황) ===== */
+function toggleLevelBlock(lv) {
+  const grid = document.getElementById('lv-grid-' + lv);
+  if (!grid) return;
+  const header = document.getElementById('lv-hdr-' + lv);
+  const icon = header ? header.querySelector('.lv-level-toggle') : null;
+  const collapsed = grid.classList.toggle('collapsed');
+  if (icon) icon.textContent = collapsed ? '▶' : '▼';
 }
 
 function landingStartSolo(){hgForceHide();document.getElementById('landing-screen').classList.remove('active');document.getElementById('study-select-screen').classList.remove('active');document.getElementById('login-screen').classList.add('active');lsGo('free-student');gaEvent('landing_cta',{action:'혼자 시작하기'});}
