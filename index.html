@@ -3,6 +3,9 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+<meta http-equiv="Pragma" content="no-cache">
+<meta http-equiv="Expires" content="0">
 
 <!-- ===== SEO 기본 태그 ===== -->
 <title>한자플러스 | 한자 급수 시험 무료 학습 앱 - HanjaPlus</title>
@@ -7459,4 +7462,20 @@ document.addEventListener('visibilitychange', async () => {
     await setDoc(doc(db, 'freeUsers', nickname), { pin, createdAt: new Date().toISOString() });
   };
 
+</script>
+<script>
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('/sw.js').then(registration => {
+      registration.addEventListener('updatefound', () => {
+        const newWorker = registration.installing;
+        newWorker.addEventListener('statechange', () => {
+          if (newWorker.state === 'activated') {
+            window.location.reload();
+          }
+        });
+      });
+    }).catch(err => console.warn('SW 등록 실패:', err));
+  });
+}
 </script>
