@@ -2736,11 +2736,11 @@ const HG_Sound = (() => {
           <div class="hs-type-btns" id="hs-type-btns-교과서"></div>
         </div>
       </div>
-      <button class="study-menu-card" onclick="goSub('exam_select')">
+      <button class="study-menu-card" onclick="goSub('exam_reading_level')">
         <span class="sm-icon">📝</span>
         <div class="sm-body">
           <div class="sm-title">기출문제 풀기</div>
-          <div class="sm-sub">3급 · 110~120회 기출</div>
+          <div class="sm-sub">준5급~3급 · 110~124회 기출</div>
         </div>
         <span class="sm-arrow">›</span>
       </button>
@@ -2955,52 +2955,70 @@ const HG_Sound = (() => {
     <div class="card" id="write-inner"></div>
   </div>
 
-  <!-- 기출 유형 선택 -->
-  <div id="exam_select" class="subscreen">
+  <!-- 기출문제 독음 퀴즈: 급수 선택 -->
+  <div id="exam_reading_level" class="subscreen">
     <div class="top-label">기출문제</div>
-    <div class="card">
-      <div class="section-title mb-8">기출문제</div>
-      <div style="display:flex;align-items:center;justify-content:center;gap:6px;margin-bottom:16px;">
-        <span style="font-size:18px;font-weight:800;color:var(--blue);border:2px solid var(--blue);border-radius:10px;padding:4px 14px;">3급</span>
-      </div>
-      <div style="font-size:15px;font-weight:700;color:#555;text-align:center;margin-bottom:18px;">유형을 선택하세요</div>
-      <div style="display:flex;flex-direction:column;gap:14px;align-items:center;">
-        <button class="btn btn-black" onclick="goExamType('huneum')" style="width:220px;height:64px;font-size:19px;">한자 훈음 쓰기</button>
-        <button class="btn btn-black" onclick="goExamType('reading')" style="width:220px;height:64px;font-size:19px;">한자어 독음 쓰기</button>
-        <div style="width:220px;height:1px;background:#ddd;margin:4px 0;"></div>
-        <button class="btn btn-black" onclick="startStudyWrite('db1')" style="width:220px;height:64px;font-size:19px;background:#1a3a8f;">한자 보기용 쓰기</button>
-        <button class="btn btn-black" onclick="startStudyWrite('db2')" style="width:220px;height:64px;font-size:19px;background:#1a3a8f;">한자 만들기 쓰기</button>
-      </div>
+    <div class="card" style="background:linear-gradient(160deg,#f8e8ee 0%,#ede8f8 100%);">
+      <div class="section-title mb-8" style="font-size:clamp(22px,6vw,30px);">급수 선택하기</div>
+      <div style="font-size:13px;font-weight:600;color:var(--gray);text-align:center;margin-bottom:10px;">원하는 급수를 선택해 주세요</div>
+      <div class="level-grid" id="er-level-grid"></div>
       <div style="flex:1;"></div>
+      <div class="btn-row mb-12"><button class="btn btn-black" id="er-level-next-btn" onclick="goSub('exam_reading_round')" disabled>다음</button></div>
       <div class="back-wrap"><button class="btn btn-back" onclick="showTab('study')">← 뒤로</button></div>
     </div>
   </div>
 
-  <!-- 기출 회차 선택 -->
-  <div id="exam_round" class="subscreen">
+  <!-- 기출문제 독음 퀴즈: 회차 선택 -->
+  <div id="exam_reading_round" class="subscreen">
     <div class="top-label">기출문제</div>
     <div class="card">
-      <div class="section-title mb-8" id="exam-round-title"></div>
-      <div style="font-size:15px;font-weight:700;color:var(--gray);text-align:center;margin-bottom:14px;">회차를 선택하세요</div>
-      <div id="exam-round-list" style="overflow-y:auto;flex:1;display:flex;flex-direction:column;gap:10px;padding:0 8px;"></div>
-      <div style="padding-top:14px;display:flex;justify-content:center;flex-shrink:0;">
-        <button class="btn btn-black" id="exam-round-start-btn" onclick="startExam()" disabled>시작</button>
+      <div style="display:flex;align-items:center;gap:10px;margin-bottom:8px;flex-shrink:0;">
+        <div class="badge" id="er-round-badge"></div>
+        <div class="section-title" style="font-size:clamp(22px,6vw,32px);">회차 선택</div>
+      </div>
+      <div id="er-round-select-count" style="font-size:13px;font-weight:700;color:var(--blue);text-align:center;margin-bottom:8px;background:#f0f4ff;padding:5px;border-radius:10px;flex-shrink:0;">회차를 선택해 주세요</div>
+      <div style="display:flex;justify-content:center;margin-bottom:10px;flex-shrink:0;">
+        <button id="er-round-selectall-btn" onclick="toggleExamReadingSelectAll()" style="height:34px;padding:0 16px;border-radius:17px;background:#EEF4FF;color:#4A90D9;border:1.5px solid #4A90D9;font-size:13px;font-weight:700;cursor:pointer;font-family:inherit;">전체 선택</button>
+      </div>
+      <div id="er-round-grid" style="overflow-y:auto;flex:1;"></div>
+      <div style="padding-top:12px;display:flex;justify-content:center;flex-shrink:0;">
+        <button class="btn btn-black" id="er-round-next-btn" onclick="goSub('exam_reading_type')" disabled>다음</button>
       </div>
       <div style="height:50px;flex-shrink:0;"></div>
-      <div class="back-wrap"><button class="btn btn-back" onclick="goSub('exam_select')">← 뒤로</button></div>
+      <div class="back-wrap"><button class="btn btn-back" onclick="goSub('exam_reading_level')">← 뒤로</button></div>
     </div>
   </div>
 
-  <!-- 기출 쓰기 -->
-  <div id="exam_write" class="subscreen">
+  <!-- 기출문제 독음 퀴즈: 학습 유형 선택 -->
+  <div id="exam_reading_type" class="subscreen">
     <div class="top-label">기출문제</div>
-    <div class="card" id="exam-write-inner"></div>
+    <div class="card">
+      <div style="display:flex;align-items:center;gap:10px;margin-bottom:16px;">
+        <div class="badge" id="er-type-badge"></div>
+        <div class="section-title" style="font-size:clamp(22px,6vw,32px);">학습 유형</div>
+      </div>
+      <div id="er-type-blocks"></div>
+      <div style="flex:1;"></div>
+      <div class="back-wrap"><button class="btn btn-back" onclick="goSub('exam_reading_round')">← 뒤로</button></div>
+    </div>
   </div>
 
-  <!-- 쓰기 연습 (DB-1, DB-2) -->
-  <div id="study_write" class="subscreen">
-    <div class="top-label">쓰기 연습</div>
-    <div class="card" id="study-write-inner"></div>
+  <!-- 기출문제 독음 퀴즈: 카드 -->
+  <div id="exam_reading_card" class="subscreen">
+    <div class="top-label">기출문제 카드</div>
+    <div class="card" id="er-card-inner"></div>
+  </div>
+
+  <!-- 기출문제 독음 퀴즈: 퀴즈 -->
+  <div id="exam_reading_quiz" class="subscreen">
+    <div class="top-label">기출문제 퀴즈</div>
+    <div class="card" id="er-quiz-inner"></div>
+  </div>
+
+  <!-- 기출문제 독음 퀴즈: 쓰기 -->
+  <div id="exam_reading_write" class="subscreen">
+    <div class="top-label">기출문제 쓰기</div>
+    <div class="card" id="er-write-inner"></div>
   </div>
 
   <!-- 오답 노트 (subscreen for review) -->
@@ -3121,9 +3139,6 @@ const S = {
   cardFinishMsg:'끝났습니다.\n다시 반복 할까요?',
   lastStudy:null,
   writeChecked:false, writeCorrect:false, writeUserInput:'', writeWrongItems:[],
-  examType:null, examRound:null, examItems:[], examIdx:0,
-  examChecked:false, examCorrect:false, examUserInput:'',
-  examCorrectCount:0, examWrongCount:0, examFinished:false, examWrongItems:[],
   sessionStart: null, sessionLogged: false
 };
 
@@ -3213,6 +3228,7 @@ function checkBadges() {
 function startSession() {
   S.sessionStart = Date.now();
   S.sessionLogged = false;
+  S.liveEntryId = null;
 }
 function saveSessionLog(correct, wrong, total, desc, writePct) {
   if (S.sessionLogged) return;
@@ -3228,8 +3244,8 @@ function saveSessionLog(correct, wrong, total, desc, writePct) {
   const pct = (writePct !== undefined && writePct !== null)
     ? writePct
     : (total > 0 ? Math.min(100, Math.ceil((correct||0) / total * 100)) : 0);
-  // 고유 ID (크로스 디바이스 병합용)
-  const entryId = Date.now() + '_' + Math.random().toString(36).substr(2,6);
+  // 고유 ID (크로스 디바이스 병합용) - 진행 중 즉시저장 엔트리가 있으면 재사용해 중복 방지
+  const entryId = S.liveEntryId || (Date.now() + '_' + Math.random().toString(36).substr(2,6));
   const entry = {
     id: entryId,
     date: todayStr(),
@@ -3237,7 +3253,9 @@ function saveSessionLog(correct, wrong, total, desc, writePct) {
     correct: correct||0, wrong: wrong||0, total: total||0,
     desc: desc||'', mode, range, category, pct
   };
-  studyLog.push(entry);
+  const liveIdx = S.liveEntryId ? studyLog.findIndex(e => e.id === S.liveEntryId) : -1;
+  if (liveIdx !== -1) studyLog[liveIdx] = entry; else studyLog.push(entry);
+  S.liveEntryId = null;
   saveStudyLog();
   // GA: 학습 완료
   gaEvent('study_complete', {
@@ -3298,9 +3316,34 @@ function saveSessionLog(correct, wrong, total, desc, writePct) {
   }
   S.sessionStart = null;
 }
-function saveExamLog(correct, wrong, total) {
-  settings.examAttempts = (settings.examAttempts||0) + 1;
-  saveSessionLog(correct, wrong, total, `기출 ${S.examType==='huneum'?'훈음':'독음'} 쓰기`);
+// 쓰기 학습 중 진행 상황 유실 방지용 즉시 저장: 문제 하나 풀 때마다 studyLog의
+// 진행중 엔트리(같은 id)를 갱신해 Firebase에 바로 반영. 최종 결과는 세션 종료 시
+// saveSessionLog가 동일 id 엔트리를 그대로 덮어써 완성하므로 중복 기록되지 않음.
+function syncWriteProgressLive() {
+  if (S.mode !== 'write' || !S.sessionStart || S.sessionLogged) return;
+  const total = (S.correct||0) + (S.wrong||0);
+  if (total === 0) return;
+  const duration = Math.max(Math.floor((Date.now() - S.sessionStart) / 1000), 5);
+  const pct = Math.min(100, Math.ceil((S.correct||0) / total * 100));
+  const range = (S.ranges && S.ranges.length === 1) ? S.ranges[0] : '';
+  if (!S.liveEntryId) {
+    S.liveEntryId = Date.now() + '_' + Math.random().toString(36).substr(2,6);
+    studyLog.push({
+      id: S.liveEntryId, date: todayStr(), duration,
+      correct: S.correct||0, wrong: S.wrong||0, total,
+      desc: S.lastStudy||'쓰기', mode: 'write', range, category: S.category||'', pct
+    });
+  } else {
+    const idx = studyLog.findIndex(e => e.id === S.liveEntryId);
+    if (idx !== -1) {
+      studyLog[idx].correct = S.correct||0;
+      studyLog[idx].wrong = S.wrong||0;
+      studyLog[idx].total = total;
+      studyLog[idx].pct = pct;
+      studyLog[idx].duration = duration;
+    }
+  }
+  saveStudyLog();
 }
 function updateStreak() {
   const today = todayStr();
@@ -3380,9 +3423,12 @@ function goSub(screen) {
   else if (screen==='quiz') renderQuiz();
   else if (screen==='write') renderWrite();
   else if (screen==='wrong_note') renderWrongNote();
-  else if (screen==='exam_select') {}
-  else if (screen==='exam_round') renderExamRound();
-  else if (screen==='exam_write') renderExamWrite();
+  else if (screen==='exam_reading_level') renderExamReadingLevel();
+  else if (screen==='exam_reading_round') renderExamReadingRound();
+  else if (screen==='exam_reading_type') renderExamReadingType();
+  else if (screen==='exam_reading_card') renderExamReadingCard();
+  else if (screen==='exam_reading_quiz') renderExamReadingQuiz();
+  else if (screen==='exam_reading_write') renderExamReadingWrite();
 }
 // Legacy alias used by some callbacks
 function go(screen) {
@@ -4165,6 +4211,16 @@ function renderQuiz() {
 }
 
 function buildChoices(it) {
+  if (it.타입 === '기출') {
+    const correct = it.독음;
+    const roundPool = ((READING_DATA[it.급수] || {})[it.단계] || []).map(x=>x.reading).filter(r=>r && r!==correct);
+    let cands = shuffle([...new Set(roundPool)]);
+    if (cands.length < 3) {
+      const allPool = Object.values(READING_DATA[it.급수] || {}).flat().map(x=>x.reading).filter(r=>r && r!==correct && !cands.includes(r));
+      cands = [...cands, ...shuffle([...new Set(allPool)])];
+    }
+    return shuffle([correct, ...cands.slice(0,3)]).slice(0,4);
+  }
   const dir=S.quizDir; let correct,getCand;
   if(dir==='한자→뜻'){correct=answerText(it);getCand=x=>answerText(x);}
   else{correct=it.한자;getCand=x=>x.한자;}
@@ -4332,6 +4388,7 @@ function checkWrite() {
   const card=document.getElementById('write-inner');
   if(S.writeCorrect){S.correct++;playSound('correct');if(card){card.classList.remove('flash-correct','flash-wrong');void card.offsetWidth;card.classList.add('flash-correct');}}
   else{S.wrong++;playSound('wrong');addUnique(S.writeWrongItems,S.items[S.idx]);addToWrongNote(S.items[S.idx]);if(card){card.classList.remove('flash-correct','flash-wrong');void card.offsetWidth;card.classList.add('flash-wrong');}}
+  syncWriteProgressLive();
   renderWrite();
 }
 function nextWriteItem() { if(S.idx<S.items.length-1){S.idx++;S.writeChecked=false;S.writeCorrect=false;S.writeUserInput='';slideNext();}else S.isFinished=true; renderWrite();applySlide(); }
@@ -4360,222 +4417,344 @@ function toggleRandom() {
   if(S.screen==='card')renderCard();else renderQuiz();
 }
 
-/* ===== EXAM ===== */
-let EXAM_DATA = {};
-async function loadExamData() {
-  try { const r=await fetch('exam_data.json'); EXAM_DATA=await r.json(); } catch(e){ console.log('exam_data.json load failed'); }
-}
-/* ===== 쓰기 연습 (DB-1, DB-2) ===== */
-const SW_DB1 = [{"hanja": "鋼", "meaning": "강철", "reading": "강"}, {"hanja": "架", "meaning": "시렁", "reading": "가"}, {"hanja": "座", "meaning": "자리", "reading": "좌"}, {"hanja": "孔", "meaning": "구멍", "reading": "공"}, {"hanja": "鎭", "meaning": "진압할", "reading": "진"}, {"hanja": "苟", "meaning": "진실로", "reading": "구"}, {"hanja": "刻", "meaning": "새길", "reading": "각"}, {"hanja": "周", "meaning": "두루", "reading": "주"}, {"hanja": "離", "meaning": "떠날", "reading": "리"}, {"hanja": "訟", "meaning": "송사할", "reading": "송"}, {"hanja": "派", "meaning": "물갈래", "reading": "파"}, {"hanja": "供", "meaning": "이바지할", "reading": "공"}, {"hanja": "系", "meaning": "이을", "reading": "계"}, {"hanja": "銳", "meaning": "날카로울", "reading": "예"}, {"hanja": "梅", "meaning": "매화", "reading": "매"}, {"hanja": "銘", "meaning": "새길", "reading": "명"}, {"hanja": "券", "meaning": "문서", "reading": "권"}, {"hanja": "測", "meaning": "잴", "reading": "측"}, {"hanja": "帶", "meaning": "띠", "reading": "대"}, {"hanja": "劍", "meaning": "칼", "reading": "검"}, {"hanja": "兼", "meaning": "겸할", "reading": "겸"}, {"hanja": "欺", "meaning": "속일", "reading": "기"}, {"hanja": "被", "meaning": "입을", "reading": "피"}, {"hanja": "雜", "meaning": "섞일", "reading": "잡"}, {"hanja": "邊", "meaning": "가", "reading": "변"}, {"hanja": "組", "meaning": "짤", "reading": "조"}, {"hanja": "症", "meaning": "증세", "reading": "증"}, {"hanja": "督", "meaning": "감독할", "reading": "독"}, {"hanja": "總", "meaning": "거느릴", "reading": "총"}, {"hanja": "演", "meaning": "멀리흐를", "reading": "연"}, {"hanja": "威", "meaning": "위엄", "reading": "위"}, {"hanja": "紛", "meaning": "어지러울", "reading": "분"}, {"hanja": "委", "meaning": "맡길", "reading": "위"}, {"hanja": "閉", "meaning": "닫을", "reading": "폐"}, {"hanja": "缺", "meaning": "이지러질", "reading": "결"}, {"hanja": "架", "meaning": "시렁", "reading": "가"}, {"hanja": "破", "meaning": "깨뜨릴", "reading": "파"}, {"hanja": "裕", "meaning": "넉넉할", "reading": "유"}, {"hanja": "宇", "meaning": "집", "reading": "우"}, {"hanja": "熟", "meaning": "익을", "reading": "숙"}, {"hanja": "恨", "meaning": "한할", "reading": "한"}, {"hanja": "渴", "meaning": "목마를", "reading": "갈"}, {"hanja": "鎭", "meaning": "진압할", "reading": "진"}, {"hanja": "慕", "meaning": "그리워할", "reading": "모"}, {"hanja": "塔", "meaning": "탑", "reading": "탑"}, {"hanja": "澤", "meaning": "못", "reading": "택"}, {"hanja": "譜", "meaning": "족보", "reading": "보"}, {"hanja": "緣", "meaning": "인연", "reading": "연"}, {"hanja": "帶", "meaning": "띠", "reading": "대"}, {"hanja": "複", "meaning": "겹칠", "reading": "복"}, {"hanja": "械", "meaning": "기계", "reading": "계"}, {"hanja": "盟", "meaning": "맹세할", "reading": "맹"}, {"hanja": "嶺", "meaning": "고개", "reading": "령"}, {"hanja": "壁", "meaning": "벽", "reading": "벽"}, {"hanja": "焦", "meaning": "탈", "reading": "초"}, {"hanja": "銃", "meaning": "총", "reading": "총"}, {"hanja": "評", "meaning": "평할", "reading": "평"}, {"hanja": "賊", "meaning": "도둑", "reading": "적"}, {"hanja": "供", "meaning": "이바지할", "reading": "공"}, {"hanja": "傑", "meaning": "뛰어날", "reading": "걸"}, {"hanja": "歸", "meaning": "돌아갈", "reading": "귀"}, {"hanja": "條", "meaning": "가지", "reading": "조"}, {"hanja": "覺", "meaning": "깨달을", "reading": "각"}, {"hanja": "婚", "meaning": "혼인할", "reading": "혼"}, {"hanja": "墨", "meaning": "먹", "reading": "묵"}, {"hanja": "倒", "meaning": "넘어질", "reading": "도"}];
-const SW_DB2 = [{"hanja": "高架", "reading": "고가"}, {"hanja": "空孔", "reading": "공공"}, {"hanja": "十字架", "reading": "십자가"}, {"hanja": "頭痛", "reading": "두통"}, {"hanja": "文苟", "reading": "문구"}, {"hanja": "鎭火", "reading": "진화"}, {"hanja": "鋼鐵", "reading": "강철"}, {"hanja": "製座", "reading": "제좌"}, {"hanja": "鋼板", "reading": "강판"}, {"hanja": "供給", "reading": "공급"}, {"hanja": "提供", "reading": "제공"}, {"hanja": "養供米", "reading": "양공미"}, {"hanja": "周邊", "reading": "주변"}, {"hanja": "一周", "reading": "일주"}, {"hanja": "低周波", "reading": "저주파"}, {"hanja": "學派", "reading": "학파"}, {"hanja": "流派", "reading": "유파"}, {"hanja": "薰陶", "reading": "훈도"}, {"hanja": "精銳", "reading": "정예"}, {"hanja": "銳利", "reading": "예리"}, {"hanja": "新銳", "reading": "신예"}, {"hanja": "測量", "reading": "측량"}, {"hanja": "推測", "reading": "추측"}, {"hanja": "測定", "reading": "측정"}, {"hanja": "家系", "reading": "가계"}, {"hanja": "系列", "reading": "계열"}, {"hanja": "太陽系", "reading": "태양계"}, {"hanja": "被告", "reading": "피고"}, {"hanja": "被害", "reading": "피해"}, {"hanja": "虐殺", "reading": "학살"}, {"hanja": "聲帶", "reading": "성대"}, {"hanja": "帶分數", "reading": "대분수"}, {"hanja": "連帶", "reading": "연대"}, {"hanja": "複雜", "reading": "복잡"}, {"hanja": "雜穀", "reading": "잡곡"}, {"hanja": "混雜", "reading": "혼잡"}, {"hanja": "獨立", "reading": "독립"}, {"hanja": "勞組", "reading": "노조"}, {"hanja": "組合", "reading": "조합"}, {"hanja": "演藝", "reading": "연예"}, {"hanja": "出演", "reading": "출연"}, {"hanja": "演技", "reading": "연기"}, {"hanja": "底邊", "reading": "저변"}, {"hanja": "境遇", "reading": "경우"}, {"hanja": "身體", "reading": "신체"}, {"hanja": "威橋", "reading": "위교"}, {"hanja": "十字架", "reading": "십자가"}, {"hanja": "架設", "reading": "가설"}, {"hanja": "紛爭", "reading": "분쟁"}, {"hanja": "內紛", "reading": "내분"}, {"hanja": "缺失", "reading": "결실"}, {"hanja": "威禮", "reading": "위례"}, {"hanja": "出委", "reading": "출위"}, {"hanja": "缺航", "reading": "결항"}, {"hanja": "渴望", "reading": "갈망"}, {"hanja": "消渴", "reading": "소갈"}, {"hanja": "渴症", "reading": "갈증"}, {"hanja": "富裕", "reading": "부유"}, {"hanja": "裕福", "reading": "유복"}, {"hanja": "餘裕", "reading": "여유"}, {"hanja": "成熟", "reading": "성숙"}, {"hanja": "熟練", "reading": "숙련"}, {"hanja": "未熟", "reading": "미숙"}, {"hanja": "鐵鎭", "reading": "철진"}, {"hanja": "佛塔", "reading": "불탑"}, {"hanja": "多寶塔", "reading": "다보탑"}, {"hanja": "鎭痛", "reading": "진통"}, {"hanja": "重鎭", "reading": "중진"}, {"hanja": "點火", "reading": "점화"}, {"hanja": "樂譜", "reading": "악보"}, {"hanja": "族譜", "reading": "족보"}, {"hanja": "畫譜", "reading": "화보"}, {"hanja": "壁畫", "reading": "벽화"}, {"hanja": "嚴壁", "reading": "엄벽"}, {"hanja": "盟邦", "reading": "맹방"}, {"hanja": "形式", "reading": "형식"}, {"hanja": "重複", "reading": "중복"}, {"hanja": "複寫", "reading": "복사"}, {"hanja": "連帶", "reading": "연대"}, {"hanja": "帶分數", "reading": "대분수"}, {"hanja": "聲帶", "reading": "성대"}, {"hanja": "人傑", "reading": "인걸"}, {"hanja": "傑出", "reading": "걸출"}, {"hanja": "英雄傑", "reading": "영걸"}, {"hanja": "銳利", "reading": "예리"}, {"hanja": "精銳", "reading": "정예"}, {"hanja": "敏銳", "reading": "민예"}, {"hanja": "供給", "reading": "공급"}, {"hanja": "提供", "reading": "제공"}, {"hanja": "供覽", "reading": "공람"}, {"hanja": "歸置", "reading": "귀치"}, {"hanja": "打倒", "reading": "타도"}, {"hanja": "倒産", "reading": "도산"}, {"hanja": "歸目", "reading": "귀목"}, {"hanja": "約條", "reading": "약조"}, {"hanja": "法規", "reading": "법규"}, {"hanja": "覺悟", "reading": "각오"}, {"hanja": "感覺", "reading": "감각"}, {"hanja": "味覺", "reading": "미각"}];
+/* ===== 기출문제 독음 퀴즈 (exam reading) ===== */
+const ER_LEVELS = ['준5급','5급','준4급','4급','준3급','3급'];
+let READING_DATA = {};
+let ER = {
+  level: null, rounds: [], type: null,
+  items: [], idx: 0,
+  correct: 0, wrong: 0, wrongItems: [], unanswered: [],
+  quizChoices: [], quizSelected: null, quizChecked: false, quizResult: '', _quizItemKey: null,
+  writeChecked: false, writeCorrect: false, writeUserInput: '',
+  showBack: false,
+  isFinished: false, sessionLogged: false, sessionStart: null
+};
 
-let swIdx=0, swChecked=false, swCorrect=false, swUserInput='', swCorrectCount=0, swWrongCount=0, swFinished=false, swWrongItems=[], swData=[], swType='';
-
-function startStudyWrite(db) {
-  swData = db==='db1' ? [...SW_DB1] : [...SW_DB2];
-  swType = db;
-  swIdx=0; swChecked=false; swCorrect=false; swUserInput='';
-  swCorrectCount=0; swWrongCount=0; swFinished=false; swWrongItems=[];
-  goSub('study_write');
-  renderStudyWrite();
+function toExamReadingItem(entry, level, round) {
+  return { 한자: entry.hanja, 독음: entry.reading, 급수: level, 단계: String(round), 번호: entry.num, 타입: '기출' };
 }
 
-function renderStudyWrite() {
-  const box = document.getElementById('study-write-inner');
-  if (!swData.length) return;
+function erHeader() {
+  return `<div class="study-header"><div class="badge">${ER.level||''} <span>+</span></div></div>`;
+}
 
-  // 완료 화면
-  if (swFinished) {
-    const label = swType==='db1' ? '한자 보기용 쓰기' : '한자 만들기 쓰기';
+function renderExamReadingLevel() {
+  document.getElementById('er-level-grid').innerHTML = ER_LEVELS.map(lv => {
+    const m = LEVEL_META[lv] || {hanja:'字', color:'#4A90D9'};
+    return `<button class="level-btn${ER.level===lv?' selected':''}" onclick="selectExamReadingLevel('${lv}')" style="--level-color:${m.color};">
+      <span class="level-btn-hanja">${m.hanja}</span>
+      <span class="level-btn-name">${lv}</span>
+    </button>`;
+  }).join('');
+  document.getElementById('er-level-next-btn').disabled = !ER.level;
+}
+function selectExamReadingLevel(lv) {
+  ER.level = lv; ER.rounds = [];
+  renderExamReadingLevel();
+}
+
+function erRoundsForLevel() {
+  return (ER.level && READING_DATA[ER.level]) ? Object.keys(READING_DATA[ER.level]).sort((a,b)=>Number(a)-Number(b)) : [];
+}
+function renderExamReadingRound() {
+  document.getElementById('er-round-badge').innerHTML = `${ER.level||''} <span>+</span>`;
+  const countEl = document.getElementById('er-round-select-count');
+  if (countEl) countEl.textContent = ER.rounds.length > 0 ? `${ER.rounds.length}개 선택됨` : '회차를 선택해 주세요';
+  const roundsAll = erRoundsForLevel();
+  document.getElementById('er-round-grid').innerHTML = '<div class="range-grid">' + roundsAll.map(r =>
+    `<button class="range-btn${ER.rounds.includes(r)?' selected':''}" onclick="toggleExamReadingRound('${r}')">제${r}회</button>`
+  ).join('') + '</div>';
+  const allBtn = document.getElementById('er-round-selectall-btn');
+  if (allBtn) allBtn.textContent = (ER.rounds.length === roundsAll.length && roundsAll.length > 0) ? '전체 해제' : '전체 선택';
+  document.getElementById('er-round-next-btn').disabled = ER.rounds.length === 0;
+}
+function toggleExamReadingRound(r) {
+  const i = ER.rounds.indexOf(r);
+  if (i >= 0) ER.rounds.splice(i, 1); else ER.rounds.push(r);
+  renderExamReadingRound();
+}
+function toggleExamReadingSelectAll() {
+  const roundsAll = erRoundsForLevel();
+  ER.rounds = (ER.rounds.length === roundsAll.length) ? [] : [...roundsAll];
+  renderExamReadingRound();
+}
+
+function renderExamReadingType() {
+  document.getElementById('er-type-badge').innerHTML = `${ER.level||''} <span>+</span>`;
+  const modeInfo = {card:{icon:'🃏',label:'카드 외우기'}, quiz:{icon:'❓',label:'퀴즈'}, write:{icon:'✏️',label:'쓰기'}};
+  const btns = ['card','quiz','write'].map(mode =>
+    `<button class="type-mode-btn" onclick="startExamReading('${mode}')">
+      <span class="mode-icon">${modeInfo[mode].icon}</span>${modeInfo[mode].label}
+     </button>`
+  ).join('');
+  document.getElementById('er-type-blocks').innerHTML =
+    `<div class="type-block"><div class="type-block-title">📝 기출문제 독음 학습</div><div class="type-btns-3">${btns}</div></div>`;
+}
+
+function buildExamReadingItems() {
+  const items = [];
+  ER.rounds.slice().sort((a,b)=>Number(a)-Number(b)).forEach(r => {
+    ((READING_DATA[ER.level] || {})[r] || []).forEach(entry => items.push(toExamReadingItem(entry, ER.level, r)));
+  });
+  return items;
+}
+
+function startExamReading(type) {
+  ER.type = type;
+  ER.items = buildExamReadingItems();
+  if (!ER.items.length) { toast('해당 데이터가 없습니다.'); return; }
+  ER.idx = 0; ER.isFinished = false; ER.sessionLogged = false;
+  ER.correct = 0; ER.wrong = 0; ER.wrongItems = []; ER.unanswered = [];
+  ER.quizSelected = null; ER.quizChecked = false; ER.quizResult = ''; ER.quizChoices = []; ER._quizItemKey = null;
+  ER.writeChecked = false; ER.writeCorrect = false; ER.writeUserInput = '';
+  ER.showBack = false;
+  ER.sessionStart = Date.now();
+  const screen = type === 'card' ? 'exam_reading_card' : type === 'write' ? 'exam_reading_write' : 'exam_reading_quiz';
+  goSub(screen);
+}
+
+// 세션 종료 시 기존 saveSessionLog를 재사용하되 mode:'examReading'을 부여해
+// getWeeklyScore()/writeProgress/checkPerfectStreak에서 자동으로 제외되게 한다.
+// S.level은 반드시 null로 둔다 — saveSessionLog가 desc && S.level일 때 settings.levelProgress를
+// 갱신하므로, 그대로 두면 커리큘럼 급수 진도율에 기출 연습 문항 수가 섞여 들어간다.
+function saveExamReadingLog(correct, wrong, total, writePct) {
+  S.mode = 'examReading';
+  S.category = '';
+  S.ranges = [];
+  S.level = null;
+  S.sessionStart = ER.sessionStart;
+  S.sessionLogged = false;
+  S.liveEntryId = null;
+  const typeLabel = ER.type==='card'?'카드':ER.type==='quiz'?'퀴즈':'쓰기';
+  const desc = `기출 ${ER.level} ${ER.rounds.map(r=>r+'회').join(',')} ${typeLabel}`;
+  saveSessionLog(correct, wrong, total, desc, writePct);
+  ER.sessionLogged = true;
+}
+
+function renderExamReadingCard() {
+  const box = document.getElementById('er-card-inner');
+  const it = ER.items[ER.idx]; const total = ER.items.length;
+  if (!it) { box.innerHTML = '<div style="flex:1;display:flex;align-items:center;justify-content:center;font-size:18px;font-weight:700;">데이터가 없습니다.</div>'; return; }
+  const hSize = hanjaFontSize(it.한자); const mSize = meaningFontSize(it.독음);
+  if (ER.isFinished) {
+    if (!ER.sessionLogged) saveExamReadingLog(0, 0, total);
     box.innerHTML = `
-      <div class="finish-box">
-        <div class="finish-title">끝났습니다! 🎉</div>
-        <div class="finish-score">✅ 정답 ${swCorrectCount} &nbsp; ❌ 오답 ${swWrongCount}</div>
-        <div style="font-size:16px;font-weight:700;color:var(--gray);">${label}</div>
-        <div class="btn-row" style="margin-top:12px;">
-          <button class="btn btn-black" onclick="swRestart()" style="min-width:120px;height:52px;font-size:17px;">전체 다시</button>
-          <button class="btn btn-black" onclick="swRetryWrong()" ${swWrongItems.length===0?'disabled':''} style="min-width:120px;height:52px;font-size:15px;">오답만 다시</button>
-        </div>
-        <div class="btn-row">
-          <button class="btn btn-black" onclick="goSub('exam_select')" style="min-width:120px;height:52px;font-size:17px;">돌아가기</button>
+      ${erHeader()}
+      <div class="card-content-wrap">
+        <div class="hanja-display" style="font-size:${Math.round(hSize*.75)}px;">${it.한자}</div>
+        <div class="meaning-display" style="font-size:${Math.round(mSize*.75)}px;">${it.독음}</div>
+        <div style="text-align:center;font-size:20px;font-weight:700;white-space:pre-line;">끝났습니다.
+다시 볼까요?</div>
+        <div style="display:flex;gap:24px;justify-content:center;">
+          <button class="btn" style="font-size:26px;font-weight:700;color:var(--blue);" onclick="restartExamReadingCard()">네</button>
+          <button class="btn" style="font-size:26px;font-weight:700;color:var(--blue);" onclick="showTab('study')">홈으로</button>
         </div>
       </div>
-      <div class="back-wrap"><button class="btn btn-back" onclick="goSub('exam_select')">← 뒤로</button></div>`;
+      <div class="back-wrap"><button class="btn btn-back" onclick="goSub('exam_reading_type')">← 뒤로</button></div>`;
     return;
   }
-
-  const it = swData[swIdx];
-  const total = swData.length;
-  const isDB1 = swType==='db1';
-
-  // 문제/정답 설정
-  const question = it.hanja;  // 항상 한자 표시
-  const answer = isDB1 ? (it.meaning+' '+it.reading) : it.reading;
-  const placeholder = isDB1 ? '훈음을 쓰세요 (예: 강철 강)' : '독음을 쓰세요 (예: 고가)';
-  const typeLabel = isDB1 ? '보기용 쓰기' : '만들기 쓰기';
-  const hSize = hanjaFontSize(question);
-  const checked = swChecked;
-
   box.innerHTML = `
-    <div class="study-header">
-      <div style="display:flex;align-items:center;gap:6px;">
-        <span class="exam-type-label">${typeLabel}</span>
-      </div>
-      <span style="font-size:14px;font-weight:700;color:var(--gray);">${swIdx+1}/${total}</span>
+    ${erHeader()}
+    <div class="counter mb-8"><strong>${ER.idx+1}</strong>/${total}</div>
+    ${progressBar(ER.idx, total)}
+    <div class="card-content-wrap">
+      <div class="hanja-display" style="font-size:${hSize}px;">${it.한자}</div>
+      <div class="meaning-display" style="font-size:${mSize}px;height:80px;min-height:unset;transition:opacity .2s;opacity:${ER.showBack?1:0};">${it.독음}</div>
     </div>
-    <div class="counter mb-8"><strong>${swIdx+1}</strong>/${total}</div>
-    ${progressBar(swIdx,total)}
-    <div class="score-row"><span>✅ ${swCorrectCount}</span><span>❌ ${swWrongCount}</span></div>
-    <div class="card-content-wrap" style="gap:20px;">
-      <div style="font-size:${hSize}px;font-weight:800;font-family:'Nanum Myeongjo',serif;text-align:center;">${question}</div>
-      <input class="write-input" id="sw-input" type="text" placeholder="${placeholder}"
-        value="${checked?(swCorrect?answer:swUserInput):''}"
-        ${checked?'readonly':''}
-        onkeydown="handleSwKey(event)" autofocus/>
-      <div class="write-result ${checked?(swCorrect?'ok':'fail'):''}">${checked?(swCorrect?'✅ 정답입니다!':`❌ 정답: ${answer}`):'' }</div>
-      <div class="card-nav" style="padding:4px 0 4px;">
-        <button class="write-confirm-btn" onclick="${checked?'swNext()':'swCheck()'}">
-          ${checked?'다음':'확인'}
-        </button>
-      </div>
+    <div class="card-nav">
+      <button class="nav-arrow" onclick="erPrevCardItem()" ${ER.idx===0?'disabled':''}>◀</button>
+      <button class="reveal-btn" onclick="erToggleBack()" style="font-size:${ER.showBack?'18px':'46px'};">${ER.showBack?'닫기':'?'}</button>
+      <button class="nav-arrow" onclick="erNextCardItem()">▶</button>
     </div>
-    <div class="back-wrap"><button class="btn btn-back" onclick="goSub('exam_select')">← 뒤로</button></div>`;
-
-  setTimeout(()=>{ const inp=document.getElementById('sw-input'); if(inp)inp.focus(); },100);
+    <div class="back-wrap"><button class="btn btn-back" onclick="goSub('exam_reading_type')">← 뒤로</button></div>`;
+}
+function erToggleBack() {
+  ER.showBack = !ER.showBack;
+  const md = document.querySelector('#er-card-inner .meaning-display');
+  const rb = document.querySelector('#er-card-inner .reveal-btn');
+  if (md) md.style.opacity = ER.showBack ? '1' : '0';
+  if (rb) { rb.textContent = ER.showBack ? '닫기' : '?'; rb.style.fontSize = ER.showBack ? '18px' : '46px'; }
+}
+function erNextCardItem() {
+  if (ER.idx < ER.items.length-1) { ER.idx++; ER.showBack=false; } else ER.isFinished = true;
+  renderExamReadingCard();
+}
+function erPrevCardItem() {
+  if (ER.idx > 0) { ER.idx--; ER.showBack=false; }
+  renderExamReadingCard();
+}
+function restartExamReadingCard() {
+  ER.idx=0; ER.isFinished=false; ER.showBack=false; ER.sessionLogged=false; ER.sessionStart=Date.now();
+  renderExamReadingCard();
 }
 
-function handleSwKey(e) {
-  if(e.key==='Enter'){ e.preventDefault(); if(swChecked) swNext(); else swCheck(); }
-  else if(e.key===' '&&swChecked){ e.preventDefault(); swNext(); }
-}
-
-function swCheck() {
-  if(swChecked) return;
-  const inp = document.getElementById('sw-input');
-  const val = inp ? inp.value : '';
-  const it = swData[swIdx];
-  const answer = swType==='db1' ? (it.meaning+' '+it.reading) : it.reading;
-  swChecked=true; swUserInput=val;
-  swCorrect = val.replace(/\s/g,'') === answer.replace(/\s/g,'');
-  const card = document.getElementById('study-write-inner');
-  if(swCorrect){ swCorrectCount++; playSound('correct'); if(card){card.classList.remove('flash-correct','flash-wrong');void card.offsetWidth;card.classList.add('flash-correct');} }
-  else{ swWrongCount++; playSound('wrong'); swWrongItems.push(it); if(card){card.classList.remove('flash-correct','flash-wrong');void card.offsetWidth;card.classList.add('flash-wrong');} }
-  renderStudyWrite();
-}
-
-function swNext() {
-  if(swIdx < swData.length-1){ swIdx++; swChecked=false; swCorrect=false; swUserInput=''; slideNext(); }
-  else swFinished=true;
-  renderStudyWrite(); applySlide();
-}
-
-function swRestart() {
-  swData = swType==='db1' ? [...SW_DB1] : [...SW_DB2];
-  swIdx=0; swChecked=false; swCorrect=false; swUserInput='';
-  swCorrectCount=0; swWrongCount=0; swFinished=false; swWrongItems=[];
-  renderStudyWrite();
-}
-
-function swRetryWrong() {
-  if(!swWrongItems.length){ toast('오답이 없습니다.'); return; }
-  swData=[...swWrongItems];
-  swIdx=0; swChecked=false; swCorrect=false; swUserInput='';
-  swCorrectCount=0; swWrongCount=0; swFinished=false; swWrongItems=[];
-  renderStudyWrite();
-}
-
-function goExamType(type) { S.examType=type; S.examRound=null; goSub('exam_round'); }
-function renderExamRound() {
-  const title=document.getElementById('exam-round-title');
-  title.textContent=S.examType==='huneum'?'한자 훈음 쓰기':'한자어 독음 쓰기';
-  const list=document.getElementById('exam-round-list');
-  const rounds=Object.keys(EXAM_DATA).sort((a,b)=>Number(a)-Number(b));
-  if(!rounds.length){list.innerHTML='<div style="text-align:center;font-size:16px;font-weight:700;color:var(--gray);padding:40px 0;">데이터가 없습니다.</div>';document.getElementById('exam-round-start-btn').disabled=true;return;}
-  list.innerHTML=rounds.map(r=>{
-    const exam=EXAM_DATA[r]; const cnt=exam.subj.filter(s=>s.type===S.examType).length;
-    return`<button class="exam-round-btn${S.examRound===r?' selected':''}" onclick="selectExamRound('${r}')">제 ${r}회 <span style="font-size:13px;color:${S.examRound===r?'rgba(255,255,255,.8)':'var(--gray)'}">(${cnt}문제)</span></button>`;
-  }).join('');
-  document.getElementById('exam-round-start-btn').disabled=!S.examRound;
-}
-function selectExamRound(r) { S.examRound=r; renderExamRound(); }
-function startExam() {
-  if(!S.examRound||!EXAM_DATA[S.examRound])return;
-  const exam=EXAM_DATA[S.examRound];
-  S.examItems=exam.subj.filter(s=>s.type===S.examType);
-  if(!S.examItems.length){toast('해당 유형의 문제가 없습니다.');return;}
-  S.examIdx=0;S.examChecked=false;S.examCorrect=false;S.examUserInput='';
-  S.examCorrectCount=0;S.examWrongCount=0;S.examFinished=false;S.examWrongItems=[];S.sessionLogged=false;
-  S.mode = 'exam';
-  startSession(); goSub('exam_write');
-}
-function renderExamWrite() {
-  const box=document.getElementById('exam-write-inner');
-  const items=S.examItems; const it=items[S.examIdx]; const total=items.length;
-  if(S.examFinished){
-    if(!S.sessionLogged) saveExamLog(S.examCorrectCount, S.examWrongCount, S.examCorrectCount+S.examWrongCount);
-    box.innerHTML=`
+function renderExamReadingQuiz() {
+  const box = document.getElementById('er-quiz-inner');
+  const it = ER.items[ER.idx]; const total = ER.items.length;
+  if (!it) { box.innerHTML = '<div style="flex:1;display:flex;align-items:center;justify-content:center;">데이터가 없습니다.</div>'; return; }
+  if (ER.isFinished) {
+    const quizTotalItems = ER.items.length || 1;
+    const quizScore = Math.min(100, Math.ceil(ER.correct / quizTotalItems * 100));
+    const quizSkipped = ER.unanswered.length;
+    if (!ER.sessionLogged) saveExamReadingLog(ER.correct, ER.wrong, quizTotalItems, quizScore);
+    const scoreColor = quizScore>=100?'var(--correct)':quizScore>=80?'var(--blue)':'var(--wrong)';
+    box.innerHTML = `
       <div class="finish-box">
+        <div style="font-size:13px;font-weight:700;color:var(--gray);background:#F0F0F0;border-radius:20px;padding:6px 16px;">${ER.level} · ${ER.rounds.map(r=>'제'+r+'회').join(', ')} · 퀴즈</div>
         <div class="finish-title">끝났습니다! 🎉</div>
-        <div class="finish-score">✅ 정답 ${S.examCorrectCount} &nbsp; ❌ 오답 ${S.examWrongCount}</div>
-        <div style="font-size:16px;font-weight:700;color:var(--gray);">제 ${S.examRound}회 · ${S.examType==='huneum'?'훈음 쓰기':'독음 쓰기'}</div>
-        <div class="btn-row" style="margin-top:12px;">
-          <button class="btn btn-black" onclick="restartExam()" style="min-width:120px;height:52px;font-size:17px;">전체 다시</button>
-          <button class="btn btn-black" onclick="retryExamWrong()" ${S.examWrongItems.length===0?'disabled':''} style="min-width:120px;height:52px;font-size:15px;">오답만 다시</button>
+        <div style="font-size:42px;font-weight:800;color:${scoreColor};">${quizScore}점</div>
+        <div class="finish-score">✅ 정답 ${ER.correct} &nbsp; ❌ 오답 ${ER.wrong} &nbsp; ⏭ 미응답 ${quizSkipped}</div>
+        <div class="btn-row">
+          <button class="btn btn-black" onclick="restartExamReadingQuiz()" style="min-width:120px;height:52px;font-size:17px;">전체 다시</button>
+          <button class="btn btn-black" onclick="retryExamReadingWrong()" ${(ER.wrongItems.length+ER.unanswered.length===0)?'disabled':''} style="min-width:120px;height:52px;font-size:15px;">오답+미응답<br>다시</button>
         </div>
         <div class="btn-row">
-          <button class="btn btn-black" onclick="goSub('exam_round')" style="min-width:120px;height:52px;font-size:17px;">회차 선택</button>
-          <button class="btn btn-black" onclick="showTab('home')" style="min-width:120px;height:52px;font-size:17px;">홈으로</button>
+          <button class="btn btn-black" onclick="showTab('study')" style="min-width:120px;height:52px;font-size:17px;">홈으로</button>
+          <button class="btn btn-black" onclick="goSub('exam_reading_type')" style="min-width:120px;height:52px;font-size:17px;">나가기</button>
         </div>
       </div>
-      <div class="back-wrap"><button class="btn btn-back" onclick="goSub('exam_round')">← 뒤로</button></div>
-    `;return;
+      <div class="back-wrap"><button class="btn btn-back" onclick="goSub('exam_reading_type')">← 뒤로</button></div>`;
+    return;
   }
-  if(!it){box.innerHTML='<div style="flex:1;display:flex;align-items:center;justify-content:center;">데이터 없음</div>';return;}
-  const hSize=hanjaFontSize(it.q); const checked=S.examChecked;
-  const placeholder=S.examType==='huneum'?'훈과 음을 쓰세요 (예: 깨달을 각)':'독음을 쓰세요';
-  const typeLabel=S.examType==='huneum'?'훈음 쓰기':'독음 쓰기';
-  box.innerHTML=`
-    <div class="study-header">
-      <div style="display:flex;align-items:center;gap:6px;"><span class="exam-type-label">${typeLabel}</span><span style="font-size:13px;font-weight:700;color:var(--gray);">제${S.examRound}회</span></div>
-      <span style="font-size:14px;font-weight:700;color:var(--gray);">${it.no}</span>
+  const key = itemKey(it);
+  if (ER._quizItemKey !== key) { ER._quizItemKey = key; ER.quizChoices = buildChoices(it); ER.quizSelected = null; ER.quizChecked = false; ER.quizResult = ''; }
+  const qSize = Math.min(hanjaFontSize(it.한자), 76);
+  const opts = ER.quizChoices.map((c,i) => {
+    let cls = '';
+    if (ER.quizChecked) { if (c === it.독음) cls='correct'; else if (i===ER.quizSelected) cls='wrong-chosen'; }
+    else if (i===ER.quizSelected) cls='chosen';
+    return `<button class="quiz-opt ${cls}" onclick="erChooseOpt(${i})" ${ER.quizChecked?'disabled':''}><span class="num">${i+1}.</span><span class="opt-text">${c}</span><span></span></button>`;
+  }).join('');
+  const resultCls = ER.quizResult.startsWith('틀렸습니다') ? 'fail' : 'ok';
+  box.innerHTML = `
+    ${erHeader()}
+    <div class="counter mb-8"><strong>${ER.idx+1}</strong>/${total}</div>
+    ${progressBar(ER.idx, total)}
+    <div class="score-row"><span>✅ ${ER.correct}</span><span>❌ ${ER.wrong}</span></div>
+    <div style="font-size:${qSize}px;font-weight:800;font-family:'Nanum Myeongjo',serif;text-align:center;padding:6px 0 2px;flex-shrink:0;line-height:1.2;">${it.한자}</div>
+    <div class="result-msg ${resultCls}">${ER.quizResult}</div>
+    <div class="quiz-options">${opts}</div>
+    <div class="card-nav" style="padding:4px 0 6px;margin-top:12px;flex-shrink:0;">
+      <button class="reveal-btn quiz-btn" onclick="erCheckAnswer()">정답</button>
+      <button class="reveal-btn quiz-btn" onclick="erNextQuizItem()">다음</button>
     </div>
-    <div class="counter mb-8"><strong>${S.examIdx+1}</strong>/${total}</div>
-    ${progressBar(S.examIdx,total)}
-    <div class="score-row"><span>✅ ${S.examCorrectCount}</span><span>❌ ${S.examWrongCount}</span></div>
+    <div class="back-wrap"><button class="btn btn-back" onclick="goSub('exam_reading_type')">← 뒤로</button></div>`;
+}
+function erChooseOpt(i) { if (ER.quizChecked) return; ER.quizSelected = i; renderExamReadingQuiz(); }
+function erCheckAnswer() {
+  if (ER.quizSelected===null || ER.quizChecked) return;
+  ER.quizChecked = true;
+  const it = ER.items[ER.idx];
+  if (ER.quizChoices[ER.quizSelected] === it.독음) {
+    ER.correct++; ER.quizResult = '정답입니다! ✅'; playSound('correct');
+  } else {
+    ER.wrong++; ER.quizResult = `틀렸습니다. 정답: ${it.독음}`; playSound('wrong');
+    addUnique(ER.wrongItems, it); addToWrongNote(it);
+  }
+  renderExamReadingQuiz();
+}
+function erNextQuizItem() {
+  if (!ER.quizChecked) addUnique(ER.unanswered, ER.items[ER.idx]);
+  if (ER.idx < ER.items.length-1) ER.idx++; else ER.isFinished = true;
+  ER.quizSelected=null; ER.quizChecked=false; ER.quizResult=''; ER._quizItemKey=null;
+  renderExamReadingQuiz();
+}
+function restartExamReadingQuiz() {
+  ER.items = buildExamReadingItems(); ER.idx=0; ER.isFinished=false; ER.correct=0; ER.wrong=0; ER.sessionLogged=false;
+  ER.wrongItems=[]; ER.unanswered=[]; ER.quizSelected=null; ER.quizChecked=false; ER.quizResult=''; ER._quizItemKey=null;
+  ER.sessionStart = Date.now();
+  renderExamReadingQuiz();
+}
+function retryExamReadingWrong() {
+  const retry = [];
+  ER.wrongItems.forEach(x=>addUnique(retry,x)); ER.unanswered.forEach(x=>addUnique(retry,x));
+  if (!retry.length) { toast('오답/미응답 없음'); return; }
+  ER.items = retry; ER.idx=0; ER.isFinished=false; ER.sessionLogged=false;
+  ER.correct=0; ER.wrong=0; ER.wrongItems=[]; ER.unanswered=[];
+  ER.quizSelected=null; ER.quizChecked=false; ER.quizResult=''; ER._quizItemKey=null;
+  ER.sessionStart = Date.now();
+  renderExamReadingQuiz();
+}
+
+function renderExamReadingWrite() {
+  const box = document.getElementById('er-write-inner');
+  const it = ER.items[ER.idx]; const total = ER.items.length;
+  if (!it) { box.innerHTML = '<div style="flex:1;display:flex;align-items:center;justify-content:center;">데이터가 없습니다.</div>'; return; }
+  if (ER.isFinished) {
+    const writeTotalItems = ER.items.length || 1;
+    const writeScore = Math.min(100, Math.ceil(ER.correct / writeTotalItems * 100));
+    if (!ER.sessionLogged) saveExamReadingLog(ER.correct, ER.wrong, writeTotalItems, writeScore);
+    const scoreColor = writeScore>=100?'var(--correct)':writeScore>=80?'var(--blue)':'var(--wrong)';
+    box.innerHTML = `
+      <div class="finish-box">
+        <div style="font-size:13px;font-weight:700;color:var(--gray);background:#F0F0F0;border-radius:20px;padding:6px 16px;">${ER.level} · ${ER.rounds.map(r=>'제'+r+'회').join(', ')} · 쓰기</div>
+        <div class="finish-title">끝났습니다! 🎉</div>
+        <div style="font-size:42px;font-weight:800;color:${scoreColor};">${writeScore}점</div>
+        <div class="finish-score">✅ 정답 ${ER.correct} &nbsp; ❌ 오답 ${ER.wrong}</div>
+        <div class="btn-row">
+          <button class="btn btn-black" onclick="restartExamReadingWrite()" style="min-width:120px;height:52px;font-size:17px;">전체 다시</button>
+          <button class="btn btn-black" onclick="retryExamReadingWriteWrong()" ${ER.wrongItems.length===0?'disabled':''} style="min-width:120px;height:52px;font-size:15px;">오답만 다시</button>
+        </div>
+        <div class="btn-row">
+          <button class="btn btn-black" onclick="showTab('study')" style="min-width:120px;height:52px;font-size:17px;">홈으로</button>
+          <button class="btn btn-black" onclick="goSub('exam_reading_type')" style="min-width:120px;height:52px;font-size:17px;">나가기</button>
+        </div>
+      </div>
+      <div class="back-wrap"><button class="btn btn-back" onclick="goSub('exam_reading_type')">← 뒤로</button></div>`;
+    return;
+  }
+  const hSize = hanjaFontSize(it.한자); const checked = ER.writeChecked;
+  box.innerHTML = `
+    ${erHeader()}
+    <div class="counter mb-8"><strong>${ER.idx+1}</strong>/${total}</div>
+    ${progressBar(ER.idx, total)}
+    <div class="score-row"><span>✅ ${ER.correct}</span><span>❌ ${ER.wrong}</span></div>
     <div class="card-content-wrap" style="gap:20px;">
-      <div style="font-size:${hSize}px;font-weight:800;font-family:'Nanum Myeongjo',serif;text-align:center;">${it.q}</div>
-      <input class="write-input" id="exam-input" type="text" placeholder="${placeholder}"
-        value="${checked?(S.examCorrect?it.answer:S.examUserInput):''}"
+      <div class="write-hanja-fixed" style="font-size:${hSize}px;">${it.한자}</div>
+      <input class="write-input" id="er-write-input" type="text" placeholder="독음을 쓰세요 (예: 구조)"
+        value="${checked?(ER.writeCorrect?it.독음:ER.writeUserInput):''}"
         ${checked?'readonly':''}
-        onkeydown="handleExamKey(event)" autofocus/>
-      <div class="write-result ${checked?(S.examCorrect?'ok':'fail'):''}">${checked?(S.examCorrect?'✅ 정답입니다!':`❌ 정답: ${it.answer}`):''}</div>
+        onkeydown="handleErWriteKey(event)" autofocus/>
+      <div class="write-result ${checked?(ER.writeCorrect?'ok':'fail'):''}">${checked?(ER.writeCorrect?'✅ 정답입니다!':`❌ 정답: ${it.독음}`):''}</div>
       <div class="card-nav" style="padding:4px 0 4px;">
-        <button class="write-confirm-btn" onclick="${checked?'nextExamItem()':'checkExam()'}">${checked?'다음':'확인'}</button>
+        <button class="write-confirm-btn" onclick="${checked?'nextExamReadingWriteItem()':'checkExamReadingWrite()'}">${checked?'다음':'확인'}</button>
       </div>
     </div>
-    <div class="back-wrap"><button class="btn btn-back" onclick="goSub('exam_round')">← 뒤로</button></div>
-  `;
-  setTimeout(()=>{const inp=document.getElementById('exam-input');if(inp)inp.focus();},100);
+    <div class="back-wrap"><button class="btn btn-back" onclick="goSub('exam_reading_type')">← 뒤로</button></div>`;
+  setTimeout(()=>{ const inp=document.getElementById('er-write-input'); if(inp)inp.focus(); },100);
 }
-function handleExamKey(e) { if(e.key==='Enter'){e.preventDefault();if(S.examChecked)nextExamItem();else checkExam();}else if(e.key===' '&&S.examChecked){e.preventDefault();nextExamItem();} }
-function checkExam() {
-  if(S.examChecked)return;
-  const inp=document.getElementById('exam-input'); const val=inp?inp.value:'';
-  const it=S.examItems[S.examIdx];
-  S.examChecked=true;S.examUserInput=val;S.examCorrect=val.replace(/\s/g,'')===it.answer.replace(/\s/g,'');
-  const card=document.getElementById('exam-write-inner');
-  if(S.examCorrect){S.examCorrectCount++;playSound('correct');if(card){card.classList.remove('flash-correct','flash-wrong');void card.offsetWidth;card.classList.add('flash-correct');}}
-  else{S.examWrongCount++;playSound('wrong');S.examWrongItems.push(it);if(card){card.classList.remove('flash-correct','flash-wrong');void card.offsetWidth;card.classList.add('flash-wrong');}}
-  renderExamWrite();
+function handleErWriteKey(e) {
+  if (e.key==='Enter'){ e.preventDefault(); if (ER.writeChecked) nextExamReadingWriteItem(); else checkExamReadingWrite(); }
+  else if (e.key===' ' && ER.writeChecked) { e.preventDefault(); nextExamReadingWriteItem(); }
 }
-function nextExamItem() { if(S.examIdx<S.examItems.length-1){S.examIdx++;S.examChecked=false;S.examCorrect=false;S.examUserInput='';slideNext();}else S.examFinished=true;renderExamWrite();applySlide(); }
-function prevExamItem() { if(S.examIdx>0){S.examIdx--;S.examChecked=false;S.examCorrect=false;S.examUserInput='';slidePrev();renderExamWrite();applySlide();} }
-function restartExam() { 
-  if(S.examRound && EXAM_DATA[S.examRound]) {
-    S.examItems = EXAM_DATA[S.examRound].subj.filter(s=>s.type===S.examType);
-  }
-  S.examIdx=0;S.examChecked=false;S.examCorrect=false;S.examUserInput='';S.examCorrectCount=0;S.examWrongCount=0;S.examFinished=false;S.examWrongItems=[];S.sessionLogged=false;startSession();renderExamWrite(); }
-function retryExamWrong() { if(!S.examWrongItems.length){toast('오답이 없습니다.');return;} S.examItems=[...S.examWrongItems];S.examIdx=0;S.examChecked=false;S.examCorrect=false;S.examUserInput='';S.examCorrectCount=0;S.examWrongCount=0;S.examFinished=false;S.examWrongItems=[];S.sessionLogged=false;startSession();renderExamWrite(); }
+function checkExamReadingWrite() {
+  if (ER.writeChecked) return;
+  const inp = document.getElementById('er-write-input'); const val = inp ? inp.value : '';
+  if (!val.trim()) { toast('답을 입력해 주세요 ✏️'); return; }
+  const it = ER.items[ER.idx];
+  ER.writeChecked = true; ER.writeUserInput = val; ER.writeCorrect = compareWrite(val, it.독음);
+  const card = document.getElementById('er-write-inner');
+  if (ER.writeCorrect) { ER.correct++; playSound('correct'); if(card){card.classList.remove('flash-correct','flash-wrong');void card.offsetWidth;card.classList.add('flash-correct');} }
+  else { ER.wrong++; playSound('wrong'); addUnique(ER.wrongItems, it); addToWrongNote(it); if(card){card.classList.remove('flash-correct','flash-wrong');void card.offsetWidth;card.classList.add('flash-wrong');} }
+  renderExamReadingWrite();
+}
+function nextExamReadingWriteItem() {
+  if (ER.idx < ER.items.length-1) { ER.idx++; ER.writeChecked=false; ER.writeCorrect=false; ER.writeUserInput=''; } else ER.isFinished = true;
+  renderExamReadingWrite();
+}
+function restartExamReadingWrite() {
+  ER.items = buildExamReadingItems(); ER.idx=0; ER.isFinished=false; ER.sessionLogged=false;
+  ER.correct=0; ER.wrong=0; ER.wrongItems=[]; ER.writeChecked=false; ER.writeCorrect=false; ER.writeUserInput='';
+  ER.sessionStart = Date.now();
+  renderExamReadingWrite();
+}
+function retryExamReadingWriteWrong() {
+  if (!ER.wrongItems.length) { toast('오답이 없습니다.'); return; }
+  ER.items = [...ER.wrongItems]; ER.idx=0; ER.isFinished=false; ER.sessionLogged=false;
+  ER.correct=0; ER.wrong=0; ER.writeChecked=false; ER.writeCorrect=false; ER.writeUserInput=''; ER.wrongItems=[];
+  ER.sessionStart = Date.now();
+  renderExamReadingWrite();
+}
 
 /* ===== 쿠폰 홈 카드 렌더 ===== */
 function renderCouponHomeCard() {
@@ -4626,7 +4805,7 @@ function getWeeklyProblems() {
   return studyLog.filter(e => e.date >= ws).reduce((s,e)=>s+(e.total||0),0);
 }
 
-/* 랭킹 점수: 퀴즈 정답×1 + 쓰기 정답×2 + 기출 정답×2 */
+/* 랭킹 점수: 퀴즈 정답×1 + 쓰기 정답×(선정 3/교과서 2) + 기출 정답×2 */
 function getWeeklyScore() {
   const ws = getWeekStart();
   const weekLogs = studyLog.filter(e => e.date >= ws);
@@ -4635,7 +4814,9 @@ function getWeeklyScore() {
     const m = e.mode || '';
     if (m === 'quiz') {
       score += (e.correct||0) * 1;
-    } else if (m === 'write' || m === 'exam') {
+    } else if (m === 'write') {
+      score += (e.correct||0) * (e.category === '선정' ? 3 : 2);
+    } else if (m === 'exam') {
       score += (e.correct||0) * 2;
     } else if (!m) {
       // 기존 데이터 (mode 없음) - desc로 판별
@@ -4904,6 +5085,12 @@ async function loadData() {
   } catch(e) {
     document.getElementById('loading').innerHTML = '<div style="font-size:17px;font-weight:700;color:#C62828;padding:24px;text-align:center;">데이터를 불러오지 못했습니다.<br>hanja_data.json 파일을 확인해 주세요.</div>';
   }
+}
+
+async function loadReadingQuizData() {
+  try { const r = await fetch('hanja_reading_quiz.json'); READING_DATA = await r.json(); }
+  catch(e) { console.log('hanja_reading_quiz.json load failed'); READING_DATA = {}; }
+  window.READING_DATA = READING_DATA;
 }
 
 async function loadHighLevelData() {
@@ -6187,7 +6374,7 @@ document.addEventListener('keydown', function(e) {
 
 /* ── 쓰기/기출 화면 키보드 고정 (iOS/Android) ── */
 (function() {
-  const WRITE_IDS = ['write', 'exam_write', 'study_write'];
+  const WRITE_IDS = ['write', 'exam_reading_write'];
 
   function getActiveWriteEl() {
     for (const id of WRITE_IDS) {
@@ -6578,7 +6765,7 @@ async function enterStudentApp() {
       window._myPersonalMsg = await window._fbGetPersonalMsg(currentUser.id);
     } catch(e) { window._myPersonalMsg = null; }
   }
-  loadData(); loadExamData(); loadHighLevelData();
+  loadData(); loadReadingQuizData(); loadHighLevelData();
 }
 
 function enterTeacherApp() {

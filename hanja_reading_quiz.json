@@ -1,0 +1,8120 @@
+{
+  "3급": {
+    "110": [
+      {
+        "num": 16,
+        "hanja": "構造",
+        "reading": "구조"
+      },
+      {
+        "num": 17,
+        "hanja": "抵抗",
+        "reading": "저항"
+      },
+      {
+        "num": 18,
+        "hanja": "盲腸",
+        "reading": "맹장"
+      },
+      {
+        "num": 19,
+        "hanja": "故障",
+        "reading": "고장"
+      },
+      {
+        "num": 20,
+        "hanja": "亨通",
+        "reading": "형통"
+      },
+      {
+        "num": 21,
+        "hanja": "亂舞",
+        "reading": "난무"
+      },
+      {
+        "num": 22,
+        "hanja": "負債",
+        "reading": "부채"
+      },
+      {
+        "num": 23,
+        "hanja": "版權",
+        "reading": "판권"
+      },
+      {
+        "num": 24,
+        "hanja": "雄辯",
+        "reading": "웅변"
+      },
+      {
+        "num": 25,
+        "hanja": "郵票",
+        "reading": "우표"
+      },
+      {
+        "num": 26,
+        "hanja": "姪婦",
+        "reading": "질부"
+      },
+      {
+        "num": 27,
+        "hanja": "忍耐",
+        "reading": "인내"
+      },
+      {
+        "num": 28,
+        "hanja": "巖壁",
+        "reading": "암벽"
+      },
+      {
+        "num": 29,
+        "hanja": "改憲",
+        "reading": "개헌"
+      },
+      {
+        "num": 30,
+        "hanja": "觀照",
+        "reading": "관조"
+      },
+      {
+        "num": 31,
+        "hanja": "揮帳",
+        "reading": "휘장"
+      },
+      {
+        "num": 32,
+        "hanja": "包裝",
+        "reading": "포장"
+      }
+    ],
+    "111": [
+      {
+        "num": 16,
+        "hanja": "絃樂器",
+        "reading": "현악기"
+      },
+      {
+        "num": 17,
+        "hanja": "盜聽",
+        "reading": "도청"
+      },
+      {
+        "num": 18,
+        "hanja": "苟且",
+        "reading": "구차"
+      },
+      {
+        "num": 19,
+        "hanja": "先輩",
+        "reading": "선배"
+      },
+      {
+        "num": 20,
+        "hanja": "停刊",
+        "reading": "정간"
+      },
+      {
+        "num": 21,
+        "hanja": "咸池",
+        "reading": "함지"
+      },
+      {
+        "num": 22,
+        "hanja": "建築",
+        "reading": "건축"
+      },
+      {
+        "num": 23,
+        "hanja": "郵政",
+        "reading": "우정"
+      },
+      {
+        "num": 24,
+        "hanja": "寄稿",
+        "reading": "기고"
+      },
+      {
+        "num": 25,
+        "hanja": "詐欺",
+        "reading": "사기"
+      },
+      {
+        "num": 26,
+        "hanja": "殘忍",
+        "reading": "잔인"
+      },
+      {
+        "num": 27,
+        "hanja": "畿湖",
+        "reading": "기호"
+      },
+      {
+        "num": 28,
+        "hanja": "超脫",
+        "reading": "초탈"
+      },
+      {
+        "num": 29,
+        "hanja": "鹿角",
+        "reading": "녹각"
+      },
+      {
+        "num": 30,
+        "hanja": "起爆",
+        "reading": "기폭"
+      },
+      {
+        "num": 31,
+        "hanja": "彼岸",
+        "reading": "피안"
+      },
+      {
+        "num": 32,
+        "hanja": "諸般",
+        "reading": "제반"
+      }
+    ],
+    "112": [
+      {
+        "num": 16,
+        "hanja": "指揮",
+        "reading": "지휘"
+      },
+      {
+        "num": 17,
+        "hanja": "麻織",
+        "reading": "마직"
+      },
+      {
+        "num": 18,
+        "hanja": "德澤",
+        "reading": "덕택"
+      },
+      {
+        "num": 19,
+        "hanja": "罪囚",
+        "reading": "죄수"
+      },
+      {
+        "num": 20,
+        "hanja": "額面",
+        "reading": "액면"
+      },
+      {
+        "num": 21,
+        "hanja": "爆彈",
+        "reading": "폭탄"
+      },
+      {
+        "num": 22,
+        "hanja": "現像",
+        "reading": "현상"
+      },
+      {
+        "num": 23,
+        "hanja": "誤差",
+        "reading": "오차"
+      },
+      {
+        "num": 24,
+        "hanja": "兼事",
+        "reading": "겸사"
+      },
+      {
+        "num": 25,
+        "hanja": "雜種",
+        "reading": "잡종"
+      },
+      {
+        "num": 26,
+        "hanja": "劃順",
+        "reading": "획순"
+      },
+      {
+        "num": 27,
+        "hanja": "報償",
+        "reading": "보상"
+      },
+      {
+        "num": 28,
+        "hanja": "支柱",
+        "reading": "지주"
+      },
+      {
+        "num": 29,
+        "hanja": "覺悟",
+        "reading": "각오"
+      },
+      {
+        "num": 30,
+        "hanja": "貫通",
+        "reading": "관통"
+      },
+      {
+        "num": 31,
+        "hanja": "細菌",
+        "reading": "세균"
+      },
+      {
+        "num": 32,
+        "hanja": "祈願",
+        "reading": "기원"
+      }
+    ],
+    "113": [
+      {
+        "num": 16,
+        "hanja": "繁榮",
+        "reading": "번영"
+      },
+      {
+        "num": 17,
+        "hanja": "刷新",
+        "reading": "쇄신"
+      },
+      {
+        "num": 18,
+        "hanja": "供覽",
+        "reading": "공람"
+      },
+      {
+        "num": 19,
+        "hanja": "閑暇",
+        "reading": "한가"
+      },
+      {
+        "num": 20,
+        "hanja": "思慮",
+        "reading": "사려"
+      },
+      {
+        "num": 21,
+        "hanja": "拳鬪",
+        "reading": "권투"
+      },
+      {
+        "num": 22,
+        "hanja": "訟事",
+        "reading": "송사"
+      },
+      {
+        "num": 23,
+        "hanja": "黨論",
+        "reading": "당론"
+      },
+      {
+        "num": 24,
+        "hanja": "恩澤",
+        "reading": "은택"
+      },
+      {
+        "num": 25,
+        "hanja": "官吏",
+        "reading": "관리"
+      },
+      {
+        "num": 26,
+        "hanja": "計劃",
+        "reading": "계획"
+      },
+      {
+        "num": 27,
+        "hanja": "突進",
+        "reading": "돌진"
+      },
+      {
+        "num": 28,
+        "hanja": "潮流",
+        "reading": "조류"
+      },
+      {
+        "num": 29,
+        "hanja": "履歷",
+        "reading": "이력"
+      },
+      {
+        "num": 30,
+        "hanja": "寄宿舍",
+        "reading": "기숙사"
+      },
+      {
+        "num": 31,
+        "hanja": "交響樂",
+        "reading": "교향악"
+      },
+      {
+        "num": 32,
+        "hanja": "降臨",
+        "reading": "강림"
+      }
+    ],
+    "114": [
+      {
+        "num": 16,
+        "hanja": "追慕",
+        "reading": "추모"
+      },
+      {
+        "num": 17,
+        "hanja": "栗谷",
+        "reading": "율곡"
+      },
+      {
+        "num": 18,
+        "hanja": "殘額",
+        "reading": "잔액"
+      },
+      {
+        "num": 19,
+        "hanja": "質疑",
+        "reading": "질의"
+      },
+      {
+        "num": 20,
+        "hanja": "陣營",
+        "reading": "진영"
+      },
+      {
+        "num": 21,
+        "hanja": "講壇",
+        "reading": "강단"
+      },
+      {
+        "num": 22,
+        "hanja": "萬般",
+        "reading": "만반"
+      },
+      {
+        "num": 23,
+        "hanja": "消毒",
+        "reading": "소독"
+      },
+      {
+        "num": 24,
+        "hanja": "梅實",
+        "reading": "매실"
+      },
+      {
+        "num": 25,
+        "hanja": "洗濯",
+        "reading": "세탁"
+      },
+      {
+        "num": 26,
+        "hanja": "規範",
+        "reading": "규범"
+      },
+      {
+        "num": 27,
+        "hanja": "新築",
+        "reading": "신축"
+      },
+      {
+        "num": 28,
+        "hanja": "激情",
+        "reading": "격정"
+      },
+      {
+        "num": 29,
+        "hanja": "冠禮",
+        "reading": "관례"
+      },
+      {
+        "num": 30,
+        "hanja": "恒常",
+        "reading": "항상"
+      },
+      {
+        "num": 31,
+        "hanja": "驛舍",
+        "reading": "역사"
+      },
+      {
+        "num": 32,
+        "hanja": "旅券",
+        "reading": "여권"
+      }
+    ],
+    "115": [
+      {
+        "num": 16,
+        "hanja": "側近",
+        "reading": "측근"
+      },
+      {
+        "num": 17,
+        "hanja": "債務",
+        "reading": "채무"
+      },
+      {
+        "num": 18,
+        "hanja": "構造",
+        "reading": "구조"
+      },
+      {
+        "num": 19,
+        "hanja": "耐久",
+        "reading": "내구"
+      },
+      {
+        "num": 20,
+        "hanja": "確固",
+        "reading": "확고"
+      },
+      {
+        "num": 21,
+        "hanja": "除籍",
+        "reading": "제적"
+      },
+      {
+        "num": 22,
+        "hanja": "祕策",
+        "reading": "비책"
+      },
+      {
+        "num": 23,
+        "hanja": "批判",
+        "reading": "비판"
+      },
+      {
+        "num": 24,
+        "hanja": "田畓",
+        "reading": "전답"
+      },
+      {
+        "num": 25,
+        "hanja": "改築",
+        "reading": "개축"
+      },
+      {
+        "num": 26,
+        "hanja": "腦死",
+        "reading": "뇌사"
+      },
+      {
+        "num": 27,
+        "hanja": "俊秀",
+        "reading": "준수"
+      },
+      {
+        "num": 28,
+        "hanja": "證券",
+        "reading": "증권"
+      },
+      {
+        "num": 29,
+        "hanja": "雄辯",
+        "reading": "웅변"
+      },
+      {
+        "num": 30,
+        "hanja": "求償",
+        "reading": "구상"
+      },
+      {
+        "num": 31,
+        "hanja": "侵略",
+        "reading": "침략"
+      },
+      {
+        "num": 32,
+        "hanja": "農繁期",
+        "reading": "농번기"
+      }
+    ],
+    "116": [
+      {
+        "num": 16,
+        "hanja": "劍術",
+        "reading": "검술"
+      },
+      {
+        "num": 17,
+        "hanja": "優良",
+        "reading": "우량"
+      },
+      {
+        "num": 18,
+        "hanja": "謹弔",
+        "reading": "근조"
+      },
+      {
+        "num": 19,
+        "hanja": "疲困",
+        "reading": "피곤"
+      },
+      {
+        "num": 20,
+        "hanja": "劃期的",
+        "reading": "획기적"
+      },
+      {
+        "num": 21,
+        "hanja": "祭祀",
+        "reading": "제사"
+      },
+      {
+        "num": 22,
+        "hanja": "總督",
+        "reading": "총독"
+      },
+      {
+        "num": 23,
+        "hanja": "候補",
+        "reading": "후보"
+      },
+      {
+        "num": 24,
+        "hanja": "評判",
+        "reading": "평판"
+      },
+      {
+        "num": 25,
+        "hanja": "繁盛",
+        "reading": "번성"
+      },
+      {
+        "num": 26,
+        "hanja": "間髮",
+        "reading": "간발"
+      },
+      {
+        "num": 27,
+        "hanja": "腹部",
+        "reading": "복부"
+      },
+      {
+        "num": 28,
+        "hanja": "革帶",
+        "reading": "혁대"
+      },
+      {
+        "num": 29,
+        "hanja": "降服",
+        "reading": "항복"
+      },
+      {
+        "num": 30,
+        "hanja": "租稅",
+        "reading": "조세"
+      },
+      {
+        "num": 31,
+        "hanja": "傾向",
+        "reading": "경향"
+      },
+      {
+        "num": 32,
+        "hanja": "無慮",
+        "reading": "무려"
+      }
+    ],
+    "117": [
+      {
+        "num": 16,
+        "hanja": "悔改",
+        "reading": "회개"
+      },
+      {
+        "num": 17,
+        "hanja": "基礎",
+        "reading": "기초"
+      },
+      {
+        "num": 18,
+        "hanja": "輪讀",
+        "reading": "윤독"
+      },
+      {
+        "num": 19,
+        "hanja": "提唱",
+        "reading": "제창"
+      },
+      {
+        "num": 20,
+        "hanja": "態度",
+        "reading": "태도"
+      },
+      {
+        "num": 21,
+        "hanja": "版權",
+        "reading": "판권"
+      },
+      {
+        "num": 22,
+        "hanja": "陳列",
+        "reading": "진열"
+      },
+      {
+        "num": 23,
+        "hanja": "庶民",
+        "reading": "서민"
+      },
+      {
+        "num": 24,
+        "hanja": "麻衣",
+        "reading": "마의"
+      },
+      {
+        "num": 25,
+        "hanja": "弘報",
+        "reading": "홍보"
+      },
+      {
+        "num": 26,
+        "hanja": "架空",
+        "reading": "가공"
+      },
+      {
+        "num": 27,
+        "hanja": "起爆",
+        "reading": "기폭"
+      },
+      {
+        "num": 28,
+        "hanja": "俊傑",
+        "reading": "준걸"
+      },
+      {
+        "num": 29,
+        "hanja": "雅量",
+        "reading": "아량"
+      },
+      {
+        "num": 30,
+        "hanja": "弔旗",
+        "reading": "조기"
+      },
+      {
+        "num": 31,
+        "hanja": "苟且",
+        "reading": "구차"
+      },
+      {
+        "num": 32,
+        "hanja": "咸池",
+        "reading": "함지"
+      }
+    ],
+    "118": [
+      {
+        "num": 16,
+        "hanja": "改憲",
+        "reading": "개헌"
+      },
+      {
+        "num": 17,
+        "hanja": "光澤",
+        "reading": "광택"
+      },
+      {
+        "num": 18,
+        "hanja": "博覽會",
+        "reading": "박람회"
+      },
+      {
+        "num": 19,
+        "hanja": "便宜",
+        "reading": "편의"
+      },
+      {
+        "num": 20,
+        "hanja": "菜蔬",
+        "reading": "채소"
+      },
+      {
+        "num": 21,
+        "hanja": "憂慮",
+        "reading": "우려"
+      },
+      {
+        "num": 22,
+        "hanja": "殘香",
+        "reading": "잔향"
+      },
+      {
+        "num": 23,
+        "hanja": "驛前",
+        "reading": "역전"
+      },
+      {
+        "num": 24,
+        "hanja": "講師",
+        "reading": "강사"
+      },
+      {
+        "num": 25,
+        "hanja": "固執",
+        "reading": "고집"
+      },
+      {
+        "num": 26,
+        "hanja": "企劃",
+        "reading": "기획"
+      },
+      {
+        "num": 27,
+        "hanja": "鹿角",
+        "reading": "녹각"
+      },
+      {
+        "num": 28,
+        "hanja": "補償",
+        "reading": "보상"
+      },
+      {
+        "num": 29,
+        "hanja": "爆彈",
+        "reading": "폭탄"
+      },
+      {
+        "num": 30,
+        "hanja": "粉乳",
+        "reading": "분유"
+      },
+      {
+        "num": 31,
+        "hanja": "履歷",
+        "reading": "이력"
+      },
+      {
+        "num": 32,
+        "hanja": "頭腦",
+        "reading": "두뇌"
+      }
+    ],
+    "119": [
+      {
+        "num": 16,
+        "hanja": "文鎭",
+        "reading": "문진"
+      },
+      {
+        "num": 17,
+        "hanja": "京畿",
+        "reading": "경기"
+      },
+      {
+        "num": 18,
+        "hanja": "朝廷",
+        "reading": "조정"
+      },
+      {
+        "num": 19,
+        "hanja": "念慮",
+        "reading": "염려"
+      },
+      {
+        "num": 20,
+        "hanja": "殘忍",
+        "reading": "잔인"
+      },
+      {
+        "num": 21,
+        "hanja": "結付",
+        "reading": "결부"
+      },
+      {
+        "num": 22,
+        "hanja": "環境",
+        "reading": "환경"
+      },
+      {
+        "num": 23,
+        "hanja": "降臨",
+        "reading": "강림"
+      },
+      {
+        "num": 24,
+        "hanja": "爆發",
+        "reading": "폭발"
+      },
+      {
+        "num": 25,
+        "hanja": "諸般",
+        "reading": "제반"
+      },
+      {
+        "num": 26,
+        "hanja": "寄稿",
+        "reading": "기고"
+      },
+      {
+        "num": 27,
+        "hanja": "條理",
+        "reading": "조리"
+      },
+      {
+        "num": 28,
+        "hanja": "恩澤",
+        "reading": "은택"
+      },
+      {
+        "num": 29,
+        "hanja": "享樂",
+        "reading": "향락"
+      },
+      {
+        "num": 30,
+        "hanja": "項羽",
+        "reading": "항우"
+      },
+      {
+        "num": 31,
+        "hanja": "征伐",
+        "reading": "정벌"
+      },
+      {
+        "num": 32,
+        "hanja": "堤防",
+        "reading": "제방"
+      }
+    ],
+    "120": [
+      {
+        "num": 16,
+        "hanja": "實踐",
+        "reading": "실천"
+      },
+      {
+        "num": 17,
+        "hanja": "亨通",
+        "reading": "형통"
+      },
+      {
+        "num": 18,
+        "hanja": "悔改",
+        "reading": "회개"
+      },
+      {
+        "num": 19,
+        "hanja": "罪囚",
+        "reading": "죄수"
+      },
+      {
+        "num": 20,
+        "hanja": "京畿",
+        "reading": "경기"
+      },
+      {
+        "num": 21,
+        "hanja": "架設",
+        "reading": "가설"
+      },
+      {
+        "num": 22,
+        "hanja": "批判",
+        "reading": "비판"
+      },
+      {
+        "num": 23,
+        "hanja": "歎息",
+        "reading": "탄식"
+      },
+      {
+        "num": 24,
+        "hanja": "追慕",
+        "reading": "추모"
+      },
+      {
+        "num": 25,
+        "hanja": "於此彼",
+        "reading": "어차피"
+      },
+      {
+        "num": 26,
+        "hanja": "萬般",
+        "reading": "만반"
+      },
+      {
+        "num": 27,
+        "hanja": "巡察",
+        "reading": "순찰"
+      },
+      {
+        "num": 28,
+        "hanja": "配役",
+        "reading": "배역"
+      },
+      {
+        "num": 29,
+        "hanja": "恥辱",
+        "reading": "치욕"
+      },
+      {
+        "num": 30,
+        "hanja": "卜債",
+        "reading": "복채"
+      },
+      {
+        "num": 31,
+        "hanja": "德澤",
+        "reading": "덕택"
+      },
+      {
+        "num": 32,
+        "hanja": "吐露",
+        "reading": "토로"
+      }
+    ],
+    "121": [
+      {
+        "num": 16,
+        "hanja": "擇一",
+        "reading": "택일"
+      },
+      {
+        "num": 17,
+        "hanja": "書籍",
+        "reading": "서적"
+      },
+      {
+        "num": 18,
+        "hanja": "整理",
+        "reading": "정리"
+      },
+      {
+        "num": 19,
+        "hanja": "宣言",
+        "reading": "선언"
+      },
+      {
+        "num": 20,
+        "hanja": "雄辯",
+        "reading": "웅변"
+      },
+      {
+        "num": 21,
+        "hanja": "補充",
+        "reading": "보충"
+      },
+      {
+        "num": 22,
+        "hanja": "愚直",
+        "reading": "우직"
+      },
+      {
+        "num": 23,
+        "hanja": "丈母",
+        "reading": "장모"
+      },
+      {
+        "num": 24,
+        "hanja": "郵便",
+        "reading": "우편"
+      },
+      {
+        "num": 25,
+        "hanja": "刊行",
+        "reading": "간행"
+      },
+      {
+        "num": 26,
+        "hanja": "滿了",
+        "reading": "만료"
+      },
+      {
+        "num": 27,
+        "hanja": "淡白",
+        "reading": "담백"
+      },
+      {
+        "num": 28,
+        "hanja": "木蓮",
+        "reading": "목련"
+      },
+      {
+        "num": 29,
+        "hanja": "江邊",
+        "reading": "강변"
+      },
+      {
+        "num": 30,
+        "hanja": "應募",
+        "reading": "응모"
+      },
+      {
+        "num": 31,
+        "hanja": "妨害",
+        "reading": "방해"
+      },
+      {
+        "num": 32,
+        "hanja": "憲法",
+        "reading": "헌법"
+      }
+    ],
+    "122": [
+      {
+        "num": 16,
+        "hanja": "證券",
+        "reading": "증권"
+      },
+      {
+        "num": 17,
+        "hanja": "激情",
+        "reading": "격정"
+      },
+      {
+        "num": 18,
+        "hanja": "避暑",
+        "reading": "피서"
+      },
+      {
+        "num": 19,
+        "hanja": "支柱",
+        "reading": "지주"
+      },
+      {
+        "num": 20,
+        "hanja": "背泳",
+        "reading": "배영"
+      },
+      {
+        "num": 21,
+        "hanja": "弘報",
+        "reading": "홍보"
+      },
+      {
+        "num": 22,
+        "hanja": "高額",
+        "reading": "고액"
+      },
+      {
+        "num": 23,
+        "hanja": "畿湖",
+        "reading": "기호"
+      },
+      {
+        "num": 24,
+        "hanja": "返納",
+        "reading": "반납"
+      },
+      {
+        "num": 25,
+        "hanja": "調理",
+        "reading": "조리"
+      },
+      {
+        "num": 26,
+        "hanja": "側近",
+        "reading": "측근"
+      },
+      {
+        "num": 27,
+        "hanja": "咸池",
+        "reading": "함지"
+      },
+      {
+        "num": 28,
+        "hanja": "構圖",
+        "reading": "구도"
+      },
+      {
+        "num": 29,
+        "hanja": "細菌",
+        "reading": "세균"
+      },
+      {
+        "num": 30,
+        "hanja": "盲腸",
+        "reading": "맹장"
+      },
+      {
+        "num": 31,
+        "hanja": "基礎",
+        "reading": "기초"
+      },
+      {
+        "num": 32,
+        "hanja": "貫通",
+        "reading": "관통"
+      }
+    ],
+    "123": [
+      {
+        "num": 16,
+        "hanja": "庶民",
+        "reading": "서민"
+      },
+      {
+        "num": 17,
+        "hanja": "叔父",
+        "reading": "숙부"
+      },
+      {
+        "num": 18,
+        "hanja": "索引",
+        "reading": "색인"
+      },
+      {
+        "num": 19,
+        "hanja": "窮極",
+        "reading": "궁극"
+      },
+      {
+        "num": 20,
+        "hanja": "享年",
+        "reading": "향년"
+      },
+      {
+        "num": 21,
+        "hanja": "宇宙",
+        "reading": "우주"
+      },
+      {
+        "num": 22,
+        "hanja": "觀照",
+        "reading": "관조"
+      },
+      {
+        "num": 23,
+        "hanja": "取捨",
+        "reading": "취사"
+      },
+      {
+        "num": 24,
+        "hanja": "扶助",
+        "reading": "부조"
+      },
+      {
+        "num": 25,
+        "hanja": "建築",
+        "reading": "건축"
+      },
+      {
+        "num": 26,
+        "hanja": "儉素",
+        "reading": "검소"
+      },
+      {
+        "num": 27,
+        "hanja": "波浪",
+        "reading": "파랑"
+      },
+      {
+        "num": 28,
+        "hanja": "故障",
+        "reading": "고장"
+      },
+      {
+        "num": 29,
+        "hanja": "固執",
+        "reading": "고집"
+      },
+      {
+        "num": 30,
+        "hanja": "忍耐",
+        "reading": "인내"
+      },
+      {
+        "num": 31,
+        "hanja": "價値",
+        "reading": "가치"
+      },
+      {
+        "num": 32,
+        "hanja": "傷害",
+        "reading": "상해"
+      }
+    ],
+    "124": [
+      {
+        "num": 16,
+        "hanja": "干涉",
+        "reading": "간섭"
+      },
+      {
+        "num": 17,
+        "hanja": "指揮",
+        "reading": "지휘"
+      },
+      {
+        "num": 18,
+        "hanja": "羽化",
+        "reading": "우화"
+      },
+      {
+        "num": 19,
+        "hanja": "新築",
+        "reading": "신축"
+      },
+      {
+        "num": 20,
+        "hanja": "雅量",
+        "reading": "아량"
+      },
+      {
+        "num": 21,
+        "hanja": "芳香",
+        "reading": "방향"
+      },
+      {
+        "num": 22,
+        "hanja": "族譜",
+        "reading": "족보"
+      },
+      {
+        "num": 23,
+        "hanja": "孔孟",
+        "reading": "공맹"
+      },
+      {
+        "num": 24,
+        "hanja": "細胞",
+        "reading": "세포"
+      },
+      {
+        "num": 25,
+        "hanja": "雜穀",
+        "reading": "잡곡"
+      },
+      {
+        "num": 26,
+        "hanja": "疲困",
+        "reading": "피곤"
+      },
+      {
+        "num": 27,
+        "hanja": "聽講",
+        "reading": "청강"
+      },
+      {
+        "num": 28,
+        "hanja": "介潔",
+        "reading": "개결"
+      },
+      {
+        "num": 29,
+        "hanja": "企劃",
+        "reading": "기획"
+      },
+      {
+        "num": 30,
+        "hanja": "征伐",
+        "reading": "정벌"
+      },
+      {
+        "num": 31,
+        "hanja": "金字塔",
+        "reading": "금자탑"
+      },
+      {
+        "num": 32,
+        "hanja": "劍術",
+        "reading": "검술"
+      }
+    ]
+  },
+  "준3급": {
+    "111": [
+      {
+        "num": 51,
+        "hanja": "感泣",
+        "reading": "감읍"
+      },
+      {
+        "num": 52,
+        "hanja": "投票",
+        "reading": "투표"
+      },
+      {
+        "num": 53,
+        "hanja": "支給",
+        "reading": "지급"
+      },
+      {
+        "num": 54,
+        "hanja": "建設",
+        "reading": "건설"
+      },
+      {
+        "num": 55,
+        "hanja": "證驗",
+        "reading": "증험"
+      },
+      {
+        "num": 56,
+        "hanja": "貞淑",
+        "reading": "정숙"
+      },
+      {
+        "num": 57,
+        "hanja": "打鐘",
+        "reading": "타종"
+      },
+      {
+        "num": 58,
+        "hanja": "慈悲",
+        "reading": "자비"
+      },
+      {
+        "num": 59,
+        "hanja": "威勢",
+        "reading": "위세"
+      },
+      {
+        "num": 60,
+        "hanja": "嚴格",
+        "reading": "엄격"
+      },
+      {
+        "num": 61,
+        "hanja": "乘客",
+        "reading": "승객"
+      },
+      {
+        "num": 62,
+        "hanja": "掃除",
+        "reading": "소제"
+      },
+      {
+        "num": 63,
+        "hanja": "聖域",
+        "reading": "성역"
+      },
+      {
+        "num": 64,
+        "hanja": "墓所",
+        "reading": "묘소"
+      },
+      {
+        "num": 65,
+        "hanja": "基準",
+        "reading": "기준"
+      },
+      {
+        "num": 66,
+        "hanja": "繼走",
+        "reading": "계주"
+      },
+      {
+        "num": 67,
+        "hanja": "祝賀",
+        "reading": "축하"
+      }
+    ],
+    "112": [
+      {
+        "num": 51,
+        "hanja": "聖賢",
+        "reading": "성현"
+      },
+      {
+        "num": 52,
+        "hanja": "黃泉",
+        "reading": "황천"
+      },
+      {
+        "num": 53,
+        "hanja": "假借",
+        "reading": "가차"
+      },
+      {
+        "num": 54,
+        "hanja": "病院",
+        "reading": "병원"
+      },
+      {
+        "num": 55,
+        "hanja": "等級",
+        "reading": "등급"
+      },
+      {
+        "num": 56,
+        "hanja": "中耳炎",
+        "reading": "중이염"
+      },
+      {
+        "num": 57,
+        "hanja": "會議",
+        "reading": "회의"
+      },
+      {
+        "num": 58,
+        "hanja": "露店",
+        "reading": "노점"
+      },
+      {
+        "num": 59,
+        "hanja": "極甚",
+        "reading": "극심"
+      },
+      {
+        "num": 60,
+        "hanja": "檢印",
+        "reading": "검인"
+      },
+      {
+        "num": 61,
+        "hanja": "淸掃",
+        "reading": "청소"
+      },
+      {
+        "num": 62,
+        "hanja": "監査",
+        "reading": "감사"
+      },
+      {
+        "num": 63,
+        "hanja": "堅持",
+        "reading": "견지"
+      },
+      {
+        "num": 64,
+        "hanja": "牧場",
+        "reading": "목장"
+      },
+      {
+        "num": 65,
+        "hanja": "怨望",
+        "reading": "원망"
+      },
+      {
+        "num": 66,
+        "hanja": "戒律",
+        "reading": "계율"
+      },
+      {
+        "num": 67,
+        "hanja": "悲鳴",
+        "reading": "비명"
+      }
+    ],
+    "113": [
+      {
+        "num": 51,
+        "hanja": "幼兒",
+        "reading": "유아"
+      },
+      {
+        "num": 52,
+        "hanja": "注射",
+        "reading": "주사"
+      },
+      {
+        "num": 53,
+        "hanja": "此後",
+        "reading": "차후"
+      },
+      {
+        "num": 54,
+        "hanja": "吸入",
+        "reading": "흡입"
+      },
+      {
+        "num": 55,
+        "hanja": "閉校",
+        "reading": "폐교"
+      },
+      {
+        "num": 56,
+        "hanja": "常勤",
+        "reading": "상근"
+      },
+      {
+        "num": 57,
+        "hanja": "音階",
+        "reading": "음계"
+      },
+      {
+        "num": 58,
+        "hanja": "境界",
+        "reading": "경계"
+      },
+      {
+        "num": 59,
+        "hanja": "調査",
+        "reading": "조사"
+      },
+      {
+        "num": 60,
+        "hanja": "部隊",
+        "reading": "부대"
+      },
+      {
+        "num": 61,
+        "hanja": "昌盛",
+        "reading": "창성"
+      },
+      {
+        "num": 62,
+        "hanja": "總理",
+        "reading": "총리"
+      },
+      {
+        "num": 63,
+        "hanja": "記憶",
+        "reading": "기억"
+      },
+      {
+        "num": 64,
+        "hanja": "窮狀",
+        "reading": "궁상"
+      },
+      {
+        "num": 65,
+        "hanja": "勸告",
+        "reading": "권고"
+      },
+      {
+        "num": 66,
+        "hanja": "虎皮",
+        "reading": "호피"
+      },
+      {
+        "num": 67,
+        "hanja": "渴望",
+        "reading": "갈망"
+      }
+    ],
+    "114": [
+      {
+        "num": 51,
+        "hanja": "暴露",
+        "reading": "폭로"
+      },
+      {
+        "num": 52,
+        "hanja": "玉篇",
+        "reading": "옥편"
+      },
+      {
+        "num": 53,
+        "hanja": "改悟",
+        "reading": "개오"
+      },
+      {
+        "num": 54,
+        "hanja": "忍苦",
+        "reading": "인고"
+      },
+      {
+        "num": 55,
+        "hanja": "非凡",
+        "reading": "비범"
+      },
+      {
+        "num": 56,
+        "hanja": "妻弟",
+        "reading": "처제"
+      },
+      {
+        "num": 57,
+        "hanja": "打破",
+        "reading": "타파"
+      },
+      {
+        "num": 58,
+        "hanja": "已往",
+        "reading": "이왕"
+      },
+      {
+        "num": 59,
+        "hanja": "斷乎",
+        "reading": "단호"
+      },
+      {
+        "num": 60,
+        "hanja": "果敢",
+        "reading": "과감"
+      },
+      {
+        "num": 61,
+        "hanja": "招待",
+        "reading": "초대"
+      },
+      {
+        "num": 62,
+        "hanja": "鷄卵",
+        "reading": "계란"
+      },
+      {
+        "num": 63,
+        "hanja": "祕密",
+        "reading": "비밀"
+      },
+      {
+        "num": 64,
+        "hanja": "階段",
+        "reading": "계단"
+      },
+      {
+        "num": 65,
+        "hanja": "遊說",
+        "reading": "유세"
+      },
+      {
+        "num": 66,
+        "hanja": "災難",
+        "reading": "재난"
+      },
+      {
+        "num": 67,
+        "hanja": "胸部",
+        "reading": "흉부"
+      }
+    ],
+    "115": [
+      {
+        "num": 51,
+        "hanja": "容顔",
+        "reading": "용안"
+      },
+      {
+        "num": 52,
+        "hanja": "錄音",
+        "reading": "녹음"
+      },
+      {
+        "num": 53,
+        "hanja": "快哉",
+        "reading": "쾌재"
+      },
+      {
+        "num": 54,
+        "hanja": "設備",
+        "reading": "설비"
+      },
+      {
+        "num": 55,
+        "hanja": "茂盛",
+        "reading": "무성"
+      },
+      {
+        "num": 56,
+        "hanja": "孤獨",
+        "reading": "고독"
+      },
+      {
+        "num": 57,
+        "hanja": "省墓",
+        "reading": "성묘"
+      },
+      {
+        "num": 58,
+        "hanja": "會社",
+        "reading": "회사"
+      },
+      {
+        "num": 59,
+        "hanja": "乘車",
+        "reading": "승차"
+      },
+      {
+        "num": 60,
+        "hanja": "總員",
+        "reading": "총원"
+      },
+      {
+        "num": 61,
+        "hanja": "健康",
+        "reading": "건강"
+      },
+      {
+        "num": 62,
+        "hanja": "吸煙",
+        "reading": "흡연"
+      },
+      {
+        "num": 63,
+        "hanja": "居處",
+        "reading": "거처"
+      },
+      {
+        "num": 64,
+        "hanja": "準決勝",
+        "reading": "준결승"
+      },
+      {
+        "num": 65,
+        "hanja": "長壽",
+        "reading": "장수"
+      },
+      {
+        "num": 66,
+        "hanja": "給與",
+        "reading": "급여"
+      },
+      {
+        "num": 67,
+        "hanja": "鐵鋼",
+        "reading": "철강"
+      }
+    ],
+    "116": [
+      {
+        "num": 51,
+        "hanja": "祝杯",
+        "reading": "축배"
+      },
+      {
+        "num": 52,
+        "hanja": "區域",
+        "reading": "구역"
+      },
+      {
+        "num": 53,
+        "hanja": "旣婚",
+        "reading": "기혼"
+      },
+      {
+        "num": 54,
+        "hanja": "感泣",
+        "reading": "감읍"
+      },
+      {
+        "num": 55,
+        "hanja": "勇敢",
+        "reading": "용감"
+      },
+      {
+        "num": 56,
+        "hanja": "投票",
+        "reading": "투표"
+      },
+      {
+        "num": 57,
+        "hanja": "止揚",
+        "reading": "지양"
+      },
+      {
+        "num": 58,
+        "hanja": "試驗",
+        "reading": "시험"
+      },
+      {
+        "num": 59,
+        "hanja": "扶養",
+        "reading": "부양"
+      },
+      {
+        "num": 60,
+        "hanja": "警察",
+        "reading": "경찰"
+      },
+      {
+        "num": 61,
+        "hanja": "監視",
+        "reading": "감시"
+      },
+      {
+        "num": 62,
+        "hanja": "瓦解",
+        "reading": "와해"
+      },
+      {
+        "num": 63,
+        "hanja": "鋼鐵",
+        "reading": "강철"
+      },
+      {
+        "num": 64,
+        "hanja": "精誠",
+        "reading": "정성"
+      },
+      {
+        "num": 65,
+        "hanja": "浮遊",
+        "reading": "부유"
+      },
+      {
+        "num": 66,
+        "hanja": "寶庫",
+        "reading": "보고"
+      },
+      {
+        "num": 67,
+        "hanja": "殺到",
+        "reading": "쇄도"
+      }
+    ],
+    "117": [
+      {
+        "num": 51,
+        "hanja": "極甚",
+        "reading": "극심"
+      },
+      {
+        "num": 52,
+        "hanja": "崇尙",
+        "reading": "숭상"
+      },
+      {
+        "num": 53,
+        "hanja": "約束",
+        "reading": "약속"
+      },
+      {
+        "num": 54,
+        "hanja": "經營",
+        "reading": "경영"
+      },
+      {
+        "num": 55,
+        "hanja": "淺學",
+        "reading": "천학"
+      },
+      {
+        "num": 56,
+        "hanja": "亦是",
+        "reading": "역시"
+      },
+      {
+        "num": 57,
+        "hanja": "堅持",
+        "reading": "견지"
+      },
+      {
+        "num": 58,
+        "hanja": "規律",
+        "reading": "규율"
+      },
+      {
+        "num": 59,
+        "hanja": "綠豆",
+        "reading": "녹두"
+      },
+      {
+        "num": 60,
+        "hanja": "鐵板",
+        "reading": "철판"
+      },
+      {
+        "num": 61,
+        "hanja": "災害",
+        "reading": "재해"
+      },
+      {
+        "num": 62,
+        "hanja": "於此彼",
+        "reading": "어차피"
+      },
+      {
+        "num": 63,
+        "hanja": "枝葉",
+        "reading": "지엽"
+      },
+      {
+        "num": 64,
+        "hanja": "祭壇",
+        "reading": "제단"
+      },
+      {
+        "num": 65,
+        "hanja": "聖賢",
+        "reading": "성현"
+      },
+      {
+        "num": 66,
+        "hanja": "植栽",
+        "reading": "식재"
+      },
+      {
+        "num": 67,
+        "hanja": "逢着",
+        "reading": "봉착"
+      }
+    ],
+    "118": [
+      {
+        "num": 51,
+        "hanja": "設或",
+        "reading": "설혹"
+      },
+      {
+        "num": 52,
+        "hanja": "常勤",
+        "reading": "상근"
+      },
+      {
+        "num": 53,
+        "hanja": "戒律",
+        "reading": "계율"
+      },
+      {
+        "num": 54,
+        "hanja": "檢査",
+        "reading": "검사"
+      },
+      {
+        "num": 55,
+        "hanja": "招請",
+        "reading": "초청"
+      },
+      {
+        "num": 56,
+        "hanja": "宗敎",
+        "reading": "종교"
+      },
+      {
+        "num": 57,
+        "hanja": "成就",
+        "reading": "성취"
+      },
+      {
+        "num": 58,
+        "hanja": "素朴",
+        "reading": "소박"
+      },
+      {
+        "num": 59,
+        "hanja": "實際",
+        "reading": "실제"
+      },
+      {
+        "num": 60,
+        "hanja": "養鷄",
+        "reading": "양계"
+      },
+      {
+        "num": 61,
+        "hanja": "志操",
+        "reading": "지조"
+      },
+      {
+        "num": 62,
+        "hanja": "施賞",
+        "reading": "시상"
+      },
+      {
+        "num": 63,
+        "hanja": "推仰",
+        "reading": "추앙"
+      },
+      {
+        "num": 64,
+        "hanja": "怨望",
+        "reading": "원망"
+      },
+      {
+        "num": 65,
+        "hanja": "罰則",
+        "reading": "벌칙"
+      },
+      {
+        "num": 66,
+        "hanja": "境界",
+        "reading": "경계"
+      },
+      {
+        "num": 67,
+        "hanja": "配匹",
+        "reading": "배필"
+      }
+    ],
+    "119": [
+      {
+        "num": 51,
+        "hanja": "損益",
+        "reading": "손익"
+      },
+      {
+        "num": 52,
+        "hanja": "但只",
+        "reading": "단지"
+      },
+      {
+        "num": 53,
+        "hanja": "注射",
+        "reading": "주사"
+      },
+      {
+        "num": 54,
+        "hanja": "假借",
+        "reading": "가차"
+      },
+      {
+        "num": 55,
+        "hanja": "疲勞",
+        "reading": "피로"
+      },
+      {
+        "num": 56,
+        "hanja": "部隊",
+        "reading": "부대"
+      },
+      {
+        "num": 57,
+        "hanja": "病院",
+        "reading": "병원"
+      },
+      {
+        "num": 58,
+        "hanja": "繼承",
+        "reading": "계승"
+      },
+      {
+        "num": 59,
+        "hanja": "物件",
+        "reading": "물건"
+      },
+      {
+        "num": 60,
+        "hanja": "監査",
+        "reading": "감사"
+      },
+      {
+        "num": 61,
+        "hanja": "打鐘",
+        "reading": "타종"
+      },
+      {
+        "num": 62,
+        "hanja": "旗手",
+        "reading": "기수"
+      },
+      {
+        "num": 63,
+        "hanja": "哀痛",
+        "reading": "애통"
+      },
+      {
+        "num": 64,
+        "hanja": "風霜",
+        "reading": "풍상"
+      },
+      {
+        "num": 65,
+        "hanja": "淸涼",
+        "reading": "청량"
+      },
+      {
+        "num": 66,
+        "hanja": "永眠",
+        "reading": "영면"
+      },
+      {
+        "num": 67,
+        "hanja": "破格",
+        "reading": "파격"
+      }
+    ],
+    "120": [
+      {
+        "num": 51,
+        "hanja": "秀才",
+        "reading": "수재"
+      },
+      {
+        "num": 52,
+        "hanja": "美術",
+        "reading": "미술"
+      },
+      {
+        "num": 53,
+        "hanja": "我執",
+        "reading": "아집"
+      },
+      {
+        "num": 54,
+        "hanja": "哀惜",
+        "reading": "애석"
+      },
+      {
+        "num": 55,
+        "hanja": "追憶",
+        "reading": "추억"
+      },
+      {
+        "num": 56,
+        "hanja": "吟味",
+        "reading": "음미"
+      },
+      {
+        "num": 57,
+        "hanja": "吹打",
+        "reading": "취타"
+      },
+      {
+        "num": 58,
+        "hanja": "區域",
+        "reading": "구역"
+      },
+      {
+        "num": 59,
+        "hanja": "規律",
+        "reading": "규율"
+      },
+      {
+        "num": 60,
+        "hanja": "勸告",
+        "reading": "권고"
+      },
+      {
+        "num": 61,
+        "hanja": "社員",
+        "reading": "사원"
+      },
+      {
+        "num": 62,
+        "hanja": "罰則",
+        "reading": "벌칙"
+      },
+      {
+        "num": 63,
+        "hanja": "威力",
+        "reading": "위력"
+      },
+      {
+        "num": 64,
+        "hanja": "忍苦",
+        "reading": "인고"
+      },
+      {
+        "num": 65,
+        "hanja": "試驗",
+        "reading": "시험"
+      },
+      {
+        "num": 66,
+        "hanja": "祝賀",
+        "reading": "축하"
+      },
+      {
+        "num": 67,
+        "hanja": "閉校",
+        "reading": "폐교"
+      }
+    ],
+    "121": [
+      {
+        "num": 51,
+        "hanja": "哀歡",
+        "reading": "애환"
+      },
+      {
+        "num": 52,
+        "hanja": "必須",
+        "reading": "필수"
+      },
+      {
+        "num": 53,
+        "hanja": "現象",
+        "reading": "현상"
+      },
+      {
+        "num": 54,
+        "hanja": "改悟",
+        "reading": "개오"
+      },
+      {
+        "num": 55,
+        "hanja": "云爲",
+        "reading": "운위"
+      },
+      {
+        "num": 56,
+        "hanja": "已往",
+        "reading": "이왕"
+      },
+      {
+        "num": 57,
+        "hanja": "吹入",
+        "reading": "취입"
+      },
+      {
+        "num": 58,
+        "hanja": "短篇",
+        "reading": "단편"
+      },
+      {
+        "num": 59,
+        "hanja": "間或",
+        "reading": "간혹"
+      },
+      {
+        "num": 60,
+        "hanja": "衣類",
+        "reading": "의류"
+      },
+      {
+        "num": 61,
+        "hanja": "倍加",
+        "reading": "배가"
+      },
+      {
+        "num": 62,
+        "hanja": "背景",
+        "reading": "배경"
+      },
+      {
+        "num": 63,
+        "hanja": "傷害",
+        "reading": "상해"
+      },
+      {
+        "num": 64,
+        "hanja": "迎接",
+        "reading": "영접"
+      },
+      {
+        "num": 65,
+        "hanja": "仁慈",
+        "reading": "인자"
+      },
+      {
+        "num": 66,
+        "hanja": "大暑",
+        "reading": "대서"
+      },
+      {
+        "num": 67,
+        "hanja": "鄕愁",
+        "reading": "향수"
+      }
+    ],
+    "122": [
+      {
+        "num": 51,
+        "hanja": "墓域",
+        "reading": "묘역"
+      },
+      {
+        "num": 52,
+        "hanja": "寫眞",
+        "reading": "사진"
+      },
+      {
+        "num": 53,
+        "hanja": "壯談",
+        "reading": "장담"
+      },
+      {
+        "num": 54,
+        "hanja": "新郞",
+        "reading": "신랑"
+      },
+      {
+        "num": 55,
+        "hanja": "鐵板",
+        "reading": "철판"
+      },
+      {
+        "num": 56,
+        "hanja": "居住",
+        "reading": "거주"
+      },
+      {
+        "num": 57,
+        "hanja": "或者",
+        "reading": "혹자"
+      },
+      {
+        "num": 58,
+        "hanja": "採集",
+        "reading": "채집"
+      },
+      {
+        "num": 59,
+        "hanja": "制度",
+        "reading": "제도"
+      },
+      {
+        "num": 60,
+        "hanja": "慈愛",
+        "reading": "자애"
+      },
+      {
+        "num": 61,
+        "hanja": "渴望",
+        "reading": "갈망"
+      },
+      {
+        "num": 62,
+        "hanja": "衆智",
+        "reading": "중지"
+      },
+      {
+        "num": 63,
+        "hanja": "瓦解",
+        "reading": "와해"
+      },
+      {
+        "num": 64,
+        "hanja": "歲暮",
+        "reading": "세모"
+      },
+      {
+        "num": 65,
+        "hanja": "尙武",
+        "reading": "상무"
+      },
+      {
+        "num": 66,
+        "hanja": "處罰",
+        "reading": "처벌"
+      },
+      {
+        "num": 67,
+        "hanja": "歌謠",
+        "reading": "가요"
+      }
+    ],
+    "123": [
+      {
+        "num": 51,
+        "hanja": "群舞",
+        "reading": "군무"
+      },
+      {
+        "num": 52,
+        "hanja": "貞節",
+        "reading": "정절"
+      },
+      {
+        "num": 53,
+        "hanja": "黃泉",
+        "reading": "황천"
+      },
+      {
+        "num": 54,
+        "hanja": "準備",
+        "reading": "준비"
+      },
+      {
+        "num": 55,
+        "hanja": "吸煙",
+        "reading": "흡연"
+      },
+      {
+        "num": 56,
+        "hanja": "招請",
+        "reading": "초청"
+      },
+      {
+        "num": 57,
+        "hanja": "逆轉",
+        "reading": "역전"
+      },
+      {
+        "num": 58,
+        "hanja": "歡迎",
+        "reading": "환영"
+      },
+      {
+        "num": 59,
+        "hanja": "或是",
+        "reading": "혹시"
+      },
+      {
+        "num": 60,
+        "hanja": "痛快",
+        "reading": "통쾌"
+      },
+      {
+        "num": 61,
+        "hanja": "逢着",
+        "reading": "봉착"
+      },
+      {
+        "num": 62,
+        "hanja": "悲鳴",
+        "reading": "비명"
+      },
+      {
+        "num": 63,
+        "hanja": "武器",
+        "reading": "무기"
+      },
+      {
+        "num": 64,
+        "hanja": "免責",
+        "reading": "면책"
+      },
+      {
+        "num": 65,
+        "hanja": "于先",
+        "reading": "우선"
+      },
+      {
+        "num": 66,
+        "hanja": "養鷄",
+        "reading": "양계"
+      },
+      {
+        "num": 67,
+        "hanja": "積極的",
+        "reading": "적극적"
+      }
+    ],
+    "124": [
+      {
+        "num": 51,
+        "hanja": "居處",
+        "reading": "거처"
+      },
+      {
+        "num": 52,
+        "hanja": "團束",
+        "reading": "단속"
+      },
+      {
+        "num": 53,
+        "hanja": "祕密",
+        "reading": "비밀"
+      },
+      {
+        "num": 54,
+        "hanja": "歸省",
+        "reading": "귀성"
+      },
+      {
+        "num": 55,
+        "hanja": "堅固",
+        "reading": "견고"
+      },
+      {
+        "num": 56,
+        "hanja": "葉錢",
+        "reading": "엽전"
+      },
+      {
+        "num": 57,
+        "hanja": "勇敢",
+        "reading": "용감"
+      },
+      {
+        "num": 58,
+        "hanja": "推進",
+        "reading": "추진"
+      },
+      {
+        "num": 59,
+        "hanja": "藥局",
+        "reading": "약국"
+      },
+      {
+        "num": 60,
+        "hanja": "討伐",
+        "reading": "토벌"
+      },
+      {
+        "num": 61,
+        "hanja": "玉篇",
+        "reading": "옥편"
+      },
+      {
+        "num": 62,
+        "hanja": "群落",
+        "reading": "군락"
+      },
+      {
+        "num": 63,
+        "hanja": "穀食",
+        "reading": "곡식"
+      },
+      {
+        "num": 64,
+        "hanja": "儒林",
+        "reading": "유림"
+      },
+      {
+        "num": 65,
+        "hanja": "崇尙",
+        "reading": "숭상"
+      },
+      {
+        "num": 66,
+        "hanja": "亦是",
+        "reading": "역시"
+      },
+      {
+        "num": 67,
+        "hanja": "皇帝",
+        "reading": "황제"
+      }
+    ]
+  },
+  "4급": {
+    "111": [
+      {
+        "num": 51,
+        "hanja": "歌唱",
+        "reading": "가창"
+      },
+      {
+        "num": 52,
+        "hanja": "看病",
+        "reading": "간병"
+      },
+      {
+        "num": 53,
+        "hanja": "移植",
+        "reading": "이식"
+      },
+      {
+        "num": 54,
+        "hanja": "甘受",
+        "reading": "감수"
+      },
+      {
+        "num": 55,
+        "hanja": "禮節",
+        "reading": "예절"
+      },
+      {
+        "num": 56,
+        "hanja": "結婚",
+        "reading": "결혼"
+      },
+      {
+        "num": 57,
+        "hanja": "起立",
+        "reading": "기립"
+      },
+      {
+        "num": 58,
+        "hanja": "餘波",
+        "reading": "여파"
+      },
+      {
+        "num": 59,
+        "hanja": "文句",
+        "reading": "문구"
+      },
+      {
+        "num": 60,
+        "hanja": "密接",
+        "reading": "밀접"
+      },
+      {
+        "num": 61,
+        "hanja": "順番",
+        "reading": "순번"
+      },
+      {
+        "num": 62,
+        "hanja": "謝禮",
+        "reading": "사례"
+      },
+      {
+        "num": 63,
+        "hanja": "防寒",
+        "reading": "방한"
+      },
+      {
+        "num": 64,
+        "hanja": "伐草",
+        "reading": "벌초"
+      },
+      {
+        "num": 65,
+        "hanja": "鼻笑",
+        "reading": "비소"
+      },
+      {
+        "num": 66,
+        "hanja": "丙戌",
+        "reading": "병술"
+      },
+      {
+        "num": 67,
+        "hanja": "復活",
+        "reading": "부활"
+      }
+    ],
+    "112": [
+      {
+        "num": 51,
+        "hanja": "知識",
+        "reading": "지식"
+      },
+      {
+        "num": 52,
+        "hanja": "形便",
+        "reading": "형편"
+      },
+      {
+        "num": 53,
+        "hanja": "人倫",
+        "reading": "인륜"
+      },
+      {
+        "num": 54,
+        "hanja": "暴動",
+        "reading": "폭동"
+      },
+      {
+        "num": 55,
+        "hanja": "壬辰",
+        "reading": "임진"
+      },
+      {
+        "num": 56,
+        "hanja": "快適",
+        "reading": "쾌적"
+      },
+      {
+        "num": 57,
+        "hanja": "重唱",
+        "reading": "중창"
+      },
+      {
+        "num": 58,
+        "hanja": "最終",
+        "reading": "최종"
+      },
+      {
+        "num": 59,
+        "hanja": "政權",
+        "reading": "정권"
+      },
+      {
+        "num": 60,
+        "hanja": "節次",
+        "reading": "절차"
+      },
+      {
+        "num": 61,
+        "hanja": "將兵",
+        "reading": "장병"
+      },
+      {
+        "num": 62,
+        "hanja": "自律",
+        "reading": "자율"
+      },
+      {
+        "num": 63,
+        "hanja": "時針",
+        "reading": "시침"
+      },
+      {
+        "num": 64,
+        "hanja": "詩句",
+        "reading": "시구"
+      },
+      {
+        "num": 65,
+        "hanja": "印章",
+        "reading": "인장"
+      },
+      {
+        "num": 66,
+        "hanja": "新婚",
+        "reading": "신혼"
+      },
+      {
+        "num": 67,
+        "hanja": "移住",
+        "reading": "이주"
+      }
+    ],
+    "113": [
+      {
+        "num": 51,
+        "hanja": "房門",
+        "reading": "방문"
+      },
+      {
+        "num": 52,
+        "hanja": "逆流",
+        "reading": "역류"
+      },
+      {
+        "num": 53,
+        "hanja": "接受處",
+        "reading": "접수처"
+      },
+      {
+        "num": 54,
+        "hanja": "勝敗",
+        "reading": "승패"
+      },
+      {
+        "num": 55,
+        "hanja": "指向",
+        "reading": "지향"
+      },
+      {
+        "num": 56,
+        "hanja": "念佛",
+        "reading": "염불"
+      },
+      {
+        "num": 57,
+        "hanja": "許容",
+        "reading": "허용"
+      },
+      {
+        "num": 58,
+        "hanja": "禮拜",
+        "reading": "예배"
+      },
+      {
+        "num": 59,
+        "hanja": "窓戶",
+        "reading": "창호"
+      },
+      {
+        "num": 60,
+        "hanja": "律動",
+        "reading": "율동"
+      },
+      {
+        "num": 61,
+        "hanja": "着實",
+        "reading": "착실"
+      },
+      {
+        "num": 62,
+        "hanja": "適合",
+        "reading": "적합"
+      },
+      {
+        "num": 63,
+        "hanja": "最後",
+        "reading": "최후"
+      },
+      {
+        "num": 64,
+        "hanja": "造成",
+        "reading": "조성"
+      },
+      {
+        "num": 65,
+        "hanja": "依他",
+        "reading": "의타"
+      },
+      {
+        "num": 66,
+        "hanja": "情勢",
+        "reading": "정세"
+      },
+      {
+        "num": 67,
+        "hanja": "統治",
+        "reading": "통치"
+      }
+    ],
+    "114": [
+      {
+        "num": 51,
+        "hanja": "必勝",
+        "reading": "필승"
+      },
+      {
+        "num": 52,
+        "hanja": "着陸",
+        "reading": "착륙"
+      },
+      {
+        "num": 53,
+        "hanja": "山寺",
+        "reading": "산사"
+      },
+      {
+        "num": 54,
+        "hanja": "遺骨",
+        "reading": "유골"
+      },
+      {
+        "num": 55,
+        "hanja": "進退",
+        "reading": "진퇴"
+      },
+      {
+        "num": 56,
+        "hanja": "旅客",
+        "reading": "여객"
+      },
+      {
+        "num": 57,
+        "hanja": "快感",
+        "reading": "쾌감"
+      },
+      {
+        "num": 58,
+        "hanja": "與否",
+        "reading": "여부"
+      },
+      {
+        "num": 59,
+        "hanja": "是非",
+        "reading": "시비"
+      },
+      {
+        "num": 60,
+        "hanja": "人波",
+        "reading": "인파"
+      },
+      {
+        "num": 61,
+        "hanja": "脫線",
+        "reading": "탈선"
+      },
+      {
+        "num": 62,
+        "hanja": "滿發",
+        "reading": "만발"
+      },
+      {
+        "num": 63,
+        "hanja": "葉書",
+        "reading": "엽서"
+      },
+      {
+        "num": 64,
+        "hanja": "修練",
+        "reading": "수련"
+      },
+      {
+        "num": 65,
+        "hanja": "依支",
+        "reading": "의지"
+      },
+      {
+        "num": 66,
+        "hanja": "變動",
+        "reading": "변동"
+      },
+      {
+        "num": 67,
+        "hanja": "擧手",
+        "reading": "거수"
+      }
+    ],
+    "115": [
+      {
+        "num": 51,
+        "hanja": "硏修",
+        "reading": "연수"
+      },
+      {
+        "num": 52,
+        "hanja": "合唱",
+        "reading": "합창"
+      },
+      {
+        "num": 53,
+        "hanja": "雄大",
+        "reading": "웅대"
+      },
+      {
+        "num": 54,
+        "hanja": "除去",
+        "reading": "제거"
+      },
+      {
+        "num": 55,
+        "hanja": "探問",
+        "reading": "탐문"
+      },
+      {
+        "num": 56,
+        "hanja": "應試",
+        "reading": "응시"
+      },
+      {
+        "num": 57,
+        "hanja": "波及",
+        "reading": "파급"
+      },
+      {
+        "num": 58,
+        "hanja": "密談",
+        "reading": "밀담"
+      },
+      {
+        "num": 59,
+        "hanja": "純眞",
+        "reading": "순진"
+      },
+      {
+        "num": 60,
+        "hanja": "發端",
+        "reading": "발단"
+      },
+      {
+        "num": 61,
+        "hanja": "財貨",
+        "reading": "재화"
+      },
+      {
+        "num": 62,
+        "hanja": "聖君",
+        "reading": "성군"
+      },
+      {
+        "num": 63,
+        "hanja": "聽衆",
+        "reading": "청중"
+      },
+      {
+        "num": 64,
+        "hanja": "節約",
+        "reading": "절약"
+      },
+      {
+        "num": 65,
+        "hanja": "接待",
+        "reading": "접대"
+      },
+      {
+        "num": 66,
+        "hanja": "興味",
+        "reading": "흥미"
+      },
+      {
+        "num": 67,
+        "hanja": "觀察",
+        "reading": "관찰"
+      }
+    ],
+    "116": [
+      {
+        "num": 51,
+        "hanja": "視聽",
+        "reading": "시청"
+      },
+      {
+        "num": 52,
+        "hanja": "舍屋",
+        "reading": "사옥"
+      },
+      {
+        "num": 53,
+        "hanja": "給與",
+        "reading": "급여"
+      },
+      {
+        "num": 54,
+        "hanja": "取得",
+        "reading": "취득"
+      },
+      {
+        "num": 55,
+        "hanja": "陰陽",
+        "reading": "음양"
+      },
+      {
+        "num": 56,
+        "hanja": "舊官",
+        "reading": "구관"
+      },
+      {
+        "num": 57,
+        "hanja": "希望",
+        "reading": "희망"
+      },
+      {
+        "num": 58,
+        "hanja": "收拾",
+        "reading": "수습"
+      },
+      {
+        "num": 59,
+        "hanja": "探究",
+        "reading": "탐구"
+      },
+      {
+        "num": 60,
+        "hanja": "熱烈",
+        "reading": "열렬"
+      },
+      {
+        "num": 61,
+        "hanja": "解決",
+        "reading": "해결"
+      },
+      {
+        "num": 62,
+        "hanja": "限界",
+        "reading": "한계"
+      },
+      {
+        "num": 63,
+        "hanja": "快活",
+        "reading": "쾌활"
+      },
+      {
+        "num": 64,
+        "hanja": "歌唱",
+        "reading": "가창"
+      },
+      {
+        "num": 65,
+        "hanja": "書藝",
+        "reading": "서예"
+      },
+      {
+        "num": 66,
+        "hanja": "增進",
+        "reading": "증진"
+      },
+      {
+        "num": 67,
+        "hanja": "競技",
+        "reading": "경기"
+      }
+    ],
+    "117": [
+      {
+        "num": 51,
+        "hanja": "硏究",
+        "reading": "연구"
+      },
+      {
+        "num": 52,
+        "hanja": "鼻祖",
+        "reading": "비조"
+      },
+      {
+        "num": 53,
+        "hanja": "壬辰",
+        "reading": "임진"
+      },
+      {
+        "num": 54,
+        "hanja": "義務",
+        "reading": "의무"
+      },
+      {
+        "num": 55,
+        "hanja": "將軍",
+        "reading": "장군"
+      },
+      {
+        "num": 56,
+        "hanja": "禮遇",
+        "reading": "예우"
+      },
+      {
+        "num": 57,
+        "hanja": "脫出",
+        "reading": "탈출"
+      },
+      {
+        "num": 58,
+        "hanja": "變則",
+        "reading": "변칙"
+      },
+      {
+        "num": 59,
+        "hanja": "布告",
+        "reading": "포고"
+      },
+      {
+        "num": 60,
+        "hanja": "句節",
+        "reading": "구절"
+      },
+      {
+        "num": 61,
+        "hanja": "修正",
+        "reading": "수정"
+      },
+      {
+        "num": 62,
+        "hanja": "浴室",
+        "reading": "욕실"
+      },
+      {
+        "num": 63,
+        "hanja": "着席",
+        "reading": "착석"
+      },
+      {
+        "num": 64,
+        "hanja": "最近",
+        "reading": "최근"
+      },
+      {
+        "num": 65,
+        "hanja": "請婚",
+        "reading": "청혼"
+      },
+      {
+        "num": 66,
+        "hanja": "處所",
+        "reading": "처소"
+      },
+      {
+        "num": 67,
+        "hanja": "尊敬",
+        "reading": "존경"
+      }
+    ],
+    "118": [
+      {
+        "num": 51,
+        "hanja": "純益",
+        "reading": "순익"
+      },
+      {
+        "num": 52,
+        "hanja": "起立",
+        "reading": "기립"
+      },
+      {
+        "num": 53,
+        "hanja": "修養",
+        "reading": "수양"
+      },
+      {
+        "num": 54,
+        "hanja": "白飯",
+        "reading": "백반"
+      },
+      {
+        "num": 55,
+        "hanja": "尊貴",
+        "reading": "존귀"
+      },
+      {
+        "num": 56,
+        "hanja": "甘受",
+        "reading": "감수"
+      },
+      {
+        "num": 57,
+        "hanja": "減少",
+        "reading": "감소"
+      },
+      {
+        "num": 58,
+        "hanja": "調節",
+        "reading": "조절"
+      },
+      {
+        "num": 59,
+        "hanja": "餘波",
+        "reading": "여파"
+      },
+      {
+        "num": 60,
+        "hanja": "私席",
+        "reading": "사석"
+      },
+      {
+        "num": 61,
+        "hanja": "認識",
+        "reading": "인식"
+      },
+      {
+        "num": 62,
+        "hanja": "防止",
+        "reading": "방지"
+      },
+      {
+        "num": 63,
+        "hanja": "舊面",
+        "reading": "구면"
+      },
+      {
+        "num": 64,
+        "hanja": "考察",
+        "reading": "고찰"
+      },
+      {
+        "num": 65,
+        "hanja": "移植",
+        "reading": "이식"
+      },
+      {
+        "num": 66,
+        "hanja": "到達",
+        "reading": "도달"
+      },
+      {
+        "num": 67,
+        "hanja": "強勢",
+        "reading": "강세"
+      }
+    ],
+    "119": [
+      {
+        "num": 51,
+        "hanja": "聲樂",
+        "reading": "성악"
+      },
+      {
+        "num": 52,
+        "hanja": "及第",
+        "reading": "급제"
+      },
+      {
+        "num": 53,
+        "hanja": "原則",
+        "reading": "원칙"
+      },
+      {
+        "num": 54,
+        "hanja": "鼻笑",
+        "reading": "비소"
+      },
+      {
+        "num": 55,
+        "hanja": "房門",
+        "reading": "방문"
+      },
+      {
+        "num": 56,
+        "hanja": "丙戌",
+        "reading": "병술"
+      },
+      {
+        "num": 57,
+        "hanja": "逆順",
+        "reading": "역순"
+      },
+      {
+        "num": 58,
+        "hanja": "達成",
+        "reading": "달성"
+      },
+      {
+        "num": 59,
+        "hanja": "禮節",
+        "reading": "예절"
+      },
+      {
+        "num": 60,
+        "hanja": "宿所",
+        "reading": "숙소"
+      },
+      {
+        "num": 61,
+        "hanja": "英雄",
+        "reading": "영웅"
+      },
+      {
+        "num": 62,
+        "hanja": "溪谷",
+        "reading": "계곡"
+      },
+      {
+        "num": 63,
+        "hanja": "客室",
+        "reading": "객실"
+      },
+      {
+        "num": 64,
+        "hanja": "伐草",
+        "reading": "벌초"
+      },
+      {
+        "num": 65,
+        "hanja": "防寒",
+        "reading": "방한"
+      },
+      {
+        "num": 66,
+        "hanja": "時針",
+        "reading": "시침"
+      },
+      {
+        "num": 67,
+        "hanja": "移民",
+        "reading": "이민"
+      }
+    ],
+    "120": [
+      {
+        "num": 51,
+        "hanja": "禁止",
+        "reading": "금지"
+      },
+      {
+        "num": 52,
+        "hanja": "美容",
+        "reading": "미용"
+      },
+      {
+        "num": 53,
+        "hanja": "財貨",
+        "reading": "재화"
+      },
+      {
+        "num": 54,
+        "hanja": "私服",
+        "reading": "사복"
+      },
+      {
+        "num": 55,
+        "hanja": "輕快",
+        "reading": "경쾌"
+      },
+      {
+        "num": 56,
+        "hanja": "訓練",
+        "reading": "훈련"
+      },
+      {
+        "num": 57,
+        "hanja": "滿發",
+        "reading": "만발"
+      },
+      {
+        "num": 58,
+        "hanja": "若干",
+        "reading": "약간"
+      },
+      {
+        "num": 59,
+        "hanja": "危急",
+        "reading": "위급"
+      },
+      {
+        "num": 60,
+        "hanja": "淸溪",
+        "reading": "청계"
+      },
+      {
+        "num": 61,
+        "hanja": "法治",
+        "reading": "법치"
+      },
+      {
+        "num": 62,
+        "hanja": "待遇",
+        "reading": "대우"
+      },
+      {
+        "num": 63,
+        "hanja": "單獨",
+        "reading": "단독"
+      },
+      {
+        "num": 64,
+        "hanja": "聽取",
+        "reading": "청취"
+      },
+      {
+        "num": 65,
+        "hanja": "有益",
+        "reading": "유익"
+      },
+      {
+        "num": 66,
+        "hanja": "敵對",
+        "reading": "적대"
+      },
+      {
+        "num": 67,
+        "hanja": "遺骨",
+        "reading": "유골"
+      }
+    ],
+    "121": [
+      {
+        "num": 51,
+        "hanja": "達觀",
+        "reading": "달관"
+      },
+      {
+        "num": 52,
+        "hanja": "熱情",
+        "reading": "열정"
+      },
+      {
+        "num": 53,
+        "hanja": "端正",
+        "reading": "단정"
+      },
+      {
+        "num": 54,
+        "hanja": "受取",
+        "reading": "수취"
+      },
+      {
+        "num": 55,
+        "hanja": "收拾",
+        "reading": "수습"
+      },
+      {
+        "num": 56,
+        "hanja": "謝罪",
+        "reading": "사죄"
+      },
+      {
+        "num": 57,
+        "hanja": "理解",
+        "reading": "이해"
+      },
+      {
+        "num": 58,
+        "hanja": "更生",
+        "reading": "갱생"
+      },
+      {
+        "num": 59,
+        "hanja": "暴雨",
+        "reading": "폭우"
+      },
+      {
+        "num": 60,
+        "hanja": "退步",
+        "reading": "퇴보"
+      },
+      {
+        "num": 61,
+        "hanja": "興味",
+        "reading": "흥미"
+      },
+      {
+        "num": 62,
+        "hanja": "禮拜",
+        "reading": "예배"
+      },
+      {
+        "num": 63,
+        "hanja": "流布",
+        "reading": "유포"
+      },
+      {
+        "num": 64,
+        "hanja": "波動",
+        "reading": "파동"
+      },
+      {
+        "num": 65,
+        "hanja": "造成",
+        "reading": "조성"
+      },
+      {
+        "num": 66,
+        "hanja": "寒食",
+        "reading": "한식"
+      },
+      {
+        "num": 67,
+        "hanja": "調練",
+        "reading": "조련"
+      }
+    ],
+    "122": [
+      {
+        "num": 51,
+        "hanja": "適當",
+        "reading": "적당"
+      },
+      {
+        "num": 52,
+        "hanja": "順番",
+        "reading": "순번"
+      },
+      {
+        "num": 53,
+        "hanja": "精誠",
+        "reading": "정성"
+      },
+      {
+        "num": 54,
+        "hanja": "遺言",
+        "reading": "유언"
+      },
+      {
+        "num": 55,
+        "hanja": "合唱",
+        "reading": "합창"
+      },
+      {
+        "num": 56,
+        "hanja": "退去",
+        "reading": "퇴거"
+      },
+      {
+        "num": 57,
+        "hanja": "禮遇",
+        "reading": "예우"
+      },
+      {
+        "num": 58,
+        "hanja": "權利",
+        "reading": "권리"
+      },
+      {
+        "num": 59,
+        "hanja": "鮮明",
+        "reading": "선명"
+      },
+      {
+        "num": 60,
+        "hanja": "節次",
+        "reading": "절차"
+      },
+      {
+        "num": 61,
+        "hanja": "變動",
+        "reading": "변동"
+      },
+      {
+        "num": 62,
+        "hanja": "救出",
+        "reading": "구출"
+      },
+      {
+        "num": 63,
+        "hanja": "丙寅",
+        "reading": "병인"
+      },
+      {
+        "num": 64,
+        "hanja": "旅行",
+        "reading": "여행"
+      },
+      {
+        "num": 65,
+        "hanja": "統一",
+        "reading": "통일"
+      },
+      {
+        "num": 66,
+        "hanja": "公益",
+        "reading": "공익"
+      },
+      {
+        "num": 67,
+        "hanja": "答訪",
+        "reading": "답방"
+      }
+    ],
+    "123": [
+      {
+        "num": 51,
+        "hanja": "希望",
+        "reading": "희망"
+      },
+      {
+        "num": 52,
+        "hanja": "申請",
+        "reading": "신청"
+      },
+      {
+        "num": 53,
+        "hanja": "癸酉",
+        "reading": "계유"
+      },
+      {
+        "num": 54,
+        "hanja": "單純",
+        "reading": "단순"
+      },
+      {
+        "num": 55,
+        "hanja": "私席",
+        "reading": "사석"
+      },
+      {
+        "num": 56,
+        "hanja": "辛卯",
+        "reading": "신묘"
+      },
+      {
+        "num": 57,
+        "hanja": "傳承",
+        "reading": "전승"
+      },
+      {
+        "num": 58,
+        "hanja": "最近",
+        "reading": "최근"
+      },
+      {
+        "num": 59,
+        "hanja": "休務",
+        "reading": "휴무"
+      },
+      {
+        "num": 60,
+        "hanja": "乃至",
+        "reading": "내지"
+      },
+      {
+        "num": 61,
+        "hanja": "調節",
+        "reading": "조절"
+      },
+      {
+        "num": 62,
+        "hanja": "均等",
+        "reading": "균등"
+      },
+      {
+        "num": 63,
+        "hanja": "脫出",
+        "reading": "탈출"
+      },
+      {
+        "num": 64,
+        "hanja": "處所",
+        "reading": "처소"
+      },
+      {
+        "num": 65,
+        "hanja": "歌唱力",
+        "reading": "가창력"
+      },
+      {
+        "num": 66,
+        "hanja": "鐵絲",
+        "reading": "철사"
+      },
+      {
+        "num": 67,
+        "hanja": "協同",
+        "reading": "협동"
+      }
+    ],
+    "124": [
+      {
+        "num": 51,
+        "hanja": "純眞",
+        "reading": "순진"
+      },
+      {
+        "num": 52,
+        "hanja": "謝禮",
+        "reading": "사례"
+      },
+      {
+        "num": 53,
+        "hanja": "歌唱",
+        "reading": "가창"
+      },
+      {
+        "num": 54,
+        "hanja": "夫婦",
+        "reading": "부부"
+      },
+      {
+        "num": 55,
+        "hanja": "看病",
+        "reading": "간병"
+      },
+      {
+        "num": 56,
+        "hanja": "移植",
+        "reading": "이식"
+      },
+      {
+        "num": 57,
+        "hanja": "客室",
+        "reading": "객실"
+      },
+      {
+        "num": 58,
+        "hanja": "忠誠",
+        "reading": "충성"
+      },
+      {
+        "num": 59,
+        "hanja": "結婚",
+        "reading": "결혼"
+      },
+      {
+        "num": 60,
+        "hanja": "形便",
+        "reading": "형편"
+      },
+      {
+        "num": 61,
+        "hanja": "起立",
+        "reading": "기립"
+      },
+      {
+        "num": 62,
+        "hanja": "壬辰",
+        "reading": "임진"
+      },
+      {
+        "num": 63,
+        "hanja": "舊面",
+        "reading": "구면"
+      },
+      {
+        "num": 64,
+        "hanja": "防寒",
+        "reading": "방한"
+      },
+      {
+        "num": 65,
+        "hanja": "伐草",
+        "reading": "벌초"
+      },
+      {
+        "num": 66,
+        "hanja": "溪谷",
+        "reading": "계곡"
+      },
+      {
+        "num": 67,
+        "hanja": "鼻笑",
+        "reading": "비소"
+      }
+    ]
+  },
+  "준4급": {
+    "110": [
+      {
+        "num": 51,
+        "hanja": "黃金",
+        "reading": "황금"
+      },
+      {
+        "num": 52,
+        "hanja": "初代",
+        "reading": "초대"
+      },
+      {
+        "num": 53,
+        "hanja": "漁村",
+        "reading": "어촌"
+      },
+      {
+        "num": 54,
+        "hanja": "備考",
+        "reading": "비고"
+      },
+      {
+        "num": 55,
+        "hanja": "特送",
+        "reading": "특송"
+      },
+      {
+        "num": 56,
+        "hanja": "愛好",
+        "reading": "애호"
+      },
+      {
+        "num": 57,
+        "hanja": "船室",
+        "reading": "선실"
+      },
+      {
+        "num": 58,
+        "hanja": "實習",
+        "reading": "실습"
+      },
+      {
+        "num": 59,
+        "hanja": "眞價",
+        "reading": "진가"
+      },
+      {
+        "num": 60,
+        "hanja": "遠洋",
+        "reading": "원양"
+      },
+      {
+        "num": 61,
+        "hanja": "守城",
+        "reading": "수성"
+      },
+      {
+        "num": 62,
+        "hanja": "忠孝",
+        "reading": "충효"
+      },
+      {
+        "num": 63,
+        "hanja": "充電",
+        "reading": "충전"
+      },
+      {
+        "num": 64,
+        "hanja": "兩親",
+        "reading": "양친"
+      },
+      {
+        "num": 65,
+        "hanja": "熱情",
+        "reading": "열정"
+      },
+      {
+        "num": 66,
+        "hanja": "展開",
+        "reading": "전개"
+      },
+      {
+        "num": 67,
+        "hanja": "終末",
+        "reading": "종말"
+      }
+    ],
+    "111": [
+      {
+        "num": 51,
+        "hanja": "消去",
+        "reading": "소거"
+      },
+      {
+        "num": 52,
+        "hanja": "冬季",
+        "reading": "동계"
+      },
+      {
+        "num": 53,
+        "hanja": "歷史",
+        "reading": "역사"
+      },
+      {
+        "num": 54,
+        "hanja": "昨年",
+        "reading": "작년"
+      },
+      {
+        "num": 55,
+        "hanja": "傳來",
+        "reading": "전래"
+      },
+      {
+        "num": 56,
+        "hanja": "落葉",
+        "reading": "낙엽"
+      },
+      {
+        "num": 57,
+        "hanja": "特命",
+        "reading": "특명"
+      },
+      {
+        "num": 58,
+        "hanja": "庭園",
+        "reading": "정원"
+      },
+      {
+        "num": 59,
+        "hanja": "期待",
+        "reading": "기대"
+      },
+      {
+        "num": 60,
+        "hanja": "當到",
+        "reading": "당도"
+      },
+      {
+        "num": 61,
+        "hanja": "回春",
+        "reading": "회춘"
+      },
+      {
+        "num": 62,
+        "hanja": "極寒",
+        "reading": "극한"
+      },
+      {
+        "num": 63,
+        "hanja": "道德",
+        "reading": "도덕"
+      },
+      {
+        "num": 64,
+        "hanja": "改正",
+        "reading": "개정"
+      },
+      {
+        "num": 65,
+        "hanja": "序頭",
+        "reading": "서두"
+      },
+      {
+        "num": 66,
+        "hanja": "休戰",
+        "reading": "휴전"
+      },
+      {
+        "num": 67,
+        "hanja": "品貴",
+        "reading": "품귀"
+      }
+    ],
+    "112": [
+      {
+        "num": 51,
+        "hanja": "低調",
+        "reading": "저조"
+      },
+      {
+        "num": 52,
+        "hanja": "順序",
+        "reading": "순서"
+      },
+      {
+        "num": 53,
+        "hanja": "財界",
+        "reading": "재계"
+      },
+      {
+        "num": 54,
+        "hanja": "眞理",
+        "reading": "진리"
+      },
+      {
+        "num": 55,
+        "hanja": "暗算",
+        "reading": "암산"
+      },
+      {
+        "num": 56,
+        "hanja": "萬歲",
+        "reading": "만세"
+      },
+      {
+        "num": 57,
+        "hanja": "兩面",
+        "reading": "양면"
+      },
+      {
+        "num": 58,
+        "hanja": "期間",
+        "reading": "기간"
+      },
+      {
+        "num": 59,
+        "hanja": "大統領",
+        "reading": "대통령"
+      },
+      {
+        "num": 60,
+        "hanja": "客觀",
+        "reading": "객관"
+      },
+      {
+        "num": 61,
+        "hanja": "德談",
+        "reading": "덕담"
+      },
+      {
+        "num": 62,
+        "hanja": "落石",
+        "reading": "낙석"
+      },
+      {
+        "num": 63,
+        "hanja": "強要",
+        "reading": "강요"
+      },
+      {
+        "num": 64,
+        "hanja": "完決",
+        "reading": "완결"
+      },
+      {
+        "num": 65,
+        "hanja": "高價",
+        "reading": "고가"
+      },
+      {
+        "num": 66,
+        "hanja": "患部",
+        "reading": "환부"
+      },
+      {
+        "num": 67,
+        "hanja": "打席",
+        "reading": "타석"
+      }
+    ],
+    "113": [
+      {
+        "num": 51,
+        "hanja": "考案",
+        "reading": "고안"
+      },
+      {
+        "num": 52,
+        "hanja": "葉書",
+        "reading": "엽서"
+      },
+      {
+        "num": 53,
+        "hanja": "雲集",
+        "reading": "운집"
+      },
+      {
+        "num": 54,
+        "hanja": "好感",
+        "reading": "호감"
+      },
+      {
+        "num": 55,
+        "hanja": "武士",
+        "reading": "무사"
+      },
+      {
+        "num": 56,
+        "hanja": "冬至",
+        "reading": "동지"
+      },
+      {
+        "num": 57,
+        "hanja": "物價",
+        "reading": "물가"
+      },
+      {
+        "num": 58,
+        "hanja": "兒童",
+        "reading": "아동"
+      },
+      {
+        "num": 59,
+        "hanja": "廣場",
+        "reading": "광장"
+      },
+      {
+        "num": 60,
+        "hanja": "國産",
+        "reading": "국산"
+      },
+      {
+        "num": 61,
+        "hanja": "落第",
+        "reading": "낙제"
+      },
+      {
+        "num": 62,
+        "hanja": "多福",
+        "reading": "다복"
+      },
+      {
+        "num": 63,
+        "hanja": "談合",
+        "reading": "담합"
+      },
+      {
+        "num": 64,
+        "hanja": "同參",
+        "reading": "동참"
+      },
+      {
+        "num": 65,
+        "hanja": "明德",
+        "reading": "명덕"
+      },
+      {
+        "num": 66,
+        "hanja": "發送",
+        "reading": "발송"
+      },
+      {
+        "num": 67,
+        "hanja": "餘分",
+        "reading": "여분"
+      }
+    ],
+    "114": [
+      {
+        "num": 51,
+        "hanja": "眞談",
+        "reading": "진담"
+      },
+      {
+        "num": 52,
+        "hanja": "等數",
+        "reading": "등수"
+      },
+      {
+        "num": 53,
+        "hanja": "敬老堂",
+        "reading": "경로당"
+      },
+      {
+        "num": 54,
+        "hanja": "住宅",
+        "reading": "주택"
+      },
+      {
+        "num": 55,
+        "hanja": "定價",
+        "reading": "정가"
+      },
+      {
+        "num": 56,
+        "hanja": "千億",
+        "reading": "천억"
+      },
+      {
+        "num": 57,
+        "hanja": "廣魚",
+        "reading": "광어"
+      },
+      {
+        "num": 58,
+        "hanja": "國史",
+        "reading": "국사"
+      },
+      {
+        "num": 59,
+        "hanja": "貴族",
+        "reading": "귀족"
+      },
+      {
+        "num": 60,
+        "hanja": "期末",
+        "reading": "기말"
+      },
+      {
+        "num": 61,
+        "hanja": "當然",
+        "reading": "당연"
+      },
+      {
+        "num": 62,
+        "hanja": "打者",
+        "reading": "타자"
+      },
+      {
+        "num": 63,
+        "hanja": "木材",
+        "reading": "목재"
+      },
+      {
+        "num": 64,
+        "hanja": "對決",
+        "reading": "대결"
+      },
+      {
+        "num": 65,
+        "hanja": "每回",
+        "reading": "매회"
+      },
+      {
+        "num": 66,
+        "hanja": "名醫",
+        "reading": "명의"
+      },
+      {
+        "num": 67,
+        "hanja": "熱病",
+        "reading": "열병"
+      }
+    ],
+    "115": [
+      {
+        "num": 51,
+        "hanja": "終末",
+        "reading": "종말"
+      },
+      {
+        "num": 52,
+        "hanja": "代案",
+        "reading": "대안"
+      },
+      {
+        "num": 53,
+        "hanja": "種族",
+        "reading": "종족"
+      },
+      {
+        "num": 54,
+        "hanja": "太極",
+        "reading": "태극"
+      },
+      {
+        "num": 55,
+        "hanja": "面談",
+        "reading": "면담"
+      },
+      {
+        "num": 56,
+        "hanja": "無關",
+        "reading": "무관"
+      },
+      {
+        "num": 57,
+        "hanja": "現實",
+        "reading": "현실"
+      },
+      {
+        "num": 58,
+        "hanja": "赤道",
+        "reading": "적도"
+      },
+      {
+        "num": 59,
+        "hanja": "特許",
+        "reading": "특허"
+      },
+      {
+        "num": 60,
+        "hanja": "參席",
+        "reading": "참석"
+      },
+      {
+        "num": 61,
+        "hanja": "黑人",
+        "reading": "흑인"
+      },
+      {
+        "num": 62,
+        "hanja": "姊妹",
+        "reading": "자매"
+      },
+      {
+        "num": 63,
+        "hanja": "後進",
+        "reading": "후진"
+      },
+      {
+        "num": 64,
+        "hanja": "祝福",
+        "reading": "축복"
+      },
+      {
+        "num": 65,
+        "hanja": "宿食",
+        "reading": "숙식"
+      },
+      {
+        "num": 66,
+        "hanja": "熱情",
+        "reading": "열정"
+      },
+      {
+        "num": 67,
+        "hanja": "使臣",
+        "reading": "사신"
+      }
+    ],
+    "116": [
+      {
+        "num": 51,
+        "hanja": "輕油",
+        "reading": "경유"
+      },
+      {
+        "num": 52,
+        "hanja": "過勞",
+        "reading": "과로"
+      },
+      {
+        "num": 53,
+        "hanja": "關門",
+        "reading": "관문"
+      },
+      {
+        "num": 54,
+        "hanja": "廣告",
+        "reading": "광고"
+      },
+      {
+        "num": 55,
+        "hanja": "記念",
+        "reading": "기념"
+      },
+      {
+        "num": 56,
+        "hanja": "期待",
+        "reading": "기대"
+      },
+      {
+        "num": 57,
+        "hanja": "來歷",
+        "reading": "내력"
+      },
+      {
+        "num": 58,
+        "hanja": "道德",
+        "reading": "도덕"
+      },
+      {
+        "num": 59,
+        "hanja": "冬季",
+        "reading": "동계"
+      },
+      {
+        "num": 60,
+        "hanja": "理由",
+        "reading": "이유"
+      },
+      {
+        "num": 61,
+        "hanja": "問責",
+        "reading": "문책"
+      },
+      {
+        "num": 62,
+        "hanja": "未完",
+        "reading": "미완"
+      },
+      {
+        "num": 63,
+        "hanja": "本能",
+        "reading": "본능"
+      },
+      {
+        "num": 64,
+        "hanja": "奉養",
+        "reading": "봉양"
+      },
+      {
+        "num": 65,
+        "hanja": "賞品",
+        "reading": "상품"
+      },
+      {
+        "num": 66,
+        "hanja": "序頭",
+        "reading": "서두"
+      },
+      {
+        "num": 67,
+        "hanja": "消去",
+        "reading": "소거"
+      }
+    ],
+    "117": [
+      {
+        "num": 51,
+        "hanja": "宿題",
+        "reading": "숙제"
+      },
+      {
+        "num": 52,
+        "hanja": "卒業",
+        "reading": "졸업"
+      },
+      {
+        "num": 53,
+        "hanja": "到來",
+        "reading": "도래"
+      },
+      {
+        "num": 54,
+        "hanja": "早朝",
+        "reading": "조조"
+      },
+      {
+        "num": 55,
+        "hanja": "順次",
+        "reading": "순차"
+      },
+      {
+        "num": 56,
+        "hanja": "貧血",
+        "reading": "빈혈"
+      },
+      {
+        "num": 57,
+        "hanja": "落石",
+        "reading": "낙석"
+      },
+      {
+        "num": 58,
+        "hanja": "觀望",
+        "reading": "관망"
+      },
+      {
+        "num": 59,
+        "hanja": "神仙",
+        "reading": "신선"
+      },
+      {
+        "num": 60,
+        "hanja": "守備",
+        "reading": "수비"
+      },
+      {
+        "num": 61,
+        "hanja": "注目",
+        "reading": "주목"
+      },
+      {
+        "num": 62,
+        "hanja": "暗號",
+        "reading": "암호"
+      },
+      {
+        "num": 63,
+        "hanja": "歷史",
+        "reading": "역사"
+      },
+      {
+        "num": 64,
+        "hanja": "吉運",
+        "reading": "길운"
+      },
+      {
+        "num": 65,
+        "hanja": "春季",
+        "reading": "춘계"
+      },
+      {
+        "num": 66,
+        "hanja": "調和",
+        "reading": "조화"
+      },
+      {
+        "num": 67,
+        "hanja": "要約",
+        "reading": "요약"
+      }
+    ],
+    "118": [
+      {
+        "num": 51,
+        "hanja": "鐵路",
+        "reading": "철로"
+      },
+      {
+        "num": 52,
+        "hanja": "害惡",
+        "reading": "해악"
+      },
+      {
+        "num": 53,
+        "hanja": "冬至",
+        "reading": "동지"
+      },
+      {
+        "num": 54,
+        "hanja": "完決",
+        "reading": "완결"
+      },
+      {
+        "num": 55,
+        "hanja": "期間",
+        "reading": "기간"
+      },
+      {
+        "num": 56,
+        "hanja": "眞理",
+        "reading": "진리"
+      },
+      {
+        "num": 57,
+        "hanja": "考試",
+        "reading": "고시"
+      },
+      {
+        "num": 58,
+        "hanja": "效果",
+        "reading": "효과"
+      },
+      {
+        "num": 59,
+        "hanja": "勞使",
+        "reading": "노사"
+      },
+      {
+        "num": 60,
+        "hanja": "落葉",
+        "reading": "낙엽"
+      },
+      {
+        "num": 61,
+        "hanja": "回春",
+        "reading": "회춘"
+      },
+      {
+        "num": 62,
+        "hanja": "患部",
+        "reading": "환부"
+      },
+      {
+        "num": 63,
+        "hanja": "改良",
+        "reading": "개량"
+      },
+      {
+        "num": 64,
+        "hanja": "兩立",
+        "reading": "양립"
+      },
+      {
+        "num": 65,
+        "hanja": "血統",
+        "reading": "혈통"
+      },
+      {
+        "num": 66,
+        "hanja": "進步",
+        "reading": "진보"
+      },
+      {
+        "num": 67,
+        "hanja": "歷史",
+        "reading": "역사"
+      }
+    ],
+    "119": [
+      {
+        "num": 51,
+        "hanja": "表現",
+        "reading": "표현"
+      },
+      {
+        "num": 52,
+        "hanja": "詩集",
+        "reading": "시집"
+      },
+      {
+        "num": 53,
+        "hanja": "圖案",
+        "reading": "도안"
+      },
+      {
+        "num": 54,
+        "hanja": "給食",
+        "reading": "급식"
+      },
+      {
+        "num": 55,
+        "hanja": "低調",
+        "reading": "저조"
+      },
+      {
+        "num": 56,
+        "hanja": "兒童",
+        "reading": "아동"
+      },
+      {
+        "num": 57,
+        "hanja": "敗亡",
+        "reading": "패망"
+      },
+      {
+        "num": 58,
+        "hanja": "兩面",
+        "reading": "양면"
+      },
+      {
+        "num": 59,
+        "hanja": "德談",
+        "reading": "덕담"
+      },
+      {
+        "num": 60,
+        "hanja": "物價",
+        "reading": "물가"
+      },
+      {
+        "num": 61,
+        "hanja": "花園",
+        "reading": "화원"
+      },
+      {
+        "num": 62,
+        "hanja": "順序",
+        "reading": "순서"
+      },
+      {
+        "num": 63,
+        "hanja": "當到",
+        "reading": "당도"
+      },
+      {
+        "num": 64,
+        "hanja": "病患",
+        "reading": "병환"
+      },
+      {
+        "num": 65,
+        "hanja": "個別",
+        "reading": "개별"
+      },
+      {
+        "num": 66,
+        "hanja": "昨年",
+        "reading": "작년"
+      },
+      {
+        "num": 67,
+        "hanja": "凶惡",
+        "reading": "흉악"
+      }
+    ],
+    "120": [
+      {
+        "num": 51,
+        "hanja": "姊妹",
+        "reading": "자매"
+      },
+      {
+        "num": 52,
+        "hanja": "患者",
+        "reading": "환자"
+      },
+      {
+        "num": 53,
+        "hanja": "順調",
+        "reading": "순조"
+      },
+      {
+        "num": 54,
+        "hanja": "湖水",
+        "reading": "호수"
+      },
+      {
+        "num": 55,
+        "hanja": "黑白",
+        "reading": "흑백"
+      },
+      {
+        "num": 56,
+        "hanja": "安全",
+        "reading": "안전"
+      },
+      {
+        "num": 57,
+        "hanja": "料理",
+        "reading": "요리"
+      },
+      {
+        "num": 58,
+        "hanja": "貯金",
+        "reading": "저금"
+      },
+      {
+        "num": 59,
+        "hanja": "無罪",
+        "reading": "무죄"
+      },
+      {
+        "num": 60,
+        "hanja": "次例",
+        "reading": "차례"
+      },
+      {
+        "num": 61,
+        "hanja": "情報",
+        "reading": "정보"
+      },
+      {
+        "num": 62,
+        "hanja": "品種",
+        "reading": "품종"
+      },
+      {
+        "num": 63,
+        "hanja": "祝福",
+        "reading": "축복"
+      },
+      {
+        "num": 64,
+        "hanja": "奉仕",
+        "reading": "봉사"
+      },
+      {
+        "num": 65,
+        "hanja": "改作",
+        "reading": "개작"
+      },
+      {
+        "num": 66,
+        "hanja": "都城",
+        "reading": "도성"
+      },
+      {
+        "num": 67,
+        "hanja": "商店",
+        "reading": "상점"
+      }
+    ],
+    "121": [
+      {
+        "num": 51,
+        "hanja": "等數",
+        "reading": "등수"
+      },
+      {
+        "num": 52,
+        "hanja": "定價",
+        "reading": "정가"
+      },
+      {
+        "num": 53,
+        "hanja": "千億",
+        "reading": "천억"
+      },
+      {
+        "num": 54,
+        "hanja": "住宅",
+        "reading": "주택"
+      },
+      {
+        "num": 55,
+        "hanja": "廣魚",
+        "reading": "광어"
+      },
+      {
+        "num": 56,
+        "hanja": "每回",
+        "reading": "매회"
+      },
+      {
+        "num": 57,
+        "hanja": "熱病",
+        "reading": "열병"
+      },
+      {
+        "num": 58,
+        "hanja": "本能",
+        "reading": "본능"
+      },
+      {
+        "num": 59,
+        "hanja": "決算",
+        "reading": "결산"
+      },
+      {
+        "num": 60,
+        "hanja": "冬季",
+        "reading": "동계"
+      },
+      {
+        "num": 61,
+        "hanja": "思考",
+        "reading": "사고"
+      },
+      {
+        "num": 62,
+        "hanja": "好感",
+        "reading": "호감"
+      },
+      {
+        "num": 63,
+        "hanja": "重要",
+        "reading": "중요"
+      },
+      {
+        "num": 64,
+        "hanja": "香料",
+        "reading": "향료"
+      },
+      {
+        "num": 65,
+        "hanja": "客地",
+        "reading": "객지"
+      },
+      {
+        "num": 66,
+        "hanja": "武士",
+        "reading": "무사"
+      },
+      {
+        "num": 67,
+        "hanja": "關門",
+        "reading": "관문"
+      }
+    ],
+    "122": [
+      {
+        "num": 51,
+        "hanja": "開城",
+        "reading": "개성"
+      },
+      {
+        "num": 52,
+        "hanja": "調和",
+        "reading": "조화"
+      },
+      {
+        "num": 53,
+        "hanja": "決定",
+        "reading": "결정"
+      },
+      {
+        "num": 54,
+        "hanja": "特別",
+        "reading": "특별"
+      },
+      {
+        "num": 55,
+        "hanja": "初代",
+        "reading": "초대"
+      },
+      {
+        "num": 56,
+        "hanja": "實習",
+        "reading": "실습"
+      },
+      {
+        "num": 57,
+        "hanja": "信義",
+        "reading": "신의"
+      },
+      {
+        "num": 58,
+        "hanja": "古鐵",
+        "reading": "고철"
+      },
+      {
+        "num": 59,
+        "hanja": "多福",
+        "reading": "다복"
+      },
+      {
+        "num": 60,
+        "hanja": "雲集",
+        "reading": "운집"
+      },
+      {
+        "num": 61,
+        "hanja": "展示",
+        "reading": "전시"
+      },
+      {
+        "num": 62,
+        "hanja": "死海",
+        "reading": "사해"
+      },
+      {
+        "num": 63,
+        "hanja": "品貴",
+        "reading": "품귀"
+      },
+      {
+        "num": 64,
+        "hanja": "重罪",
+        "reading": "중죄"
+      },
+      {
+        "num": 65,
+        "hanja": "小說",
+        "reading": "소설"
+      },
+      {
+        "num": 66,
+        "hanja": "相國",
+        "reading": "상국"
+      },
+      {
+        "num": 67,
+        "hanja": "誠意",
+        "reading": "성의"
+      }
+    ],
+    "123": [
+      {
+        "num": 51,
+        "hanja": "財産",
+        "reading": "재산"
+      },
+      {
+        "num": 52,
+        "hanja": "理由",
+        "reading": "이유"
+      },
+      {
+        "num": 53,
+        "hanja": "急速",
+        "reading": "급속"
+      },
+      {
+        "num": 54,
+        "hanja": "黃鳥",
+        "reading": "황조"
+      },
+      {
+        "num": 55,
+        "hanja": "效果",
+        "reading": "효과"
+      },
+      {
+        "num": 56,
+        "hanja": "葉書",
+        "reading": "엽서"
+      },
+      {
+        "num": 57,
+        "hanja": "賣買",
+        "reading": "매매"
+      },
+      {
+        "num": 58,
+        "hanja": "可望",
+        "reading": "가망"
+      },
+      {
+        "num": 59,
+        "hanja": "他地",
+        "reading": "타지"
+      },
+      {
+        "num": 60,
+        "hanja": "高貴",
+        "reading": "고귀"
+      },
+      {
+        "num": 61,
+        "hanja": "告白",
+        "reading": "고백"
+      },
+      {
+        "num": 62,
+        "hanja": "特技",
+        "reading": "특기"
+      },
+      {
+        "num": 63,
+        "hanja": "氏族",
+        "reading": "씨족"
+      },
+      {
+        "num": 64,
+        "hanja": "數億",
+        "reading": "수억"
+      },
+      {
+        "num": 65,
+        "hanja": "客觀",
+        "reading": "객관"
+      },
+      {
+        "num": 66,
+        "hanja": "末期",
+        "reading": "말기"
+      },
+      {
+        "num": 67,
+        "hanja": "質朴",
+        "reading": "질박"
+      }
+    ],
+    "124": [
+      {
+        "num": 51,
+        "hanja": "強要",
+        "reading": "강요"
+      },
+      {
+        "num": 52,
+        "hanja": "廣場",
+        "reading": "광장"
+      },
+      {
+        "num": 53,
+        "hanja": "表現",
+        "reading": "표현"
+      },
+      {
+        "num": 54,
+        "hanja": "對備",
+        "reading": "대비"
+      },
+      {
+        "num": 55,
+        "hanja": "登落",
+        "reading": "등락"
+      },
+      {
+        "num": 56,
+        "hanja": "苦待",
+        "reading": "고대"
+      },
+      {
+        "num": 57,
+        "hanja": "德談",
+        "reading": "덕담"
+      },
+      {
+        "num": 58,
+        "hanja": "校訓",
+        "reading": "교훈"
+      },
+      {
+        "num": 59,
+        "hanja": "材質",
+        "reading": "재질"
+      },
+      {
+        "num": 60,
+        "hanja": "朝會",
+        "reading": "조회"
+      },
+      {
+        "num": 61,
+        "hanja": "許可",
+        "reading": "허가"
+      },
+      {
+        "num": 62,
+        "hanja": "進步",
+        "reading": "진보"
+      },
+      {
+        "num": 63,
+        "hanja": "傳來",
+        "reading": "전래"
+      },
+      {
+        "num": 64,
+        "hanja": "支給",
+        "reading": "지급"
+      },
+      {
+        "num": 65,
+        "hanja": "號令",
+        "reading": "호령"
+      },
+      {
+        "num": 66,
+        "hanja": "信念",
+        "reading": "신념"
+      },
+      {
+        "num": 67,
+        "hanja": "決勝",
+        "reading": "결승"
+      }
+    ]
+  },
+  "5급": {
+    "110": [
+      {
+        "num": 51,
+        "hanja": "風向",
+        "reading": "풍향"
+      },
+      {
+        "num": 52,
+        "hanja": "愛讀",
+        "reading": "애독"
+      },
+      {
+        "num": 53,
+        "hanja": "綠竹",
+        "reading": "녹죽"
+      },
+      {
+        "num": 54,
+        "hanja": "野山",
+        "reading": "야산"
+      },
+      {
+        "num": 55,
+        "hanja": "發表",
+        "reading": "발표"
+      },
+      {
+        "num": 56,
+        "hanja": "西洋",
+        "reading": "서양"
+      },
+      {
+        "num": 57,
+        "hanja": "元首",
+        "reading": "원수"
+      },
+      {
+        "num": 58,
+        "hanja": "朝服",
+        "reading": "조복"
+      },
+      {
+        "num": 59,
+        "hanja": "音色",
+        "reading": "음색"
+      },
+      {
+        "num": 60,
+        "hanja": "正當",
+        "reading": "정당"
+      },
+      {
+        "num": 61,
+        "hanja": "番號",
+        "reading": "번호"
+      },
+      {
+        "num": 62,
+        "hanja": "短刀",
+        "reading": "단도"
+      },
+      {
+        "num": 63,
+        "hanja": "失禮",
+        "reading": "실례"
+      },
+      {
+        "num": 64,
+        "hanja": "速步",
+        "reading": "속보"
+      },
+      {
+        "num": 65,
+        "hanja": "業界",
+        "reading": "업계"
+      },
+      {
+        "num": 66,
+        "hanja": "病室",
+        "reading": "병실"
+      },
+      {
+        "num": 67,
+        "hanja": "明示",
+        "reading": "명시"
+      },
+      {
+        "num": 68,
+        "hanja": "對立",
+        "reading": "대립"
+      },
+      {
+        "num": 69,
+        "hanja": "功名",
+        "reading": "공명"
+      },
+      {
+        "num": 70,
+        "hanja": "金銀",
+        "reading": "금은"
+      }
+    ],
+    "111": [
+      {
+        "num": 51,
+        "hanja": "部族",
+        "reading": "부족"
+      },
+      {
+        "num": 52,
+        "hanja": "新春",
+        "reading": "신춘"
+      },
+      {
+        "num": 53,
+        "hanja": "敎習",
+        "reading": "교습"
+      },
+      {
+        "num": 54,
+        "hanja": "不安",
+        "reading": "불안"
+      },
+      {
+        "num": 55,
+        "hanja": "綠末",
+        "reading": "녹말"
+      },
+      {
+        "num": 56,
+        "hanja": "西京",
+        "reading": "서경"
+      },
+      {
+        "num": 57,
+        "hanja": "無禮",
+        "reading": "무례"
+      },
+      {
+        "num": 58,
+        "hanja": "形式",
+        "reading": "형식"
+      },
+      {
+        "num": 59,
+        "hanja": "性品",
+        "reading": "성품"
+      },
+      {
+        "num": 60,
+        "hanja": "命題",
+        "reading": "명제"
+      },
+      {
+        "num": 61,
+        "hanja": "讀圖",
+        "reading": "독도"
+      },
+      {
+        "num": 62,
+        "hanja": "秋夕",
+        "reading": "추석"
+      },
+      {
+        "num": 63,
+        "hanja": "林野",
+        "reading": "임야"
+      },
+      {
+        "num": 64,
+        "hanja": "詩歌",
+        "reading": "시가"
+      },
+      {
+        "num": 65,
+        "hanja": "首席",
+        "reading": "수석"
+      },
+      {
+        "num": 66,
+        "hanja": "面會",
+        "reading": "면회"
+      },
+      {
+        "num": 67,
+        "hanja": "內服",
+        "reading": "내복"
+      },
+      {
+        "num": 68,
+        "hanja": "愛人",
+        "reading": "애인"
+      },
+      {
+        "num": 69,
+        "hanja": "後孫",
+        "reading": "후손"
+      },
+      {
+        "num": 70,
+        "hanja": "心血",
+        "reading": "심혈"
+      }
+    ],
+    "112": [
+      {
+        "num": 51,
+        "hanja": "淸風",
+        "reading": "청풍"
+      },
+      {
+        "num": 52,
+        "hanja": "平野",
+        "reading": "평야"
+      },
+      {
+        "num": 53,
+        "hanja": "靑綠",
+        "reading": "청록"
+      },
+      {
+        "num": 54,
+        "hanja": "讀書",
+        "reading": "독서"
+      },
+      {
+        "num": 55,
+        "hanja": "金品",
+        "reading": "금품"
+      },
+      {
+        "num": 56,
+        "hanja": "當日",
+        "reading": "당일"
+      },
+      {
+        "num": 57,
+        "hanja": "祖父",
+        "reading": "조부"
+      },
+      {
+        "num": 58,
+        "hanja": "通運",
+        "reading": "통운"
+      },
+      {
+        "num": 59,
+        "hanja": "洋藥",
+        "reading": "양약"
+      },
+      {
+        "num": 60,
+        "hanja": "病弱",
+        "reading": "병약"
+      },
+      {
+        "num": 61,
+        "hanja": "失神",
+        "reading": "실신"
+      },
+      {
+        "num": 62,
+        "hanja": "東窓",
+        "reading": "동창"
+      },
+      {
+        "num": 63,
+        "hanja": "頭巾",
+        "reading": "두건"
+      },
+      {
+        "num": 64,
+        "hanja": "老少",
+        "reading": "노소"
+      },
+      {
+        "num": 65,
+        "hanja": "明白",
+        "reading": "명백"
+      },
+      {
+        "num": 66,
+        "hanja": "貝物",
+        "reading": "패물"
+      },
+      {
+        "num": 67,
+        "hanja": "新聞",
+        "reading": "신문"
+      },
+      {
+        "num": 68,
+        "hanja": "全身",
+        "reading": "전신"
+      },
+      {
+        "num": 69,
+        "hanja": "和音",
+        "reading": "화음"
+      },
+      {
+        "num": 70,
+        "hanja": "飮用水",
+        "reading": "음용수"
+      }
+    ],
+    "113": [
+      {
+        "num": 51,
+        "hanja": "內省",
+        "reading": "내성"
+      },
+      {
+        "num": 52,
+        "hanja": "多急",
+        "reading": "다급"
+      },
+      {
+        "num": 53,
+        "hanja": "當世",
+        "reading": "당세"
+      },
+      {
+        "num": 54,
+        "hanja": "校服",
+        "reading": "교복"
+      },
+      {
+        "num": 55,
+        "hanja": "交友",
+        "reading": "교우"
+      },
+      {
+        "num": 56,
+        "hanja": "國樂",
+        "reading": "국악"
+      },
+      {
+        "num": 57,
+        "hanja": "老弱",
+        "reading": "노약"
+      },
+      {
+        "num": 58,
+        "hanja": "作成",
+        "reading": "작성"
+      },
+      {
+        "num": 59,
+        "hanja": "名勝",
+        "reading": "명승"
+      },
+      {
+        "num": 60,
+        "hanja": "病席",
+        "reading": "병석"
+      },
+      {
+        "num": 61,
+        "hanja": "習性",
+        "reading": "습성"
+      },
+      {
+        "num": 62,
+        "hanja": "讀者",
+        "reading": "독자"
+      },
+      {
+        "num": 63,
+        "hanja": "遠洋",
+        "reading": "원양"
+      },
+      {
+        "num": 64,
+        "hanja": "目禮",
+        "reading": "목례"
+      },
+      {
+        "num": 65,
+        "hanja": "後記",
+        "reading": "후기"
+      },
+      {
+        "num": 66,
+        "hanja": "親愛",
+        "reading": "친애"
+      },
+      {
+        "num": 67,
+        "hanja": "美男",
+        "reading": "미남"
+      },
+      {
+        "num": 68,
+        "hanja": "草原",
+        "reading": "초원"
+      },
+      {
+        "num": 69,
+        "hanja": "朝食",
+        "reading": "조식"
+      },
+      {
+        "num": 70,
+        "hanja": "百科",
+        "reading": "백과"
+      }
+    ],
+    "114": [
+      {
+        "num": 51,
+        "hanja": "神話",
+        "reading": "신화"
+      },
+      {
+        "num": 52,
+        "hanja": "直通",
+        "reading": "직통"
+      },
+      {
+        "num": 53,
+        "hanja": "油田",
+        "reading": "유전"
+      },
+      {
+        "num": 54,
+        "hanja": "品位",
+        "reading": "품위"
+      },
+      {
+        "num": 55,
+        "hanja": "綠色",
+        "reading": "녹색"
+      },
+      {
+        "num": 56,
+        "hanja": "水銀",
+        "reading": "수은"
+      },
+      {
+        "num": 57,
+        "hanja": "洋式",
+        "reading": "양식"
+      },
+      {
+        "num": 58,
+        "hanja": "勇力",
+        "reading": "용력"
+      },
+      {
+        "num": 59,
+        "hanja": "不幸",
+        "reading": "불행"
+      },
+      {
+        "num": 60,
+        "hanja": "原理",
+        "reading": "원리"
+      },
+      {
+        "num": 61,
+        "hanja": "軍部",
+        "reading": "군부"
+      },
+      {
+        "num": 62,
+        "hanja": "開發",
+        "reading": "개발"
+      },
+      {
+        "num": 63,
+        "hanja": "小食",
+        "reading": "소식"
+      },
+      {
+        "num": 64,
+        "hanja": "當代",
+        "reading": "당대"
+      },
+      {
+        "num": 65,
+        "hanja": "後方",
+        "reading": "후방"
+      },
+      {
+        "num": 66,
+        "hanja": "學習",
+        "reading": "학습"
+      },
+      {
+        "num": 67,
+        "hanja": "樂天",
+        "reading": "낙천"
+      },
+      {
+        "num": 68,
+        "hanja": "重病",
+        "reading": "중병"
+      },
+      {
+        "num": 69,
+        "hanja": "黃金",
+        "reading": "황금"
+      },
+      {
+        "num": 70,
+        "hanja": "平安",
+        "reading": "평안"
+      }
+    ],
+    "115": [
+      {
+        "num": 51,
+        "hanja": "形體",
+        "reading": "형체"
+      },
+      {
+        "num": 52,
+        "hanja": "藥水",
+        "reading": "약수"
+      },
+      {
+        "num": 53,
+        "hanja": "晝間",
+        "reading": "주간"
+      },
+      {
+        "num": 54,
+        "hanja": "運身",
+        "reading": "운신"
+      },
+      {
+        "num": 55,
+        "hanja": "親族",
+        "reading": "친족"
+      },
+      {
+        "num": 56,
+        "hanja": "功名",
+        "reading": "공명"
+      },
+      {
+        "num": 57,
+        "hanja": "英才",
+        "reading": "영재"
+      },
+      {
+        "num": 58,
+        "hanja": "上京",
+        "reading": "상경"
+      },
+      {
+        "num": 59,
+        "hanja": "山川魚",
+        "reading": "산천어"
+      },
+      {
+        "num": 60,
+        "hanja": "失禮",
+        "reading": "실례"
+      },
+      {
+        "num": 61,
+        "hanja": "勇士",
+        "reading": "용사"
+      },
+      {
+        "num": 62,
+        "hanja": "窓門",
+        "reading": "창문"
+      },
+      {
+        "num": 63,
+        "hanja": "草野",
+        "reading": "초야"
+      },
+      {
+        "num": 64,
+        "hanja": "別本",
+        "reading": "별본"
+      },
+      {
+        "num": 65,
+        "hanja": "無線",
+        "reading": "무선"
+      },
+      {
+        "num": 66,
+        "hanja": "對等",
+        "reading": "대등"
+      },
+      {
+        "num": 67,
+        "hanja": "通用",
+        "reading": "통용"
+      },
+      {
+        "num": 68,
+        "hanja": "短刀",
+        "reading": "단도"
+      },
+      {
+        "num": 69,
+        "hanja": "石油",
+        "reading": "석유"
+      },
+      {
+        "num": 70,
+        "hanja": "根性",
+        "reading": "근성"
+      }
+    ],
+    "116": [
+      {
+        "num": 51,
+        "hanja": "別世",
+        "reading": "별세"
+      },
+      {
+        "num": 52,
+        "hanja": "根本",
+        "reading": "근본"
+      },
+      {
+        "num": 53,
+        "hanja": "短身",
+        "reading": "단신"
+      },
+      {
+        "num": 54,
+        "hanja": "元老",
+        "reading": "원로"
+      },
+      {
+        "num": 55,
+        "hanja": "口號",
+        "reading": "구호"
+      },
+      {
+        "num": 56,
+        "hanja": "野外",
+        "reading": "야외"
+      },
+      {
+        "num": 57,
+        "hanja": "軍服",
+        "reading": "군복"
+      },
+      {
+        "num": 58,
+        "hanja": "失手",
+        "reading": "실수"
+      },
+      {
+        "num": 59,
+        "hanja": "友愛",
+        "reading": "우애"
+      },
+      {
+        "num": 60,
+        "hanja": "新春",
+        "reading": "신춘"
+      },
+      {
+        "num": 61,
+        "hanja": "所聞",
+        "reading": "소문"
+      },
+      {
+        "num": 62,
+        "hanja": "綠末",
+        "reading": "녹말"
+      },
+      {
+        "num": 63,
+        "hanja": "反省",
+        "reading": "반성"
+      },
+      {
+        "num": 64,
+        "hanja": "高速",
+        "reading": "고속"
+      },
+      {
+        "num": 65,
+        "hanja": "學業",
+        "reading": "학업"
+      },
+      {
+        "num": 66,
+        "hanja": "放火",
+        "reading": "방화"
+      },
+      {
+        "num": 67,
+        "hanja": "黃色",
+        "reading": "황색"
+      },
+      {
+        "num": 68,
+        "hanja": "育英",
+        "reading": "육영"
+      },
+      {
+        "num": 69,
+        "hanja": "車窓",
+        "reading": "차창"
+      },
+      {
+        "num": 70,
+        "hanja": "和合",
+        "reading": "화합"
+      }
+    ],
+    "117": [
+      {
+        "num": 51,
+        "hanja": "藥理",
+        "reading": "약리"
+      },
+      {
+        "num": 52,
+        "hanja": "發足",
+        "reading": "발족"
+      },
+      {
+        "num": 53,
+        "hanja": "形色",
+        "reading": "형색"
+      },
+      {
+        "num": 54,
+        "hanja": "永遠",
+        "reading": "영원"
+      },
+      {
+        "num": 55,
+        "hanja": "平和",
+        "reading": "평화"
+      },
+      {
+        "num": 56,
+        "hanja": "靑春",
+        "reading": "청춘"
+      },
+      {
+        "num": 57,
+        "hanja": "朝會",
+        "reading": "조회"
+      },
+      {
+        "num": 58,
+        "hanja": "新聞",
+        "reading": "신문"
+      },
+      {
+        "num": 59,
+        "hanja": "用品",
+        "reading": "용품"
+      },
+      {
+        "num": 60,
+        "hanja": "電光",
+        "reading": "전광"
+      },
+      {
+        "num": 61,
+        "hanja": "魚貝",
+        "reading": "어패"
+      },
+      {
+        "num": 62,
+        "hanja": "親交",
+        "reading": "친교"
+      },
+      {
+        "num": 63,
+        "hanja": "郡邑",
+        "reading": "군읍"
+      },
+      {
+        "num": 64,
+        "hanja": "同窓",
+        "reading": "동창"
+      },
+      {
+        "num": 65,
+        "hanja": "元祖",
+        "reading": "원조"
+      },
+      {
+        "num": 66,
+        "hanja": "黃土",
+        "reading": "황토"
+      },
+      {
+        "num": 67,
+        "hanja": "原油",
+        "reading": "원유"
+      },
+      {
+        "num": 68,
+        "hanja": "空席",
+        "reading": "공석"
+      },
+      {
+        "num": 69,
+        "hanja": "各別",
+        "reading": "각별"
+      },
+      {
+        "num": 70,
+        "hanja": "秋夕",
+        "reading": "추석"
+      }
+    ],
+    "118": [
+      {
+        "num": 51,
+        "hanja": "太陽",
+        "reading": "태양"
+      },
+      {
+        "num": 52,
+        "hanja": "物理",
+        "reading": "물리"
+      },
+      {
+        "num": 53,
+        "hanja": "速力",
+        "reading": "속력"
+      },
+      {
+        "num": 54,
+        "hanja": "各界",
+        "reading": "각계"
+      },
+      {
+        "num": 55,
+        "hanja": "失言",
+        "reading": "실언"
+      },
+      {
+        "num": 56,
+        "hanja": "等式",
+        "reading": "등식"
+      },
+      {
+        "num": 57,
+        "hanja": "藥性",
+        "reading": "약성"
+      },
+      {
+        "num": 58,
+        "hanja": "竹林",
+        "reading": "죽림"
+      },
+      {
+        "num": 59,
+        "hanja": "頭部",
+        "reading": "두부"
+      },
+      {
+        "num": 60,
+        "hanja": "內服",
+        "reading": "내복"
+      },
+      {
+        "num": 61,
+        "hanja": "老少",
+        "reading": "노소"
+      },
+      {
+        "num": 62,
+        "hanja": "出發",
+        "reading": "출발"
+      },
+      {
+        "num": 63,
+        "hanja": "午後",
+        "reading": "오후"
+      },
+      {
+        "num": 64,
+        "hanja": "美男",
+        "reading": "미남"
+      },
+      {
+        "num": 65,
+        "hanja": "金品",
+        "reading": "금품"
+      },
+      {
+        "num": 66,
+        "hanja": "孫子",
+        "reading": "손자"
+      },
+      {
+        "num": 67,
+        "hanja": "見習",
+        "reading": "견습"
+      },
+      {
+        "num": 68,
+        "hanja": "東窓",
+        "reading": "동창"
+      },
+      {
+        "num": 69,
+        "hanja": "近海",
+        "reading": "근해"
+      },
+      {
+        "num": 70,
+        "hanja": "和音",
+        "reading": "화음"
+      }
+    ],
+    "119": [
+      {
+        "num": 51,
+        "hanja": "幸運",
+        "reading": "행운"
+      },
+      {
+        "num": 52,
+        "hanja": "貝物",
+        "reading": "패물"
+      },
+      {
+        "num": 53,
+        "hanja": "童詩",
+        "reading": "동시"
+      },
+      {
+        "num": 54,
+        "hanja": "黃海",
+        "reading": "황해"
+      },
+      {
+        "num": 55,
+        "hanja": "草綠",
+        "reading": "초록"
+      },
+      {
+        "num": 56,
+        "hanja": "名藥",
+        "reading": "명약"
+      },
+      {
+        "num": 57,
+        "hanja": "朝野",
+        "reading": "조야"
+      },
+      {
+        "num": 58,
+        "hanja": "無禮",
+        "reading": "무례"
+      },
+      {
+        "num": 59,
+        "hanja": "開放",
+        "reading": "개방"
+      },
+      {
+        "num": 60,
+        "hanja": "活力",
+        "reading": "활력"
+      },
+      {
+        "num": 61,
+        "hanja": "家業",
+        "reading": "가업"
+      },
+      {
+        "num": 62,
+        "hanja": "高遠",
+        "reading": "고원"
+      },
+      {
+        "num": 63,
+        "hanja": "後記",
+        "reading": "후기"
+      },
+      {
+        "num": 64,
+        "hanja": "失足",
+        "reading": "실족"
+      },
+      {
+        "num": 65,
+        "hanja": "表面",
+        "reading": "표면"
+      },
+      {
+        "num": 66,
+        "hanja": "敎科",
+        "reading": "교과"
+      },
+      {
+        "num": 67,
+        "hanja": "美風",
+        "reading": "미풍"
+      },
+      {
+        "num": 68,
+        "hanja": "弱者",
+        "reading": "약자"
+      },
+      {
+        "num": 69,
+        "hanja": "校服",
+        "reading": "교복"
+      },
+      {
+        "num": 70,
+        "hanja": "老母",
+        "reading": "노모"
+      }
+    ],
+    "120": [
+      {
+        "num": 51,
+        "hanja": "民族",
+        "reading": "민족"
+      },
+      {
+        "num": 52,
+        "hanja": "等位",
+        "reading": "등위"
+      },
+      {
+        "num": 53,
+        "hanja": "短命",
+        "reading": "단명"
+      },
+      {
+        "num": 54,
+        "hanja": "放火",
+        "reading": "방화"
+      },
+      {
+        "num": 55,
+        "hanja": "野外",
+        "reading": "야외"
+      },
+      {
+        "num": 56,
+        "hanja": "肉體",
+        "reading": "육체"
+      },
+      {
+        "num": 57,
+        "hanja": "多讀",
+        "reading": "다독"
+      },
+      {
+        "num": 58,
+        "hanja": "昨年",
+        "reading": "작년"
+      },
+      {
+        "num": 59,
+        "hanja": "秋夕",
+        "reading": "추석"
+      },
+      {
+        "num": 60,
+        "hanja": "時間",
+        "reading": "시간"
+      },
+      {
+        "num": 61,
+        "hanja": "先祖",
+        "reading": "선조"
+      },
+      {
+        "num": 62,
+        "hanja": "羊毛",
+        "reading": "양모"
+      },
+      {
+        "num": 63,
+        "hanja": "失業",
+        "reading": "실업"
+      },
+      {
+        "num": 64,
+        "hanja": "姓名",
+        "reading": "성명"
+      },
+      {
+        "num": 65,
+        "hanja": "當代",
+        "reading": "당대"
+      },
+      {
+        "num": 66,
+        "hanja": "太陽",
+        "reading": "태양"
+      },
+      {
+        "num": 67,
+        "hanja": "世界",
+        "reading": "세계"
+      },
+      {
+        "num": 68,
+        "hanja": "窓門",
+        "reading": "창문"
+      },
+      {
+        "num": 69,
+        "hanja": "育成",
+        "reading": "육성"
+      },
+      {
+        "num": 70,
+        "hanja": "魚貝",
+        "reading": "어패"
+      }
+    ],
+    "121": [
+      {
+        "num": 51,
+        "hanja": "等號",
+        "reading": "등호"
+      },
+      {
+        "num": 52,
+        "hanja": "村里",
+        "reading": "촌리"
+      },
+      {
+        "num": 53,
+        "hanja": "夜間",
+        "reading": "야간"
+      },
+      {
+        "num": 54,
+        "hanja": "重言",
+        "reading": "중언"
+      },
+      {
+        "num": 55,
+        "hanja": "體育",
+        "reading": "체육"
+      },
+      {
+        "num": 56,
+        "hanja": "韓服",
+        "reading": "한복"
+      },
+      {
+        "num": 57,
+        "hanja": "書堂",
+        "reading": "서당"
+      },
+      {
+        "num": 58,
+        "hanja": "淸明",
+        "reading": "청명"
+      },
+      {
+        "num": 59,
+        "hanja": "頭巾",
+        "reading": "두건"
+      },
+      {
+        "num": 60,
+        "hanja": "病弱",
+        "reading": "병약"
+      },
+      {
+        "num": 61,
+        "hanja": "軍部",
+        "reading": "군부"
+      },
+      {
+        "num": 62,
+        "hanja": "愛犬",
+        "reading": "애견"
+      },
+      {
+        "num": 63,
+        "hanja": "洋式",
+        "reading": "양식"
+      },
+      {
+        "num": 64,
+        "hanja": "反感",
+        "reading": "반감"
+      },
+      {
+        "num": 65,
+        "hanja": "便安",
+        "reading": "편안"
+      },
+      {
+        "num": 66,
+        "hanja": "母親",
+        "reading": "모친"
+      },
+      {
+        "num": 67,
+        "hanja": "和合",
+        "reading": "화합"
+      },
+      {
+        "num": 68,
+        "hanja": "題目",
+        "reading": "제목"
+      },
+      {
+        "num": 69,
+        "hanja": "運命",
+        "reading": "운명"
+      },
+      {
+        "num": 70,
+        "hanja": "消失",
+        "reading": "소실"
+      }
+    ],
+    "122": [
+      {
+        "num": 51,
+        "hanja": "同窓",
+        "reading": "동창"
+      },
+      {
+        "num": 52,
+        "hanja": "放出",
+        "reading": "방출"
+      },
+      {
+        "num": 53,
+        "hanja": "遠大",
+        "reading": "원대"
+      },
+      {
+        "num": 54,
+        "hanja": "反省",
+        "reading": "반성"
+      },
+      {
+        "num": 55,
+        "hanja": "飮食",
+        "reading": "음식"
+      },
+      {
+        "num": 56,
+        "hanja": "和答",
+        "reading": "화답"
+      },
+      {
+        "num": 57,
+        "hanja": "衣服",
+        "reading": "의복"
+      },
+      {
+        "num": 58,
+        "hanja": "萬無",
+        "reading": "만무"
+      },
+      {
+        "num": 59,
+        "hanja": "血色",
+        "reading": "혈색"
+      },
+      {
+        "num": 60,
+        "hanja": "目禮",
+        "reading": "목례"
+      },
+      {
+        "num": 61,
+        "hanja": "正品",
+        "reading": "정품"
+      },
+      {
+        "num": 62,
+        "hanja": "黃金",
+        "reading": "황금"
+      },
+      {
+        "num": 63,
+        "hanja": "成功",
+        "reading": "성공"
+      },
+      {
+        "num": 64,
+        "hanja": "風向",
+        "reading": "풍향"
+      },
+      {
+        "num": 65,
+        "hanja": "晝間",
+        "reading": "주간"
+      },
+      {
+        "num": 66,
+        "hanja": "親愛",
+        "reading": "친애"
+      },
+      {
+        "num": 67,
+        "hanja": "發見",
+        "reading": "발견"
+      },
+      {
+        "num": 68,
+        "hanja": "急死",
+        "reading": "급사"
+      },
+      {
+        "num": 69,
+        "hanja": "勇士",
+        "reading": "용사"
+      },
+      {
+        "num": 70,
+        "hanja": "民主",
+        "reading": "민주"
+      }
+    ],
+    "123": [
+      {
+        "num": 51,
+        "hanja": "萬里",
+        "reading": "만리"
+      },
+      {
+        "num": 52,
+        "hanja": "表示",
+        "reading": "표시"
+      },
+      {
+        "num": 53,
+        "hanja": "勇士",
+        "reading": "용사"
+      },
+      {
+        "num": 54,
+        "hanja": "牛肉",
+        "reading": "우육"
+      },
+      {
+        "num": 55,
+        "hanja": "步道",
+        "reading": "보도"
+      },
+      {
+        "num": 56,
+        "hanja": "英才",
+        "reading": "영재"
+      },
+      {
+        "num": 57,
+        "hanja": "植民",
+        "reading": "식민"
+      },
+      {
+        "num": 58,
+        "hanja": "敎會",
+        "reading": "교회"
+      },
+      {
+        "num": 59,
+        "hanja": "答禮",
+        "reading": "답례"
+      },
+      {
+        "num": 60,
+        "hanja": "高音",
+        "reading": "고음"
+      },
+      {
+        "num": 61,
+        "hanja": "各別",
+        "reading": "각별"
+      },
+      {
+        "num": 62,
+        "hanja": "長男",
+        "reading": "장남"
+      },
+      {
+        "num": 63,
+        "hanja": "利用",
+        "reading": "이용"
+      },
+      {
+        "num": 64,
+        "hanja": "神父",
+        "reading": "신부"
+      },
+      {
+        "num": 65,
+        "hanja": "今年",
+        "reading": "금년"
+      },
+      {
+        "num": 66,
+        "hanja": "朝食",
+        "reading": "조식"
+      },
+      {
+        "num": 67,
+        "hanja": "圖章",
+        "reading": "도장"
+      },
+      {
+        "num": 68,
+        "hanja": "親友",
+        "reading": "친우"
+      },
+      {
+        "num": 69,
+        "hanja": "愛讀",
+        "reading": "애독"
+      },
+      {
+        "num": 70,
+        "hanja": "正午",
+        "reading": "정오"
+      }
+    ],
+    "124": [
+      {
+        "num": 51,
+        "hanja": "讀書",
+        "reading": "독서"
+      },
+      {
+        "num": 52,
+        "hanja": "勝利",
+        "reading": "승리"
+      },
+      {
+        "num": 53,
+        "hanja": "功名",
+        "reading": "공명"
+      },
+      {
+        "num": 54,
+        "hanja": "孫子",
+        "reading": "손자"
+      },
+      {
+        "num": 55,
+        "hanja": "明示",
+        "reading": "명시"
+      },
+      {
+        "num": 56,
+        "hanja": "頭目",
+        "reading": "두목"
+      },
+      {
+        "num": 57,
+        "hanja": "不便",
+        "reading": "불편"
+      },
+      {
+        "num": 58,
+        "hanja": "黃土",
+        "reading": "황토"
+      },
+      {
+        "num": 59,
+        "hanja": "首席",
+        "reading": "수석"
+      },
+      {
+        "num": 60,
+        "hanja": "形成",
+        "reading": "형성"
+      },
+      {
+        "num": 61,
+        "hanja": "野合",
+        "reading": "야합"
+      },
+      {
+        "num": 62,
+        "hanja": "失手",
+        "reading": "실수"
+      },
+      {
+        "num": 63,
+        "hanja": "勇力",
+        "reading": "용력"
+      },
+      {
+        "num": 64,
+        "hanja": "原油",
+        "reading": "원유"
+      },
+      {
+        "num": 65,
+        "hanja": "洋藥",
+        "reading": "양약"
+      },
+      {
+        "num": 66,
+        "hanja": "幸運",
+        "reading": "행운"
+      },
+      {
+        "num": 67,
+        "hanja": "近代",
+        "reading": "근대"
+      },
+      {
+        "num": 68,
+        "hanja": "白米",
+        "reading": "백미"
+      },
+      {
+        "num": 69,
+        "hanja": "開通",
+        "reading": "개통"
+      },
+      {
+        "num": 70,
+        "hanja": "綠色",
+        "reading": "녹색"
+      }
+    ]
+  },
+  "준5급": {
+    "110": [
+      {
+        "num": 51,
+        "hanja": "山林",
+        "reading": "산림"
+      },
+      {
+        "num": 52,
+        "hanja": "上衣",
+        "reading": "상의"
+      },
+      {
+        "num": 53,
+        "hanja": "牛羊",
+        "reading": "우양"
+      },
+      {
+        "num": 54,
+        "hanja": "靑草",
+        "reading": "청초"
+      },
+      {
+        "num": 55,
+        "hanja": "白色",
+        "reading": "백색"
+      },
+      {
+        "num": 56,
+        "hanja": "下車",
+        "reading": "하차"
+      },
+      {
+        "num": 57,
+        "hanja": "北方",
+        "reading": "북방"
+      },
+      {
+        "num": 58,
+        "hanja": "休校",
+        "reading": "휴교"
+      },
+      {
+        "num": 59,
+        "hanja": "老年",
+        "reading": "노년"
+      },
+      {
+        "num": 60,
+        "hanja": "本末",
+        "reading": "본말"
+      },
+      {
+        "num": 61,
+        "hanja": "空間",
+        "reading": "공간"
+      },
+      {
+        "num": 62,
+        "hanja": "合心",
+        "reading": "합심"
+      },
+      {
+        "num": 63,
+        "hanja": "室外",
+        "reading": "실외"
+      },
+      {
+        "num": 64,
+        "hanja": "問答",
+        "reading": "문답"
+      },
+      {
+        "num": 65,
+        "hanja": "孝女",
+        "reading": "효녀"
+      },
+      {
+        "num": 66,
+        "hanja": "來世",
+        "reading": "내세"
+      },
+      {
+        "num": 67,
+        "hanja": "自古",
+        "reading": "자고"
+      },
+      {
+        "num": 68,
+        "hanja": "敎育",
+        "reading": "교육"
+      },
+      {
+        "num": 69,
+        "hanja": "代入",
+        "reading": "대입"
+      },
+      {
+        "num": 70,
+        "hanja": "千里馬",
+        "reading": "천리마"
+      }
+    ],
+    "111": [
+      {
+        "num": 51,
+        "hanja": "中語",
+        "reading": "중어"
+      },
+      {
+        "num": 52,
+        "hanja": "生育",
+        "reading": "생육"
+      },
+      {
+        "num": 53,
+        "hanja": "本人",
+        "reading": "본인"
+      },
+      {
+        "num": 54,
+        "hanja": "同門",
+        "reading": "동문"
+      },
+      {
+        "num": 55,
+        "hanja": "夕食",
+        "reading": "석식"
+      },
+      {
+        "num": 56,
+        "hanja": "有名",
+        "reading": "유명"
+      },
+      {
+        "num": 57,
+        "hanja": "水道",
+        "reading": "수도"
+      },
+      {
+        "num": 58,
+        "hanja": "邑內",
+        "reading": "읍내"
+      },
+      {
+        "num": 59,
+        "hanja": "千軍",
+        "reading": "천군"
+      },
+      {
+        "num": 60,
+        "hanja": "耳目",
+        "reading": "이목"
+      },
+      {
+        "num": 61,
+        "hanja": "先王",
+        "reading": "선왕"
+      },
+      {
+        "num": 62,
+        "hanja": "三寸",
+        "reading": "삼촌"
+      },
+      {
+        "num": 63,
+        "hanja": "空白",
+        "reading": "공백"
+      },
+      {
+        "num": 64,
+        "hanja": "海女",
+        "reading": "해녀"
+      },
+      {
+        "num": 65,
+        "hanja": "玉色",
+        "reading": "옥색"
+      },
+      {
+        "num": 66,
+        "hanja": "洞里",
+        "reading": "동리"
+      },
+      {
+        "num": 67,
+        "hanja": "孝子",
+        "reading": "효자"
+      },
+      {
+        "num": 68,
+        "hanja": "靑天",
+        "reading": "청천"
+      },
+      {
+        "num": 69,
+        "hanja": "老少",
+        "reading": "노소"
+      },
+      {
+        "num": 70,
+        "hanja": "北韓",
+        "reading": "북한"
+      }
+    ],
+    "112": [
+      {
+        "num": 51,
+        "hanja": "方向",
+        "reading": "방향"
+      },
+      {
+        "num": 52,
+        "hanja": "外來",
+        "reading": "외래"
+      },
+      {
+        "num": 53,
+        "hanja": "七寸",
+        "reading": "칠촌"
+      },
+      {
+        "num": 54,
+        "hanja": "中間",
+        "reading": "중간"
+      },
+      {
+        "num": 55,
+        "hanja": "千萬",
+        "reading": "천만"
+      },
+      {
+        "num": 56,
+        "hanja": "小食",
+        "reading": "소식"
+      },
+      {
+        "num": 57,
+        "hanja": "面目",
+        "reading": "면목"
+      },
+      {
+        "num": 58,
+        "hanja": "江山",
+        "reading": "강산"
+      },
+      {
+        "num": 59,
+        "hanja": "合同",
+        "reading": "합동"
+      },
+      {
+        "num": 60,
+        "hanja": "草木",
+        "reading": "초목"
+      },
+      {
+        "num": 61,
+        "hanja": "大氣",
+        "reading": "대기"
+      },
+      {
+        "num": 62,
+        "hanja": "東西",
+        "reading": "동서"
+      },
+      {
+        "num": 63,
+        "hanja": "出世",
+        "reading": "출세"
+      },
+      {
+        "num": 64,
+        "hanja": "工夫",
+        "reading": "공부"
+      },
+      {
+        "num": 65,
+        "hanja": "不孝",
+        "reading": "불효"
+      },
+      {
+        "num": 66,
+        "hanja": "入住",
+        "reading": "입주"
+      },
+      {
+        "num": 67,
+        "hanja": "下位",
+        "reading": "하위"
+      },
+      {
+        "num": 68,
+        "hanja": "洞口",
+        "reading": "동구"
+      },
+      {
+        "num": 69,
+        "hanja": "門前",
+        "reading": "문전"
+      },
+      {
+        "num": 70,
+        "hanja": "育林",
+        "reading": "육림"
+      }
+    ],
+    "113": [
+      {
+        "num": 51,
+        "hanja": "山林",
+        "reading": "산림"
+      },
+      {
+        "num": 52,
+        "hanja": "休學",
+        "reading": "휴학"
+      },
+      {
+        "num": 53,
+        "hanja": "靑草",
+        "reading": "청초"
+      },
+      {
+        "num": 54,
+        "hanja": "同時",
+        "reading": "동시"
+      },
+      {
+        "num": 55,
+        "hanja": "向方",
+        "reading": "향방"
+      },
+      {
+        "num": 56,
+        "hanja": "孝心",
+        "reading": "효심"
+      },
+      {
+        "num": 57,
+        "hanja": "日語",
+        "reading": "일어"
+      },
+      {
+        "num": 58,
+        "hanja": "代入",
+        "reading": "대입"
+      },
+      {
+        "num": 59,
+        "hanja": "中道",
+        "reading": "중도"
+      },
+      {
+        "num": 60,
+        "hanja": "百年",
+        "reading": "백년"
+      },
+      {
+        "num": 61,
+        "hanja": "玉水",
+        "reading": "옥수"
+      },
+      {
+        "num": 62,
+        "hanja": "全文",
+        "reading": "전문"
+      },
+      {
+        "num": 63,
+        "hanja": "正答",
+        "reading": "정답"
+      },
+      {
+        "num": 64,
+        "hanja": "祖父",
+        "reading": "조부"
+      },
+      {
+        "num": 65,
+        "hanja": "八萬",
+        "reading": "팔만"
+      },
+      {
+        "num": 66,
+        "hanja": "地面",
+        "reading": "지면"
+      },
+      {
+        "num": 67,
+        "hanja": "本色",
+        "reading": "본색"
+      },
+      {
+        "num": 68,
+        "hanja": "姓名",
+        "reading": "성명"
+      },
+      {
+        "num": 69,
+        "hanja": "東海",
+        "reading": "동해"
+      },
+      {
+        "num": 70,
+        "hanja": "校門",
+        "reading": "교문"
+      }
+    ],
+    "114": [
+      {
+        "num": 51,
+        "hanja": "下車",
+        "reading": "하차"
+      },
+      {
+        "num": 52,
+        "hanja": "自足",
+        "reading": "자족"
+      },
+      {
+        "num": 53,
+        "hanja": "大軍",
+        "reading": "대군"
+      },
+      {
+        "num": 54,
+        "hanja": "三千里",
+        "reading": "삼천리"
+      },
+      {
+        "num": 55,
+        "hanja": "本來",
+        "reading": "본래"
+      },
+      {
+        "num": 56,
+        "hanja": "農土",
+        "reading": "농토"
+      },
+      {
+        "num": 57,
+        "hanja": "入口",
+        "reading": "입구"
+      },
+      {
+        "num": 58,
+        "hanja": "不安",
+        "reading": "불안"
+      },
+      {
+        "num": 59,
+        "hanja": "向學",
+        "reading": "향학"
+      },
+      {
+        "num": 60,
+        "hanja": "上衣",
+        "reading": "상의"
+      },
+      {
+        "num": 61,
+        "hanja": "南北",
+        "reading": "남북"
+      },
+      {
+        "num": 62,
+        "hanja": "弟子",
+        "reading": "제자"
+      },
+      {
+        "num": 63,
+        "hanja": "市外",
+        "reading": "시외"
+      },
+      {
+        "num": 64,
+        "hanja": "祖母",
+        "reading": "조모"
+      },
+      {
+        "num": 65,
+        "hanja": "年末",
+        "reading": "연말"
+      },
+      {
+        "num": 66,
+        "hanja": "五色",
+        "reading": "오색"
+      },
+      {
+        "num": 67,
+        "hanja": "玉手",
+        "reading": "옥수"
+      },
+      {
+        "num": 68,
+        "hanja": "水草",
+        "reading": "수초"
+      },
+      {
+        "num": 69,
+        "hanja": "每夕",
+        "reading": "매석"
+      },
+      {
+        "num": 70,
+        "hanja": "同語",
+        "reading": "동어"
+      }
+    ],
+    "115": [
+      {
+        "num": 51,
+        "hanja": "出馬",
+        "reading": "출마"
+      },
+      {
+        "num": 52,
+        "hanja": "主語",
+        "reading": "주어"
+      },
+      {
+        "num": 53,
+        "hanja": "住所",
+        "reading": "주소"
+      },
+      {
+        "num": 54,
+        "hanja": "山間",
+        "reading": "산간"
+      },
+      {
+        "num": 55,
+        "hanja": "里長",
+        "reading": "이장"
+      },
+      {
+        "num": 56,
+        "hanja": "中食",
+        "reading": "중식"
+      },
+      {
+        "num": 57,
+        "hanja": "立地",
+        "reading": "입지"
+      },
+      {
+        "num": 58,
+        "hanja": "所有",
+        "reading": "소유"
+      },
+      {
+        "num": 59,
+        "hanja": "休日",
+        "reading": "휴일"
+      },
+      {
+        "num": 60,
+        "hanja": "分母",
+        "reading": "분모"
+      },
+      {
+        "num": 61,
+        "hanja": "文學",
+        "reading": "문학"
+      },
+      {
+        "num": 62,
+        "hanja": "孝女",
+        "reading": "효녀"
+      },
+      {
+        "num": 63,
+        "hanja": "方位",
+        "reading": "방위"
+      },
+      {
+        "num": 64,
+        "hanja": "牛羊",
+        "reading": "우양"
+      },
+      {
+        "num": 65,
+        "hanja": "漢水",
+        "reading": "한수"
+      },
+      {
+        "num": 66,
+        "hanja": "向上",
+        "reading": "향상"
+      },
+      {
+        "num": 67,
+        "hanja": "正敎",
+        "reading": "정교"
+      },
+      {
+        "num": 68,
+        "hanja": "內外",
+        "reading": "내외"
+      },
+      {
+        "num": 69,
+        "hanja": "草木",
+        "reading": "초목"
+      },
+      {
+        "num": 70,
+        "hanja": "同一",
+        "reading": "동일"
+      }
+    ],
+    "116": [
+      {
+        "num": 51,
+        "hanja": "南向",
+        "reading": "남향"
+      },
+      {
+        "num": 52,
+        "hanja": "白羊",
+        "reading": "백양"
+      },
+      {
+        "num": 53,
+        "hanja": "靑色",
+        "reading": "청색"
+      },
+      {
+        "num": 54,
+        "hanja": "先王",
+        "reading": "선왕"
+      },
+      {
+        "num": 55,
+        "hanja": "生育",
+        "reading": "생육"
+      },
+      {
+        "num": 56,
+        "hanja": "安住",
+        "reading": "안주"
+      },
+      {
+        "num": 57,
+        "hanja": "下衣",
+        "reading": "하의"
+      },
+      {
+        "num": 58,
+        "hanja": "本分",
+        "reading": "본분"
+      },
+      {
+        "num": 59,
+        "hanja": "老母",
+        "reading": "노모"
+      },
+      {
+        "num": 60,
+        "hanja": "植木",
+        "reading": "식목"
+      },
+      {
+        "num": 61,
+        "hanja": "今方",
+        "reading": "금방"
+      },
+      {
+        "num": 62,
+        "hanja": "夫人",
+        "reading": "부인"
+      },
+      {
+        "num": 63,
+        "hanja": "邑內",
+        "reading": "읍내"
+      },
+      {
+        "num": 64,
+        "hanja": "孝道",
+        "reading": "효도"
+      },
+      {
+        "num": 65,
+        "hanja": "馬力",
+        "reading": "마력"
+      },
+      {
+        "num": 66,
+        "hanja": "山林",
+        "reading": "산림"
+      },
+      {
+        "num": 67,
+        "hanja": "耳目",
+        "reading": "이목"
+      },
+      {
+        "num": 68,
+        "hanja": "中立",
+        "reading": "중립"
+      },
+      {
+        "num": 69,
+        "hanja": "來世",
+        "reading": "내세"
+      },
+      {
+        "num": 70,
+        "hanja": "子弟",
+        "reading": "자제"
+      }
+    ],
+    "117": [
+      {
+        "num": 51,
+        "hanja": "室外",
+        "reading": "실외"
+      },
+      {
+        "num": 52,
+        "hanja": "自立",
+        "reading": "자립"
+      },
+      {
+        "num": 53,
+        "hanja": "南海",
+        "reading": "남해"
+      },
+      {
+        "num": 54,
+        "hanja": "平安",
+        "reading": "평안"
+      },
+      {
+        "num": 55,
+        "hanja": "老年",
+        "reading": "노년"
+      },
+      {
+        "num": 56,
+        "hanja": "本心",
+        "reading": "본심"
+      },
+      {
+        "num": 57,
+        "hanja": "王位",
+        "reading": "왕위"
+      },
+      {
+        "num": 58,
+        "hanja": "十里",
+        "reading": "십리"
+      },
+      {
+        "num": 59,
+        "hanja": "男女",
+        "reading": "남녀"
+      },
+      {
+        "num": 60,
+        "hanja": "世上",
+        "reading": "세상"
+      },
+      {
+        "num": 61,
+        "hanja": "孝子",
+        "reading": "효자"
+      },
+      {
+        "num": 62,
+        "hanja": "北韓",
+        "reading": "북한"
+      },
+      {
+        "num": 63,
+        "hanja": "來日",
+        "reading": "내일"
+      },
+      {
+        "num": 64,
+        "hanja": "兄弟",
+        "reading": "형제"
+      },
+      {
+        "num": 65,
+        "hanja": "靑天",
+        "reading": "청천"
+      },
+      {
+        "num": 66,
+        "hanja": "三代",
+        "reading": "삼대"
+      },
+      {
+        "num": 67,
+        "hanja": "入住",
+        "reading": "입주"
+      },
+      {
+        "num": 68,
+        "hanja": "百姓",
+        "reading": "백성"
+      },
+      {
+        "num": 69,
+        "hanja": "草食",
+        "reading": "초식"
+      },
+      {
+        "num": 70,
+        "hanja": "名士",
+        "reading": "명사"
+      }
+    ],
+    "118": [
+      {
+        "num": 51,
+        "hanja": "正午",
+        "reading": "정오"
+      },
+      {
+        "num": 52,
+        "hanja": "世子",
+        "reading": "세자"
+      },
+      {
+        "num": 53,
+        "hanja": "大學",
+        "reading": "대학"
+      },
+      {
+        "num": 54,
+        "hanja": "有力",
+        "reading": "유력"
+      },
+      {
+        "num": 55,
+        "hanja": "萬全",
+        "reading": "만전"
+      },
+      {
+        "num": 56,
+        "hanja": "先生",
+        "reading": "선생"
+      },
+      {
+        "num": 57,
+        "hanja": "草家",
+        "reading": "초가"
+      },
+      {
+        "num": 58,
+        "hanja": "玉石",
+        "reading": "옥석"
+      },
+      {
+        "num": 59,
+        "hanja": "老人",
+        "reading": "노인"
+      },
+      {
+        "num": 60,
+        "hanja": "工夫",
+        "reading": "공부"
+      },
+      {
+        "num": 61,
+        "hanja": "同時",
+        "reading": "동시"
+      },
+      {
+        "num": 62,
+        "hanja": "住民",
+        "reading": "주민"
+      },
+      {
+        "num": 63,
+        "hanja": "方向",
+        "reading": "방향"
+      },
+      {
+        "num": 64,
+        "hanja": "自古",
+        "reading": "자고"
+      },
+      {
+        "num": 65,
+        "hanja": "不平",
+        "reading": "불평"
+      },
+      {
+        "num": 66,
+        "hanja": "洞里",
+        "reading": "동리"
+      },
+      {
+        "num": 67,
+        "hanja": "外來",
+        "reading": "외래"
+      },
+      {
+        "num": 68,
+        "hanja": "育林",
+        "reading": "육림"
+      },
+      {
+        "num": 69,
+        "hanja": "合心",
+        "reading": "합심"
+      },
+      {
+        "num": 70,
+        "hanja": "立地",
+        "reading": "입지"
+      }
+    ],
+    "119": [
+      {
+        "num": 51,
+        "hanja": "洞口",
+        "reading": "동구"
+      },
+      {
+        "num": 52,
+        "hanja": "正南",
+        "reading": "정남"
+      },
+      {
+        "num": 53,
+        "hanja": "孝心",
+        "reading": "효심"
+      },
+      {
+        "num": 54,
+        "hanja": "末世",
+        "reading": "말세"
+      },
+      {
+        "num": 55,
+        "hanja": "東西",
+        "reading": "동서"
+      },
+      {
+        "num": 56,
+        "hanja": "登山",
+        "reading": "등산"
+      },
+      {
+        "num": 57,
+        "hanja": "向方",
+        "reading": "향방"
+      },
+      {
+        "num": 58,
+        "hanja": "來年",
+        "reading": "내년"
+      },
+      {
+        "num": 59,
+        "hanja": "士大夫",
+        "reading": "사대부"
+      },
+      {
+        "num": 60,
+        "hanja": "室內",
+        "reading": "실내"
+      },
+      {
+        "num": 61,
+        "hanja": "七寸",
+        "reading": "칠촌"
+      },
+      {
+        "num": 62,
+        "hanja": "先人",
+        "reading": "선인"
+      },
+      {
+        "num": 63,
+        "hanja": "三韓",
+        "reading": "삼한"
+      },
+      {
+        "num": 64,
+        "hanja": "不平",
+        "reading": "불평"
+      },
+      {
+        "num": 65,
+        "hanja": "白衣",
+        "reading": "백의"
+      },
+      {
+        "num": 66,
+        "hanja": "分立",
+        "reading": "분립"
+      },
+      {
+        "num": 67,
+        "hanja": "母女",
+        "reading": "모녀"
+      },
+      {
+        "num": 68,
+        "hanja": "下位",
+        "reading": "하위"
+      },
+      {
+        "num": 69,
+        "hanja": "中語",
+        "reading": "중어"
+      },
+      {
+        "num": 70,
+        "hanja": "靑草",
+        "reading": "청초"
+      }
+    ],
+    "120": [
+      {
+        "num": 51,
+        "hanja": "農土",
+        "reading": "농토"
+      },
+      {
+        "num": 52,
+        "hanja": "山林",
+        "reading": "산림"
+      },
+      {
+        "num": 53,
+        "hanja": "向方",
+        "reading": "향방"
+      },
+      {
+        "num": 54,
+        "hanja": "下位",
+        "reading": "하위"
+      },
+      {
+        "num": 55,
+        "hanja": "敎育",
+        "reading": "교육"
+      },
+      {
+        "num": 56,
+        "hanja": "牛羊",
+        "reading": "우양"
+      },
+      {
+        "num": 57,
+        "hanja": "祖父",
+        "reading": "조부"
+      },
+      {
+        "num": 58,
+        "hanja": "三色",
+        "reading": "삼색"
+      },
+      {
+        "num": 59,
+        "hanja": "馬車",
+        "reading": "마차"
+      },
+      {
+        "num": 60,
+        "hanja": "自足",
+        "reading": "자족"
+      },
+      {
+        "num": 61,
+        "hanja": "不孝",
+        "reading": "불효"
+      },
+      {
+        "num": 62,
+        "hanja": "水道",
+        "reading": "수도"
+      },
+      {
+        "num": 63,
+        "hanja": "老少",
+        "reading": "노소"
+      },
+      {
+        "num": 64,
+        "hanja": "先王",
+        "reading": "선왕"
+      },
+      {
+        "num": 65,
+        "hanja": "氣力",
+        "reading": "기력"
+      },
+      {
+        "num": 66,
+        "hanja": "姓名",
+        "reading": "성명"
+      },
+      {
+        "num": 67,
+        "hanja": "耳目",
+        "reading": "이목"
+      },
+      {
+        "num": 68,
+        "hanja": "五里",
+        "reading": "오리"
+      },
+      {
+        "num": 69,
+        "hanja": "分立",
+        "reading": "분립"
+      },
+      {
+        "num": 70,
+        "hanja": "主語",
+        "reading": "주어"
+      }
+    ],
+    "121": [
+      {
+        "num": 51,
+        "hanja": "月末",
+        "reading": "월말"
+      },
+      {
+        "num": 52,
+        "hanja": "日語",
+        "reading": "일어"
+      },
+      {
+        "num": 53,
+        "hanja": "每夕",
+        "reading": "매석"
+      },
+      {
+        "num": 54,
+        "hanja": "合一",
+        "reading": "합일"
+      },
+      {
+        "num": 55,
+        "hanja": "學校",
+        "reading": "학교"
+      },
+      {
+        "num": 56,
+        "hanja": "文士",
+        "reading": "문사"
+      },
+      {
+        "num": 57,
+        "hanja": "江山",
+        "reading": "강산"
+      },
+      {
+        "num": 58,
+        "hanja": "玉手",
+        "reading": "옥수"
+      },
+      {
+        "num": 59,
+        "hanja": "邑內",
+        "reading": "읍내"
+      },
+      {
+        "num": 60,
+        "hanja": "同時",
+        "reading": "동시"
+      },
+      {
+        "num": 61,
+        "hanja": "孝子",
+        "reading": "효자"
+      },
+      {
+        "num": 62,
+        "hanja": "全力",
+        "reading": "전력"
+      },
+      {
+        "num": 63,
+        "hanja": "千軍",
+        "reading": "천군"
+      },
+      {
+        "num": 64,
+        "hanja": "自己",
+        "reading": "자기"
+      },
+      {
+        "num": 65,
+        "hanja": "王室",
+        "reading": "왕실"
+      },
+      {
+        "num": 66,
+        "hanja": "北韓",
+        "reading": "북한"
+      },
+      {
+        "num": 67,
+        "hanja": "立地",
+        "reading": "입지"
+      },
+      {
+        "num": 68,
+        "hanja": "兄弟",
+        "reading": "형제"
+      },
+      {
+        "num": 69,
+        "hanja": "靑天",
+        "reading": "청천"
+      },
+      {
+        "num": 70,
+        "hanja": "門前",
+        "reading": "문전"
+      }
+    ],
+    "122": [
+      {
+        "num": 51,
+        "hanja": "中耳",
+        "reading": "중이"
+      },
+      {
+        "num": 52,
+        "hanja": "西向",
+        "reading": "서향"
+      },
+      {
+        "num": 53,
+        "hanja": "洞口",
+        "reading": "동구"
+      },
+      {
+        "num": 54,
+        "hanja": "工場",
+        "reading": "공장"
+      },
+      {
+        "num": 55,
+        "hanja": "安心",
+        "reading": "안심"
+      },
+      {
+        "num": 56,
+        "hanja": "八道",
+        "reading": "팔도"
+      },
+      {
+        "num": 57,
+        "hanja": "弟子",
+        "reading": "제자"
+      },
+      {
+        "num": 58,
+        "hanja": "大軍",
+        "reading": "대군"
+      },
+      {
+        "num": 59,
+        "hanja": "先生",
+        "reading": "선생"
+      },
+      {
+        "num": 60,
+        "hanja": "正午",
+        "reading": "정오"
+      },
+      {
+        "num": 61,
+        "hanja": "韓牛",
+        "reading": "한우"
+      },
+      {
+        "num": 62,
+        "hanja": "江北",
+        "reading": "강북"
+      },
+      {
+        "num": 63,
+        "hanja": "白羊",
+        "reading": "백양"
+      },
+      {
+        "num": 64,
+        "hanja": "育林",
+        "reading": "육림"
+      },
+      {
+        "num": 65,
+        "hanja": "入住",
+        "reading": "입주"
+      },
+      {
+        "num": 66,
+        "hanja": "長女",
+        "reading": "장녀"
+      },
+      {
+        "num": 67,
+        "hanja": "自立",
+        "reading": "자립"
+      },
+      {
+        "num": 68,
+        "hanja": "三千里",
+        "reading": "삼천리"
+      },
+      {
+        "num": 69,
+        "hanja": "方寸",
+        "reading": "방촌"
+      },
+      {
+        "num": 70,
+        "hanja": "世代",
+        "reading": "세대"
+      }
+    ],
+    "123": [
+      {
+        "num": 51,
+        "hanja": "分立",
+        "reading": "분립"
+      },
+      {
+        "num": 52,
+        "hanja": "祖父",
+        "reading": "조부"
+      },
+      {
+        "num": 53,
+        "hanja": "校門",
+        "reading": "교문"
+      },
+      {
+        "num": 54,
+        "hanja": "萬世",
+        "reading": "만세"
+      },
+      {
+        "num": 55,
+        "hanja": "長男",
+        "reading": "장남"
+      },
+      {
+        "num": 56,
+        "hanja": "不足",
+        "reading": "부족"
+      },
+      {
+        "num": 57,
+        "hanja": "所有",
+        "reading": "소유"
+      },
+      {
+        "num": 58,
+        "hanja": "小食",
+        "reading": "소식"
+      },
+      {
+        "num": 59,
+        "hanja": "軍馬",
+        "reading": "군마"
+      },
+      {
+        "num": 60,
+        "hanja": "外來",
+        "reading": "외래"
+      },
+      {
+        "num": 61,
+        "hanja": "時間",
+        "reading": "시간"
+      },
+      {
+        "num": 62,
+        "hanja": "不孝",
+        "reading": "불효"
+      },
+      {
+        "num": 63,
+        "hanja": "漢文",
+        "reading": "한문"
+      },
+      {
+        "num": 64,
+        "hanja": "下衣",
+        "reading": "하의"
+      },
+      {
+        "num": 65,
+        "hanja": "學年",
+        "reading": "학년"
+      },
+      {
+        "num": 66,
+        "hanja": "草木",
+        "reading": "초목"
+      },
+      {
+        "num": 67,
+        "hanja": "中語",
+        "reading": "중어"
+      },
+      {
+        "num": 68,
+        "hanja": "電力",
+        "reading": "전력"
+      },
+      {
+        "num": 69,
+        "hanja": "夫人",
+        "reading": "부인"
+      },
+      {
+        "num": 70,
+        "hanja": "登山",
+        "reading": "등산"
+      }
+    ],
+    "124": [
+      {
+        "num": 51,
+        "hanja": "空間",
+        "reading": "공간"
+      },
+      {
+        "num": 52,
+        "hanja": "全面",
+        "reading": "전면"
+      },
+      {
+        "num": 53,
+        "hanja": "手巾",
+        "reading": "수건"
+      },
+      {
+        "num": 54,
+        "hanja": "心氣",
+        "reading": "심기"
+      },
+      {
+        "num": 55,
+        "hanja": "先王",
+        "reading": "선왕"
+      },
+      {
+        "num": 56,
+        "hanja": "月末",
+        "reading": "월말"
+      },
+      {
+        "num": 57,
+        "hanja": "國語",
+        "reading": "국어"
+      },
+      {
+        "num": 58,
+        "hanja": "山林",
+        "reading": "산림"
+      },
+      {
+        "num": 59,
+        "hanja": "東北",
+        "reading": "동북"
+      },
+      {
+        "num": 60,
+        "hanja": "百姓",
+        "reading": "백성"
+      },
+      {
+        "num": 61,
+        "hanja": "漢江",
+        "reading": "한강"
+      },
+      {
+        "num": 62,
+        "hanja": "萬一",
+        "reading": "만일"
+      },
+      {
+        "num": 63,
+        "hanja": "小學",
+        "reading": "소학"
+      },
+      {
+        "num": 64,
+        "hanja": "植民",
+        "reading": "식민"
+      },
+      {
+        "num": 65,
+        "hanja": "自力",
+        "reading": "자력"
+      },
+      {
+        "num": 66,
+        "hanja": "物主",
+        "reading": "물주"
+      },
+      {
+        "num": 67,
+        "hanja": "生育",
+        "reading": "생육"
+      },
+      {
+        "num": 68,
+        "hanja": "合同",
+        "reading": "합동"
+      },
+      {
+        "num": 69,
+        "hanja": "十里",
+        "reading": "십리"
+      },
+      {
+        "num": 70,
+        "hanja": "海女",
+        "reading": "해녀"
+      }
+    ]
+  }
+}
