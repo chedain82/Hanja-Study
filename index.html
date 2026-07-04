@@ -3252,10 +3252,8 @@ function saveStudyLog()  { try { localStorage.setItem(_lsKey('hanja_studyLog'), 
 function loadStudyLog()  { try { _migrateLsKey('hanja_studyLog');  return JSON.parse(localStorage.getItem(_lsKey('hanja_studyLog')))  || []; } catch(e){ return []; } }
 function saveWrongNote() { try { localStorage.setItem(_lsKey('hanja_wrongNote'), JSON.stringify(S.wrongNote));  } catch(e){} }
 function loadWrongNote() { try { _migrateLsKey('hanja_wrongNote'); return JSON.parse(localStorage.getItem(_lsKey('hanja_wrongNote'))) || []; } catch(e){ return []; } }
-function saveExamScoreLog() { try { localStorage.setItem(_lsKey('hanja_examScoreLog'), JSON.stringify(examScoreLog)); } catch(e){} }
-function loadExamScoreLog() { try { _migrateLsKey('hanja_examScoreLog'); return JSON.parse(localStorage.getItem(_lsKey('hanja_examScoreLog'))) || {}; } catch(e){ return {}; } }
 function saveSettings()  { try { localStorage.setItem(_lsKey('hanja_settings'),  JSON.stringify(settings));     } catch(e){} }
-function loadSettings()  { try { _migrateLsKey('hanja_settings');  return JSON.parse(localStorage.getItem(_lsKey('hanja_settings')))  || {streak:0,lastStudyDate:'',dailyGoal:100,totalCorrect:0,totalQuestions:0,totalTime:0,bestStreak:0,levelProgress:{},perfectStreak:0,lastPerfectDate:'',coupons:0,usedCoupons:0,examWeeklyGoal:{}}; } catch(e){ return {streak:0,lastStudyDate:'',dailyGoal:100,totalCorrect:0,totalQuestions:0,totalTime:0,bestStreak:0,levelProgress:{},perfectStreak:0,lastPerfectDate:'',coupons:0,usedCoupons:0,examWeeklyGoal:{}}; } }
+function loadSettings()  { try { _migrateLsKey('hanja_settings');  return JSON.parse(localStorage.getItem(_lsKey('hanja_settings')))  || {streak:0,lastStudyDate:'',dailyGoal:100,totalCorrect:0,totalQuestions:0,totalTime:0,bestStreak:0,levelProgress:{},perfectStreak:0,lastPerfectDate:'',coupons:0,usedCoupons:0,examWeeklyGoal:{},examScoreLog:{}}; } catch(e){ return {streak:0,lastStudyDate:'',dailyGoal:100,totalCorrect:0,totalQuestions:0,totalTime:0,bestStreak:0,levelProgress:{},perfectStreak:0,lastPerfectDate:'',coupons:0,usedCoupons:0,examWeeklyGoal:{},examScoreLog:{}}; } }
 function saveBadges()    { try { localStorage.setItem(_lsKey('hanja_badges'),    JSON.stringify(earnedBadges)); } catch(e){} }
 function loadBadges()    { try { _migrateLsKey('hanja_badges');    return JSON.parse(localStorage.getItem(_lsKey('hanja_badges')))    || {}; } catch(e){ return {}; } }
 function saveLastLevelRange() { try { localStorage.setItem(_lsKey('hanja_lastLevelRange'), JSON.stringify({level:S.level,ranges:S.ranges})); } catch(e){} }
@@ -3265,8 +3263,25 @@ function loadLastLevelRange() { try { _migrateLsKey('hanja_lastLevelRange'); ret
 let studyLog = loadStudyLog();
 let settings = loadSettings();
 let earnedBadges = loadBadges();
-let examScoreLog = loadExamScoreLog(); // { "준3급": { "111": [{date, score}, ...], "112": [...] } }
 let _allLevelsExpanded = true;
+
+// 3~4차 지시문에서 examScoreLog를 별도 localStorage 키(학생별로 분리된 키)로 저장했던 과거
+// 버전과의 호환: settings.examScoreLog가 비어 있는데 옛 키에 데이터가 남아있으면 옮겨온다.
+// _lsKey는 currentUser.id에 따라 키가 달라지고, 시험 모드는 로그인(무료 모드 포함) 후에만
+// 접근 가능해 과거 데이터도 항상 사용자별 키에 있으므로, currentUser가 확정되는
+// enterStudentApp()에서만 호출하면 된다(currentUser는 이 시점엔 아직 선언 전이라 여기서
+// 바로 호출하면 TDZ 에러가 난다).
+function migrateExamScoreLogIntoSettings() {
+  if (settings.examScoreLog && Object.keys(settings.examScoreLog).length) return;
+  try {
+    _migrateLsKey('hanja_examScoreLog');
+    const old = JSON.parse(localStorage.getItem(_lsKey('hanja_examScoreLog')));
+    if (old && Object.keys(old).length) {
+      settings.examScoreLog = old;
+      saveSettings();
+    }
+  } catch(e) {}
+}
 
 const _savedLR = loadLastLevelRange();
 const S = {
@@ -3672,7 +3687,8 @@ function renderReportTab() {
 function renderExamWeeklyGoalCard() {
   const wrap = document.getElementById('exam-weekly-goal-wrap');
   if (!wrap) return;
-  const levels = Object.keys(examScoreLog).filter(lv => Object.keys(examScoreLog[lv] || {}).length > 0);
+  const log = settings.examScoreLog || {};
+  const levels = Object.keys(log).filter(lv => Object.keys(log[lv] || {}).length > 0);
   if (!levels.length) { wrap.innerHTML = `<div style="text-align:center;color:var(--gray);font-size:13px;padding:8px 0;">시험 모드를 시작하면 여기에 주간 목표가 나와요.</div>`; return; }
   wrap.innerHTML = levels.map(lv => {
     const goal = getExamWeeklyGoal(lv);
@@ -3697,7 +3713,8 @@ function renderExamWeeklyGoalCard() {
 function renderExamScoreCharts() {
   const wrap = document.getElementById('exam-score-chart-wrap');
   if (!wrap) return;
-  const levels = Object.keys(examScoreLog).filter(lv => Object.keys(examScoreLog[lv] || {}).length > 0);
+  const log = settings.examScoreLog || {};
+  const levels = Object.keys(log).filter(lv => Object.keys(log[lv] || {}).length > 0);
   if (!levels.length) {
     wrap.innerHTML = `<div style="text-align:center;color:var(--gray);font-size:13px;padding:16px 0;">아직 시험 모드를 풀지 않았어요.</div>`;
     return;
@@ -3706,7 +3723,7 @@ function renderExamScoreCharts() {
 }
 
 function renderExamScoreChartForLevel(level) {
-  const rounds = Object.keys(examScoreLog[level]).map(Number).sort((a,b) => a-b);
+  const rounds = Object.keys(settings.examScoreLog[level]).map(Number).sort((a,b) => a-b);
   const W = 320, H = 140, padL = 34, padR = 10, padT = 14, padB = 24;
   const plotW = W - padL - padR, plotH = H - padT - padB;
   const n = rounds.length;
@@ -5438,13 +5455,14 @@ function jumpToExamTestNo(no) {
   goSub('exam_test_quiz');
 }
 function recordExamScore(level, round, score) {
-  if (!examScoreLog[level]) examScoreLog[level] = {};
-  if (!examScoreLog[level][round]) examScoreLog[level][round] = [];
-  examScoreLog[level][round].push({ date: todayStr(), score });
-  saveExamScoreLog();
+  if (!settings.examScoreLog) settings.examScoreLog = {};
+  if (!settings.examScoreLog[level]) settings.examScoreLog[level] = {};
+  if (!settings.examScoreLog[level][round]) settings.examScoreLog[level][round] = [];
+  settings.examScoreLog[level][round].push({ date: todayStr(), score });
+  saveSettings(); // 로컬 저장 + Firebase 동기화가 이 한 줄로 다 됨
 }
 function getExamScoreStats(level, round) {
-  const arr = (examScoreLog[level] && examScoreLog[level][round]) || [];
+  const arr = (settings.examScoreLog && settings.examScoreLog[level] && settings.examScoreLog[level][round]) || [];
   if (!arr.length) return null;
   return { latest: arr[arr.length - 1].score, best: Math.max(...arr.map(x => x.score)), attempts: arr.length };
 }
@@ -5465,7 +5483,7 @@ function getWeekStartStr() {
 }
 function countRoundsThisWeek(level) {
   const weekStart = getWeekStartStr();
-  const rounds = examScoreLog[level] || {};
+  const rounds = (settings.examScoreLog && settings.examScoreLog[level]) || {};
   return Object.keys(rounds).filter(round => rounds[round].some(a => a.date >= weekStart)).length;
 }
 function gradeExamTest() {
@@ -5477,7 +5495,7 @@ function gradeExamTest() {
   }
   stopExamTestTimer();
   const r = computeExamTestResult();
-  const prevAttempts = (examScoreLog[EX.level] && examScoreLog[EX.level][EX.round]) ? [...examScoreLog[EX.level][EX.round]] : [];
+  const prevAttempts = (settings.examScoreLog && settings.examScoreLog[EX.level] && settings.examScoreLog[EX.level][EX.round]) ? [...settings.examScoreLog[EX.level][EX.round]] : [];
   EX.lastScoreIsFirst = prevAttempts.length === 0;
   EX.lastScoreDelta = prevAttempts.length ? r.totalScore - prevAttempts[prevAttempts.length - 1].score : null;
   recordExamScore(EX.level, EX.round, r.totalScore);
@@ -5933,7 +5951,7 @@ async function loadReadingQuizData() {
 
 let EXAM_TEST_DATA = {};
 async function loadExamTestData() {
-  try { const r = await fetch('data/hanja_exam_jun3.json'); EXAM_TEST_DATA = await r.json(); }
+  try { const r = await fetch('hanja_exam_jun3.json'); EXAM_TEST_DATA = await r.json(); }
   catch(e) { console.log('hanja_exam_jun3.json load failed'); EXAM_TEST_DATA = {}; }
   window.EXAM_TEST_DATA = EXAM_TEST_DATA;
 }
@@ -7608,6 +7626,7 @@ async function enterStudentApp() {
   // 다른 학생이 같은 기기에서 로그인하면 로컬 데이터 초기화
   // 1단계: 이 학생의 로컬 데이터 로드 (학생별 키로 자동 분리)
   settings    = loadSettings();
+  migrateExamScoreLogIntoSettings(); // 학생별 키로 다시 로드됐으니, 이 학생 키 기준으로도 과거 데이터 이전 여부를 재확인
   studyLog    = loadStudyLog();
   S.wrongNote = loadWrongNote();
   earnedBadges = loadBadges();
@@ -7922,7 +7941,8 @@ async function loadStudentDataFromFirestore() {
   try {
     const data = await window._fbGetStudentData(currentUser.id);
     if (data) {
-      // settings: Firestore가 우선, 단 writeProgress는 병합
+      const localExamLog = settings.examScoreLog ? JSON.parse(JSON.stringify(settings.examScoreLog)) : {}; // 덮이기 전 백업
+      // settings: Firestore가 우선, 단 writeProgress/examScoreLog는 병합
       if (data.settings) {
         const localWP = (settings.writeProgress) ? {...settings.writeProgress} : {};
         // 쿠폰/사용쿠폰은 로컬과 Firebase 중 더 큰 값 유지 (네트워크 오류로 유실 방지)
@@ -7939,6 +7959,22 @@ async function loadStudentDataFromFirestore() {
           if (localEntry.round > remoteEntry.round ||
              (localEntry.round === remoteEntry.round && localEntry.score > remoteEntry.score)) {
             settings.writeProgress[k] = localEntry;
+          }
+        }
+        // examScoreLog 병합: 급수/회차별로 로컬+원격 시도 기록을 합치고 중복 제거
+        if (!settings.examScoreLog) settings.examScoreLog = {};
+        for (const lv of Object.keys(localExamLog)) {
+          if (!settings.examScoreLog[lv]) settings.examScoreLog[lv] = {};
+          for (const round of Object.keys(localExamLog[lv])) {
+            const remoteArr = settings.examScoreLog[lv][round] || [];
+            const localArr = localExamLog[lv][round] || [];
+            const merged = [...remoteArr];
+            localArr.forEach(entry => {
+              const dup = merged.some(m => m.date === entry.date && m.score === entry.score);
+              if (!dup) merged.push(entry);
+            });
+            merged.sort((a,b) => a.date.localeCompare(b.date));
+            settings.examScoreLog[lv][round] = merged;
           }
         }
       }
@@ -8231,6 +8267,25 @@ async function showStudentDetail(studentId, studentName) {
         </div>`).join('')
       : '<div class="detail-empty">오답이 없어요 🎉</div>';
 
+    const examLog = st.examScoreLog || {};
+    const examLevels = Object.keys(examLog);
+    const examSectionHtml = examLevels.length ? `
+      <div class="detail-section">
+        <div class="detail-section-title">🧾 기출문제 점수</div>
+        ${examLevels.map(lv => {
+          const rounds = Object.keys(examLog[lv]).sort((a,b)=>Number(a)-Number(b));
+          const rows = rounds.map(r => {
+            const arr = examLog[lv][r];
+            const latest = arr[arr.length-1].score;
+            const best = Math.max(...arr.map(x=>x.score));
+            return `<div style="display:flex;justify-content:space-between;font-size:13px;padding:4px 0;border-bottom:1px solid #F0F0F0;">
+              <span>${lv} 제${r}회</span><span>최근 ${latest}점 · 최고 ${best}점</span>
+            </div>`;
+          }).join('');
+          return `<div style="margin-bottom:8px;"><div style="font-weight:700;font-size:13px;margin-bottom:4px;">${lv}</div>${rows}</div>`;
+        }).join('')}
+      </div>` : '';
+
     document.getElementById('detail-body').innerHTML = `
       <!-- 쿠폰 관리 섹션 -->
       <div class="coupon-mgmt-section" id="coupon-mgmt-section" style="display:none;">
@@ -8259,7 +8314,8 @@ async function showStudentDetail(studentId, studentName) {
       <div class="detail-section">
         <div class="detail-section-title">❌ 자주 틀린 한자 Top 5</div>
         ${wrongRows}
-      </div>`;
+      </div>
+      ${examSectionHtml}`;
     openCouponMgmt(studentId, studentName);
   } catch(e) {
     document.getElementById('detail-body').innerHTML =
