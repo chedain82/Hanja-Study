@@ -1,0 +1,8794 @@
+{
+  "111": {
+    "meaning_to_hanja": [
+      {
+        "no": 1,
+        "type": "meaning_to_hanja",
+        "question": "해",
+        "choices": [
+          "日",
+          "口",
+          "母",
+          "月"
+        ],
+        "answer": 1
+      },
+      {
+        "no": 2,
+        "type": "meaning_to_hanja",
+        "question": "가운데",
+        "choices": [
+          "白",
+          "中",
+          "上",
+          "三"
+        ],
+        "answer": 2
+      },
+      {
+        "no": 3,
+        "type": "meaning_to_hanja",
+        "question": "사람",
+        "choices": [
+          "六",
+          "八",
+          "火",
+          "人"
+        ],
+        "answer": 4
+      },
+      {
+        "no": 4,
+        "type": "meaning_to_hanja",
+        "question": "물",
+        "choices": [
+          "土",
+          "木",
+          "水",
+          "火"
+        ],
+        "answer": 3
+      },
+      {
+        "no": 5,
+        "type": "meaning_to_hanja",
+        "question": "작다",
+        "choices": [
+          "父",
+          "下",
+          "女",
+          "小"
+        ],
+        "answer": 4
+      },
+      {
+        "no": 6,
+        "type": "meaning_to_hanja",
+        "question": "아래",
+        "choices": [
+          "女",
+          "門",
+          "下",
+          "月"
+        ],
+        "answer": 3
+      },
+      {
+        "no": 7,
+        "type": "meaning_to_hanja",
+        "question": "임금",
+        "choices": [
+          "王",
+          "十",
+          "三",
+          "四"
+        ],
+        "answer": 1
+      },
+      {
+        "no": 8,
+        "type": "meaning_to_hanja",
+        "question": "뫼",
+        "choices": [
+          "水",
+          "山",
+          "五",
+          "十"
+        ],
+        "answer": 2
+      },
+      {
+        "no": 9,
+        "type": "meaning_to_hanja",
+        "question": "여자",
+        "choices": [
+          "子",
+          "日",
+          "木",
+          "女"
+        ],
+        "answer": 4
+      },
+      {
+        "no": 10,
+        "type": "meaning_to_hanja",
+        "question": "나무",
+        "choices": [
+          "水",
+          "木",
+          "金",
+          "土"
+        ],
+        "answer": 2
+      }
+    ],
+    "hanja_reading_choice": [
+      {
+        "no": 11,
+        "type": "hanja_reading_choice",
+        "sentence": "어버이날을 맞아 [ 父 ]모님께 편 지를 썼습니다.",
+        "hanja": "父",
+        "choices": [
+          "이",
+          "조",
+          "고",
+          "부"
+        ],
+        "answer": 4
+      },
+      {
+        "no": 12,
+        "type": "hanja_reading_choice",
+        "sentence": "삼[ 月 ]에는 새로운 학기가 시작 됩니다.",
+        "hanja": "月",
+        "choices": [
+          "월",
+          "날",
+          "일",
+          "달"
+        ],
+        "answer": 1
+      },
+      {
+        "no": 13,
+        "type": "hanja_reading_choice",
+        "sentence": "형이 여행을 간지 [ 一 ]주일이 지 났습니다.",
+        "hanja": "一",
+        "choices": [
+          "이",
+          "일",
+          "사",
+          "삼"
+        ],
+        "answer": 2
+      },
+      {
+        "no": 14,
+        "type": "hanja_reading_choice",
+        "sentence": "[ 門 ]이 고장 나서 열 수가 없습 니다.",
+        "hanja": "門",
+        "choices": [
+          "창",
+          "장",
+          "공",
+          "문"
+        ],
+        "answer": 4
+      },
+      {
+        "no": 15,
+        "type": "hanja_reading_choice",
+        "sentence": "어제 내린 눈이 온 세[ 上 ]을 덮 었습니다.",
+        "hanja": "上",
+        "choices": [
+          "장",
+          "정",
+          "상",
+          "계"
+        ],
+        "answer": 3
+      },
+      {
+        "no": 16,
+        "type": "hanja_reading_choice",
+        "sentence": "오늘은 [ 土 ]요일입니다.",
+        "hanja": "土",
+        "choices": [
+          "금",
+          "일",
+          "토",
+          "목"
+        ],
+        "answer": 3
+      },
+      {
+        "no": 17,
+        "type": "hanja_reading_choice",
+        "sentence": "[ 三 ]촌은 중소기업에 다니고 계 십니다.",
+        "hanja": "三",
+        "choices": [
+          "삼",
+          "사",
+          "팔",
+          "칠"
+        ],
+        "answer": 1
+      },
+      {
+        "no": 18,
+        "type": "hanja_reading_choice",
+        "sentence": "[ 九 ]에서 4를 빼면 5입니다.",
+        "hanja": "九",
+        "choices": [
+          "칠",
+          "구",
+          "팔",
+          "십"
+        ],
+        "answer": 2
+      },
+      {
+        "no": 19,
+        "type": "hanja_reading_choice",
+        "sentence": "우리 [ 母 ]녀는 이번 주말에 영화 를 보러 가기로 하였습니다.",
+        "hanja": "母",
+        "choices": [
+          "부",
+          "자",
+          "남",
+          "모"
+        ],
+        "answer": 4
+      },
+      {
+        "no": 20,
+        "type": "hanja_reading_choice",
+        "sentence": "누나는 초등학교 [ 四 ]학년입니 다.",
+        "hanja": "四",
+        "choices": [
+          "오",
+          "육",
+          "사",
+          "삼"
+        ],
+        "answer": 3
+      }
+    ],
+    "find_hanja_sentence1": [
+      {
+        "no": 21,
+        "type": "find_hanja_sentence",
+        "hint": "[아버지 ]와 함께 윷놀이를 하였습 니다.",
+        "target": "아버지",
+        "choices": [
+          "土",
+          "上",
+          "門",
+          "三",
+          "九",
+          "一",
+          "母",
+          "月",
+          "四",
+          "父"
+        ],
+        "answer": "父"
+      },
+      {
+        "no": 22,
+        "type": "find_hanja_sentence",
+        "hint": "우리 집에는 방이 [ 세 ]개나 있습 니다.",
+        "target": "세",
+        "choices": [
+          "土",
+          "上",
+          "門",
+          "三",
+          "九",
+          "一",
+          "母",
+          "月",
+          "四",
+          "父"
+        ],
+        "answer": "三"
+      },
+      {
+        "no": 23,
+        "type": "find_hanja_sentence",
+        "hint": "형은 윷가락 [ 네 ]개를 힘차게 던 졌습니다.",
+        "target": "네",
+        "choices": [
+          "土",
+          "上",
+          "門",
+          "三",
+          "九",
+          "一",
+          "母",
+          "月",
+          "四",
+          "父"
+        ],
+        "answer": "四"
+      },
+      {
+        "no": 24,
+        "type": "find_hanja_sentence",
+        "hint": "동생이 [ 어머니 ]의 품에 안겨 자 고 있습니다.",
+        "target": "어머니",
+        "choices": [
+          "土",
+          "上",
+          "門",
+          "三",
+          "九",
+          "一",
+          "母",
+          "月",
+          "四",
+          "父"
+        ],
+        "answer": "母"
+      },
+      {
+        "no": 25,
+        "type": "find_hanja_sentence",
+        "hint": "발자국 [ 하나 ] 없는 하얀 눈길을 걷고 싶습니다.        한자실력",
+        "target": "하나",
+        "choices": [
+          "土",
+          "上",
+          "門",
+          "三",
+          "九",
+          "一",
+          "母",
+          "月",
+          "四",
+          "父"
+        ],
+        "answer": "一"
+      },
+      {
+        "no": 26,
+        "type": "find_hanja_sentence",
+        "hint": "물은 [ 위 ]에서 아래로 흐릅니다.",
+        "target": "위",
+        "choices": [
+          "土",
+          "上",
+          "門",
+          "三",
+          "九",
+          "一",
+          "母",
+          "月",
+          "四",
+          "父"
+        ],
+        "answer": "上"
+      },
+      {
+        "no": 27,
+        "type": "find_hanja_sentence",
+        "hint": "아버지와 함께 [ 흙 ]을 파고 꽃을 심었습니다.",
+        "target": "흙",
+        "choices": [
+          "土",
+          "上",
+          "門",
+          "三",
+          "九",
+          "一",
+          "母",
+          "月",
+          "四",
+          "父"
+        ],
+        "answer": "土"
+      },
+      {
+        "no": 28,
+        "type": "find_hanja_sentence",
+        "hint": "동생은 [ 문 ]을 열고 밖을 보고 있습니다.",
+        "target": "문",
+        "choices": [
+          "土",
+          "上",
+          "門",
+          "三",
+          "九",
+          "一",
+          "母",
+          "月",
+          "四",
+          "父"
+        ],
+        "answer": "門"
+      },
+      {
+        "no": 29,
+        "type": "find_hanja_sentence",
+        "hint": "우주선을 타고 [달 ]나라에 가보고 싶습니다.",
+        "target": "달",
+        "choices": [
+          "土",
+          "上",
+          "門",
+          "三",
+          "九",
+          "一",
+          "母",
+          "月",
+          "四",
+          "父"
+        ],
+        "answer": "月"
+      },
+      {
+        "no": 30,
+        "type": "find_hanja_sentence",
+        "hint": "정월 대보름에는 오곡밥과 [아홉] 가지 나물을 먹습니다.",
+        "target": "아홉",
+        "choices": [
+          "土",
+          "上",
+          "門",
+          "三",
+          "九",
+          "一",
+          "母",
+          "月",
+          "四",
+          "父"
+        ],
+        "answer": "九"
+      }
+    ],
+    "huneum": [
+      {
+        "no": 31,
+        "type": "huneum",
+        "hanja": "六",
+        "answer": "여섯 륙"
+      },
+      {
+        "no": 32,
+        "type": "huneum",
+        "hanja": "二",
+        "answer": "두 이"
+      },
+      {
+        "no": 33,
+        "type": "huneum",
+        "hanja": "白",
+        "answer": "흰 백"
+      },
+      {
+        "no": 34,
+        "type": "huneum",
+        "hanja": "火",
+        "answer": "불 화"
+      },
+      {
+        "no": 35,
+        "type": "huneum",
+        "hanja": "口",
+        "answer": "입 구"
+      },
+      {
+        "no": 36,
+        "type": "huneum",
+        "hanja": "七",
+        "answer": "일곱 칠"
+      },
+      {
+        "no": 37,
+        "type": "huneum",
+        "hanja": "八",
+        "answer": "여덟 팔"
+      },
+      {
+        "no": 38,
+        "type": "huneum",
+        "hanja": "十",
+        "answer": "열 십"
+      },
+      {
+        "no": 39,
+        "type": "huneum",
+        "hanja": "五",
+        "answer": "다섯 오"
+      },
+      {
+        "no": 40,
+        "type": "huneum",
+        "hanja": "子",
+        "answer": "아들/아이 자"
+      }
+    ],
+    "reading": [
+      {
+        "no": 41,
+        "type": "reading",
+        "hanja": "女王",
+        "answer": "여왕"
+      },
+      {
+        "no": 42,
+        "type": "reading",
+        "hanja": "小人",
+        "answer": "소인"
+      },
+      {
+        "no": 43,
+        "type": "reading",
+        "hanja": "山下",
+        "answer": "산하"
+      },
+      {
+        "no": 44,
+        "type": "reading",
+        "hanja": "水中",
+        "answer": "수중"
+      }
+    ],
+    "find_hanja_sentence2": [
+      {
+        "no": 45,
+        "type": "find_hanja_sentence",
+        "hint": "방학 중에도 규칙적인 [ 生活 ]을 하도록 노력해야 합니다.",
+        "target": "生活",
+        "choices": [
+          "선생",
+          "내용",
+          "주의",
+          "동물",
+          "친구",
+          "생활"
+        ],
+        "answer": "생활"
+      },
+      {
+        "no": 46,
+        "type": "find_hanja_sentence",
+        "hint": "알림장의 [ 內容 ]을 부모님께 보 여드렸습니다.",
+        "target": "內容",
+        "choices": [
+          "선생",
+          "내용",
+          "주의",
+          "동물",
+          "친구",
+          "생활"
+        ],
+        "answer": "내용"
+      },
+      {
+        "no": 47,
+        "type": "find_hanja_sentence",
+        "hint": "옆에 앉은 [ 親舊 ]가 하품을 하니 나도 덩달아 하품을 하였습니다.",
+        "target": "親舊",
+        "choices": [
+          "선생",
+          "내용",
+          "주의",
+          "동물",
+          "친구",
+          "생활"
+        ],
+        "answer": "친구"
+      },
+      {
+        "no": 48,
+        "type": "find_hanja_sentence",
+        "hint": "[ 先生 ]님께서 숙제를 내주셨습니 다.",
+        "target": "先生",
+        "choices": [
+          "선생",
+          "내용",
+          "주의",
+          "동물",
+          "친구",
+          "생활"
+        ],
+        "answer": "선생"
+      },
+      {
+        "no": 49,
+        "type": "find_hanja_sentence",
+        "hint": "원시인들은 [ 動物 ]의 가죽을 옷 으로 입었습니다.",
+        "target": "動物",
+        "choices": [
+          "선생",
+          "내용",
+          "주의",
+          "동물",
+          "친구",
+          "생활"
+        ],
+        "answer": "동물"
+      },
+      {
+        "no": 50,
+        "type": "find_hanja_sentence",
+        "hint": "동생은 부모님의 말씀을 [ 注意 ] 깊게 듣고 있습니다.",
+        "target": "注意",
+        "choices": [
+          "선생",
+          "내용",
+          "주의",
+          "동물",
+          "친구",
+          "생활"
+        ],
+        "answer": "주의"
+      }
+    ]
+  },
+  "112": {
+    "meaning_to_hanja": [
+      {
+        "no": 1,
+        "type": "meaning_to_hanja",
+        "question": "넷",
+        "choices": [
+          "三",
+          "日",
+          "十",
+          "四"
+        ],
+        "answer": 4
+      },
+      {
+        "no": 2,
+        "type": "meaning_to_hanja",
+        "question": "달",
+        "choices": [
+          "月",
+          "白",
+          "上",
+          "中"
+        ],
+        "answer": 1
+      },
+      {
+        "no": 3,
+        "type": "meaning_to_hanja",
+        "question": "임금",
+        "choices": [
+          "子",
+          "水",
+          "王",
+          "三"
+        ],
+        "answer": 3
+      },
+      {
+        "no": 4,
+        "type": "meaning_to_hanja",
+        "question": "다섯",
+        "choices": [
+          "五",
+          "八",
+          "九",
+          "七"
+        ],
+        "answer": 1
+      },
+      {
+        "no": 5,
+        "type": "meaning_to_hanja",
+        "question": "아버지",
+        "choices": [
+          "小",
+          "父",
+          "上",
+          "女"
+        ],
+        "answer": 2
+      },
+      {
+        "no": 6,
+        "type": "meaning_to_hanja",
+        "question": "입",
+        "choices": [
+          "十",
+          "八",
+          "口",
+          "九"
+        ],
+        "answer": 3
+      },
+      {
+        "no": 7,
+        "type": "meaning_to_hanja",
+        "question": "가운데",
+        "choices": [
+          "白",
+          "中",
+          "土",
+          "水"
+        ],
+        "answer": 2
+      },
+      {
+        "no": 8,
+        "type": "meaning_to_hanja",
+        "question": "사람",
+        "choices": [
+          "人",
+          "八",
+          "火",
+          "木"
+        ],
+        "answer": 1
+      },
+      {
+        "no": 9,
+        "type": "meaning_to_hanja",
+        "question": "문",
+        "choices": [
+          "四",
+          "子",
+          "七",
+          "門"
+        ],
+        "answer": 4
+      },
+      {
+        "no": 10,
+        "type": "meaning_to_hanja",
+        "question": "어머니",
+        "choices": [
+          "山",
+          "八",
+          "母",
+          "女"
+        ],
+        "answer": 3
+      }
+    ],
+    "hanja_reading_choice": [
+      {
+        "no": 11,
+        "type": "hanja_reading_choice",
+        "sentence": "부[ 母 ]님과 함께 시골 할아버지 집 에 다녀왔습니다.",
+        "hanja": "母",
+        "choices": [
+          "모",
+          "자",
+          "녀",
+          "부"
+        ],
+        "answer": 1
+      },
+      {
+        "no": 12,
+        "type": "hanja_reading_choice",
+        "sentence": "어머니는 감기에 걸린 동생을 데리 고 [ 小 ]아과에 갔습니다.",
+        "hanja": "小",
+        "choices": [
+          "다",
+          "유",
+          "소",
+          "여"
+        ],
+        "answer": 3
+      },
+      {
+        "no": 13,
+        "type": "hanja_reading_choice",
+        "sentence": "이 책상은 [ 木 ]수이신 아버지께 서 만드신 것입니다.",
+        "hanja": "木",
+        "choices": [
+          "가",
+          "목",
+          "공",
+          "선"
+        ],
+        "answer": 2
+      },
+      {
+        "no": 14,
+        "type": "hanja_reading_choice",
+        "sentence": "8월 15[ 日 ]은 광복절입니다.",
+        "hanja": "日",
+        "choices": [
+          "해",
+          "날",
+          "달",
+          "일"
+        ],
+        "answer": 4
+      },
+      {
+        "no": 15,
+        "type": "hanja_reading_choice",
+        "sentence": "할아버지의 [ 六 ]십 번째 생신을 맞이하여 마을에서는 큰 잔치가 열렸습니다.",
+        "hanja": "六",
+        "choices": [
+          "칠",
+          "육",
+          "팔",
+          "구"
+        ],
+        "answer": 2
+      },
+      {
+        "no": 16,
+        "type": "hanja_reading_choice",
+        "sentence": "어제 내린 눈이 온 세[ 上 ]을 덮 었습니다.",
+        "hanja": "上",
+        "choices": [
+          "상",
+          "계",
+          "장",
+          "속"
+        ],
+        "answer": 1
+      },
+      {
+        "no": 17,
+        "type": "hanja_reading_choice",
+        "sentence": "나는 [ 三 ]십 살에 결혼할 것입니다.",
+        "hanja": "三",
+        "choices": [
+          "오",
+          "사",
+          "삼",
+          "이"
+        ],
+        "answer": 3
+      },
+      {
+        "no": 18,
+        "type": "hanja_reading_choice",
+        "sentence": "5는 [ 八 ]보다 작습니다.",
+        "hanja": "八",
+        "choices": [
+          "십",
+          "구",
+          "육",
+          "팔"
+        ],
+        "answer": 4
+      },
+      {
+        "no": 19,
+        "type": "hanja_reading_choice",
+        "sentence": "다음 달 [ 二 ]일은 어머니 생신입 니다.",
+        "hanja": "二",
+        "choices": [
+          "팔",
+          "이",
+          "사",
+          "오"
+        ],
+        "answer": 2
+      },
+      {
+        "no": 20,
+        "type": "hanja_reading_choice",
+        "sentence": "윷놀이는 남[ 女 ] 모두 좋아하는 놀이입니다.",
+        "hanja": "女",
+        "choices": [
+          "성",
+          "자",
+          "녀",
+          "북"
+        ],
+        "answer": 3
+      }
+    ],
+    "find_hanja_sentence1": [
+      {
+        "no": 21,
+        "type": "find_hanja_sentence",
+        "hint": "[ 여섯 ]시까지는 집에 돌아와야 합 니다.",
+        "target": "여섯",
+        "choices": [
+          "上",
+          "母",
+          "小",
+          "八",
+          "三",
+          "日",
+          "女",
+          "二",
+          "木",
+          "六"
+        ],
+        "answer": "六"
+      },
+      {
+        "no": 22,
+        "type": "find_hanja_sentence",
+        "hint": "정원에 사과[ 나무 ] 한 그루를 심 었습니다.",
+        "target": "나무",
+        "choices": [
+          "上",
+          "母",
+          "小",
+          "八",
+          "三",
+          "日",
+          "女",
+          "二",
+          "木",
+          "六"
+        ],
+        "answer": "木"
+      },
+      {
+        "no": 23,
+        "type": "find_hanja_sentence",
+        "hint": "드디어 귀여운 [ 여 ]동생이 태어났 습니다.",
+        "target": "여",
+        "choices": [
+          "上",
+          "母",
+          "小",
+          "八",
+          "三",
+          "日",
+          "女",
+          "二",
+          "木",
+          "六"
+        ],
+        "answer": "女"
+      },
+      {
+        "no": 24,
+        "type": "find_hanja_sentence",
+        "hint": "하나에 둘을 더하면 [ 셋 ]이 됩니 다.",
+        "target": "셋",
+        "choices": [
+          "上",
+          "母",
+          "小",
+          "八",
+          "三",
+          "日",
+          "女",
+          "二",
+          "木",
+          "六"
+        ],
+        "answer": "三"
+      },
+      {
+        "no": 25,
+        "type": "find_hanja_sentence",
+        "hint": "환하게 떠오르는 [ 해 ]가 온 세상 을 비추고 있습니다.  한자실력",
+        "target": "해",
+        "choices": [
+          "上",
+          "母",
+          "小",
+          "八",
+          "三",
+          "日",
+          "女",
+          "二",
+          "木",
+          "六"
+        ],
+        "answer": "日"
+      },
+      {
+        "no": 26,
+        "type": "find_hanja_sentence",
+        "hint": "[ 어머니 ]는 아들을 꼭 껴안았습니다.",
+        "target": "어머니",
+        "choices": [
+          "上",
+          "母",
+          "小",
+          "八",
+          "三",
+          "日",
+          "女",
+          "二",
+          "木",
+          "六"
+        ],
+        "answer": "母"
+      },
+      {
+        "no": 27,
+        "type": "find_hanja_sentence",
+        "hint": "[ 두 ] 사람은 친구처럼 다정해 보 였습니다.",
+        "target": "두",
+        "choices": [
+          "上",
+          "母",
+          "小",
+          "八",
+          "三",
+          "日",
+          "女",
+          "二",
+          "木",
+          "六"
+        ],
+        "answer": "二"
+      },
+      {
+        "no": 28,
+        "type": "find_hanja_sentence",
+        "hint": "선생님의 목소리가 [ 작아서 ] 뒤에 앉은 사람에게는 잘 안 들립니다.",
+        "target": "작아서",
+        "choices": [
+          "上",
+          "母",
+          "小",
+          "八",
+          "三",
+          "日",
+          "女",
+          "二",
+          "木",
+          "六"
+        ],
+        "answer": "小"
+      },
+      {
+        "no": 29,
+        "type": "find_hanja_sentence",
+        "hint": "막내 동생이 손가락을 하나씩 접 으며 [ 여덟 ]까지 세었습니다.",
+        "target": "여덟",
+        "choices": [
+          "上",
+          "母",
+          "小",
+          "八",
+          "三",
+          "日",
+          "女",
+          "二",
+          "木",
+          "六"
+        ],
+        "answer": "八"
+      },
+      {
+        "no": 30,
+        "type": "find_hanja_sentence",
+        "hint": "케이크 대신 떡 [ 위 ]에 초를 꽂았 습니다.",
+        "target": "위",
+        "choices": [
+          "上",
+          "母",
+          "小",
+          "八",
+          "三",
+          "日",
+          "女",
+          "二",
+          "木",
+          "六"
+        ],
+        "answer": "上"
+      }
+    ],
+    "huneum": [
+      {
+        "no": 31,
+        "type": "huneum",
+        "hanja": "火",
+        "answer": "불 화"
+      },
+      {
+        "no": 32,
+        "type": "huneum",
+        "hanja": "山",
+        "answer": "메/뫼 산"
+      },
+      {
+        "no": 33,
+        "type": "huneum",
+        "hanja": "九",
+        "answer": "아홉 구"
+      },
+      {
+        "no": 34,
+        "type": "huneum",
+        "hanja": "七",
+        "answer": "일곱 칠"
+      },
+      {
+        "no": 35,
+        "type": "huneum",
+        "hanja": "白",
+        "answer": "흰 백"
+      },
+      {
+        "no": 36,
+        "type": "huneum",
+        "hanja": "子",
+        "answer": "아들/아이 자"
+      },
+      {
+        "no": 37,
+        "type": "huneum",
+        "hanja": "下",
+        "answer": "아래 하"
+      },
+      {
+        "no": 38,
+        "type": "huneum",
+        "hanja": "十",
+        "answer": "열 십"
+      },
+      {
+        "no": 39,
+        "type": "huneum",
+        "hanja": "水",
+        "answer": "물 수"
+      },
+      {
+        "no": 40,
+        "type": "huneum",
+        "hanja": "土",
+        "answer": "흙 토"
+      }
+    ],
+    "reading": [
+      {
+        "no": 41,
+        "type": "reading",
+        "hanja": "門中",
+        "answer": "문중"
+      },
+      {
+        "no": 42,
+        "type": "reading",
+        "hanja": "父王",
+        "answer": "부왕"
+      },
+      {
+        "no": 43,
+        "type": "reading",
+        "hanja": "人口",
+        "answer": "인구"
+      },
+      {
+        "no": 44,
+        "type": "reading",
+        "hanja": "五月",
+        "answer": "오월"
+      }
+    ],
+    "find_hanja_sentence2": [
+      {
+        "no": 45,
+        "type": "find_hanja_sentence",
+        "hint": "옆에 앉은 [ 親舊 ]가 하품을 하니 나도 덩달아 하품을 하였습니다.",
+        "target": "親舊",
+        "choices": [
+          "공부",
+          "친구",
+          "주의",
+          "학교",
+          "생활",
+          "사물"
+        ],
+        "answer": "친구"
+      },
+      {
+        "no": 46,
+        "type": "find_hanja_sentence",
+        "hint": "우리 주변의 물건들을 [ 事物 ]이 라고 합니다",
+        "target": "事物",
+        "choices": [
+          "공부",
+          "친구",
+          "주의",
+          "학교",
+          "생활",
+          "사물"
+        ],
+        "answer": "사물"
+      },
+      {
+        "no": 47,
+        "type": "find_hanja_sentence",
+        "hint": "내 동생은 [ 工夫 ]를 잘하는 편입 니다.",
+        "target": "工夫",
+        "choices": [
+          "공부",
+          "친구",
+          "주의",
+          "학교",
+          "생활",
+          "사물"
+        ],
+        "answer": "공부"
+      },
+      {
+        "no": 48,
+        "type": "find_hanja_sentence",
+        "hint": "[ 生活 ] 계획표를 작성할 때는 실 천 가능하도록 짜야 합니다.",
+        "target": "生活",
+        "choices": [
+          "공부",
+          "친구",
+          "주의",
+          "학교",
+          "생활",
+          "사물"
+        ],
+        "answer": "생활"
+      },
+      {
+        "no": 49,
+        "type": "find_hanja_sentence",
+        "hint": "감기에 걸리지 않도록 [ 注意 ]해 야 합니다.",
+        "target": "注意",
+        "choices": [
+          "공부",
+          "친구",
+          "주의",
+          "학교",
+          "생활",
+          "사물"
+        ],
+        "answer": "주의"
+      },
+      {
+        "no": 50,
+        "type": "find_hanja_sentence",
+        "hint": "[ 學校 ]에서 돌아오자마자 숙제를 했습니다.",
+        "target": "學校",
+        "choices": [
+          "공부",
+          "친구",
+          "주의",
+          "학교",
+          "생활",
+          "사물"
+        ],
+        "answer": "학교"
+      }
+    ]
+  },
+  "113": {
+    "meaning_to_hanja": [
+      {
+        "no": 1,
+        "type": "meaning_to_hanja",
+        "question": "불",
+        "choices": [
+          "木",
+          "水",
+          "火",
+          "土"
+        ],
+        "answer": 3
+      },
+      {
+        "no": 2,
+        "type": "meaning_to_hanja",
+        "question": "아래",
+        "choices": [
+          "中",
+          "上",
+          "小",
+          "下"
+        ],
+        "answer": 4
+      },
+      {
+        "no": 3,
+        "type": "meaning_to_hanja",
+        "question": "사람",
+        "choices": [
+          "八",
+          "人",
+          "白",
+          "十"
+        ],
+        "answer": 2
+      },
+      {
+        "no": 4,
+        "type": "meaning_to_hanja",
+        "question": "달",
+        "choices": [
+          "月",
+          "日",
+          "四",
+          "山"
+        ],
+        "answer": 1
+      },
+      {
+        "no": 5,
+        "type": "meaning_to_hanja",
+        "question": "문",
+        "choices": [
+          "王",
+          "九",
+          "門",
+          "母"
+        ],
+        "answer": 3
+      },
+      {
+        "no": 6,
+        "type": "meaning_to_hanja",
+        "question": "아들",
+        "choices": [
+          "女",
+          "父",
+          "上",
+          "子"
+        ],
+        "answer": 4
+      },
+      {
+        "no": 7,
+        "type": "meaning_to_hanja",
+        "question": "메",
+        "choices": [
+          "土",
+          "中",
+          "山",
+          "七"
+        ],
+        "answer": 3
+      },
+      {
+        "no": 8,
+        "type": "meaning_to_hanja",
+        "question": "하나",
+        "choices": [
+          "八",
+          "一",
+          "三",
+          "日"
+        ],
+        "answer": 2
+      },
+      {
+        "no": 9,
+        "type": "meaning_to_hanja",
+        "question": "작다",
+        "choices": [
+          "小",
+          "水",
+          "六",
+          "木"
+        ],
+        "answer": 1
+      },
+      {
+        "no": 10,
+        "type": "meaning_to_hanja",
+        "question": "다섯",
+        "choices": [
+          "王",
+          "三",
+          "五",
+          "口"
+        ],
+        "answer": 3
+      }
+    ],
+    "hanja_reading_choice": [
+      {
+        "no": 11,
+        "type": "hanja_reading_choice",
+        "sentence": "이번 주 [ 木 ]요일에 옆 반과 축 구 시합이 있습니다.",
+        "hanja": "木",
+        "choices": [
+          "목",
+          "화",
+          "수",
+          "토"
+        ],
+        "answer": 1
+      },
+      {
+        "no": 12,
+        "type": "hanja_reading_choice",
+        "sentence": "이번 달 28[ 日 ]은 어머니의 생 신입니다.",
+        "hanja": "日",
+        "choices": [
+          "날",
+          "일",
+          "단",
+          "번"
+        ],
+        "answer": 2
+      },
+      {
+        "no": 13,
+        "type": "hanja_reading_choice",
+        "sentence": "삼 더하기 삼은 [ 六 ]입니다.",
+        "hanja": "六",
+        "choices": [
+          "칠",
+          "팔",
+          "오",
+          "육"
+        ],
+        "answer": 4
+      },
+      {
+        "no": 14,
+        "type": "hanja_reading_choice",
+        "sentence": "동생이 태어난 지 [ 三 ]년이 지났 습니다.",
+        "hanja": "三",
+        "choices": [
+          "오",
+          "삼",
+          "사",
+          "이"
+        ],
+        "answer": 2
+      },
+      {
+        "no": 15,
+        "type": "hanja_reading_choice",
+        "sentence": "[ 女 ]동생이 있었으면 좋겠습니 다.",
+        "hanja": "女",
+        "choices": [
+          "남",
+          "친",
+          "참",
+          "여"
+        ],
+        "answer": 4
+      },
+      {
+        "no": 16,
+        "type": "hanja_reading_choice",
+        "sentence": "한글은 자음과 [ 母 ]음으로 이루 어져 있습니다.",
+        "hanja": "母",
+        "choices": [
+          "부",
+          "소",
+          "모",
+          "잡"
+        ],
+        "answer": 3
+      },
+      {
+        "no": 17,
+        "type": "hanja_reading_choice",
+        "sentence": "[ 土 ]요일에 고모의 결혼식에 가 기로 하였습니다.",
+        "hanja": "土",
+        "choices": [
+          "토",
+          "금",
+          "일",
+          "월"
+        ],
+        "answer": 1
+      },
+      {
+        "no": 18,
+        "type": "hanja_reading_choice",
+        "sentence": "많은 나라에서 [ 七 ]은 행운의 숫 자입니다.",
+        "hanja": "七",
+        "choices": [
+          "삼",
+          "팔",
+          "칠",
+          "십"
+        ],
+        "answer": 3
+      },
+      {
+        "no": 19,
+        "type": "hanja_reading_choice",
+        "sentence": "옆집 [ 父 ]자는 주말마다 운동장 에서 축구를 합니다.",
+        "hanja": "父",
+        "choices": [
+          "여",
+          "남",
+          "모",
+          "부"
+        ],
+        "answer": 4
+      },
+      {
+        "no": 20,
+        "type": "hanja_reading_choice",
+        "sentence": "친구와 공원 입[ 口 ]에서 만나기 로 하였습니다.",
+        "hanja": "口",
+        "choices": [
+          "정",
+          "구",
+          "출",
+          "장"
+        ],
+        "answer": 2
+      }
+    ],
+    "find_hanja_sentence1": [
+      {
+        "no": 21,
+        "type": "find_hanja_sentence",
+        "hint": "신나게 뛰어놀고 옷에 묻은 [ 흙 ] 을 털었습니다.",
+        "target": "흙",
+        "choices": [
+          "母",
+          "女",
+          "土",
+          "三",
+          "七",
+          "父",
+          "六",
+          "日",
+          "口",
+          "木"
+        ],
+        "answer": "土"
+      },
+      {
+        "no": 22,
+        "type": "find_hanja_sentence",
+        "hint": "나는 금붕어 [ 여섯 ] 마리를 기르 고 있습니다.",
+        "target": "여섯",
+        "choices": [
+          "母",
+          "女",
+          "土",
+          "三",
+          "七",
+          "父",
+          "六",
+          "日",
+          "口",
+          "木"
+        ],
+        "answer": "六"
+      },
+      {
+        "no": 23,
+        "type": "find_hanja_sentence",
+        "hint": "[ 아버지 ], 저녁 드시러 내려오세 요.",
+        "target": "아버지",
+        "choices": [
+          "母",
+          "女",
+          "土",
+          "三",
+          "七",
+          "父",
+          "六",
+          "日",
+          "口",
+          "木"
+        ],
+        "answer": "父"
+      },
+      {
+        "no": 24,
+        "type": "find_hanja_sentence",
+        "hint": "그 [ 여자 ]는 잘 웃지 않습니다.",
+        "target": "여자",
+        "choices": [
+          "母",
+          "女",
+          "土",
+          "三",
+          "七",
+          "父",
+          "六",
+          "日",
+          "口",
+          "木"
+        ],
+        "answer": "女"
+      },
+      {
+        "no": 25,
+        "type": "find_hanja_sentence",
+        "hint": "하루에 [ 세 ] 번 양치를 해야 합니 다.            한자실력",
+        "target": "세",
+        "choices": [
+          "母",
+          "女",
+          "土",
+          "三",
+          "七",
+          "父",
+          "六",
+          "日",
+          "口",
+          "木"
+        ],
+        "answer": "三"
+      },
+      {
+        "no": 26,
+        "type": "find_hanja_sentence",
+        "hint": "산에 올라 [ 해 ]가 뜨는 것을 보았습 니다.",
+        "target": "해",
+        "choices": [
+          "母",
+          "女",
+          "土",
+          "三",
+          "七",
+          "父",
+          "六",
+          "日",
+          "口",
+          "木"
+        ],
+        "answer": "日"
+      },
+      {
+        "no": 27,
+        "type": "find_hanja_sentence",
+        "hint": "그 아이는 아직 [ 일곱 ]까지 밖에 셀 줄 모릅니다.",
+        "target": "일곱",
+        "choices": [
+          "母",
+          "女",
+          "土",
+          "三",
+          "七",
+          "父",
+          "六",
+          "日",
+          "口",
+          "木"
+        ],
+        "answer": "七"
+      },
+      {
+        "no": 28,
+        "type": "find_hanja_sentence",
+        "hint": "작년에 심은 [ 나무 ]에서 꽃이 피 었습니다.",
+        "target": "나무",
+        "choices": [
+          "母",
+          "女",
+          "土",
+          "三",
+          "七",
+          "父",
+          "六",
+          "日",
+          "口",
+          "木"
+        ],
+        "answer": "木"
+      },
+      {
+        "no": 29,
+        "type": "find_hanja_sentence",
+        "hint": "[ 어머니 ]와 함께 문구점에 가서 학용품을 샀습니다.",
+        "target": "어머니",
+        "choices": [
+          "母",
+          "女",
+          "土",
+          "三",
+          "七",
+          "父",
+          "六",
+          "日",
+          "口",
+          "木"
+        ],
+        "answer": "母"
+      },
+      {
+        "no": 30,
+        "type": "find_hanja_sentence",
+        "hint": "동생은 [ 입 ]을 벌리고 활짝 웃고 있습니다.",
+        "target": "입",
+        "choices": [
+          "母",
+          "女",
+          "土",
+          "三",
+          "七",
+          "父",
+          "六",
+          "日",
+          "口",
+          "木"
+        ],
+        "answer": "口"
+      }
+    ],
+    "huneum": [
+      {
+        "no": 31,
+        "type": "huneum",
+        "hanja": "水",
+        "answer": "물 수"
+      },
+      {
+        "no": 32,
+        "type": "huneum",
+        "hanja": "上",
+        "answer": "위 상"
+      },
+      {
+        "no": 33,
+        "type": "huneum",
+        "hanja": "王",
+        "answer": "임금 왕"
+      },
+      {
+        "no": 34,
+        "type": "huneum",
+        "hanja": "四",
+        "answer": "넉 사"
+      },
+      {
+        "no": 35,
+        "type": "huneum",
+        "hanja": "九",
+        "answer": "아홉 구"
+      },
+      {
+        "no": 36,
+        "type": "huneum",
+        "hanja": "白",
+        "answer": "흰 백"
+      },
+      {
+        "no": 37,
+        "type": "huneum",
+        "hanja": "中",
+        "answer": "가운데 중"
+      },
+      {
+        "no": 38,
+        "type": "huneum",
+        "hanja": "八",
+        "answer": "여덟 팔"
+      },
+      {
+        "no": 39,
+        "type": "huneum",
+        "hanja": "二",
+        "answer": "두 이"
+      },
+      {
+        "no": 40,
+        "type": "huneum",
+        "hanja": "十",
+        "answer": "열 십"
+      }
+    ],
+    "reading": [
+      {
+        "no": 41,
+        "type": "reading",
+        "hanja": "火山",
+        "answer": "화산"
+      },
+      {
+        "no": 42,
+        "type": "reading",
+        "hanja": "門人",
+        "answer": "문인"
+      },
+      {
+        "no": 43,
+        "type": "reading",
+        "hanja": "小子",
+        "answer": "소자"
+      },
+      {
+        "no": 44,
+        "type": "reading",
+        "hanja": "月下",
+        "answer": "월하"
+      }
+    ],
+    "find_hanja_sentence2": [
+      {
+        "no": 45,
+        "type": "find_hanja_sentence",
+        "hint": "세상에 [ 植物 ]이 없다면 모든 동 물은 숨을 쉴 수 없습니다.",
+        "target": "植物",
+        "choices": [
+          "공부",
+          "식물",
+          "내용",
+          "의견",
+          "문장",
+          "생활"
+        ],
+        "answer": "식물"
+      },
+      {
+        "no": 46,
+        "type": "find_hanja_sentence",
+        "hint": "알맞은 [ 文章 ]부호를 넣어 글을 써 봅시다.",
+        "target": "文章",
+        "choices": [
+          "공부",
+          "식물",
+          "내용",
+          "의견",
+          "문장",
+          "생활"
+        ],
+        "answer": "문장"
+      },
+      {
+        "no": 47,
+        "type": "find_hanja_sentence",
+        "hint": "다음 [ 內容 ]을 읽고 물음에 답하 시오.",
+        "target": "內容",
+        "choices": [
+          "공부",
+          "식물",
+          "내용",
+          "의견",
+          "문장",
+          "생활"
+        ],
+        "answer": "내용"
+      },
+      {
+        "no": 48,
+        "type": "find_hanja_sentence",
+        "hint": "학생들은 자기의 [ 意見 ]을 솔직 하게 말했습니다.",
+        "target": "意見",
+        "choices": [
+          "공부",
+          "식물",
+          "내용",
+          "의견",
+          "문장",
+          "생활"
+        ],
+        "answer": "의견"
+      },
+      {
+        "no": 49,
+        "type": "find_hanja_sentence",
+        "hint": "여행을 통하여 시골 [ 生活 ]의 정 겨움을 느꼈습니다.",
+        "target": "生活",
+        "choices": [
+          "공부",
+          "식물",
+          "내용",
+          "의견",
+          "문장",
+          "생활"
+        ],
+        "answer": "생활"
+      },
+      {
+        "no": 50,
+        "type": "find_hanja_sentence",
+        "hint": "항상 바른 자세로 [ 工夫 ]해야 합 니다.",
+        "target": "工夫",
+        "choices": [
+          "공부",
+          "식물",
+          "내용",
+          "의견",
+          "문장",
+          "생활"
+        ],
+        "answer": "공부"
+      }
+    ]
+  },
+  "114": {
+    "meaning_to_hanja": [
+      {
+        "no": 1,
+        "type": "meaning_to_hanja",
+        "question": "위",
+        "choices": [
+          "下",
+          "水",
+          "上",
+          "三"
+        ],
+        "answer": 3
+      },
+      {
+        "no": 2,
+        "type": "meaning_to_hanja",
+        "question": "열",
+        "choices": [
+          "九",
+          "十",
+          "月",
+          "五"
+        ],
+        "answer": 2
+      },
+      {
+        "no": 3,
+        "type": "meaning_to_hanja",
+        "question": "해",
+        "choices": [
+          "口",
+          "山",
+          "土",
+          "日"
+        ],
+        "answer": 4
+      },
+      {
+        "no": 4,
+        "type": "meaning_to_hanja",
+        "question": "여덟",
+        "choices": [
+          "八",
+          "人",
+          "父",
+          "王"
+        ],
+        "answer": 1
+      },
+      {
+        "no": 5,
+        "type": "meaning_to_hanja",
+        "question": "일곱",
+        "choices": [
+          "四",
+          "九",
+          "七",
+          "母"
+        ],
+        "answer": 3
+      },
+      {
+        "no": 6,
+        "type": "meaning_to_hanja",
+        "question": "문",
+        "choices": [
+          "小",
+          "子",
+          "母",
+          "門"
+        ],
+        "answer": 4
+      },
+      {
+        "no": 7,
+        "type": "meaning_to_hanja",
+        "question": "사람",
+        "choices": [
+          "木",
+          "人",
+          "火",
+          "六"
+        ],
+        "answer": 2
+      },
+      {
+        "no": 8,
+        "type": "meaning_to_hanja",
+        "question": "가운데",
+        "choices": [
+          "三",
+          "下",
+          "中",
+          "四"
+        ],
+        "answer": 3
+      },
+      {
+        "no": 9,
+        "type": "meaning_to_hanja",
+        "question": "희다",
+        "choices": [
+          "白",
+          "月",
+          "王",
+          "口"
+        ],
+        "answer": 1
+      },
+      {
+        "no": 10,
+        "type": "meaning_to_hanja",
+        "question": "물",
+        "choices": [
+          "木",
+          "水",
+          "土",
+          "九"
+        ],
+        "answer": 2
+      }
+    ],
+    "hanja_reading_choice": [
+      {
+        "no": 11,
+        "type": "hanja_reading_choice",
+        "sentence": "삼[ 月 ]에는 새로운 학기가 시작 됩니다.",
+        "hanja": "月",
+        "choices": [
+          "일",
+          "달",
+          "월",
+          "날"
+        ],
+        "answer": 3
+      },
+      {
+        "no": 12,
+        "type": "hanja_reading_choice",
+        "sentence": "이 책상은 [ 木 ]수이신 아버지께 서 만드신 것입니다.",
+        "hanja": "木",
+        "choices": [
+          "공",
+          "목",
+          "선",
+          "가"
+        ],
+        "answer": 2
+      },
+      {
+        "no": 13,
+        "type": "hanja_reading_choice",
+        "sentence": "삼 더하기 이는 [ 五 ]입니다.",
+        "hanja": "五",
+        "choices": [
+          "칠",
+          "육",
+          "사",
+          "오"
+        ],
+        "answer": 4
+      },
+      {
+        "no": 14,
+        "type": "hanja_reading_choice",
+        "sentence": "친구와 공원 입[ 口 ]에서 만나기 로 하였습니다.",
+        "hanja": "口",
+        "choices": [
+          "구",
+          "중",
+          "장",
+          "정"
+        ],
+        "answer": 1
+      },
+      {
+        "no": 15,
+        "type": "hanja_reading_choice",
+        "sentence": "[ 山 ]에 오르면 기분이 좋아집니 다.",
+        "hanja": "山",
+        "choices": [
+          "수",
+          "물",
+          "밤",
+          "산"
+        ],
+        "answer": 4
+      },
+      {
+        "no": 16,
+        "type": "hanja_reading_choice",
+        "sentence": "나는 [ 父 ]모님의 생신을 잘 기억 하고 있습니다.",
+        "hanja": "父",
+        "choices": [
+          "형",
+          "부",
+          "장",
+          "생"
+        ],
+        "answer": 2
+      },
+      {
+        "no": 17,
+        "type": "hanja_reading_choice",
+        "sentence": "나는 [ 二 ] 학년입니다.",
+        "hanja": "二",
+        "choices": [
+          "삼",
+          "사",
+          "오",
+          "이"
+        ],
+        "answer": 4
+      },
+      {
+        "no": 18,
+        "type": "hanja_reading_choice",
+        "sentence": "그분은 항상 [ 子 ]녀들에게 착하 게 살라고 말씀하셨습니다.",
+        "hanja": "子",
+        "choices": [
+          "손",
+          "장",
+          "자",
+          "부"
+        ],
+        "answer": 3
+      },
+      {
+        "no": 19,
+        "type": "hanja_reading_choice",
+        "sentence": "우리 동네 [ 三 ]거리에는 상점이 많이 있습니다.",
+        "hanja": "三",
+        "choices": [
+          "삼",
+          "사",
+          "오",
+          "네"
+        ],
+        "answer": 1
+      },
+      {
+        "no": 20,
+        "type": "hanja_reading_choice",
+        "sentence": "[ 王 ]이 말을 타고 사냥을 나갔습 니다.",
+        "hanja": "王",
+        "choices": [
+          "공",
+          "왕",
+          "군",
+          "상"
+        ],
+        "answer": 2
+      }
+    ],
+    "find_hanja_sentence1": [
+      {
+        "no": 21,
+        "type": "find_hanja_sentence",
+        "hint": "저기 커다란 문이 [ 임금 ]님이 계 시는 궁궐의 문입니다.",
+        "target": "임금",
+        "choices": [
+          "父",
+          "山",
+          "二",
+          "口",
+          "子",
+          "五",
+          "三",
+          "木",
+          "王",
+          "月"
+        ],
+        "answer": "王"
+      },
+      {
+        "no": 22,
+        "type": "find_hanja_sentence",
+        "hint": "[ 아버지 ]께서는 신문을 읽고 계십 니다.",
+        "target": "아버지",
+        "choices": [
+          "父",
+          "山",
+          "二",
+          "口",
+          "子",
+          "五",
+          "三",
+          "木",
+          "王",
+          "月"
+        ],
+        "answer": "父"
+      },
+      {
+        "no": 23,
+        "type": "find_hanja_sentence",
+        "hint": "형과 함께 보름[ 달 ]을 보며 소원 을 빌었습니다.",
+        "target": "달",
+        "choices": [
+          "父",
+          "山",
+          "二",
+          "口",
+          "子",
+          "五",
+          "三",
+          "木",
+          "王",
+          "月"
+        ],
+        "answer": "月"
+      },
+      {
+        "no": 24,
+        "type": "find_hanja_sentence",
+        "hint": "왕의 [ 아들 ]을 왕자라고 합니다.",
+        "target": "아들",
+        "choices": [
+          "父",
+          "山",
+          "二",
+          "口",
+          "子",
+          "五",
+          "三",
+          "木",
+          "王",
+          "月"
+        ],
+        "answer": "子"
+      },
+      {
+        "no": 25,
+        "type": "find_hanja_sentence",
+        "hint": "작년에 심은 [ 나무 ]에서 꽃이 피 었습니다.         한자실력",
+        "target": "나무",
+        "choices": [
+          "父",
+          "山",
+          "二",
+          "口",
+          "子",
+          "五",
+          "三",
+          "木",
+          "王",
+          "月"
+        ],
+        "answer": "木"
+      },
+      {
+        "no": 26,
+        "type": "find_hanja_sentence",
+        "hint": "물고기가 먹이를 먹으려고 [ 입 ]을 뻐금거립니다.",
+        "target": "입",
+        "choices": [
+          "父",
+          "山",
+          "二",
+          "口",
+          "子",
+          "五",
+          "三",
+          "木",
+          "王",
+          "月"
+        ],
+        "answer": "口"
+      },
+      {
+        "no": 27,
+        "type": "find_hanja_sentence",
+        "hint": "[ 산 ]불이 발생하였습니다.",
+        "target": "산",
+        "choices": [
+          "父",
+          "山",
+          "二",
+          "口",
+          "子",
+          "五",
+          "三",
+          "木",
+          "王",
+          "月"
+        ],
+        "answer": "山"
+      },
+      {
+        "no": 28,
+        "type": "find_hanja_sentence",
+        "hint": "손가락은 [ 다섯 ] 개입니다.",
+        "target": "다섯",
+        "choices": [
+          "父",
+          "山",
+          "二",
+          "口",
+          "子",
+          "五",
+          "三",
+          "木",
+          "王",
+          "月"
+        ],
+        "answer": "五"
+      },
+      {
+        "no": 29,
+        "type": "find_hanja_sentence",
+        "hint": "우리 집에는 방이 [ 세 ] 개나 있습 니다.",
+        "target": "세",
+        "choices": [
+          "父",
+          "山",
+          "二",
+          "口",
+          "子",
+          "五",
+          "三",
+          "木",
+          "王",
+          "月"
+        ],
+        "answer": "三"
+      },
+      {
+        "no": 30,
+        "type": "find_hanja_sentence",
+        "hint": "학생 [ 둘 ]이 함께 걸어가고 있습 니다.",
+        "target": "둘",
+        "choices": [
+          "父",
+          "山",
+          "二",
+          "口",
+          "子",
+          "五",
+          "三",
+          "木",
+          "王",
+          "月"
+        ],
+        "answer": "二"
+      }
+    ],
+    "huneum": [
+      {
+        "no": 31,
+        "type": "huneum",
+        "hanja": "女",
+        "answer": "여자 녀"
+      },
+      {
+        "no": 32,
+        "type": "huneum",
+        "hanja": "土",
+        "answer": "흙 토"
+      },
+      {
+        "no": 33,
+        "type": "huneum",
+        "hanja": "四",
+        "answer": "넉 사"
+      },
+      {
+        "no": 34,
+        "type": "huneum",
+        "hanja": "九",
+        "answer": "아홉 구"
+      },
+      {
+        "no": 35,
+        "type": "huneum",
+        "hanja": "六",
+        "answer": "여섯 륙"
+      },
+      {
+        "no": 36,
+        "type": "huneum",
+        "hanja": "火",
+        "answer": "불 화"
+      },
+      {
+        "no": 37,
+        "type": "huneum",
+        "hanja": "下",
+        "answer": "아래 하"
+      },
+      {
+        "no": 38,
+        "type": "huneum",
+        "hanja": "上",
+        "answer": "위 상"
+      },
+      {
+        "no": 39,
+        "type": "huneum",
+        "hanja": "母",
+        "answer": "어머니 모"
+      },
+      {
+        "no": 40,
+        "type": "huneum",
+        "hanja": "小",
+        "answer": "작을 소"
+      }
+    ],
+    "reading": [
+      {
+        "no": 41,
+        "type": "reading",
+        "hanja": "白人",
+        "answer": "백인"
+      },
+      {
+        "no": 42,
+        "type": "reading",
+        "hanja": "七日",
+        "answer": "칠일"
+      },
+      {
+        "no": 43,
+        "type": "reading",
+        "hanja": "中門",
+        "answer": "중문"
+      },
+      {
+        "no": 44,
+        "type": "reading",
+        "hanja": "八十",
+        "answer": "팔십"
+      }
+    ],
+    "find_hanja_sentence2": [
+      {
+        "no": 45,
+        "type": "find_hanja_sentence",
+        "hint": "[ 先生 ]님께서 재미나는 이야기를 해주었습니다.",
+        "target": "先生",
+        "choices": [
+          "학교",
+          "동물",
+          "친구",
+          "사물",
+          "선생",
+          "주의"
+        ],
+        "answer": "선생"
+      },
+      {
+        "no": 46,
+        "type": "find_hanja_sentence",
+        "hint": "원시인들은 [ 動物 ]의 가죽으로 옷을 만들어 입었습니다.",
+        "target": "動物",
+        "choices": [
+          "학교",
+          "동물",
+          "친구",
+          "사물",
+          "선생",
+          "주의"
+        ],
+        "answer": "동물"
+      },
+      {
+        "no": 47,
+        "type": "find_hanja_sentence",
+        "hint": "오늘 생일을 맞은 [ 親舊 ]를 기쁘 게 해주기 위해 선물을 준비했습 니다.",
+        "target": "親舊",
+        "choices": [
+          "학교",
+          "동물",
+          "친구",
+          "사물",
+          "선생",
+          "주의"
+        ],
+        "answer": "친구"
+      },
+      {
+        "no": 48,
+        "type": "find_hanja_sentence",
+        "hint": "학생들이 선생님의 말씀에 [ 注意 ] 를 기울이고 있습니다.",
+        "target": "注意",
+        "choices": [
+          "학교",
+          "동물",
+          "친구",
+          "사물",
+          "선생",
+          "주의"
+        ],
+        "answer": "주의"
+      },
+      {
+        "no": 49,
+        "type": "find_hanja_sentence",
+        "hint": "[ 學校 ]에서 돌아오자마자 숙제를 하였습니다.",
+        "target": "學校",
+        "choices": [
+          "학교",
+          "동물",
+          "친구",
+          "사물",
+          "선생",
+          "주의"
+        ],
+        "answer": "학교"
+      },
+      {
+        "no": 50,
+        "type": "find_hanja_sentence",
+        "hint": "우리 주변의 물건들을 [ 事物 ]이 라고 합니다.",
+        "target": "事物",
+        "choices": [
+          "학교",
+          "동물",
+          "친구",
+          "사물",
+          "선생",
+          "주의"
+        ],
+        "answer": "사물"
+      }
+    ]
+  },
+  "115": {
+    "meaning_to_hanja": [
+      {
+        "no": 1,
+        "type": "meaning_to_hanja",
+        "question": "아버지",
+        "choices": [
+          "火",
+          "九",
+          "父",
+          "母"
+        ],
+        "answer": 3
+      },
+      {
+        "no": 2,
+        "type": "meaning_to_hanja",
+        "question": "달",
+        "choices": [
+          "月",
+          "木",
+          "日",
+          "門"
+        ],
+        "answer": 1
+      },
+      {
+        "no": 3,
+        "type": "meaning_to_hanja",
+        "question": "아들",
+        "choices": [
+          "上",
+          "子",
+          "小",
+          "女"
+        ],
+        "answer": 2
+      },
+      {
+        "no": 4,
+        "type": "meaning_to_hanja",
+        "question": "아홉",
+        "choices": [
+          "七",
+          "六",
+          "水",
+          "九"
+        ],
+        "answer": 4
+      },
+      {
+        "no": 5,
+        "type": "meaning_to_hanja",
+        "question": "어머니",
+        "choices": [
+          "王",
+          "母",
+          "女",
+          "父"
+        ],
+        "answer": 2
+      },
+      {
+        "no": 6,
+        "type": "meaning_to_hanja",
+        "question": "흙",
+        "choices": [
+          "上",
+          "小",
+          "下",
+          "土"
+        ],
+        "answer": 4
+      },
+      {
+        "no": 7,
+        "type": "meaning_to_hanja",
+        "question": "가운데",
+        "choices": [
+          "四",
+          "三",
+          "中",
+          "八"
+        ],
+        "answer": 3
+      },
+      {
+        "no": 8,
+        "type": "meaning_to_hanja",
+        "question": "희다",
+        "choices": [
+          "白",
+          "門",
+          "木",
+          "火"
+        ],
+        "answer": 1
+      },
+      {
+        "no": 9,
+        "type": "meaning_to_hanja",
+        "question": "메",
+        "choices": [
+          "下",
+          "上",
+          "土",
+          "山"
+        ],
+        "answer": 4
+      },
+      {
+        "no": 10,
+        "type": "meaning_to_hanja",
+        "question": "입",
+        "choices": [
+          "二",
+          "口",
+          "一",
+          "九"
+        ],
+        "answer": 2
+      }
+    ],
+    "hanja_reading_choice": [
+      {
+        "no": 11,
+        "type": "hanja_reading_choice",
+        "sentence": "누나는 중학교 [ 一 ] 학년입니다.",
+        "hanja": "一",
+        "choices": [
+          "일",
+          "이",
+          "사",
+          "삼"
+        ],
+        "answer": 1
+      },
+      {
+        "no": 12,
+        "type": "hanja_reading_choice",
+        "sentence": "삼촌은 나라를 지키는 군[ 人 ]입 니다.",
+        "hanja": "人",
+        "choices": [
+          "대",
+          "인",
+          "사",
+          "복"
+        ],
+        "answer": 2
+      },
+      {
+        "no": 13,
+        "type": "hanja_reading_choice",
+        "sentence": "[ 王 ]이 신하에게 선물을 내렸습 니다.",
+        "hanja": "王",
+        "choices": [
+          "공",
+          "상",
+          "군",
+          "왕"
+        ],
+        "answer": 4
+      },
+      {
+        "no": 14,
+        "type": "hanja_reading_choice",
+        "sentence": "어제 내린 눈이 온 세[ 上 ]을 하 얗게 덮었습니다.",
+        "hanja": "上",
+        "choices": [
+          "장",
+          "계",
+          "상",
+          "정"
+        ],
+        "answer": 3
+      },
+      {
+        "no": 15,
+        "type": "hanja_reading_choice",
+        "sentence": "나는 집을 나서면서 [ 門 ]을 잠갔습 니다.",
+        "hanja": "門",
+        "choices": [
+          "방",
+          "신",
+          "창",
+          "문"
+        ],
+        "answer": 4
+      },
+      {
+        "no": 16,
+        "type": "hanja_reading_choice",
+        "sentence": "우리 반 교실은 [ 二 ] 층에 있습 니다.",
+        "hanja": "二",
+        "choices": [
+          "오",
+          "칠",
+          "이",
+          "구"
+        ],
+        "answer": 3
+      },
+      {
+        "no": 17,
+        "type": "hanja_reading_choice",
+        "sentence": "사촌 동생이 태어난 지 벌써 [ 六 ] 개월이 지났습니다.",
+        "hanja": "六",
+        "choices": [
+          "육",
+          "구",
+          "삼",
+          "팔"
+        ],
+        "answer": 1
+      },
+      {
+        "no": 18,
+        "type": "hanja_reading_choice",
+        "sentence": "아버지는 [ 五 ]형제 중 막내이십 니다.",
+        "hanja": "五",
+        "choices": [
+          "칠",
+          "오",
+          "사",
+          "구"
+        ],
+        "answer": 2
+      },
+      {
+        "no": 19,
+        "type": "hanja_reading_choice",
+        "sentence": "빵집에서 생[ 日 ] 케이크를 샀습 니다.",
+        "hanja": "日",
+        "choices": [
+          "명",
+          "수",
+          "월",
+          "일"
+        ],
+        "answer": 4
+      },
+      {
+        "no": 20,
+        "type": "hanja_reading_choice",
+        "sentence": "가족들과 계곡에 놀러가서 [ 水 ] 영을 했습니다.",
+        "hanja": "水",
+        "choices": [
+          "목",
+          "수",
+          "접",
+          "화"
+        ],
+        "answer": 2
+      }
+    ],
+    "find_hanja_sentence1": [
+      {
+        "no": 21,
+        "type": "find_hanja_sentence",
+        "hint": "발자국 [ 하나 ] 없는 하얀 눈길을 걷고 싶습니다.",
+        "target": "하나",
+        "choices": [
+          "二",
+          "門",
+          "六",
+          "上",
+          "王",
+          "日",
+          "人",
+          "水",
+          "一",
+          "五"
+        ],
+        "answer": "一"
+      },
+      {
+        "no": 22,
+        "type": "find_hanja_sentence",
+        "hint": "[ 사람 ]들은 모두 다 다르게 생겼 습니다.",
+        "target": "사람",
+        "choices": [
+          "二",
+          "門",
+          "六",
+          "上",
+          "王",
+          "日",
+          "人",
+          "水",
+          "一",
+          "五"
+        ],
+        "answer": "人"
+      },
+      {
+        "no": 23,
+        "type": "find_hanja_sentence",
+        "hint": "여름에는 [ 해 ]가 일찍 뜨고 늦게 집니다.",
+        "target": "해",
+        "choices": [
+          "二",
+          "門",
+          "六",
+          "上",
+          "王",
+          "日",
+          "人",
+          "水",
+          "一",
+          "五"
+        ],
+        "answer": "日"
+      },
+      {
+        "no": 24,
+        "type": "find_hanja_sentence",
+        "hint": "탁자 위에는 장미 [ 다섯 ] 송이가 놓여 있었습니다.",
+        "target": "다섯",
+        "choices": [
+          "二",
+          "門",
+          "六",
+          "上",
+          "王",
+          "日",
+          "人",
+          "水",
+          "一",
+          "五"
+        ],
+        "answer": "五"
+      },
+      {
+        "no": 25,
+        "type": "find_hanja_sentence",
+        "hint": "새가 나무 [ 위 ]에서 쉬고 있습니 다.             한자실력",
+        "target": "위",
+        "choices": [
+          "二",
+          "門",
+          "六",
+          "上",
+          "王",
+          "日",
+          "人",
+          "水",
+          "一",
+          "五"
+        ],
+        "answer": "上"
+      },
+      {
+        "no": 26,
+        "type": "find_hanja_sentence",
+        "hint": "집에서 [ 물 ]을 아껴 쓸 수 있는 방 법을 생각해봅시다.",
+        "target": "물",
+        "choices": [
+          "二",
+          "門",
+          "六",
+          "上",
+          "王",
+          "日",
+          "人",
+          "水",
+          "一",
+          "五"
+        ],
+        "answer": "水"
+      },
+      {
+        "no": 27,
+        "type": "find_hanja_sentence",
+        "hint": "[ 임금님 ]은 죄인들을 당장 잡아들 이라고 호령했습니다.",
+        "target": "임금님",
+        "choices": [
+          "二",
+          "門",
+          "六",
+          "上",
+          "王",
+          "日",
+          "人",
+          "水",
+          "一",
+          "五"
+        ],
+        "answer": "王"
+      },
+      {
+        "no": 28,
+        "type": "find_hanja_sentence",
+        "hint": "동생은 [ 문 ]을 열고 밖을 보고 있습니다.",
+        "target": "문",
+        "choices": [
+          "二",
+          "門",
+          "六",
+          "上",
+          "王",
+          "日",
+          "人",
+          "水",
+          "一",
+          "五"
+        ],
+        "answer": "門"
+      },
+      {
+        "no": 29,
+        "type": "find_hanja_sentence",
+        "hint": "[ 두 ] 사람은 친구처럼 다정해 보 였습니다.",
+        "target": "두",
+        "choices": [
+          "二",
+          "門",
+          "六",
+          "上",
+          "王",
+          "日",
+          "人",
+          "水",
+          "一",
+          "五"
+        ],
+        "answer": "二"
+      },
+      {
+        "no": 30,
+        "type": "find_hanja_sentence",
+        "hint": "오후 [ 여섯 ] 시까지는 집에 돌아 와야 합니다.",
+        "target": "여섯",
+        "choices": [
+          "二",
+          "門",
+          "六",
+          "上",
+          "王",
+          "日",
+          "人",
+          "水",
+          "一",
+          "五"
+        ],
+        "answer": "六"
+      }
+    ],
+    "huneum": [
+      {
+        "no": 31,
+        "type": "huneum",
+        "hanja": "十",
+        "answer": "열 십"
+      },
+      {
+        "no": 32,
+        "type": "huneum",
+        "hanja": "木",
+        "answer": "나무 목"
+      },
+      {
+        "no": 33,
+        "type": "huneum",
+        "hanja": "小",
+        "answer": "작을 소"
+      },
+      {
+        "no": 34,
+        "type": "huneum",
+        "hanja": "八",
+        "answer": "여덟 팔"
+      },
+      {
+        "no": 35,
+        "type": "huneum",
+        "hanja": "七",
+        "answer": "일곱 칠"
+      },
+      {
+        "no": 36,
+        "type": "huneum",
+        "hanja": "三",
+        "answer": "석 삼"
+      },
+      {
+        "no": 37,
+        "type": "huneum",
+        "hanja": "四",
+        "answer": "넉 사"
+      },
+      {
+        "no": 38,
+        "type": "huneum",
+        "hanja": "火",
+        "answer": "불 화"
+      },
+      {
+        "no": 39,
+        "type": "huneum",
+        "hanja": "女",
+        "answer": "여자/계집 녀"
+      },
+      {
+        "no": 40,
+        "type": "huneum",
+        "hanja": "下",
+        "answer": "아래 하"
+      }
+    ],
+    "reading": [
+      {
+        "no": 41,
+        "type": "reading",
+        "hanja": "山中",
+        "answer": "산중"
+      },
+      {
+        "no": 42,
+        "type": "reading",
+        "hanja": "母子",
+        "answer": "모자"
+      },
+      {
+        "no": 43,
+        "type": "reading",
+        "hanja": "白土",
+        "answer": "백토"
+      },
+      {
+        "no": 44,
+        "type": "reading",
+        "hanja": "九月",
+        "answer": "구월"
+      }
+    ],
+    "find_hanja_sentence2": [
+      {
+        "no": 45,
+        "type": "find_hanja_sentence",
+        "hint": "감기에 걸리지 않도록 [ 注意 ]해 야 합니다.",
+        "target": "注意",
+        "choices": [
+          "식물",
+          "인물",
+          "생활",
+          "주의",
+          "문장",
+          "친구"
+        ],
+        "answer": "주의"
+      },
+      {
+        "no": 46,
+        "type": "find_hanja_sentence",
+        "hint": "제 동생은 장차 큰 [ 人物 ]이 될 것입니다.",
+        "target": "人物",
+        "choices": [
+          "식물",
+          "인물",
+          "생활",
+          "주의",
+          "문장",
+          "친구"
+        ],
+        "answer": "인물"
+      },
+      {
+        "no": 47,
+        "type": "find_hanja_sentence",
+        "hint": "[ 文章 ]을 다시 읽어보며 문법에 어긋난 부분을 고쳤습니다.",
+        "target": "文章",
+        "choices": [
+          "식물",
+          "인물",
+          "생활",
+          "주의",
+          "문장",
+          "친구"
+        ],
+        "answer": "문장"
+      },
+      {
+        "no": 48,
+        "type": "find_hanja_sentence",
+        "hint": "[ 生活 ] 계획표를 작성할 때는 실 천 가능하도록 짜야합니다.",
+        "target": "生活",
+        "choices": [
+          "식물",
+          "인물",
+          "생활",
+          "주의",
+          "문장",
+          "친구"
+        ],
+        "answer": "생활"
+      },
+      {
+        "no": 49,
+        "type": "find_hanja_sentence",
+        "hint": "세상에 [ 植物 ]이 없다면 모든 동 물은 숨을 쉴 수 없습니다.",
+        "target": "植物",
+        "choices": [
+          "식물",
+          "인물",
+          "생활",
+          "주의",
+          "문장",
+          "친구"
+        ],
+        "answer": "식물"
+      },
+      {
+        "no": 50,
+        "type": "find_hanja_sentence",
+        "hint": "[ 親舊 ]와 웃으며 이야기를 나누 었습니다.",
+        "target": "親舊",
+        "choices": [
+          "식물",
+          "인물",
+          "생활",
+          "주의",
+          "문장",
+          "친구"
+        ],
+        "answer": "친구"
+      }
+    ]
+  },
+  "116": {
+    "meaning_to_hanja": [
+      {
+        "no": 1,
+        "type": "meaning_to_hanja",
+        "question": "입",
+        "choices": [
+          "九",
+          "母",
+          "口",
+          "八"
+        ],
+        "answer": 3
+      },
+      {
+        "no": 2,
+        "type": "meaning_to_hanja",
+        "question": "뫼",
+        "choices": [
+          "上",
+          "土",
+          "山",
+          "王"
+        ],
+        "answer": 3
+      },
+      {
+        "no": 3,
+        "type": "meaning_to_hanja",
+        "question": "해",
+        "choices": [
+          "日",
+          "一",
+          "月",
+          "門"
+        ],
+        "answer": 1
+      },
+      {
+        "no": 4,
+        "type": "meaning_to_hanja",
+        "question": "흙",
+        "choices": [
+          "三",
+          "土",
+          "下",
+          "小"
+        ],
+        "answer": 2
+      },
+      {
+        "no": 5,
+        "type": "meaning_to_hanja",
+        "question": "셋",
+        "choices": [
+          "六",
+          "三",
+          "水",
+          "中"
+        ],
+        "answer": 2
+      },
+      {
+        "no": 6,
+        "type": "meaning_to_hanja",
+        "question": "달",
+        "choices": [
+          "白",
+          "火",
+          "月",
+          "女"
+        ],
+        "answer": 3
+      },
+      {
+        "no": 7,
+        "type": "meaning_to_hanja",
+        "question": "열",
+        "choices": [
+          "十",
+          "中",
+          "上",
+          "土"
+        ],
+        "answer": 1
+      },
+      {
+        "no": 8,
+        "type": "meaning_to_hanja",
+        "question": "다섯",
+        "choices": [
+          "日",
+          "三",
+          "七",
+          "五"
+        ],
+        "answer": 4
+      },
+      {
+        "no": 9,
+        "type": "meaning_to_hanja",
+        "question": "넷",
+        "choices": [
+          "水",
+          "四",
+          "木",
+          "門"
+        ],
+        "answer": 2
+      },
+      {
+        "no": 10,
+        "type": "meaning_to_hanja",
+        "question": "하나",
+        "choices": [
+          "二",
+          "口",
+          "一",
+          "九"
+        ],
+        "answer": 3
+      }
+    ],
+    "hanja_reading_choice": [
+      {
+        "no": 11,
+        "type": "hanja_reading_choice",
+        "sentence": "어머니께서 [ 白 ]설기를 주셨습니 다.",
+        "hanja": "白",
+        "choices": [
+          "청",
+          "감",
+          "백",
+          "황"
+        ],
+        "answer": 3
+      },
+      {
+        "no": 12,
+        "type": "hanja_reading_choice",
+        "sentence": "우리 반 교실은 [ 二 ]층에 있습니 다.",
+        "hanja": "二",
+        "choices": [
+          "오",
+          "사",
+          "삼",
+          "이"
+        ],
+        "answer": 4
+      },
+      {
+        "no": 13,
+        "type": "hanja_reading_choice",
+        "sentence": "5는 [ 八 ]보다 작습니다.",
+        "hanja": "八",
+        "choices": [
+          "팔",
+          "육",
+          "칠",
+          "구"
+        ],
+        "answer": 1
+      },
+      {
+        "no": 14,
+        "type": "hanja_reading_choice",
+        "sentence": "이번 주 [ 木 ]요일에 옆 반과 축 구 시합이 있습니다.",
+        "hanja": "木",
+        "choices": [
+          "금",
+          "수",
+          "토",
+          "목"
+        ],
+        "answer": 4
+      },
+      {
+        "no": 15,
+        "type": "hanja_reading_choice",
+        "sentence": "강아지는 냄새로 주[ 人 ]을 알아 봅니다.",
+        "hanja": "人",
+        "choices": [
+          "민",
+          "인",
+          "군",
+          "문"
+        ],
+        "answer": 2
+      },
+      {
+        "no": 16,
+        "type": "hanja_reading_choice",
+        "sentence": "[ 王 ]이 말을 타고 사냥을 나갔습 니다.",
+        "hanja": "王",
+        "choices": [
+          "왕",
+          "공",
+          "군",
+          "상"
+        ],
+        "answer": 1
+      },
+      {
+        "no": 17,
+        "type": "hanja_reading_choice",
+        "sentence": "아버지와 저는 [ 下 ]산 후에 맛있 는 밥을 먹었습니다.",
+        "hanja": "下",
+        "choices": [
+          "화",
+          "하",
+          "등",
+          "입"
+        ],
+        "answer": 2
+      },
+      {
+        "no": 18,
+        "type": "hanja_reading_choice",
+        "sentence": "나는 [ 父 ]모님의 생신을 잘 기억 하고 있습니다.",
+        "hanja": "父",
+        "choices": [
+          "생",
+          "형",
+          "부",
+          "장"
+        ],
+        "answer": 3
+      },
+      {
+        "no": 19,
+        "type": "hanja_reading_choice",
+        "sentence": "몸이 커져서 [ 上 ]의가 작아졌습 니다.",
+        "hanja": "上",
+        "choices": [
+          "상",
+          "탈",
+          "하",
+          "수"
+        ],
+        "answer": 1
+      },
+      {
+        "no": 20,
+        "type": "hanja_reading_choice",
+        "sentence": "친구와 함께 편의점에서 음료[ 水 ] 를 사먹었습니다.",
+        "hanja": "水",
+        "choices": [
+          "유",
+          "차",
+          "다",
+          "수"
+        ],
+        "answer": 4
+      }
+    ],
+    "find_hanja_sentence1": [
+      {
+        "no": 21,
+        "type": "find_hanja_sentence",
+        "hint": "작년에 심은 [ 나무 ]에서 꽃이 피 었습니다.",
+        "target": "나무",
+        "choices": [
+          "王",
+          "人",
+          "下",
+          "木",
+          "父",
+          "八",
+          "上",
+          "二",
+          "水",
+          "白"
+        ],
+        "answer": "木"
+      },
+      {
+        "no": 22,
+        "type": "find_hanja_sentence",
+        "hint": "나무 [ 위 ]에 풍선이 걸려있습니 다.",
+        "target": "위",
+        "choices": [
+          "王",
+          "人",
+          "下",
+          "木",
+          "父",
+          "八",
+          "上",
+          "二",
+          "水",
+          "白"
+        ],
+        "answer": "上"
+      },
+      {
+        "no": 23,
+        "type": "find_hanja_sentence",
+        "hint": "[ 사람 ]들은 모두 다 다르게 생겼 습니다.",
+        "target": "사람",
+        "choices": [
+          "王",
+          "人",
+          "下",
+          "木",
+          "父",
+          "八",
+          "上",
+          "二",
+          "水",
+          "白"
+        ],
+        "answer": "人"
+      },
+      {
+        "no": 24,
+        "type": "find_hanja_sentence",
+        "hint": "[ 여덟 ] 시가 되어서야 아버지께서 집에 돌아오셨습니다.",
+        "target": "여덟",
+        "choices": [
+          "王",
+          "人",
+          "下",
+          "木",
+          "父",
+          "八",
+          "上",
+          "二",
+          "水",
+          "白"
+        ],
+        "answer": "八"
+      },
+      {
+        "no": 25,
+        "type": "find_hanja_sentence",
+        "hint": "밖에는 [ 흰 ] 눈이 내리고 있습니 다.             한자실력",
+        "target": "흰",
+        "choices": [
+          "王",
+          "人",
+          "下",
+          "木",
+          "父",
+          "八",
+          "上",
+          "二",
+          "水",
+          "白"
+        ],
+        "answer": "白"
+      },
+      {
+        "no": 26,
+        "type": "find_hanja_sentence",
+        "hint": "저기 커다란 문이 [ 임금 ]님이 계 시는 궁궐의 문입니다.",
+        "target": "임금",
+        "choices": [
+          "王",
+          "人",
+          "下",
+          "木",
+          "父",
+          "八",
+          "上",
+          "二",
+          "水",
+          "白"
+        ],
+        "answer": "王"
+      },
+      {
+        "no": 27,
+        "type": "find_hanja_sentence",
+        "hint": "[ 둘 ]에 셋을 더하면 다섯이 됩니 다.",
+        "target": "둘",
+        "choices": [
+          "王",
+          "人",
+          "下",
+          "木",
+          "父",
+          "八",
+          "上",
+          "二",
+          "水",
+          "白"
+        ],
+        "answer": "二"
+      },
+      {
+        "no": 28,
+        "type": "find_hanja_sentence",
+        "hint": "물은 위에서 [ 아래 ]로 흐릅니다.",
+        "target": "아래",
+        "choices": [
+          "王",
+          "人",
+          "下",
+          "木",
+          "父",
+          "八",
+          "上",
+          "二",
+          "水",
+          "白"
+        ],
+        "answer": "下"
+      },
+      {
+        "no": 29,
+        "type": "find_hanja_sentence",
+        "hint": "집에서 [ 물 ]을 아낄 수 있는 방법 을 생각해봅시다.",
+        "target": "물",
+        "choices": [
+          "王",
+          "人",
+          "下",
+          "木",
+          "父",
+          "八",
+          "上",
+          "二",
+          "水",
+          "白"
+        ],
+        "answer": "水"
+      },
+      {
+        "no": 30,
+        "type": "find_hanja_sentence",
+        "hint": "[ 아버지 ]께서는 신문을 읽고 계십 니다.",
+        "target": "아버지",
+        "choices": [
+          "王",
+          "人",
+          "下",
+          "木",
+          "父",
+          "八",
+          "上",
+          "二",
+          "水",
+          "白"
+        ],
+        "answer": "父"
+      }
+    ],
+    "huneum": [
+      {
+        "no": 31,
+        "type": "huneum",
+        "hanja": "七",
+        "answer": "일곱 칠"
+      },
+      {
+        "no": 32,
+        "type": "huneum",
+        "hanja": "女",
+        "answer": "계집/여자 녀"
+      },
+      {
+        "no": 33,
+        "type": "huneum",
+        "hanja": "火",
+        "answer": "불 화"
+      },
+      {
+        "no": 34,
+        "type": "huneum",
+        "hanja": "母",
+        "answer": "어미 모"
+      },
+      {
+        "no": 35,
+        "type": "huneum",
+        "hanja": "小",
+        "answer": "작을 소"
+      },
+      {
+        "no": 36,
+        "type": "huneum",
+        "hanja": "六",
+        "answer": "여섯 륙"
+      },
+      {
+        "no": 37,
+        "type": "huneum",
+        "hanja": "九",
+        "answer": "아홉 구"
+      },
+      {
+        "no": 38,
+        "type": "huneum",
+        "hanja": "子",
+        "answer": "아이/아들 자"
+      },
+      {
+        "no": 39,
+        "type": "huneum",
+        "hanja": "門",
+        "answer": "문 문"
+      },
+      {
+        "no": 40,
+        "type": "huneum",
+        "hanja": "中",
+        "answer": "가운데 중"
+      }
+    ],
+    "reading": [
+      {
+        "no": 41,
+        "type": "reading",
+        "hanja": "四十",
+        "answer": "사십"
+      },
+      {
+        "no": 42,
+        "type": "reading",
+        "hanja": "三日",
+        "answer": "삼일"
+      },
+      {
+        "no": 43,
+        "type": "reading",
+        "hanja": "五月",
+        "answer": "오월"
+      },
+      {
+        "no": 44,
+        "type": "reading",
+        "hanja": "土山",
+        "answer": "토산"
+      }
+    ],
+    "find_hanja_sentence2": [
+      {
+        "no": 45,
+        "type": "find_hanja_sentence",
+        "hint": "[ 先生 ]님께서 숙제를 내주셨습니 다.",
+        "target": "先生",
+        "choices": [
+          "학교",
+          "선생",
+          "동물",
+          "사물",
+          "내용",
+          "의견"
+        ],
+        "answer": "선생"
+      },
+      {
+        "no": 46,
+        "type": "find_hanja_sentence",
+        "hint": "[ 學校 ]에서 있었던 일을 그림으 로 그렸습니다.",
+        "target": "學校",
+        "choices": [
+          "학교",
+          "선생",
+          "동물",
+          "사물",
+          "내용",
+          "의견"
+        ],
+        "answer": "학교"
+      },
+      {
+        "no": 47,
+        "type": "find_hanja_sentence",
+        "hint": "이어질 [ 內容 ]을 생각하며 책을 읽어봅시다.",
+        "target": "內容",
+        "choices": [
+          "학교",
+          "선생",
+          "동물",
+          "사물",
+          "내용",
+          "의견"
+        ],
+        "answer": "내용"
+      },
+      {
+        "no": 48,
+        "type": "find_hanja_sentence",
+        "hint": "그는 자신의 [ 意見 ]을 분명하게 말했습니다.",
+        "target": "意見",
+        "choices": [
+          "학교",
+          "선생",
+          "동물",
+          "사물",
+          "내용",
+          "의견"
+        ],
+        "answer": "의견"
+      },
+      {
+        "no": 49,
+        "type": "find_hanja_sentence",
+        "hint": "이 [ 動物 ]의 이름은 오랑우탄입 니다.",
+        "target": "動物",
+        "choices": [
+          "학교",
+          "선생",
+          "동물",
+          "사물",
+          "내용",
+          "의견"
+        ],
+        "answer": "동물"
+      },
+      {
+        "no": 50,
+        "type": "find_hanja_sentence",
+        "hint": "우리 주변의 물건들을 [ 事物 ]이 라고 합니다.",
+        "target": "事物",
+        "choices": [
+          "학교",
+          "선생",
+          "동물",
+          "사물",
+          "내용",
+          "의견"
+        ],
+        "answer": "사물"
+      }
+    ]
+  },
+  "117": {
+    "meaning_to_hanja": [
+      {
+        "no": 1,
+        "type": "meaning_to_hanja",
+        "question": "아홉",
+        "choices": [
+          "九",
+          "八",
+          "口",
+          "七"
+        ],
+        "answer": 1
+      },
+      {
+        "no": 2,
+        "type": "meaning_to_hanja",
+        "question": "여자",
+        "choices": [
+          "小",
+          "女",
+          "父",
+          "王"
+        ],
+        "answer": 2
+      },
+      {
+        "no": 3,
+        "type": "meaning_to_hanja",
+        "question": "달",
+        "choices": [
+          "日",
+          "白",
+          "月",
+          "門"
+        ],
+        "answer": 3
+      },
+      {
+        "no": 4,
+        "type": "meaning_to_hanja",
+        "question": "아들",
+        "choices": [
+          "子",
+          "母",
+          "二",
+          "火"
+        ],
+        "answer": 1
+      },
+      {
+        "no": 5,
+        "type": "meaning_to_hanja",
+        "question": "해",
+        "choices": [
+          "中",
+          "月",
+          "門",
+          "日"
+        ],
+        "answer": 4
+      },
+      {
+        "no": 6,
+        "type": "meaning_to_hanja",
+        "question": "물",
+        "choices": [
+          "十",
+          "火",
+          "水",
+          "土"
+        ],
+        "answer": 3
+      },
+      {
+        "no": 7,
+        "type": "meaning_to_hanja",
+        "question": "나무",
+        "choices": [
+          "四",
+          "口",
+          "小",
+          "木"
+        ],
+        "answer": 4
+      },
+      {
+        "no": 8,
+        "type": "meaning_to_hanja",
+        "question": "뫼",
+        "choices": [
+          "山",
+          "八",
+          "人",
+          "五"
+        ],
+        "answer": 1
+      },
+      {
+        "no": 9,
+        "type": "meaning_to_hanja",
+        "question": "흙",
+        "choices": [
+          "王",
+          "六",
+          "火",
+          "土"
+        ],
+        "answer": 4
+      },
+      {
+        "no": 10,
+        "type": "meaning_to_hanja",
+        "question": "셋",
+        "choices": [
+          "二",
+          "三",
+          "一",
+          "七"
+        ],
+        "answer": 2
+      }
+    ],
+    "hanja_reading_choice": [
+      {
+        "no": 11,
+        "type": "hanja_reading_choice",
+        "sentence": "옥[ 上 ]에 올라가 하늘을 보았습 니다.",
+        "hanja": "上",
+        "choices": [
+          "토",
+          "실",
+          "상",
+          "중"
+        ],
+        "answer": 3
+      },
+      {
+        "no": 12,
+        "type": "hanja_reading_choice",
+        "sentence": "우리 집은 저 아파트 [ 八 ]층에 있습니다.",
+        "hanja": "八",
+        "choices": [
+          "팔",
+          "칠",
+          "육",
+          "구"
+        ],
+        "answer": 1
+      },
+      {
+        "no": 13,
+        "type": "hanja_reading_choice",
+        "sentence": "내가 가장 좋아하는 숫자는 [ 七 ] 입니다.",
+        "hanja": "七",
+        "choices": [
+          "팔",
+          "육",
+          "구",
+          "칠"
+        ],
+        "answer": 4
+      },
+      {
+        "no": 14,
+        "type": "hanja_reading_choice",
+        "sentence": "우리 반 교실은 [ 二 ]층에 있습니 다.",
+        "hanja": "二",
+        "choices": [
+          "삼",
+          "이",
+          "일",
+          "사"
+        ],
+        "answer": 2
+      },
+      {
+        "no": 15,
+        "type": "hanja_reading_choice",
+        "sentence": "아버지는 [ 五 ]형제 중 막내이십 니다.",
+        "hanja": "五",
+        "choices": [
+          "칠",
+          "삼",
+          "오",
+          "사"
+        ],
+        "answer": 3
+      },
+      {
+        "no": 16,
+        "type": "hanja_reading_choice",
+        "sentence": "나는 자랑스러운 한국[ 人 ]입니 다.",
+        "hanja": "人",
+        "choices": [
+          "편",
+          "입",
+          "인",
+          "화"
+        ],
+        "answer": 3
+      },
+      {
+        "no": 17,
+        "type": "hanja_reading_choice",
+        "sentence": "어버이날을 맞아 [ 父 ]모님께 편 지를 썼습니다.",
+        "hanja": "父",
+        "choices": [
+          "자",
+          "형",
+          "이",
+          "부"
+        ],
+        "answer": 4
+      },
+      {
+        "no": 18,
+        "type": "hanja_reading_choice",
+        "sentence": "망가진 장난감 때문에 [ 火 ]난 동 생을 달래주었습니다.",
+        "hanja": "火",
+        "choices": [
+          "화",
+          "골",
+          "겁",
+          "열"
+        ],
+        "answer": 1
+      },
+      {
+        "no": 19,
+        "type": "hanja_reading_choice",
+        "sentence": "형이 여행을 떠난 지 [ 一 ]주일이 지났습니다.",
+        "hanja": "一",
+        "choices": [
+          "이",
+          "삼",
+          "사",
+          "일"
+        ],
+        "answer": 4
+      },
+      {
+        "no": 20,
+        "type": "hanja_reading_choice",
+        "sentence": "나는 1학년 [ 六 ]반입니다.",
+        "hanja": "六",
+        "choices": [
+          "오",
+          "육",
+          "칠",
+          "팔"
+        ],
+        "answer": 2
+      }
+    ],
+    "find_hanja_sentence1": [
+      {
+        "no": 21,
+        "type": "find_hanja_sentence",
+        "hint": "영화가 끝나자 [ 사람 ]들이 우르르 출구 쪽으로 향했습니다.",
+        "target": "사람",
+        "choices": [
+          "二",
+          "七",
+          "人",
+          "六",
+          "上",
+          "一",
+          "父",
+          "火",
+          "五",
+          "八"
+        ],
+        "answer": "人"
+      },
+      {
+        "no": 22,
+        "type": "find_hanja_sentence",
+        "hint": "한 손의 손가락은 [ 다섯 ] 개입니 다.",
+        "target": "다섯",
+        "choices": [
+          "二",
+          "七",
+          "人",
+          "六",
+          "上",
+          "一",
+          "父",
+          "火",
+          "五",
+          "八"
+        ],
+        "answer": "五"
+      },
+      {
+        "no": 23,
+        "type": "find_hanja_sentence",
+        "hint": "새가 나무 [ 위 ]에서 쉬고 있습니 다.",
+        "target": "위",
+        "choices": [
+          "二",
+          "七",
+          "人",
+          "六",
+          "上",
+          "一",
+          "父",
+          "火",
+          "五",
+          "八"
+        ],
+        "answer": "上"
+      },
+      {
+        "no": 24,
+        "type": "find_hanja_sentence",
+        "hint": "학생 [ 둘 ]이 함께 걸어가고 있습 니다.",
+        "target": "둘",
+        "choices": [
+          "二",
+          "七",
+          "人",
+          "六",
+          "上",
+          "一",
+          "父",
+          "火",
+          "五",
+          "八"
+        ],
+        "answer": "二"
+      },
+      {
+        "no": 25,
+        "type": "find_hanja_sentence",
+        "hint": "[ 불 ]이 나지 않도록 항상 조심해 야 합니다.        한자실력",
+        "target": "불",
+        "choices": [
+          "二",
+          "七",
+          "人",
+          "六",
+          "上",
+          "一",
+          "父",
+          "火",
+          "五",
+          "八"
+        ],
+        "answer": "火"
+      },
+      {
+        "no": 26,
+        "type": "find_hanja_sentence",
+        "hint": "무지개는 [ 일곱 ] 가지 빛깔을 가 지고 있습니다.",
+        "target": "일곱",
+        "choices": [
+          "二",
+          "七",
+          "人",
+          "六",
+          "上",
+          "一",
+          "父",
+          "火",
+          "五",
+          "八"
+        ],
+        "answer": "七"
+      },
+      {
+        "no": 27,
+        "type": "find_hanja_sentence",
+        "hint": "불빛이 [ 하나 ]도 없는 깜깜한 밤 이 되었습니다.",
+        "target": "하나",
+        "choices": [
+          "二",
+          "七",
+          "人",
+          "六",
+          "上",
+          "一",
+          "父",
+          "火",
+          "五",
+          "八"
+        ],
+        "answer": "一"
+      },
+      {
+        "no": 28,
+        "type": "find_hanja_sentence",
+        "hint": "사촌 동생은 손가락을 하나씩 접 으며 [ 여덟 ]까지 세었습니다.",
+        "target": "여덟",
+        "choices": [
+          "二",
+          "七",
+          "人",
+          "六",
+          "上",
+          "一",
+          "父",
+          "火",
+          "五",
+          "八"
+        ],
+        "answer": "八"
+      },
+      {
+        "no": 29,
+        "type": "find_hanja_sentence",
+        "hint": "누나는 매일 아침 [ 여섯 ] 시에 일 어나 공부를 합니다.",
+        "target": "여섯",
+        "choices": [
+          "二",
+          "七",
+          "人",
+          "六",
+          "上",
+          "一",
+          "父",
+          "火",
+          "五",
+          "八"
+        ],
+        "answer": "六"
+      },
+      {
+        "no": 30,
+        "type": "find_hanja_sentence",
+        "hint": "[ 아버지 ]께서 용돈을 주셨습니다.",
+        "target": "아버지",
+        "choices": [
+          "二",
+          "七",
+          "人",
+          "六",
+          "上",
+          "一",
+          "父",
+          "火",
+          "五",
+          "八"
+        ],
+        "answer": "父"
+      }
+    ],
+    "huneum": [
+      {
+        "no": 31,
+        "type": "huneum",
+        "hanja": "口",
+        "answer": "입 구"
+      },
+      {
+        "no": 32,
+        "type": "huneum",
+        "hanja": "四",
+        "answer": "넉 사"
+      },
+      {
+        "no": 33,
+        "type": "huneum",
+        "hanja": "母",
+        "answer": "어머니 모"
+      },
+      {
+        "no": 34,
+        "type": "huneum",
+        "hanja": "下",
+        "answer": "아래 하"
+      },
+      {
+        "no": 35,
+        "type": "huneum",
+        "hanja": "王",
+        "answer": "임금 왕"
+      },
+      {
+        "no": 36,
+        "type": "huneum",
+        "hanja": "小",
+        "answer": "작을 소"
+      },
+      {
+        "no": 37,
+        "type": "huneum",
+        "hanja": "十",
+        "answer": "열 십"
+      },
+      {
+        "no": 38,
+        "type": "huneum",
+        "hanja": "白",
+        "answer": "흰 백"
+      },
+      {
+        "no": 39,
+        "type": "huneum",
+        "hanja": "中",
+        "answer": "가운데 중"
+      },
+      {
+        "no": 40,
+        "type": "huneum",
+        "hanja": "門",
+        "answer": "문 문"
+      }
+    ],
+    "reading": [
+      {
+        "no": 41,
+        "type": "reading",
+        "hanja": "土木",
+        "answer": "토목"
+      },
+      {
+        "no": 42,
+        "type": "reading",
+        "hanja": "日月",
+        "answer": "일월"
+      },
+      {
+        "no": 43,
+        "type": "reading",
+        "hanja": "山水",
+        "answer": "산수"
+      },
+      {
+        "no": 44,
+        "type": "reading",
+        "hanja": "子女",
+        "answer": "자녀"
+      }
+    ],
+    "find_hanja_sentence2": [
+      {
+        "no": 45,
+        "type": "find_hanja_sentence",
+        "hint": "건강한 방학 [ 生活 ]을 보내기 위 하여 매일 운동합니다.",
+        "target": "生活",
+        "choices": [
+          "주의",
+          "친구",
+          "생활",
+          "공부",
+          "식물",
+          "문장"
+        ],
+        "answer": "생활"
+      },
+      {
+        "no": 46,
+        "type": "find_hanja_sentence",
+        "hint": "큰누나는 매일 밤늦게까지 열심히 [ 工夫 ]합니다.",
+        "target": "工夫",
+        "choices": [
+          "주의",
+          "친구",
+          "생활",
+          "공부",
+          "식물",
+          "문장"
+        ],
+        "answer": "공부"
+      },
+      {
+        "no": 47,
+        "type": "find_hanja_sentence",
+        "hint": "옆에 앉은 [ 親舊 ]가 하품을 하니 나도 덩달아 하품을 하였습니다.",
+        "target": "親舊",
+        "choices": [
+          "주의",
+          "친구",
+          "생활",
+          "공부",
+          "식물",
+          "문장"
+        ],
+        "answer": "친구"
+      },
+      {
+        "no": 48,
+        "type": "find_hanja_sentence",
+        "hint": "세상에 [ 植物 ]이 없다면 모든 동 물은 숨을 쉴 수 없습니다.",
+        "target": "植物",
+        "choices": [
+          "주의",
+          "친구",
+          "생활",
+          "공부",
+          "식물",
+          "문장"
+        ],
+        "answer": "식물"
+      },
+      {
+        "no": 49,
+        "type": "find_hanja_sentence",
+        "hint": "공부를 잘하는 학생은 수업 시간 에 [ 注意 ]를 집중해서 듣습니다.",
+        "target": "注意",
+        "choices": [
+          "주의",
+          "친구",
+          "생활",
+          "공부",
+          "식물",
+          "문장"
+        ],
+        "answer": "주의"
+      },
+      {
+        "no": 50,
+        "type": "find_hanja_sentence",
+        "hint": "[ 文章 ]을 다시 읽어보며 문법에 어긋난 부분을 고쳤습니다.",
+        "target": "文章",
+        "choices": [
+          "주의",
+          "친구",
+          "생활",
+          "공부",
+          "식물",
+          "문장"
+        ],
+        "answer": "문장"
+      }
+    ]
+  },
+  "118": {
+    "meaning_to_hanja": [
+      {
+        "no": 1,
+        "type": "meaning_to_hanja",
+        "question": "어머니",
+        "choices": [
+          "王",
+          "母",
+          "子",
+          "火"
+        ],
+        "answer": 2
+      },
+      {
+        "no": 2,
+        "type": "meaning_to_hanja",
+        "question": "달",
+        "choices": [
+          "日",
+          "四",
+          "土",
+          "月"
+        ],
+        "answer": 4
+      },
+      {
+        "no": 3,
+        "type": "meaning_to_hanja",
+        "question": "가운데",
+        "choices": [
+          "中",
+          "下",
+          "門",
+          "上"
+        ],
+        "answer": 1
+      },
+      {
+        "no": 4,
+        "type": "meaning_to_hanja",
+        "question": "넷",
+        "choices": [
+          "山",
+          "五",
+          "四",
+          "九"
+        ],
+        "answer": 3
+      },
+      {
+        "no": 5,
+        "type": "meaning_to_hanja",
+        "question": "물",
+        "choices": [
+          "木",
+          "水",
+          "土",
+          "火"
+        ],
+        "answer": 2
+      },
+      {
+        "no": 6,
+        "type": "meaning_to_hanja",
+        "question": "아들",
+        "choices": [
+          "子",
+          "女",
+          "父",
+          "白"
+        ],
+        "answer": 1
+      },
+      {
+        "no": 7,
+        "type": "meaning_to_hanja",
+        "question": "해",
+        "choices": [
+          "七",
+          "日",
+          "三",
+          "月"
+        ],
+        "answer": 2
+      },
+      {
+        "no": 8,
+        "type": "meaning_to_hanja",
+        "question": "임금",
+        "choices": [
+          "小",
+          "八",
+          "口",
+          "王"
+        ],
+        "answer": 4
+      },
+      {
+        "no": 9,
+        "type": "meaning_to_hanja",
+        "question": "여섯",
+        "choices": [
+          "六",
+          "八",
+          "火",
+          "五"
+        ],
+        "answer": 1
+      },
+      {
+        "no": 10,
+        "type": "meaning_to_hanja",
+        "question": "여자",
+        "choices": [
+          "土",
+          "女",
+          "三",
+          "一"
+        ],
+        "answer": 2
+      }
+    ],
+    "hanja_reading_choice": [
+      {
+        "no": 11,
+        "type": "hanja_reading_choice",
+        "sentence": "우리 집은 저 아파트 [ 三 ]층입니 다.",
+        "hanja": "三",
+        "choices": [
+          "사",
+          "삼",
+          "이",
+          "칠"
+        ],
+        "answer": 2
+      },
+      {
+        "no": 12,
+        "type": "hanja_reading_choice",
+        "sentence": "형은 [ 下 ]산을 하다가 다리를 다 쳤습니다.",
+        "hanja": "下",
+        "choices": [
+          "하",
+          "상",
+          "등",
+          "고"
+        ],
+        "answer": 1
+      },
+      {
+        "no": 13,
+        "type": "hanja_reading_choice",
+        "sentence": "오늘은 십중[ 八 ]구 눈이 내릴 것 같습니다.",
+        "hanja": "八",
+        "choices": [
+          "구",
+          "육",
+          "팔",
+          "칠"
+        ],
+        "answer": 3
+      },
+      {
+        "no": 14,
+        "type": "hanja_reading_choice",
+        "sentence": "사람들이 극장 입[ 口 ]부터 길게 줄을 서 있습니다.",
+        "hanja": "口",
+        "choices": [
+          "석",
+          "출",
+          "장",
+          "구"
+        ],
+        "answer": 4
+      },
+      {
+        "no": 15,
+        "type": "hanja_reading_choice",
+        "sentence": "삼촌은 나라를 지키는 군[ 人 ]입 니다.",
+        "hanja": "人",
+        "choices": [
+          "복",
+          "인",
+          "사",
+          "장"
+        ],
+        "answer": 2
+      },
+      {
+        "no": 16,
+        "type": "hanja_reading_choice",
+        "sentence": "[ 山 ]에 오르니 머리가 맑아지는 것 같습니다.",
+        "hanja": "山",
+        "choices": [
+          "절",
+          "강",
+          "산",
+          "눈"
+        ],
+        "answer": 3
+      },
+      {
+        "no": 17,
+        "type": "hanja_reading_choice",
+        "sentence": "이번 주 [ 木 ]요일에 옆 반과 축 구 시합이 있습니다.",
+        "hanja": "木",
+        "choices": [
+          "수",
+          "금",
+          "목",
+          "화"
+        ],
+        "answer": 3
+      },
+      {
+        "no": 18,
+        "type": "hanja_reading_choice",
+        "sentence": "아버지는 [ 五 ]형제 중 막내이십 니다.",
+        "hanja": "五",
+        "choices": [
+          "오",
+          "삼",
+          "사",
+          "칠"
+        ],
+        "answer": 1
+      },
+      {
+        "no": 19,
+        "type": "hanja_reading_choice",
+        "sentence": "옆집 [ 父 ]자는 주말마다 운동장 에서 축구를 합니다.",
+        "hanja": "父",
+        "choices": [
+          "모",
+          "부",
+          "남",
+          "여"
+        ],
+        "answer": 2
+      },
+      {
+        "no": 20,
+        "type": "hanja_reading_choice",
+        "sentence": "[ 土 ]요일에 부모님과 놀이동산에 가기로 하였습니다.",
+        "hanja": "土",
+        "choices": [
+          "금",
+          "일",
+          "목",
+          "토"
+        ],
+        "answer": 4
+      }
+    ],
+    "find_hanja_sentence1": [
+      {
+        "no": 21,
+        "type": "find_hanja_sentence",
+        "hint": "가을이 되자 [ 산 ]이 빨간 옷을 입 었습니다.",
+        "target": "산",
+        "choices": [
+          "父",
+          "口",
+          "八",
+          "山",
+          "下",
+          "木",
+          "人",
+          "三",
+          "土",
+          "五"
+        ],
+        "answer": "山"
+      },
+      {
+        "no": 22,
+        "type": "find_hanja_sentence",
+        "hint": "[ 사람 ]들은 모두 다 다르게 생겼 습니다.",
+        "target": "사람",
+        "choices": [
+          "父",
+          "口",
+          "八",
+          "山",
+          "下",
+          "木",
+          "人",
+          "三",
+          "土",
+          "五"
+        ],
+        "answer": "人"
+      },
+      {
+        "no": 23,
+        "type": "find_hanja_sentence",
+        "hint": "작년에 심은 [ 나무 ]에서 꽃이 피 었습니다.",
+        "target": "나무",
+        "choices": [
+          "父",
+          "口",
+          "八",
+          "山",
+          "下",
+          "木",
+          "人",
+          "三",
+          "土",
+          "五"
+        ],
+        "answer": "木"
+      },
+      {
+        "no": 24,
+        "type": "find_hanja_sentence",
+        "hint": "물고기가 먹이를 먹으려고 [ 입 ]을 뻐금거립니다.",
+        "target": "입",
+        "choices": [
+          "父",
+          "口",
+          "八",
+          "山",
+          "下",
+          "木",
+          "人",
+          "三",
+          "土",
+          "五"
+        ],
+        "answer": "口"
+      },
+      {
+        "no": 25,
+        "type": "find_hanja_sentence",
+        "hint": "[ 다섯 ]시까지는 집에 돌아와야 합 니다.            한자실력",
+        "target": "다섯",
+        "choices": [
+          "父",
+          "口",
+          "八",
+          "山",
+          "下",
+          "木",
+          "人",
+          "三",
+          "土",
+          "五"
+        ],
+        "answer": "五"
+      },
+      {
+        "no": 26,
+        "type": "find_hanja_sentence",
+        "hint": "[ 여덟 ]시가 되어서야 아버지가 집 에 돌아오셨습니다.",
+        "target": "여덟",
+        "choices": [
+          "父",
+          "口",
+          "八",
+          "山",
+          "下",
+          "木",
+          "人",
+          "三",
+          "土",
+          "五"
+        ],
+        "answer": "八"
+      },
+      {
+        "no": 27,
+        "type": "find_hanja_sentence",
+        "hint": "[ 아버지 ]께서 사오신 호두를 까먹 었습니다.",
+        "target": "아버지",
+        "choices": [
+          "父",
+          "口",
+          "八",
+          "山",
+          "下",
+          "木",
+          "人",
+          "三",
+          "土",
+          "五"
+        ],
+        "answer": "父"
+      },
+      {
+        "no": 28,
+        "type": "find_hanja_sentence",
+        "hint": "나무 그늘 [ 아래 ]에서 밥을 먹었 습니다.",
+        "target": "아래",
+        "choices": [
+          "父",
+          "口",
+          "八",
+          "山",
+          "下",
+          "木",
+          "人",
+          "三",
+          "土",
+          "五"
+        ],
+        "answer": "下"
+      },
+      {
+        "no": 29,
+        "type": "find_hanja_sentence",
+        "hint": "신나게 뛰어놀고 나서 옷에 묻은 [ 흙 ]을 털었습니다.",
+        "target": "흙",
+        "choices": [
+          "父",
+          "口",
+          "八",
+          "山",
+          "下",
+          "木",
+          "人",
+          "三",
+          "土",
+          "五"
+        ],
+        "answer": "土"
+      },
+      {
+        "no": 30,
+        "type": "find_hanja_sentence",
+        "hint": "그는 우리 [ 셋 ] 중에서 나이가 가 장 어립니다.",
+        "target": "셋",
+        "choices": [
+          "父",
+          "口",
+          "八",
+          "山",
+          "下",
+          "木",
+          "人",
+          "三",
+          "土",
+          "五"
+        ],
+        "answer": "三"
+      }
+    ],
+    "huneum": [
+      {
+        "no": 31,
+        "type": "huneum",
+        "hanja": "七",
+        "answer": "일곱 칠"
+      },
+      {
+        "no": 32,
+        "type": "huneum",
+        "hanja": "白",
+        "answer": "흰 백"
+      },
+      {
+        "no": 33,
+        "type": "huneum",
+        "hanja": "十",
+        "answer": "열 십"
+      },
+      {
+        "no": 34,
+        "type": "huneum",
+        "hanja": "火",
+        "answer": "불 화"
+      },
+      {
+        "no": 35,
+        "type": "huneum",
+        "hanja": "小",
+        "answer": "작을 소"
+      },
+      {
+        "no": 36,
+        "type": "huneum",
+        "hanja": "上",
+        "answer": "위 상"
+      },
+      {
+        "no": 37,
+        "type": "huneum",
+        "hanja": "二",
+        "answer": "두 이"
+      },
+      {
+        "no": 38,
+        "type": "huneum",
+        "hanja": "九",
+        "answer": "아홉 구"
+      },
+      {
+        "no": 39,
+        "type": "huneum",
+        "hanja": "門",
+        "answer": "문 문"
+      },
+      {
+        "no": 40,
+        "type": "huneum",
+        "hanja": "女",
+        "answer": "여자 녀"
+      }
+    ],
+    "reading": [
+      {
+        "no": 41,
+        "type": "reading",
+        "hanja": "六日",
+        "answer": "육일"
+      },
+      {
+        "no": 42,
+        "type": "reading",
+        "hanja": "水中",
+        "answer": "수중"
+      },
+      {
+        "no": 43,
+        "type": "reading",
+        "hanja": "王子",
+        "answer": "왕자"
+      },
+      {
+        "no": 44,
+        "type": "reading",
+        "hanja": "四月",
+        "answer": "사월"
+      }
+    ],
+    "find_hanja_sentence2": [
+      {
+        "no": 45,
+        "type": "find_hanja_sentence",
+        "hint": "애완 [ 動物 ]을 직접 키워보고 싶 습니다.",
+        "target": "動物",
+        "choices": [
+          "학교",
+          "문장",
+          "의견",
+          "선생",
+          "동물",
+          "내용"
+        ],
+        "answer": "동물"
+      },
+      {
+        "no": 46,
+        "type": "find_hanja_sentence",
+        "hint": "그는 자신의 [ 意見 ]을 분명하게 말했습니다.",
+        "target": "意見",
+        "choices": [
+          "학교",
+          "문장",
+          "의견",
+          "선생",
+          "동물",
+          "내용"
+        ],
+        "answer": "의견"
+      },
+      {
+        "no": 47,
+        "type": "find_hanja_sentence",
+        "hint": "나는 커서 [ 先生 ]님이 되고 싶습 니다.",
+        "target": "先生",
+        "choices": [
+          "학교",
+          "문장",
+          "의견",
+          "선생",
+          "동물",
+          "내용"
+        ],
+        "answer": "선생"
+      },
+      {
+        "no": 48,
+        "type": "find_hanja_sentence",
+        "hint": "저는 그 글의 [ 內容 ]을 정확히 이해하지 못하였습니다.",
+        "target": "內容",
+        "choices": [
+          "학교",
+          "문장",
+          "의견",
+          "선생",
+          "동물",
+          "내용"
+        ],
+        "answer": "내용"
+      },
+      {
+        "no": 49,
+        "type": "find_hanja_sentence",
+        "hint": "여러 단어가 모여 [ 文章 ]이 됩니 다.",
+        "target": "文章",
+        "choices": [
+          "학교",
+          "문장",
+          "의견",
+          "선생",
+          "동물",
+          "내용"
+        ],
+        "answer": "문장"
+      },
+      {
+        "no": 50,
+        "type": "find_hanja_sentence",
+        "hint": "[ 學校 ]에서 먹는 점심 식사는 특 히 맛있습니다.",
+        "target": "學校",
+        "choices": [
+          "학교",
+          "문장",
+          "의견",
+          "선생",
+          "동물",
+          "내용"
+        ],
+        "answer": "학교"
+      }
+    ]
+  },
+  "119": {
+    "meaning_to_hanja": [
+      {
+        "no": 1,
+        "type": "meaning_to_hanja",
+        "question": "여자",
+        "choices": [
+          "子",
+          "父",
+          "女",
+          "水"
+        ],
+        "answer": 3
+      },
+      {
+        "no": 2,
+        "type": "meaning_to_hanja",
+        "question": "뫼",
+        "choices": [
+          "上",
+          "王",
+          "土",
+          "山"
+        ],
+        "answer": 4
+      },
+      {
+        "no": 3,
+        "type": "meaning_to_hanja",
+        "question": "문",
+        "choices": [
+          "中",
+          "二",
+          "月",
+          "門"
+        ],
+        "answer": 4
+      },
+      {
+        "no": 4,
+        "type": "meaning_to_hanja",
+        "question": "아래",
+        "choices": [
+          "下",
+          "一",
+          "七",
+          "九"
+        ],
+        "answer": 1
+      },
+      {
+        "no": 5,
+        "type": "meaning_to_hanja",
+        "question": "물",
+        "choices": [
+          "木",
+          "日",
+          "水",
+          "火"
+        ],
+        "answer": 3
+      },
+      {
+        "no": 6,
+        "type": "meaning_to_hanja",
+        "question": "작다",
+        "choices": [
+          "八",
+          "四",
+          "父",
+          "小"
+        ],
+        "answer": 4
+      },
+      {
+        "no": 7,
+        "type": "meaning_to_hanja",
+        "question": "어머니",
+        "choices": [
+          "月",
+          "上",
+          "母",
+          "子"
+        ],
+        "answer": 3
+      },
+      {
+        "no": 8,
+        "type": "meaning_to_hanja",
+        "question": "가운데",
+        "choices": [
+          "中",
+          "日",
+          "口",
+          "王"
+        ],
+        "answer": 1
+      },
+      {
+        "no": 9,
+        "type": "meaning_to_hanja",
+        "question": "아버지",
+        "choices": [
+          "八",
+          "六",
+          "木",
+          "父"
+        ],
+        "answer": 4
+      },
+      {
+        "no": 10,
+        "type": "meaning_to_hanja",
+        "question": "여섯",
+        "choices": [
+          "木",
+          "六",
+          "水",
+          "王"
+        ],
+        "answer": 2
+      }
+    ],
+    "hanja_reading_choice": [
+      {
+        "no": 11,
+        "type": "hanja_reading_choice",
+        "sentence": "아버지는 [ 九 ]월부터 새로운 직 장으로 출근하십니다.",
+        "hanja": "九",
+        "choices": [
+          "구",
+          "오",
+          "칠",
+          "사"
+        ],
+        "answer": 1
+      },
+      {
+        "no": 12,
+        "type": "hanja_reading_choice",
+        "sentence": "누나는 초등학교 [ 四 ]학년입니 다.",
+        "hanja": "四",
+        "choices": [
+          "삼",
+          "이",
+          "일",
+          "사"
+        ],
+        "answer": 4
+      },
+      {
+        "no": 13,
+        "type": "hanja_reading_choice",
+        "sentence": "[ 土 ]요일에 고모의 결혼식에 가 기로 하였습니다.",
+        "hanja": "土",
+        "choices": [
+          "일",
+          "금",
+          "토",
+          "화"
+        ],
+        "answer": 3
+      },
+      {
+        "no": 14,
+        "type": "hanja_reading_choice",
+        "sentence": "[ 五 ]는 팔보다 작습니다.",
+        "hanja": "五",
+        "choices": [
+          "사",
+          "오",
+          "이",
+          "구"
+        ],
+        "answer": 2
+      },
+      {
+        "no": 15,
+        "type": "hanja_reading_choice",
+        "sentence": "친구와 공원 입[ 口 ]에서 만나기 로 하였습니다.",
+        "hanja": "口",
+        "choices": [
+          "장",
+          "출",
+          "구",
+          "중"
+        ],
+        "answer": 3
+      },
+      {
+        "no": 16,
+        "type": "hanja_reading_choice",
+        "sentence": "이 책상은 [ 木 ]수이신 아버지께 서 만드신 것입니다.",
+        "hanja": "木",
+        "choices": [
+          "가",
+          "선",
+          "공",
+          "목"
+        ],
+        "answer": 4
+      },
+      {
+        "no": 17,
+        "type": "hanja_reading_choice",
+        "sentence": "낡은 [ 上 ]수도관을 새것으로 교 체하였습니다.",
+        "hanja": "上",
+        "choices": [
+          "상",
+          "하",
+          "토",
+          "중"
+        ],
+        "answer": 1
+      },
+      {
+        "no": 18,
+        "type": "hanja_reading_choice",
+        "sentence": "8월 15[ 日 ]은 광복절입니다.",
+        "hanja": "日",
+        "choices": [
+          "날",
+          "해",
+          "일",
+          "달"
+        ],
+        "answer": 3
+      },
+      {
+        "no": 19,
+        "type": "hanja_reading_choice",
+        "sentence": "[ 三 ]촌은 중소기업에 다니고 계 십니다.",
+        "hanja": "三",
+        "choices": [
+          "칠",
+          "삼",
+          "팔",
+          "이"
+        ],
+        "answer": 2
+      },
+      {
+        "no": 20,
+        "type": "hanja_reading_choice",
+        "sentence": "우리 부[ 子 ]는 주말마다 함께 운 동장에서 야구를 합니다.",
+        "hanja": "子",
+        "choices": [
+          "모",
+          "조",
+          "자",
+          "녀"
+        ],
+        "answer": 3
+      }
+    ],
+    "find_hanja_sentence1": [
+      {
+        "no": 21,
+        "type": "find_hanja_sentence",
+        "hint": "정원에 사과[ 나무 ] 한 그루를 심 었습니다.          2",
+        "target": "나무",
+        "choices": [
+          "四",
+          "上",
+          "九",
+          "三",
+          "土",
+          "五",
+          "口",
+          "日",
+          "子",
+          "木"
+        ],
+        "answer": "木"
+      },
+      {
+        "no": 22,
+        "type": "find_hanja_sentence",
+        "hint": "동생은 [ 입 ]을 벌리고 활짝 웃고 있습니다.          2",
+        "target": "입",
+        "choices": [
+          "四",
+          "上",
+          "九",
+          "三",
+          "土",
+          "五",
+          "口",
+          "日",
+          "子",
+          "木"
+        ],
+        "answer": "口"
+      },
+      {
+        "no": 23,
+        "type": "find_hanja_sentence",
+        "hint": "케이크 대신 떡 [ 위 ]에 초를 꽂았 습니다.",
+        "target": "위",
+        "choices": [
+          "四",
+          "上",
+          "九",
+          "三",
+          "土",
+          "五",
+          "口",
+          "日",
+          "子",
+          "木"
+        ],
+        "answer": "上"
+      },
+      {
+        "no": 24,
+        "type": "find_hanja_sentence",
+        "hint": "손가락은 [ 다섯 ] 개입니다.         2",
+        "target": "다섯",
+        "choices": [
+          "四",
+          "上",
+          "九",
+          "三",
+          "土",
+          "五",
+          "口",
+          "日",
+          "子",
+          "木"
+        ],
+        "answer": "五"
+      },
+      {
+        "no": 25,
+        "type": "find_hanja_sentence",
+        "hint": "여름에는 [ 해 ]가 일찍 뜨고 늦게      3 집니다.           한자실력 8급",
+        "target": "해",
+        "choices": [
+          "四",
+          "上",
+          "九",
+          "三",
+          "土",
+          "五",
+          "口",
+          "日",
+          "子",
+          "木"
+        ],
+        "answer": "日"
+      },
+      {
+        "no": 26,
+        "type": "find_hanja_sentence",
+        "hint": "이 지역은 [ 흙 ]이 좋고 물이 맑아 서 농작물이 잘 자랍니다.",
+        "target": "흙",
+        "choices": [
+          "四",
+          "上",
+          "九",
+          "三",
+          "土",
+          "五",
+          "口",
+          "日",
+          "子",
+          "木"
+        ],
+        "answer": "土"
+      },
+      {
+        "no": 27,
+        "type": "find_hanja_sentence",
+        "hint": "술래는 하나, 둘, [ 셋 ]을 세고 우 리를 찾으러 다닙니다.",
+        "target": "셋",
+        "choices": [
+          "四",
+          "上",
+          "九",
+          "三",
+          "土",
+          "五",
+          "口",
+          "日",
+          "子",
+          "木"
+        ],
+        "answer": "三"
+      },
+      {
+        "no": 28,
+        "type": "find_hanja_sentence",
+        "hint": "우리 가족은 아빠, 엄마, 저, 동생 으로 총 [ 네 ] 명입니다.",
+        "target": "네",
+        "choices": [
+          "四",
+          "上",
+          "九",
+          "三",
+          "土",
+          "五",
+          "口",
+          "日",
+          "子",
+          "木"
+        ],
+        "answer": "四"
+      },
+      {
+        "no": 29,
+        "type": "find_hanja_sentence",
+        "hint": "어머니는 [ 아들 ]을 꼭 껴안았습니 다.",
+        "target": "아들",
+        "choices": [
+          "四",
+          "上",
+          "九",
+          "三",
+          "土",
+          "五",
+          "口",
+          "日",
+          "子",
+          "木"
+        ],
+        "answer": "子"
+      },
+      {
+        "no": 30,
+        "type": "find_hanja_sentence",
+        "hint": "그 병원은 오전 [ 아홉 ]시에 문을 엽 니다.",
+        "target": "아홉",
+        "choices": [
+          "四",
+          "上",
+          "九",
+          "三",
+          "土",
+          "五",
+          "口",
+          "日",
+          "子",
+          "木"
+        ],
+        "answer": "九"
+      }
+    ],
+    "huneum": [
+      {
+        "no": 31,
+        "type": "huneum",
+        "hanja": "火",
+        "answer": "불 화"
+      },
+      {
+        "no": 32,
+        "type": "huneum",
+        "hanja": "王",
+        "answer": "임금 왕"
+      },
+      {
+        "no": 33,
+        "type": "huneum",
+        "hanja": "月",
+        "answer": "달 월"
+      },
+      {
+        "no": 34,
+        "type": "huneum",
+        "hanja": "二",
+        "answer": "두 이"
+      },
+      {
+        "no": 35,
+        "type": "huneum",
+        "hanja": "人",
+        "answer": "사람 인"
+      },
+      {
+        "no": 36,
+        "type": "huneum",
+        "hanja": "十",
+        "answer": "열 십"
+      },
+      {
+        "no": 37,
+        "type": "huneum",
+        "hanja": "女",
+        "answer": "여자/계집 녀"
+      },
+      {
+        "no": 38,
+        "type": "huneum",
+        "hanja": "白",
+        "answer": "흰 백"
+      },
+      {
+        "no": 39,
+        "type": "huneum",
+        "hanja": "七",
+        "answer": "일곱 칠"
+      },
+      {
+        "no": 40,
+        "type": "huneum",
+        "hanja": "八",
+        "answer": "여덟 팔"
+      }
+    ],
+    "reading": [
+      {
+        "no": 41,
+        "type": "reading",
+        "hanja": "父母",
+        "answer": "부모"
+      },
+      {
+        "no": 42,
+        "type": "reading",
+        "hanja": "水門",
+        "answer": "수문"
+      },
+      {
+        "no": 43,
+        "type": "reading",
+        "hanja": "中小",
+        "answer": "중소"
+      },
+      {
+        "no": 44,
+        "type": "reading",
+        "hanja": "下山",
+        "answer": "하산"
+      }
+    ],
+    "find_hanja_sentence2": [
+      {
+        "no": 45,
+        "type": "find_hanja_sentence",
+        "hint": "[ 親舊 ]에게 동화책을 빌려주었습 니다.",
+        "target": "親舊",
+        "choices": [
+          "인물",
+          "주의",
+          "공부",
+          "친구",
+          "생활",
+          "사물"
+        ],
+        "answer": "친구"
+      },
+      {
+        "no": 46,
+        "type": "find_hanja_sentence",
+        "hint": "항상 바른 자세로 [ 工夫 ]해야 합 니다.",
+        "target": "工夫",
+        "choices": [
+          "인물",
+          "주의",
+          "공부",
+          "친구",
+          "생활",
+          "사물"
+        ],
+        "answer": "공부"
+      },
+      {
+        "no": 47,
+        "type": "find_hanja_sentence",
+        "hint": "방학 중에도 규칙적인 [ 生活 ]을 하도록 노력해야 합니다.",
+        "target": "生活",
+        "choices": [
+          "인물",
+          "주의",
+          "공부",
+          "친구",
+          "생활",
+          "사물"
+        ],
+        "answer": "생활"
+      },
+      {
+        "no": 48,
+        "type": "find_hanja_sentence",
+        "hint": "다음 이야기에 나오는 [ 人物 ]들 에게 편지를 써봅시다.",
+        "target": "人物",
+        "choices": [
+          "인물",
+          "주의",
+          "공부",
+          "친구",
+          "생활",
+          "사물"
+        ],
+        "answer": "인물"
+      },
+      {
+        "no": 49,
+        "type": "find_hanja_sentence",
+        "hint": "우리 주변의 물건들을 [ 事物 ]이 라고 합니다.",
+        "target": "事物",
+        "choices": [
+          "인물",
+          "주의",
+          "공부",
+          "친구",
+          "생활",
+          "사물"
+        ],
+        "answer": "사물"
+      },
+      {
+        "no": 50,
+        "type": "find_hanja_sentence",
+        "hint": "감기에 걸리지 않도록 [ 注意 ]해 야 합니다.",
+        "target": "注意",
+        "choices": [
+          "인물",
+          "주의",
+          "공부",
+          "친구",
+          "생활",
+          "사물"
+        ],
+        "answer": "주의"
+      }
+    ]
+  },
+  "120": {
+    "meaning_to_hanja": [
+      {
+        "no": 1,
+        "type": "meaning_to_hanja",
+        "question": "다섯",
+        "choices": [
+          "九",
+          "五",
+          "口",
+          "六"
+        ],
+        "answer": 2
+      },
+      {
+        "no": 2,
+        "type": "meaning_to_hanja",
+        "question": "위",
+        "choices": [
+          "女",
+          "母",
+          "木",
+          "上"
+        ],
+        "answer": 4
+      },
+      {
+        "no": 3,
+        "type": "meaning_to_hanja",
+        "question": "달",
+        "choices": [
+          "月",
+          "白",
+          "父",
+          "四"
+        ],
+        "answer": 1
+      },
+      {
+        "no": 4,
+        "type": "meaning_to_hanja",
+        "question": "아래",
+        "choices": [
+          "山",
+          "下",
+          "三",
+          "門"
+        ],
+        "answer": 2
+      },
+      {
+        "no": 5,
+        "type": "meaning_to_hanja",
+        "question": "불",
+        "choices": [
+          "小",
+          "十",
+          "火",
+          "五"
+        ],
+        "answer": 3
+      },
+      {
+        "no": 6,
+        "type": "meaning_to_hanja",
+        "question": "산",
+        "choices": [
+          "水",
+          "四",
+          "山",
+          "王"
+        ],
+        "answer": 3
+      },
+      {
+        "no": 7,
+        "type": "meaning_to_hanja",
+        "question": "입",
+        "choices": [
+          "口",
+          "月",
+          "二",
+          "人"
+        ],
+        "answer": 1
+      },
+      {
+        "no": 8,
+        "type": "meaning_to_hanja",
+        "question": "사람",
+        "choices": [
+          "日",
+          "一",
+          "子",
+          "人"
+        ],
+        "answer": 4
+      },
+      {
+        "no": 9,
+        "type": "meaning_to_hanja",
+        "question": "여자",
+        "choices": [
+          "中",
+          "女",
+          "七",
+          "土"
+        ],
+        "answer": 2
+      },
+      {
+        "no": 10,
+        "type": "meaning_to_hanja",
+        "question": "나무",
+        "choices": [
+          "八",
+          "下",
+          "木",
+          "火"
+        ],
+        "answer": 3
+      }
+    ],
+    "hanja_reading_choice": [
+      {
+        "no": 11,
+        "type": "hanja_reading_choice",
+        "sentence": "우리집은 아파트 [ 十 ]층이다.",
+        "hanja": "十",
+        "choices": [
+          "일",
+          "십",
+          "구",
+          "삼"
+        ],
+        "answer": 2
+      },
+      {
+        "no": 12,
+        "type": "hanja_reading_choice",
+        "sentence": "사자는 동물의 [ 王 ]이다.",
+        "hanja": "王",
+        "choices": [
+          "우",
+          "허",
+          "왕",
+          "재"
+        ],
+        "answer": 3
+      },
+      {
+        "no": 13,
+        "type": "hanja_reading_choice",
+        "sentence": "사에 이를 곱하면 [ 八 ]이 된다.",
+        "hanja": "八",
+        "choices": [
+          "팔",
+          "이",
+          "사",
+          "육"
+        ],
+        "answer": 1
+      },
+      {
+        "no": 14,
+        "type": "hanja_reading_choice",
+        "sentence": "도서관에서 [ 小 ]설책 한 권을 대 출했다.",
+        "hanja": "小",
+        "choices": [
+          "가",
+          "남",
+          "소",
+          "노"
+        ],
+        "answer": 3
+      },
+      {
+        "no": 15,
+        "type": "hanja_reading_choice",
+        "sentence": "집을 비울 때는 [ 門 ]을 꼭 잠가 야 한다.",
+        "hanja": "門",
+        "choices": [
+          "식",
+          "박",
+          "강",
+          "문"
+        ],
+        "answer": 4
+      },
+      {
+        "no": 16,
+        "type": "hanja_reading_choice",
+        "sentence": "누나는 올해 [ 六 ]학년이 되었다.",
+        "hanja": "六",
+        "choices": [
+          "육",
+          "이",
+          "사",
+          "오"
+        ],
+        "answer": 1
+      },
+      {
+        "no": 17,
+        "type": "hanja_reading_choice",
+        "sentence": "바둑돌은 [ 白 ]색과 흑색을 사용 하는 것이 보통이다.",
+        "hanja": "白",
+        "choices": [
+          "옥",
+          "청",
+          "백",
+          "적"
+        ],
+        "answer": 3
+      },
+      {
+        "no": 18,
+        "type": "hanja_reading_choice",
+        "sentence": "[ 九 ] 번 탁자에서 설렁탕을 주문 했다.",
+        "hanja": "九",
+        "choices": [
+          "수",
+          "토",
+          "풍",
+          "구"
+        ],
+        "answer": 4
+      },
+      {
+        "no": 19,
+        "type": "hanja_reading_choice",
+        "sentence": "이 건물 [ 四 ]층에 아버지께서 근 무하시는 사무실이 있다.",
+        "hanja": "四",
+        "choices": [
+          "사",
+          "칠",
+          "구",
+          "일"
+        ],
+        "answer": 1
+      },
+      {
+        "no": 20,
+        "type": "hanja_reading_choice",
+        "sentence": "그들은 [ 父 ]모처럼 우리를 따뜻 하게 맞아 주었다.",
+        "hanja": "父",
+        "choices": [
+          "녀",
+          "부",
+          "삼",
+          "경"
+        ],
+        "answer": 2
+      }
+    ],
+    "find_hanja_sentence1": [
+      {
+        "no": 21,
+        "type": "find_hanja_sentence",
+        "hint": "문어 다리는 총 [ 여덟 ]개입니다.",
+        "target": "여덟",
+        "choices": [
+          "六",
+          "門",
+          "白",
+          "父",
+          "九",
+          "四",
+          "小",
+          "王",
+          "八",
+          "十"
+        ],
+        "answer": "八"
+      },
+      {
+        "no": 22,
+        "type": "find_hanja_sentence",
+        "hint": "동생은 [ 문 ]을 열고 밖을 내다보 았습니다.",
+        "target": "문",
+        "choices": [
+          "六",
+          "門",
+          "白",
+          "父",
+          "九",
+          "四",
+          "小",
+          "王",
+          "八",
+          "十"
+        ],
+        "answer": "門"
+      },
+      {
+        "no": 23,
+        "type": "find_hanja_sentence",
+        "hint": "어린이들은 나라의 미래를 짊어질 [ 임금 ]이라고 해도 과언이 아닙 니다.",
+        "target": "임금",
+        "choices": [
+          "六",
+          "門",
+          "白",
+          "父",
+          "九",
+          "四",
+          "小",
+          "王",
+          "八",
+          "十"
+        ],
+        "answer": "王"
+      },
+      {
+        "no": 24,
+        "type": "find_hanja_sentence",
+        "hint": "수업 시간에 발표를 잘해서 상으 로 사탕 [ 여섯 ] 개를 받았습니다.",
+        "target": "여섯",
+        "choices": [
+          "六",
+          "門",
+          "白",
+          "父",
+          "九",
+          "四",
+          "小",
+          "王",
+          "八",
+          "十"
+        ],
+        "answer": "六"
+      },
+      {
+        "no": 25,
+        "type": "find_hanja_sentence",
+        "hint": "겨울에는 [ 흰 ] 눈이 내립니다. 한자실력",
+        "target": "흰",
+        "choices": [
+          "六",
+          "門",
+          "白",
+          "父",
+          "九",
+          "四",
+          "小",
+          "王",
+          "八",
+          "十"
+        ],
+        "answer": "白"
+      },
+      {
+        "no": 26,
+        "type": "find_hanja_sentence",
+        "hint": "사람의 손가락은 총 [ 열 ]개입니다.",
+        "target": "열",
+        "choices": [
+          "六",
+          "門",
+          "白",
+          "父",
+          "九",
+          "四",
+          "小",
+          "王",
+          "八",
+          "十"
+        ],
+        "answer": "十"
+      },
+      {
+        "no": 27,
+        "type": "find_hanja_sentence",
+        "hint": "[ 아버지 ]께서 퇴근길에 맛있는 호 두과자를 사오셨습니다.",
+        "target": "아버지",
+        "choices": [
+          "六",
+          "門",
+          "白",
+          "父",
+          "九",
+          "四",
+          "小",
+          "王",
+          "八",
+          "十"
+        ],
+        "answer": "父"
+      },
+      {
+        "no": 28,
+        "type": "find_hanja_sentence",
+        "hint": "누나가 읽고 있는 소설의 제목은 『[ 아홉 ] 켤레의 구두로 남은 사내』 입니다.",
+        "target": "아홉",
+        "choices": [
+          "六",
+          "門",
+          "白",
+          "父",
+          "九",
+          "四",
+          "小",
+          "王",
+          "八",
+          "十"
+        ],
+        "answer": "九"
+      },
+      {
+        "no": 29,
+        "type": "find_hanja_sentence",
+        "hint": "우리 가족은 총 [ 네 ] 명입니다.",
+        "target": "네",
+        "choices": [
+          "六",
+          "門",
+          "白",
+          "父",
+          "九",
+          "四",
+          "小",
+          "王",
+          "八",
+          "十"
+        ],
+        "answer": "四"
+      },
+      {
+        "no": 30,
+        "type": "find_hanja_sentence",
+        "hint": "[ 작은 ] 빗방울이 모여 내를 이룹 니다.",
+        "target": "작은",
+        "choices": [
+          "六",
+          "門",
+          "白",
+          "父",
+          "九",
+          "四",
+          "小",
+          "王",
+          "八",
+          "十"
+        ],
+        "answer": "小"
+      }
+    ],
+    "huneum": [
+      {
+        "no": 31,
+        "type": "huneum",
+        "hanja": "母",
+        "answer": "어머니/어미 모"
+      },
+      {
+        "no": 32,
+        "type": "huneum",
+        "hanja": "水",
+        "answer": "물 수"
+      },
+      {
+        "no": 33,
+        "type": "huneum",
+        "hanja": "二",
+        "answer": "두 이"
+      },
+      {
+        "no": 34,
+        "type": "huneum",
+        "hanja": "子",
+        "answer": "아들 자"
+      },
+      {
+        "no": 35,
+        "type": "huneum",
+        "hanja": "中",
+        "answer": "가운데 중"
+      },
+      {
+        "no": 36,
+        "type": "huneum",
+        "hanja": "七",
+        "answer": "일곱 칠"
+      },
+      {
+        "no": 37,
+        "type": "huneum",
+        "hanja": "土",
+        "answer": "흙 토"
+      },
+      {
+        "no": 38,
+        "type": "huneum",
+        "hanja": "十",
+        "answer": "열 십"
+      },
+      {
+        "no": 39,
+        "type": "huneum",
+        "hanja": "日",
+        "answer": "날 일"
+      },
+      {
+        "no": 40,
+        "type": "huneum",
+        "hanja": "三",
+        "answer": "석 삼"
+      }
+    ],
+    "reading": [
+      {
+        "no": 41,
+        "type": "reading",
+        "hanja": "上下",
+        "answer": "상하"
+      },
+      {
+        "no": 42,
+        "type": "reading",
+        "hanja": "五月",
+        "answer": "오월"
+      },
+      {
+        "no": 43,
+        "type": "reading",
+        "hanja": "火山",
+        "answer": "화산"
+      },
+      {
+        "no": 44,
+        "type": "reading",
+        "hanja": "人口",
+        "answer": "인구"
+      }
+    ],
+    "find_hanja_sentence2": [
+      {
+        "no": 45,
+        "type": "find_hanja_sentence",
+        "hint": "[ 文章 ]을 다시 읽어보며 문법에 어긋난 부분을 고쳤습니다.",
+        "target": "文章",
+        "choices": [
+          "공부",
+          "의견",
+          "동물",
+          "친구",
+          "내용",
+          "문장"
+        ],
+        "answer": "문장"
+      },
+      {
+        "no": 46,
+        "type": "find_hanja_sentence",
+        "hint": "[ 親舊 ]와 웃으며 이야기를 나누 었습니다.",
+        "target": "親舊",
+        "choices": [
+          "공부",
+          "의견",
+          "동물",
+          "친구",
+          "내용",
+          "문장"
+        ],
+        "answer": "친구"
+      },
+      {
+        "no": 47,
+        "type": "find_hanja_sentence",
+        "hint": "한자 [ 工夫 ]는 하면 할수록 재미 있습니다.",
+        "target": "工夫",
+        "choices": [
+          "공부",
+          "의견",
+          "동물",
+          "친구",
+          "내용",
+          "문장"
+        ],
+        "answer": "공부"
+      },
+      {
+        "no": 48,
+        "type": "find_hanja_sentence",
+        "hint": "여러 사람의 [ 意見 ]을 모아 계획 을 세워 봅시다.",
+        "target": "意見",
+        "choices": [
+          "공부",
+          "의견",
+          "동물",
+          "친구",
+          "내용",
+          "문장"
+        ],
+        "answer": "의견"
+      },
+      {
+        "no": 49,
+        "type": "find_hanja_sentence",
+        "hint": "오늘 읽은 동화책의 [ 內容 ]이 매 우 감동적이었습니다.",
+        "target": "內容",
+        "choices": [
+          "공부",
+          "의견",
+          "동물",
+          "친구",
+          "내용",
+          "문장"
+        ],
+        "answer": "내용"
+      },
+      {
+        "no": 50,
+        "type": "find_hanja_sentence",
+        "hint": "원시인들은 [ 動物 ]의 가죽을 옷 으로 만들어 입었습니다.",
+        "target": "動物",
+        "choices": [
+          "공부",
+          "의견",
+          "동물",
+          "친구",
+          "내용",
+          "문장"
+        ],
+        "answer": "동물"
+      }
+    ]
+  },
+  "121": {
+    "meaning_to_hanja": [
+      {
+        "no": 1,
+        "type": "meaning_to_hanja",
+        "question": "산",
+        "choices": [
+          "山",
+          "火",
+          "下",
+          "七"
+        ],
+        "answer": 1
+      },
+      {
+        "no": 2,
+        "type": "meaning_to_hanja",
+        "question": "해",
+        "choices": [
+          "土",
+          "日",
+          "子",
+          "王"
+        ],
+        "answer": 2
+      },
+      {
+        "no": 3,
+        "type": "meaning_to_hanja",
+        "question": "물",
+        "choices": [
+          "月",
+          "九",
+          "水",
+          "人"
+        ],
+        "answer": 3
+      },
+      {
+        "no": 4,
+        "type": "meaning_to_hanja",
+        "question": "아들",
+        "choices": [
+          "十",
+          "八",
+          "山",
+          "子"
+        ],
+        "answer": 4
+      },
+      {
+        "no": 5,
+        "type": "meaning_to_hanja",
+        "question": "아버지",
+        "choices": [
+          "口",
+          "父",
+          "三",
+          "上"
+        ],
+        "answer": 2
+      },
+      {
+        "no": 6,
+        "type": "meaning_to_hanja",
+        "question": "달",
+        "choices": [
+          "小",
+          "月",
+          "水",
+          "五"
+        ],
+        "answer": 2
+      },
+      {
+        "no": 7,
+        "type": "meaning_to_hanja",
+        "question": "흙",
+        "choices": [
+          "六",
+          "白",
+          "土",
+          "二"
+        ],
+        "answer": 3
+      },
+      {
+        "no": 8,
+        "type": "meaning_to_hanja",
+        "question": "물",
+        "choices": [
+          "水",
+          "父",
+          "八",
+          "女"
+        ],
+        "answer": 1
+      },
+      {
+        "no": 9,
+        "type": "meaning_to_hanja",
+        "question": "나무",
+        "choices": [
+          "中",
+          "木",
+          "下",
+          "母"
+        ],
+        "answer": 2
+      },
+      {
+        "no": 10,
+        "type": "meaning_to_hanja",
+        "question": "문",
+        "choices": [
+          "白",
+          "山",
+          "門",
+          "一"
+        ],
+        "answer": 3
+      }
+    ],
+    "hanja_reading_choice": [
+      {
+        "no": 11,
+        "type": "hanja_reading_choice",
+        "sentence": "우리집 안방에는 [ 小 ]형 냉장고 가 있습니다.",
+        "hanja": "小",
+        "choices": [
+          "인",
+          "자",
+          "소",
+          "구"
+        ],
+        "answer": 3
+      },
+      {
+        "no": 12,
+        "type": "hanja_reading_choice",
+        "sentence": "이 사과는 품질이 [ 上 ]에 속합니 다.",
+        "hanja": "上",
+        "choices": [
+          "수",
+          "차",
+          "정",
+          "상"
+        ],
+        "answer": 4
+      },
+      {
+        "no": 13,
+        "type": "hanja_reading_choice",
+        "sentence": "그 지역의 [ 火 ]산이 폭발했습니 다.",
+        "hanja": "火",
+        "choices": [
+          "주",
+          "화",
+          "노",
+          "온"
+        ],
+        "answer": 2
+      },
+      {
+        "no": 14,
+        "type": "hanja_reading_choice",
+        "sentence": "친구와 도서관 입[ 口 ]에서 만났습 니다.",
+        "hanja": "口",
+        "choices": [
+          "타",
+          "서",
+          "구",
+          "보"
+        ],
+        "answer": 3
+      },
+      {
+        "no": 15,
+        "type": "hanja_reading_choice",
+        "sentence": "나라가 발전하기 위해서는 훌륭한 [ 人 ]물이 많이 필요합니다.",
+        "hanja": "人",
+        "choices": [
+          "무",
+          "금",
+          "조",
+          "인"
+        ],
+        "answer": 4
+      },
+      {
+        "no": 16,
+        "type": "hanja_reading_choice",
+        "sentence": "부모님과 지[ 下 ]철을 타고 놀이 공원에 갑니다.",
+        "hanja": "下",
+        "choices": [
+          "가",
+          "우",
+          "하",
+          "차"
+        ],
+        "answer": 3
+      },
+      {
+        "no": 17,
+        "type": "hanja_reading_choice",
+        "sentence": "친구는 아파트 [ 三 ]층에 살고 있 습니다.",
+        "hanja": "三",
+        "choices": [
+          "십",
+          "이",
+          "구",
+          "삼"
+        ],
+        "answer": 4
+      },
+      {
+        "no": 18,
+        "type": "hanja_reading_choice",
+        "sentence": "누나는 남[ 女 ] 공학 중학교에 다 니고 있습니다.",
+        "hanja": "女",
+        "choices": [
+          "녀",
+          "전",
+          "식",
+          "기"
+        ],
+        "answer": 1
+      },
+      {
+        "no": 19,
+        "type": "hanja_reading_choice",
+        "sentence": "공[ 中 ]에서 줄타기를 하는 광대 를 보았습니다.",
+        "hanja": "中",
+        "choices": [
+          "웅",
+          "중",
+          "바",
+          "후"
+        ],
+        "answer": 2
+      },
+      {
+        "no": 20,
+        "type": "hanja_reading_choice",
+        "sentence": "우리 형은 [ 五 ]학년입니다.",
+        "hanja": "五",
+        "choices": [
+          "오",
+          "일",
+          "칠",
+          "팔"
+        ],
+        "answer": 1
+      }
+    ],
+    "find_hanja_sentence1": [
+      {
+        "no": 21,
+        "type": "find_hanja_sentence",
+        "hint": "이 도시에는 [ 사람 ]들이 많이 살 고 있습니다.",
+        "target": "사람",
+        "choices": [
+          "口",
+          "下",
+          "火",
+          "女",
+          "中",
+          "人",
+          "三",
+          "上",
+          "小",
+          "五"
+        ],
+        "answer": "人"
+      },
+      {
+        "no": 22,
+        "type": "find_hanja_sentence",
+        "hint": "선생님께서 우리들에게 [ 불 ]장난 은 위험하다고 하셨습니다.",
+        "target": "불",
+        "choices": [
+          "口",
+          "下",
+          "火",
+          "女",
+          "中",
+          "人",
+          "三",
+          "上",
+          "小",
+          "五"
+        ],
+        "answer": "火"
+      },
+      {
+        "no": 23,
+        "type": "find_hanja_sentence",
+        "hint": "둘에 셋을 더하면 [ 다섯 ]입니다.",
+        "target": "다섯",
+        "choices": [
+          "口",
+          "下",
+          "火",
+          "女",
+          "中",
+          "人",
+          "三",
+          "上",
+          "小",
+          "五"
+        ],
+        "answer": "五"
+      },
+      {
+        "no": 24,
+        "type": "find_hanja_sentence",
+        "hint": "초등학교 앞에서 [ 여자 ]아이가 길을 건너고 있습니다.",
+        "target": "여자",
+        "choices": [
+          "口",
+          "下",
+          "火",
+          "女",
+          "中",
+          "人",
+          "三",
+          "上",
+          "小",
+          "五"
+        ],
+        "answer": "女"
+      },
+      {
+        "no": 25,
+        "type": "find_hanja_sentence",
+        "hint": "나무 그늘 [ 아래 ]에서 책을 읽었 습니다.           한자실력",
+        "target": "아래",
+        "choices": [
+          "口",
+          "下",
+          "火",
+          "女",
+          "中",
+          "人",
+          "三",
+          "上",
+          "小",
+          "五"
+        ],
+        "answer": "下"
+      },
+      {
+        "no": 26,
+        "type": "find_hanja_sentence",
+        "hint": "맛있는 딸기를 두세 [ 입 ] 베어 먹 었습니다.",
+        "target": "입",
+        "choices": [
+          "口",
+          "下",
+          "火",
+          "女",
+          "中",
+          "人",
+          "三",
+          "上",
+          "小",
+          "五"
+        ],
+        "answer": "口"
+      },
+      {
+        "no": 27,
+        "type": "find_hanja_sentence",
+        "hint": "강을 따라 가다보면 그 [ 위 ]에 작 은 산이 있습니다.",
+        "target": "위",
+        "choices": [
+          "口",
+          "下",
+          "火",
+          "女",
+          "中",
+          "人",
+          "三",
+          "上",
+          "小",
+          "五"
+        ],
+        "answer": "上"
+      },
+      {
+        "no": 28,
+        "type": "find_hanja_sentence",
+        "hint": "마을 사람들은 우리 집을 ‘아들이 [ 셋 ] 있는 집’이라고 해서 ‘삼형 제네’라고 부릅니다.",
+        "target": "셋",
+        "choices": [
+          "口",
+          "下",
+          "火",
+          "女",
+          "中",
+          "人",
+          "三",
+          "上",
+          "小",
+          "五"
+        ],
+        "answer": "三"
+      },
+      {
+        "no": 29,
+        "type": "find_hanja_sentence",
+        "hint": "아기의 [ 작은 ] 발가락이 조금씩 움직였습니다.",
+        "target": "작은",
+        "choices": [
+          "口",
+          "下",
+          "火",
+          "女",
+          "中",
+          "人",
+          "三",
+          "上",
+          "小",
+          "五"
+        ],
+        "answer": "小"
+      },
+      {
+        "no": 30,
+        "type": "find_hanja_sentence",
+        "hint": "강 [ 가운데 ] 배가 떠 있습니다.",
+        "target": "가운데",
+        "choices": [
+          "口",
+          "下",
+          "火",
+          "女",
+          "中",
+          "人",
+          "三",
+          "上",
+          "小",
+          "五"
+        ],
+        "answer": "中"
+      }
+    ],
+    "huneum": [
+      {
+        "no": 31,
+        "type": "huneum",
+        "hanja": "九",
+        "answer": "아홉 구"
+      },
+      {
+        "no": 32,
+        "type": "huneum",
+        "hanja": "母",
+        "answer": "어머니 모"
+      },
+      {
+        "no": 33,
+        "type": "huneum",
+        "hanja": "八",
+        "answer": "여덟 팔"
+      },
+      {
+        "no": 34,
+        "type": "huneum",
+        "hanja": "五",
+        "answer": "다섯 오"
+      },
+      {
+        "no": 35,
+        "type": "huneum",
+        "hanja": "王",
+        "answer": "임금 왕"
+      },
+      {
+        "no": 36,
+        "type": "huneum",
+        "hanja": "二",
+        "answer": "두 이"
+      },
+      {
+        "no": 37,
+        "type": "huneum",
+        "hanja": "四",
+        "answer": "넉/넷 사"
+      },
+      {
+        "no": 38,
+        "type": "huneum",
+        "hanja": "白",
+        "answer": "흰 백"
+      },
+      {
+        "no": 39,
+        "type": "huneum",
+        "hanja": "七",
+        "answer": "일곱 칠"
+      },
+      {
+        "no": 40,
+        "type": "huneum",
+        "hanja": "十",
+        "answer": "열 십"
+      }
+    ],
+    "reading": [
+      {
+        "no": 41,
+        "type": "reading",
+        "hanja": "土木",
+        "answer": "토목"
+      },
+      {
+        "no": 42,
+        "type": "reading",
+        "hanja": "水門",
+        "answer": "수문"
+      },
+      {
+        "no": 43,
+        "type": "reading",
+        "hanja": "父子",
+        "answer": "부자"
+      },
+      {
+        "no": 44,
+        "type": "reading",
+        "hanja": "日月",
+        "answer": "일월"
+      }
+    ],
+    "find_hanja_sentence2": [
+      {
+        "no": 45,
+        "type": "find_hanja_sentence",
+        "hint": "이 [ 植物 ]은 더위를 잘 견딥니다.",
+        "target": "植物",
+        "choices": [
+          "학교",
+          "친구",
+          "식물",
+          "생활",
+          "공부",
+          "주의"
+        ],
+        "answer": "식물"
+      },
+      {
+        "no": 46,
+        "type": "find_hanja_sentence",
+        "hint": "흉내 내는 말에 [ 注意 ]하여 ‘토 끼와 거북이’ 동화를 읽어 봅시다.",
+        "target": "注意",
+        "choices": [
+          "학교",
+          "친구",
+          "식물",
+          "생활",
+          "공부",
+          "주의"
+        ],
+        "answer": "주의"
+      },
+      {
+        "no": 47,
+        "type": "find_hanja_sentence",
+        "hint": "동생은 같은 반에 [ 親舊 ]가 많습 니다.",
+        "target": "親舊",
+        "choices": [
+          "학교",
+          "친구",
+          "식물",
+          "생활",
+          "공부",
+          "주의"
+        ],
+        "answer": "친구"
+      },
+      {
+        "no": 48,
+        "type": "find_hanja_sentence",
+        "hint": "새 학년이 되었으니 더욱 열심히 [ 工夫 ] 합시다.",
+        "target": "工夫",
+        "choices": [
+          "학교",
+          "친구",
+          "식물",
+          "생활",
+          "공부",
+          "주의"
+        ],
+        "answer": "공부"
+      },
+      {
+        "no": 49,
+        "type": "find_hanja_sentence",
+        "hint": "집에 오자마자 [ 學校 ]에서 배운 내용을 복습 했습니다.",
+        "target": "學校",
+        "choices": [
+          "학교",
+          "친구",
+          "식물",
+          "생활",
+          "공부",
+          "주의"
+        ],
+        "answer": "학교"
+      },
+      {
+        "no": 50,
+        "type": "find_hanja_sentence",
+        "hint": "규칙적인 [ 生活 ]은 건강에 좋습 니다.",
+        "target": "生活",
+        "choices": [
+          "학교",
+          "친구",
+          "식물",
+          "생활",
+          "공부",
+          "주의"
+        ],
+        "answer": "생활"
+      }
+    ]
+  },
+  "122": {
+    "meaning_to_hanja": [
+      {
+        "no": 1,
+        "type": "meaning_to_hanja",
+        "question": "위",
+        "choices": [
+          "小",
+          "三",
+          "木",
+          "上"
+        ],
+        "answer": 4
+      },
+      {
+        "no": 2,
+        "type": "meaning_to_hanja",
+        "question": "불",
+        "choices": [
+          "火",
+          "六",
+          "水",
+          "十"
+        ],
+        "answer": 1
+      },
+      {
+        "no": 3,
+        "type": "meaning_to_hanja",
+        "question": "문",
+        "choices": [
+          "母",
+          "門",
+          "父",
+          "五"
+        ],
+        "answer": 2
+      },
+      {
+        "no": 4,
+        "type": "meaning_to_hanja",
+        "question": "아래",
+        "choices": [
+          "王",
+          "二",
+          "下",
+          "人"
+        ],
+        "answer": 3
+      },
+      {
+        "no": 5,
+        "type": "meaning_to_hanja",
+        "question": "산",
+        "choices": [
+          "母",
+          "月",
+          "日",
+          "山"
+        ],
+        "answer": 4
+      },
+      {
+        "no": 6,
+        "type": "meaning_to_hanja",
+        "question": "일곱",
+        "choices": [
+          "七",
+          "口",
+          "一",
+          "子"
+        ],
+        "answer": 1
+      },
+      {
+        "no": 7,
+        "type": "meaning_to_hanja",
+        "question": "사람",
+        "choices": [
+          "中",
+          "人",
+          "七",
+          "五"
+        ],
+        "answer": 2
+      },
+      {
+        "no": 8,
+        "type": "meaning_to_hanja",
+        "question": "달",
+        "choices": [
+          "土",
+          "下",
+          "月",
+          "木"
+        ],
+        "answer": 3
+      },
+      {
+        "no": 9,
+        "type": "meaning_to_hanja",
+        "question": "흰",
+        "choices": [
+          "八",
+          "火",
+          "子",
+          "白"
+        ],
+        "answer": 4
+      },
+      {
+        "no": 10,
+        "type": "meaning_to_hanja",
+        "question": "여자",
+        "choices": [
+          "女",
+          "九",
+          "四",
+          "小"
+        ],
+        "answer": 1
+      }
+    ],
+    "hanja_reading_choice": [
+      {
+        "no": 11,
+        "type": "hanja_reading_choice",
+        "sentence": "그들은 부[ 母 ]처럼 우리를 따뜻 하게 맞아 주었다.",
+        "hanja": "母",
+        "choices": [
+          "녀",
+          "모",
+          "친",
+          "우"
+        ],
+        "answer": 2
+      },
+      {
+        "no": 12,
+        "type": "hanja_reading_choice",
+        "sentence": "[ 日 ]요일마다 도서관에 간다.",
+        "hanja": "日",
+        "choices": [
+          "금",
+          "주",
+          "산",
+          "일"
+        ],
+        "answer": 4
+      },
+      {
+        "no": 13,
+        "type": "hanja_reading_choice",
+        "sentence": "[ 四 ]물놀이는 우리나라 전통 음 악이다.",
+        "hanja": "四",
+        "choices": [
+          "사",
+          "풍",
+          "가",
+          "채"
+        ],
+        "answer": 1
+      },
+      {
+        "no": 14,
+        "type": "hanja_reading_choice",
+        "sentence": "도서관에서 [ 小 ]설책 한 권을 대 출했다.",
+        "hanja": "小",
+        "choices": [
+          "가",
+          "남",
+          "소",
+          "노"
+        ],
+        "answer": 3
+      },
+      {
+        "no": 15,
+        "type": "hanja_reading_choice",
+        "sentence": "반 대항 달리기에서 [ 二 ]등을 하 였습니다.",
+        "hanja": "二",
+        "choices": [
+          "삼",
+          "이",
+          "구",
+          "육"
+        ],
+        "answer": 2
+      },
+      {
+        "no": 16,
+        "type": "hanja_reading_choice",
+        "sentence": "학교에 입학한지 어느덧 [ 一 ]년 이 다 되어 간다.",
+        "hanja": "一",
+        "choices": [
+          "일",
+          "칠",
+          "오",
+          "십"
+        ],
+        "answer": 1
+      },
+      {
+        "no": 17,
+        "type": "hanja_reading_choice",
+        "sentence": "형은 가을을 맞이하는 [ 九 ]월에 태어났다.",
+        "hanja": "九",
+        "choices": [
+          "일",
+          "구",
+          "십",
+          "사"
+        ],
+        "answer": 2
+      },
+      {
+        "no": 18,
+        "type": "hanja_reading_choice",
+        "sentence": "[ 六 ] 번 탁자에서 설렁탕을 주문 했다.",
+        "hanja": "六",
+        "choices": [
+          "수",
+          "토",
+          "저",
+          "육"
+        ],
+        "answer": 4
+      },
+      {
+        "no": 19,
+        "type": "hanja_reading_choice",
+        "sentence": "이 건물 [ 八 ]층에 아버지께서 근 무하시는 사무실이 있다.",
+        "hanja": "八",
+        "choices": [
+          "삼",
+          "칠",
+          "팔",
+          "일"
+        ],
+        "answer": 3
+      },
+      {
+        "no": 20,
+        "type": "hanja_reading_choice",
+        "sentence": "[ 五 ]월은 감사의 달이다.",
+        "hanja": "五",
+        "choices": [
+          "오",
+          "사",
+          "이",
+          "일"
+        ],
+        "answer": 1
+      }
+    ],
+    "find_hanja_sentence1": [
+      {
+        "no": 21,
+        "type": "find_hanja_sentence",
+        "hint": "누나는 저보다 나이가 [ 두] 살 더 많습니다.",
+        "target": "두",
+        "choices": [
+          "八",
+          "一",
+          "二",
+          "五",
+          "小",
+          "四",
+          "六",
+          "母",
+          "九",
+          "日"
+        ],
+        "answer": "二"
+      },
+      {
+        "no": 22,
+        "type": "find_hanja_sentence",
+        "hint": "손가락은 [ 다섯 ] 개입니다.",
+        "target": "다섯",
+        "choices": [
+          "八",
+          "一",
+          "二",
+          "五",
+          "小",
+          "四",
+          "六",
+          "母",
+          "九",
+          "日"
+        ],
+        "answer": "五"
+      },
+      {
+        "no": 23,
+        "type": "find_hanja_sentence",
+        "hint": "아버지께서 초등학교에 입학하는 저를 위하여 공책 [ 네] 권을 사주 셨습니다.",
+        "target": "네",
+        "choices": [
+          "八",
+          "一",
+          "二",
+          "五",
+          "小",
+          "四",
+          "六",
+          "母",
+          "九",
+          "日"
+        ],
+        "answer": "四"
+      },
+      {
+        "no": 24,
+        "type": "find_hanja_sentence",
+        "hint": "배는 [ 아홉] 시간 만에 항구에 도 착했습니다.",
+        "target": "아홉",
+        "choices": [
+          "八",
+          "一",
+          "二",
+          "五",
+          "小",
+          "四",
+          "六",
+          "母",
+          "九",
+          "日"
+        ],
+        "answer": "九"
+      },
+      {
+        "no": 25,
+        "type": "find_hanja_sentence",
+        "hint": "[ 어머니]께서는 지금 신문을 읽 고 계십니다.       한자실력",
+        "target": "어머니",
+        "choices": [
+          "八",
+          "一",
+          "二",
+          "五",
+          "小",
+          "四",
+          "六",
+          "母",
+          "九",
+          "日"
+        ],
+        "answer": "母"
+      },
+      {
+        "no": 26,
+        "type": "find_hanja_sentence",
+        "hint": "아이는 손가락을 하나씩 접으면서 [ 여덟]을 세었습니다.",
+        "target": "여덟",
+        "choices": [
+          "八",
+          "一",
+          "二",
+          "五",
+          "小",
+          "四",
+          "六",
+          "母",
+          "九",
+          "日"
+        ],
+        "answer": "八"
+      },
+      {
+        "no": 27,
+        "type": "find_hanja_sentence",
+        "hint": "크기가 [ 작은] 물건은 잃어버리지 않도록 주머니에 넣어둡니다.",
+        "target": "작은",
+        "choices": [
+          "八",
+          "一",
+          "二",
+          "五",
+          "小",
+          "四",
+          "六",
+          "母",
+          "九",
+          "日"
+        ],
+        "answer": "小"
+      },
+      {
+        "no": 28,
+        "type": "find_hanja_sentence",
+        "hint": "불빛이 [ 하나]도 없는 깜깜한 밤 이 되었습니다.",
+        "target": "하나",
+        "choices": [
+          "八",
+          "一",
+          "二",
+          "五",
+          "小",
+          "四",
+          "六",
+          "母",
+          "九",
+          "日"
+        ],
+        "answer": "一"
+      },
+      {
+        "no": 29,
+        "type": "find_hanja_sentence",
+        "hint": "오늘은 [ 해]가 너무 뜨거워서 하 루 종일 실내에만 있었습니다.",
+        "target": "해",
+        "choices": [
+          "八",
+          "一",
+          "二",
+          "五",
+          "小",
+          "四",
+          "六",
+          "母",
+          "九",
+          "日"
+        ],
+        "answer": "日"
+      },
+      {
+        "no": 30,
+        "type": "find_hanja_sentence",
+        "hint": "어머니께서 시장에서 작은 물고기 [ 여섯] 마리를 사오셨습니다.",
+        "target": "여섯",
+        "choices": [
+          "八",
+          "一",
+          "二",
+          "五",
+          "小",
+          "四",
+          "六",
+          "母",
+          "九",
+          "日"
+        ],
+        "answer": "六"
+      }
+    ],
+    "huneum": [
+      {
+        "no": 31,
+        "type": "huneum",
+        "hanja": "子",
+        "answer": "아들/자식 자"
+      },
+      {
+        "no": 32,
+        "type": "huneum",
+        "hanja": "口",
+        "answer": "입 구"
+      },
+      {
+        "no": 33,
+        "type": "huneum",
+        "hanja": "水",
+        "answer": "물 수"
+      },
+      {
+        "no": 34,
+        "type": "huneum",
+        "hanja": "十",
+        "answer": "열 십"
+      },
+      {
+        "no": 35,
+        "type": "huneum",
+        "hanja": "中",
+        "answer": "가운데 중"
+      },
+      {
+        "no": 36,
+        "type": "huneum",
+        "hanja": "土",
+        "answer": "흙 토"
+      },
+      {
+        "no": 37,
+        "type": "huneum",
+        "hanja": "父",
+        "answer": "아버지/아비 부"
+      },
+      {
+        "no": 38,
+        "type": "huneum",
+        "hanja": "三",
+        "answer": "석/셋 삼"
+      },
+      {
+        "no": 39,
+        "type": "huneum",
+        "hanja": "王",
+        "answer": "임금 왕"
+      },
+      {
+        "no": 40,
+        "type": "huneum",
+        "hanja": "木",
+        "answer": "나무 목"
+      }
+    ],
+    "reading": [
+      {
+        "no": 41,
+        "type": "reading",
+        "hanja": "火山",
+        "answer": "화산"
+      },
+      {
+        "no": 42,
+        "type": "reading",
+        "hanja": "門人",
+        "answer": "문인"
+      },
+      {
+        "no": 43,
+        "type": "reading",
+        "hanja": "七月",
+        "answer": "칠월"
+      },
+      {
+        "no": 44,
+        "type": "reading",
+        "hanja": "上下",
+        "answer": "상하"
+      }
+    ],
+    "find_hanja_sentence2": [
+      {
+        "no": 45,
+        "type": "find_hanja_sentence",
+        "hint": "짧은 [ 文章 ]을 하루에 하나씩 외 우기로 하였습니다.",
+        "target": "文章",
+        "choices": [
+          "의견",
+          "식물",
+          "내용",
+          "문장",
+          "선생",
+          "생활"
+        ],
+        "answer": "문장"
+      },
+      {
+        "no": 46,
+        "type": "find_hanja_sentence",
+        "hint": "친구와 [意見]을 주고받았습니다.",
+        "target": "意見",
+        "choices": [
+          "의견",
+          "식물",
+          "내용",
+          "문장",
+          "선생",
+          "생활"
+        ],
+        "answer": "의견"
+      },
+      {
+        "no": 47,
+        "type": "find_hanja_sentence",
+        "hint": "나는 커서 국어 [先生]님이 되고 싶습니다.",
+        "target": "先生",
+        "choices": [
+          "의견",
+          "식물",
+          "내용",
+          "문장",
+          "선생",
+          "생활"
+        ],
+        "answer": "선생"
+      },
+      {
+        "no": 48,
+        "type": "find_hanja_sentence",
+        "hint": "저는 그 글의 [內容]을 정확히 이해하지 못하였습니다.",
+        "target": "內容",
+        "choices": [
+          "의견",
+          "식물",
+          "내용",
+          "문장",
+          "선생",
+          "생활"
+        ],
+        "answer": "내용"
+      },
+      {
+        "no": 49,
+        "type": "find_hanja_sentence",
+        "hint": "방학 중에도 규칙적인 [生活]을 하도록 노력해야 합니다.",
+        "target": "生活",
+        "choices": [
+          "의견",
+          "식물",
+          "내용",
+          "문장",
+          "선생",
+          "생활"
+        ],
+        "answer": "생활"
+      },
+      {
+        "no": 50,
+        "type": "find_hanja_sentence",
+        "hint": "수목원에는 다양한 [植物]들이 자라고 있습니다.",
+        "target": "植物",
+        "choices": [
+          "의견",
+          "식물",
+          "내용",
+          "문장",
+          "선생",
+          "생활"
+        ],
+        "answer": "식물"
+      }
+    ]
+  },
+  "123": {
+    "meaning_to_hanja": [
+      {
+        "no": 1,
+        "type": "meaning_to_hanja",
+        "question": "달",
+        "choices": [
+          "火",
+          "五",
+          "十",
+          "月"
+        ],
+        "answer": 4
+      },
+      {
+        "no": 2,
+        "type": "meaning_to_hanja",
+        "question": "나무",
+        "choices": [
+          "水",
+          "木",
+          "王",
+          "一"
+        ],
+        "answer": 2
+      },
+      {
+        "no": 3,
+        "type": "meaning_to_hanja",
+        "question": "흙",
+        "choices": [
+          "土",
+          "日",
+          "女",
+          "小"
+        ],
+        "answer": 1
+      },
+      {
+        "no": 4,
+        "type": "meaning_to_hanja",
+        "question": "아들",
+        "choices": [
+          "中",
+          "上",
+          "子",
+          "六"
+        ],
+        "answer": 3
+      },
+      {
+        "no": 5,
+        "type": "meaning_to_hanja",
+        "question": "다섯",
+        "choices": [
+          "白",
+          "女",
+          "口",
+          "五"
+        ],
+        "answer": 4
+      },
+      {
+        "no": 6,
+        "type": "meaning_to_hanja",
+        "question": "작다",
+        "choices": [
+          "山",
+          "小",
+          "母",
+          "九"
+        ],
+        "answer": 2
+      },
+      {
+        "no": 7,
+        "type": "meaning_to_hanja",
+        "question": "아버지",
+        "choices": [
+          "門",
+          "三",
+          "八",
+          "父"
+        ],
+        "answer": 4
+      },
+      {
+        "no": 8,
+        "type": "meaning_to_hanja",
+        "question": "둘",
+        "choices": [
+          "人",
+          "土",
+          "二",
+          "七"
+        ],
+        "answer": 3
+      },
+      {
+        "no": 9,
+        "type": "meaning_to_hanja",
+        "question": "가운데",
+        "choices": [
+          "中",
+          "下",
+          "二",
+          "水"
+        ],
+        "answer": 1
+      },
+      {
+        "no": 10,
+        "type": "meaning_to_hanja",
+        "question": "여덟",
+        "choices": [
+          "木",
+          "八",
+          "上",
+          "王"
+        ],
+        "answer": 2
+      }
+    ],
+    "hanja_reading_choice": [
+      {
+        "no": 11,
+        "type": "hanja_reading_choice",
+        "sentence": "[一]년이 지나 다시 봄이 찾아왔 습니다.",
+        "hanja": "一",
+        "choices": [
+          "이",
+          "일",
+          "사",
+          "오"
+        ],
+        "answer": 2
+      },
+      {
+        "no": 12,
+        "type": "hanja_reading_choice",
+        "sentence": "하얀 눈이 온 세[ 上 ]을 뒤덮었습 니다.",
+        "hanja": "上",
+        "choices": [
+          "민",
+          "풍",
+          "전",
+          "상"
+        ],
+        "answer": 4
+      },
+      {
+        "no": 13,
+        "type": "hanja_reading_choice",
+        "sentence": "친구와 공원 입[ 口 ]에서 만나기 로 하였습니다.",
+        "hanja": "口",
+        "choices": [
+          "구",
+          "장",
+          "소",
+          "나"
+        ],
+        "answer": 1
+      },
+      {
+        "no": 14,
+        "type": "hanja_reading_choice",
+        "sentence": "[ 女 ]동생이 있었으면 좋겠습니다",
+        "hanja": "女",
+        "choices": [
+          "남",
+          "친",
+          "여",
+          "참"
+        ],
+        "answer": 3
+      },
+      {
+        "no": 15,
+        "type": "hanja_reading_choice",
+        "sentence": "[ 王 ]이 말을 타고 사냥을 나갔습 니다.",
+        "hanja": "王",
+        "choices": [
+          "공",
+          "왕",
+          "상",
+          "군"
+        ],
+        "answer": 2
+      },
+      {
+        "no": 16,
+        "type": "hanja_reading_choice",
+        "sentence": "나는 집을 나서면서 [ 門 ]을 잠갔 습니다.",
+        "hanja": "門",
+        "choices": [
+          "문",
+          "방",
+          "창",
+          "신"
+        ],
+        "answer": 1
+      },
+      {
+        "no": 17,
+        "type": "hanja_reading_choice",
+        "sentence": "우리 반은 다음 주 [ 火 ]요일에 봄 소풍을 갑니다.",
+        "hanja": "火",
+        "choices": [
+          "금",
+          "목",
+          "수",
+          "화"
+        ],
+        "answer": 4
+      },
+      {
+        "no": 18,
+        "type": "hanja_reading_choice",
+        "sentence": "[ 山 ]에 아카시아가 한창입니다.",
+        "hanja": "山",
+        "choices": [
+          "초",
+          "굴",
+          "산",
+          "원"
+        ],
+        "answer": 3
+      },
+      {
+        "no": 19,
+        "type": "hanja_reading_choice",
+        "sentence": "밖에서는 [ 下 ]수도 공사를 하고 있어 매우 시끄럽습니다.",
+        "hanja": "下",
+        "choices": [
+          "하",
+          "저",
+          "배",
+          "상"
+        ],
+        "answer": 1
+      },
+      {
+        "no": 20,
+        "type": "hanja_reading_choice",
+        "sentence": "오늘 하루 있었던 일을 [ 日 ]기로 썼습니다.",
+        "hanja": "日",
+        "choices": [
+          "만",
+          "일",
+          "기",
+          "주"
+        ],
+        "answer": 2
+      }
+    ],
+    "find_hanja_sentence1": [
+      {
+        "no": 21,
+        "type": "find_hanja_sentence",
+        "hint": "물고기가 먹이를 먹으려고 [ 입 ]을 뻐금거립니다.",
+        "target": "입",
+        "choices": [
+          "日",
+          "門",
+          "女",
+          "王",
+          "火",
+          "一",
+          "上",
+          "口",
+          "下",
+          "山"
+        ],
+        "answer": "口"
+      },
+      {
+        "no": 22,
+        "type": "find_hanja_sentence",
+        "hint": "눈이 [ 산 ]과 땅을 덮고 있습니다.",
+        "target": "산",
+        "choices": [
+          "日",
+          "門",
+          "女",
+          "王",
+          "火",
+          "一",
+          "上",
+          "口",
+          "下",
+          "山"
+        ],
+        "answer": "山"
+      },
+      {
+        "no": 23,
+        "type": "find_hanja_sentence",
+        "hint": "[ 임금 ]님은 가마를 타고 궁으로 돌아갔습니다.",
+        "target": "임금",
+        "choices": [
+          "日",
+          "門",
+          "女",
+          "王",
+          "火",
+          "一",
+          "上",
+          "口",
+          "下",
+          "山"
+        ],
+        "answer": "王"
+      },
+      {
+        "no": 24,
+        "type": "find_hanja_sentence",
+        "hint": "산에 올라 [ 해 ]가 뜨는 것을 보았 습니다.",
+        "target": "해",
+        "choices": [
+          "日",
+          "門",
+          "女",
+          "王",
+          "火",
+          "一",
+          "上",
+          "口",
+          "下",
+          "山"
+        ],
+        "answer": "日"
+      },
+      {
+        "no": 25,
+        "type": "find_hanja_sentence",
+        "hint": "구름 [ 위 ]를 날아다니는 새가 되 고 싶습니다.            한자실력",
+        "target": "위",
+        "choices": [
+          "日",
+          "門",
+          "女",
+          "王",
+          "火",
+          "一",
+          "上",
+          "口",
+          "下",
+          "山"
+        ],
+        "answer": "上"
+      },
+      {
+        "no": 26,
+        "type": "find_hanja_sentence",
+        "hint": "그 [ 여자 ]는 잘 웃지 않습니다.",
+        "target": "여자",
+        "choices": [
+          "日",
+          "門",
+          "女",
+          "王",
+          "火",
+          "一",
+          "上",
+          "口",
+          "下",
+          "山"
+        ],
+        "answer": "女"
+      },
+      {
+        "no": 27,
+        "type": "find_hanja_sentence",
+        "hint": "[ 불 ]이 나지 않도록 항상 조심해 야 합니다.",
+        "target": "불",
+        "choices": [
+          "日",
+          "門",
+          "女",
+          "王",
+          "火",
+          "一",
+          "上",
+          "口",
+          "下",
+          "山"
+        ],
+        "answer": "火"
+      },
+      {
+        "no": 28,
+        "type": "find_hanja_sentence",
+        "hint": "나무 그늘 [ 아래 ]에서 밥을 먹었 습니다.",
+        "target": "아래",
+        "choices": [
+          "日",
+          "門",
+          "女",
+          "王",
+          "火",
+          "一",
+          "上",
+          "口",
+          "下",
+          "山"
+        ],
+        "answer": "下"
+      },
+      {
+        "no": 29,
+        "type": "find_hanja_sentence",
+        "hint": "동생은 [ 문 ]을 열고 밖을 내다보 았습니다.",
+        "target": "문",
+        "choices": [
+          "日",
+          "門",
+          "女",
+          "王",
+          "火",
+          "一",
+          "上",
+          "口",
+          "下",
+          "山"
+        ],
+        "answer": "門"
+      },
+      {
+        "no": 30,
+        "type": "find_hanja_sentence",
+        "hint": "밤하늘의 수많은 별들 사이에서 달은 [ 하나 ]뿐입니다.",
+        "target": "하나",
+        "choices": [
+          "日",
+          "門",
+          "女",
+          "王",
+          "火",
+          "一",
+          "上",
+          "口",
+          "下",
+          "山"
+        ],
+        "answer": "一"
+      }
+    ],
+    "huneum": [
+      {
+        "no": 31,
+        "type": "huneum",
+        "hanja": "六",
+        "answer": "여섯 륙"
+      },
+      {
+        "no": 32,
+        "type": "huneum",
+        "hanja": "母",
+        "answer": "어머니/어미 모"
+      },
+      {
+        "no": 33,
+        "type": "huneum",
+        "hanja": "四",
+        "answer": "넉/넷 사"
+      },
+      {
+        "no": 34,
+        "type": "huneum",
+        "hanja": "白",
+        "answer": "흰 백"
+      },
+      {
+        "no": 35,
+        "type": "huneum",
+        "hanja": "九",
+        "answer": "아홉 구"
+      },
+      {
+        "no": 36,
+        "type": "huneum",
+        "hanja": "水",
+        "answer": "물 수"
+      },
+      {
+        "no": 37,
+        "type": "huneum",
+        "hanja": "十",
+        "answer": "열 십"
+      },
+      {
+        "no": 38,
+        "type": "huneum",
+        "hanja": "人",
+        "answer": "사람 인"
+      },
+      {
+        "no": 39,
+        "type": "huneum",
+        "hanja": "三",
+        "answer": "석/셋 삼"
+      },
+      {
+        "no": 40,
+        "type": "huneum",
+        "hanja": "七",
+        "answer": "일곱 칠"
+      }
+    ],
+    "reading": [
+      {
+        "no": 41,
+        "type": "reading",
+        "hanja": "中小",
+        "answer": "중소"
+      },
+      {
+        "no": 42,
+        "type": "reading",
+        "hanja": "五月",
+        "answer": "오월"
+      },
+      {
+        "no": 43,
+        "type": "reading",
+        "hanja": "父子",
+        "answer": "부자"
+      },
+      {
+        "no": 44,
+        "type": "reading",
+        "hanja": "土木",
+        "answer": "토목"
+      }
+    ],
+    "find_hanja_sentence2": [
+      {
+        "no": 45,
+        "type": "find_hanja_sentence",
+        "hint": "이 [植物]은 더위를 잘 견딥니다.",
+        "target": "植物",
+        "choices": [
+          "내용",
+          "친구",
+          "주의",
+          "식물",
+          "공부",
+          "학교"
+        ],
+        "answer": "식물"
+      },
+      {
+        "no": 46,
+        "type": "find_hanja_sentence",
+        "hint": "이 이야기의 다음 [內容]을 상상 해 봅시다.",
+        "target": "內容",
+        "choices": [
+          "내용",
+          "친구",
+          "주의",
+          "식물",
+          "공부",
+          "학교"
+        ],
+        "answer": "내용"
+      },
+      {
+        "no": 47,
+        "type": "find_hanja_sentence",
+        "hint": "새 학년이 되자 새로운 [親舊]들 을 많이 사귀었습니다.",
+        "target": "親舊",
+        "choices": [
+          "내용",
+          "친구",
+          "주의",
+          "식물",
+          "공부",
+          "학교"
+        ],
+        "answer": "친구"
+      },
+      {
+        "no": 48,
+        "type": "find_hanja_sentence",
+        "hint": "수험생 [注意]사항을 꼼꼼히 읽 어보았습니다.",
+        "target": "注意",
+        "choices": [
+          "내용",
+          "친구",
+          "주의",
+          "식물",
+          "공부",
+          "학교"
+        ],
+        "answer": "주의"
+      },
+      {
+        "no": 49,
+        "type": "find_hanja_sentence",
+        "hint": "[學校] 운동장에서 축구를 하였 습니다.",
+        "target": "學校",
+        "choices": [
+          "내용",
+          "친구",
+          "주의",
+          "식물",
+          "공부",
+          "학교"
+        ],
+        "answer": "학교"
+      },
+      {
+        "no": 50,
+        "type": "find_hanja_sentence",
+        "hint": "도서관에는 책을 읽거나 [工夫] 하는 사람이 많이 있습니다.",
+        "target": "工夫",
+        "choices": [
+          "내용",
+          "친구",
+          "주의",
+          "식물",
+          "공부",
+          "학교"
+        ],
+        "answer": "공부"
+      }
+    ]
+  },
+  "124": {
+    "meaning_to_hanja": [
+      {
+        "no": 1,
+        "type": "meaning_to_hanja",
+        "question": "열",
+        "choices": [
+          "十",
+          "土",
+          "上",
+          "王"
+        ],
+        "answer": 1
+      },
+      {
+        "no": 2,
+        "type": "meaning_to_hanja",
+        "question": "위",
+        "choices": [
+          "子",
+          "上",
+          "火",
+          "七"
+        ],
+        "answer": 2
+      },
+      {
+        "no": 3,
+        "type": "meaning_to_hanja",
+        "question": "왕",
+        "choices": [
+          "水",
+          "人",
+          "月",
+          "王"
+        ],
+        "answer": 4
+      },
+      {
+        "no": 4,
+        "type": "meaning_to_hanja",
+        "question": "메",
+        "choices": [
+          "一",
+          "山",
+          "門",
+          "小"
+        ],
+        "answer": 2
+      },
+      {
+        "no": 5,
+        "type": "meaning_to_hanja",
+        "question": "여자",
+        "choices": [
+          "中",
+          "白",
+          "女",
+          "三"
+        ],
+        "answer": 3
+      },
+      {
+        "no": 6,
+        "type": "meaning_to_hanja",
+        "question": "아들",
+        "choices": [
+          "日",
+          "十",
+          "二",
+          "子"
+        ],
+        "answer": 4
+      },
+      {
+        "no": 7,
+        "type": "meaning_to_hanja",
+        "question": "여섯",
+        "choices": [
+          "下",
+          "口",
+          "六",
+          "八"
+        ],
+        "answer": 3
+      },
+      {
+        "no": 8,
+        "type": "meaning_to_hanja",
+        "question": "물",
+        "choices": [
+          "七",
+          "八",
+          "月",
+          "水"
+        ],
+        "answer": 4
+      },
+      {
+        "no": 9,
+        "type": "meaning_to_hanja",
+        "question": "아홉",
+        "choices": [
+          "木",
+          "九",
+          "父",
+          "土"
+        ],
+        "answer": 2
+      },
+      {
+        "no": 10,
+        "type": "meaning_to_hanja",
+        "question": "아래",
+        "choices": [
+          "下",
+          "四",
+          "人",
+          "中"
+        ],
+        "answer": 1
+      }
+    ],
+    "hanja_reading_choice": [
+      {
+        "no": 11,
+        "type": "hanja_reading_choice",
+        "sentence": "동생이 감기에 걸려 [ 小 ]아과에 갔습니다.",
+        "hanja": "小",
+        "choices": [
+          "바",
+          "소",
+          "우",
+          "다"
+        ],
+        "answer": 2
+      },
+      {
+        "no": 12,
+        "type": "hanja_reading_choice",
+        "sentence": "올해는 삼[ 一 ]독립 만세 운동 107 주년입니다.",
+        "hanja": "一",
+        "choices": [
+          "일",
+          "백",
+          "십",
+          "칠"
+        ],
+        "answer": 1
+      },
+      {
+        "no": 13,
+        "type": "hanja_reading_choice",
+        "sentence": "나는 [ 三 ]남매 중 첫째입니다",
+        "hanja": "三",
+        "choices": [
+          "오",
+          "사",
+          "삼",
+          "육"
+        ],
+        "answer": 3
+      },
+      {
+        "no": 14,
+        "type": "hanja_reading_choice",
+        "sentence": "누나는 ‘[ 八 ]방미인’입니다.",
+        "hanja": "八",
+        "choices": [
+          "이",
+          "오",
+          "칠",
+          "팔"
+        ],
+        "answer": 4
+      },
+      {
+        "no": 15,
+        "type": "hanja_reading_choice",
+        "sentence": "고[ 母 ]와 함께 놀이동산에 갔습 니다.",
+        "hanja": "母",
+        "choices": [
+          "구",
+          "모",
+          "부",
+          "자"
+        ],
+        "answer": 2
+      },
+      {
+        "no": 16,
+        "type": "hanja_reading_choice",
+        "sentence": "외국[ 人 ]에게 길을 가르쳐 주었 습니다.",
+        "hanja": "人",
+        "choices": [
+          "상",
+          "왕",
+          "인",
+          "문"
+        ],
+        "answer": 3
+      },
+      {
+        "no": 17,
+        "type": "hanja_reading_choice",
+        "sentence": "[ 土 ]요일날 영화를 보았습니다.",
+        "hanja": "土",
+        "choices": [
+          "수",
+          "화",
+          "토",
+          "일"
+        ],
+        "answer": 3
+      },
+      {
+        "no": 18,
+        "type": "hanja_reading_choice",
+        "sentence": "짝에게 [ 火 ]를 낸 것이 미안해졌 습니다.",
+        "hanja": "火",
+        "choices": [
+          "화",
+          "보",
+          "처",
+          "주"
+        ],
+        "answer": 1
+      },
+      {
+        "no": 19,
+        "type": "hanja_reading_choice",
+        "sentence": "우리나라에는 아름다운 [ 四 ]계절 이 있습니다.",
+        "hanja": "四",
+        "choices": [
+          "서",
+          "인",
+          "사",
+          "문"
+        ],
+        "answer": 3
+      },
+      {
+        "no": 20,
+        "type": "hanja_reading_choice",
+        "sentence": "우리 집 ‘식[ 口 ]’는 모두 넷입니다.",
+        "hanja": "口",
+        "choices": [
+          "저",
+          "구",
+          "수",
+          "모"
+        ],
+        "answer": 2
+      }
+    ],
+    "find_hanja_sentence1": [
+      {
+        "no": 21,
+        "type": "find_hanja_sentence",
+        "hint": "미술 시간에 찰[ 흙 ]을 이용하여 거북이를 만들었습니다.",
+        "target": "흙",
+        "choices": [
+          "三",
+          "四",
+          "人",
+          "小",
+          "口",
+          "土",
+          "母",
+          "火",
+          "一",
+          "八"
+        ],
+        "answer": "土"
+      },
+      {
+        "no": 22,
+        "type": "find_hanja_sentence",
+        "hint": "길가에 예쁜 꽃 [ 한 ] 송이가 피어 있었습니다.",
+        "target": "한",
+        "choices": [
+          "三",
+          "四",
+          "人",
+          "小",
+          "口",
+          "土",
+          "母",
+          "火",
+          "一",
+          "八"
+        ],
+        "answer": "一"
+      },
+      {
+        "no": 23,
+        "type": "find_hanja_sentence",
+        "hint": "언제나 [ 불 ]조심을 해야 합니다.",
+        "target": "불",
+        "choices": [
+          "三",
+          "四",
+          "人",
+          "小",
+          "口",
+          "土",
+          "母",
+          "火",
+          "一",
+          "八"
+        ],
+        "answer": "火"
+      },
+      {
+        "no": 24,
+        "type": "find_hanja_sentence",
+        "hint": "시장에는 많은 [ 사람 ]들과 물건들 이 모여 있습니다.",
+        "target": "사람",
+        "choices": [
+          "三",
+          "四",
+          "人",
+          "小",
+          "口",
+          "土",
+          "母",
+          "火",
+          "一",
+          "八"
+        ],
+        "answer": "人"
+      },
+      {
+        "no": 25,
+        "type": "find_hanja_sentence",
+        "hint": "크기가 [ 작은 ] 물건은 잃어버리지 않도록 주머니에 넣어둡니다. 한자실력",
+        "target": "작은",
+        "choices": [
+          "三",
+          "四",
+          "人",
+          "小",
+          "口",
+          "土",
+          "母",
+          "火",
+          "一",
+          "八"
+        ],
+        "answer": "小"
+      },
+      {
+        "no": 26,
+        "type": "find_hanja_sentence",
+        "hint": "문어는 다리가 [ 여덟 ]개입니다.",
+        "target": "여덟",
+        "choices": [
+          "三",
+          "四",
+          "人",
+          "小",
+          "口",
+          "土",
+          "母",
+          "火",
+          "一",
+          "八"
+        ],
+        "answer": "八"
+      },
+      {
+        "no": 27,
+        "type": "find_hanja_sentence",
+        "hint": "재채기가 나올 때는 [ 입 ]을 가려 야 합니다.",
+        "target": "입",
+        "choices": [
+          "三",
+          "四",
+          "人",
+          "小",
+          "口",
+          "土",
+          "母",
+          "火",
+          "一",
+          "八"
+        ],
+        "answer": "口"
+      },
+      {
+        "no": 28,
+        "type": "find_hanja_sentence",
+        "hint": "형은 윷가락 [ 네 ]개를 힘차게 던 졌습니다.",
+        "target": "네",
+        "choices": [
+          "三",
+          "四",
+          "人",
+          "小",
+          "口",
+          "土",
+          "母",
+          "火",
+          "一",
+          "八"
+        ],
+        "answer": "四"
+      },
+      {
+        "no": 29,
+        "type": "find_hanja_sentence",
+        "hint": "술래는 하나, 둘, [ 셋 ]을 세고 우 리를 찾으러 다닙니다.",
+        "target": "셋",
+        "choices": [
+          "三",
+          "四",
+          "人",
+          "小",
+          "口",
+          "土",
+          "母",
+          "火",
+          "一",
+          "八"
+        ],
+        "answer": "三"
+      },
+      {
+        "no": 30,
+        "type": "find_hanja_sentence",
+        "hint": "어제는 아버지, [ 어머니 ]와 함께 동네 뒷산에 올랐습니다.",
+        "target": "어머니",
+        "choices": [
+          "三",
+          "四",
+          "人",
+          "小",
+          "口",
+          "土",
+          "母",
+          "火",
+          "一",
+          "八"
+        ],
+        "answer": "母"
+      }
+    ],
+    "huneum": [
+      {
+        "no": 31,
+        "type": "huneum",
+        "hanja": "日",
+        "answer": "날 일"
+      },
+      {
+        "no": 32,
+        "type": "huneum",
+        "hanja": "中",
+        "answer": "가운데 중"
+      },
+      {
+        "no": 33,
+        "type": "huneum",
+        "hanja": "七",
+        "answer": "일곱 칠"
+      },
+      {
+        "no": 34,
+        "type": "huneum",
+        "hanja": "門",
+        "answer": "문 문"
+      },
+      {
+        "no": 35,
+        "type": "huneum",
+        "hanja": "父",
+        "answer": "아버지 부"
+      },
+      {
+        "no": 36,
+        "type": "huneum",
+        "hanja": "木",
+        "answer": "나무 목"
+      },
+      {
+        "no": 37,
+        "type": "huneum",
+        "hanja": "五",
+        "answer": "다섯 오"
+      },
+      {
+        "no": 38,
+        "type": "huneum",
+        "hanja": "月",
+        "answer": "달 월"
+      },
+      {
+        "no": 39,
+        "type": "huneum",
+        "hanja": "二",
+        "answer": "두 이"
+      },
+      {
+        "no": 40,
+        "type": "huneum",
+        "hanja": "白",
+        "answer": "흰 백"
+      }
+    ],
+    "reading": [
+      {
+        "no": 41,
+        "type": "reading",
+        "hanja": "九十",
+        "answer": "구십"
+      },
+      {
+        "no": 42,
+        "type": "reading",
+        "hanja": "王子",
+        "answer": "왕자"
+      },
+      {
+        "no": 43,
+        "type": "reading",
+        "hanja": "山水",
+        "answer": "산수"
+      },
+      {
+        "no": 44,
+        "type": "reading",
+        "hanja": "上下",
+        "answer": "상하"
+      }
+    ],
+    "find_hanja_sentence2": [
+      {
+        "no": 45,
+        "type": "find_hanja_sentence",
+        "hint": "[ 親舊 ]에게 동화책을 빌려주었습 니다.",
+        "target": "親舊",
+        "choices": [
+          "식물",
+          "생활",
+          "선생",
+          "문장",
+          "의견",
+          "친구"
+        ],
+        "answer": "친구"
+      },
+      {
+        "no": 46,
+        "type": "find_hanja_sentence",
+        "hint": "세상에 [ 植物 ]이 없다면 모든 동 물은 숨을 쉴 수 없습니다.",
+        "target": "植物",
+        "choices": [
+          "식물",
+          "생활",
+          "선생",
+          "문장",
+          "의견",
+          "친구"
+        ],
+        "answer": "식물"
+      },
+      {
+        "no": 47,
+        "type": "find_hanja_sentence",
+        "hint": "[ 文章 ]을 다시 읽어보며 문법에 어긋난 부분을 고쳤습니다.",
+        "target": "文章",
+        "choices": [
+          "식물",
+          "생활",
+          "선생",
+          "문장",
+          "의견",
+          "친구"
+        ],
+        "answer": "문장"
+      },
+      {
+        "no": 48,
+        "type": "find_hanja_sentence",
+        "hint": "학생들은 자기의 [ 意見 ]을 솔직 하게 말했습니다.",
+        "target": "意見",
+        "choices": [
+          "식물",
+          "생활",
+          "선생",
+          "문장",
+          "의견",
+          "친구"
+        ],
+        "answer": "의견"
+      },
+      {
+        "no": 49,
+        "type": "find_hanja_sentence",
+        "hint": "여행을 통하여 시골 [ 生活 ]의 정 겨움을 느꼈습니다.",
+        "target": "生活",
+        "choices": [
+          "식물",
+          "생활",
+          "선생",
+          "문장",
+          "의견",
+          "친구"
+        ],
+        "answer": "생활"
+      },
+      {
+        "no": 50,
+        "type": "find_hanja_sentence",
+        "hint": "[ 先生 ]님의 구령에 맞추어 체조 를 하였습니다.",
+        "target": "先生",
+        "choices": [
+          "식물",
+          "생활",
+          "선생",
+          "문장",
+          "의견",
+          "친구"
+        ],
+        "answer": "선생"
+      }
+    ]
+  }
+}
