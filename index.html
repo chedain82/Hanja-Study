@@ -569,6 +569,8 @@ body {
   font-size: 34px; font-weight: 900; color: #0A1F3D; font-family: 'Nanum Myeongjo', serif;
 }
 .ex-bank-cell .num { font-size: 12px; font-weight: 700; margin-right: 3px; font-family: inherit; }
+.ex-bank-cell.chosen { background: #DDE8FB; border-color: #1A56C4; }
+.ex-bank-cell:disabled { opacity: .6; }
 /* 문제 내용은 스크롤되고, 버튼 영역은 항상 카드 하단에 고정되도록 두 영역을 분리.
    (fixed/sticky 대신 flex 레이아웃으로 처리 - .card가 이미 고정 높이+overflow:hidden이라
    더 안정적이다: 문제가 길어도 버튼이 밀려나지 않고, 겹치는 것도 구조적으로 불가능해진다) */
@@ -5017,58 +5019,173 @@ function retryExamReadingWriteWrong() {
    버튼으로 세로 나열하면 화면이 너무 길어져 "다음 문제" 버튼이 밀려났다. <보기>를
    상단에 작게 가로로 고정 표시하고, 답은 버튼 클릭 대신 번호 입력으로 바꾼
    전용 그룹(wordbank)으로 분리. */
-const EX_LEVELS = ['준3급'];
+const EX_LEVELS = ['준3급', '4급', '준4급', '5급'];
 const EX_TOTAL_SEC = 60 * 60;
 const EX_CIRCLE_NUMS = ['①','②','③','④','⑤','⑥','⑦','⑧','⑨','⑩'];
 const EX_TYPE_GROUP = {
   hanja_choice: 'choice', related_hanja: 'choice', fill_in_hanja: 'choice',
-  meaning_to_word: 'choice', fill_in_word: 'choice',
+  meaning_to_word: 'choice', fill_in_word: 'choice', reading_choice: 'choice',
+  hanja_meaning: 'choice', word_meaning_choice: 'choice',
   find_hanja: 'wordbank', common_hanja_choice: 'wordbank',
   huneum: 'write', reading: 'write', reading_in_sentence: 'write',
   common_hanja_hint: 'selfcheck',
   fix_hanja: 'selfcheck', word_to_hanja: 'selfcheck', idiom: 'selfcheck',
+  idiom_word_choice: 'wordbank2',
 };
 
-// 준3급 111~124회 pdftotext 원문 대조로 추출한 구간별 지시문.
+// 급수별 111~124회 pdftotext 원문 대조로 추출한 구간별 지시문.
 // 1~9번은 하나의 지시문이 아니라 실제로는 3개(1~5, 6~7, 8~9)로 나뉜다.
 // 41~50/68~70/71~73/74~75/76~80/96~100번은 111~120회와 121~124회의 문구가 다르다
 // (121회부터 "한자[正字]"처럼 [正字] 표기가 새로 붙었음 - pdftotext로 111~120회 원문에는
-// [正字]가 전혀 나오지 않고, 121~124회부터만 나오는 것을 직접 확인함).
-const EX_INSTRUCTION_COMMON = [
-  { lo: 1, hi: 5, text: '※ [    ] 안의 한자와 음(소리)이 같은 한자는?' },
-  { lo: 6, hi: 7, text: '※ [  ] 안의 한자와 뜻이 비슷하거나 같은 한자는?' },
-  { lo: 8, hi: 9, text: '※ [  ] 안의 한자와 뜻이 반대되거나 상대되는 한자는?' },
-  { lo: 10, hi: 12, text: '※ <보기>의 단어들과 가장 관련이 깊은 한자는?' },
-  { lo: 13, hi: 15, text: '※ [    ] 안의 단어를 한자로 알맞게 쓴 것은?' },
-  { lo: 16, hi: 25, text: '※ 주어진 뜻에 알맞은 한자어는?' },
-  { lo: 26, hi: 30, text: '※ [   ] 안에 들어갈 한자어로 알맞은 것은?' },
-  { lo: 31, hi: 40, text: '※ 한자의 훈(뜻)과 음(소리)을 한글로 쓰시오.' },
-  { lo: 51, hi: 67, text: '※ 한자어의 독음을 한글로 쓰시오.' },
-  { lo: 81, hi: 95, text: '※ [     ] 안의 한자어 독음을 한글로 쓰시오.' },
-];
-const EX_INSTRUCTION_BY_ERA = {
-  early: [ // 111~120회
-    { lo: 41, hi: 50, text: '※ 훈과 음에 맞는 한자를 <보기>에서 찾아 쓰시오.' },
-    { lo: 68, hi: 70, text: '※ <보기>의 뜻을 참고하여 ○안에 공통으로 들어갈 한자를 쓰시오.' },
-    { lo: 71, hi: 73, text: '※ ○ 안에 공통으로 들어갈 한자를 <보기>에서 찾아 쓰시오.' },
-    { lo: 74, hi: 75, text: '※ 문장에서 잘못 쓴 한자를 바르게 고쳐 쓰시오. (단, 음이 같은 한자로 고칠 것)' },
-    { lo: 76, hi: 80, text: '※ [     ] 안의 단어를 한자로 쓰시오.' },
-    { lo: 96, hi: 100, text: '※ 한자성어의 설명을 읽고 ○ 안에 들어갈 한자를 차례대로 쓰시오.' },
-  ],
-  late: [ // 121~124회
-    { lo: 41, hi: 50, text: '※ 훈과 음에 맞는 한자[正字]를 <보기>에서 찾아 쓰시오.' },
-    { lo: 68, hi: 70, text: '※ <보기>의 뜻을 참고하여 ○안에 공통으로 들어갈 한자[正字]를 쓰시오.' },
-    { lo: 71, hi: 73, text: '※ ○ 안에 공통으로 들어갈 한자[正字]를 <보기>에서 찾아 쓰시오.' },
-    { lo: 74, hi: 75, text: '※ 문장에서 잘못 쓴 한자를 바르게 고쳐 쓰시오. (단, 음이 같은 한자[正字]로 고칠 것)' },
-    { lo: 76, hi: 80, text: '※ [     ] 안의 단어를 한자[正字]로 쓰시오.' },
-    { lo: 96, hi: 100, text: '※ 한자성어의 설명을 읽고 ○ 안에 들어갈 한자[正字]를 차례대로 쓰시오.' },
-  ],
+// [正字]가 전혀 나오지 않고, 121~124회부터만 나오는 것을 직접 확인함 - 4급도 동일하게 확인).
+const EX_INSTRUCTION_BY_LEVEL = {
+  '준3급': {
+    common: [
+      { lo: 1, hi: 5, text: '※ [    ] 안의 한자와 음(소리)이 같은 한자는?' },
+      { lo: 6, hi: 7, text: '※ [  ] 안의 한자와 뜻이 비슷하거나 같은 한자는?' },
+      { lo: 8, hi: 9, text: '※ [  ] 안의 한자와 뜻이 반대되거나 상대되는 한자는?' },
+      { lo: 10, hi: 12, text: '※ <보기>의 단어들과 가장 관련이 깊은 한자는?' },
+      { lo: 13, hi: 15, text: '※ [    ] 안의 단어를 한자로 알맞게 쓴 것은?' },
+      { lo: 16, hi: 25, text: '※ 주어진 뜻에 알맞은 한자어는?' },
+      { lo: 26, hi: 30, text: '※ [   ] 안에 들어갈 한자어로 알맞은 것은?' },
+      { lo: 31, hi: 40, text: '※ 한자의 훈(뜻)과 음(소리)을 한글로 쓰시오.' },
+      { lo: 51, hi: 67, text: '※ 한자어의 독음을 한글로 쓰시오.' },
+      { lo: 81, hi: 95, text: '※ [     ] 안의 한자어 독음을 한글로 쓰시오.' },
+    ],
+    byEra: {
+      early: [ // 111~120회
+        { lo: 41, hi: 50, text: '※ 훈과 음에 맞는 한자를 <보기>에서 찾아 쓰시오.' },
+        { lo: 68, hi: 70, text: '※ <보기>의 뜻을 참고하여 ○안에 공통으로 들어갈 한자를 쓰시오.' },
+        { lo: 71, hi: 73, text: '※ ○ 안에 공통으로 들어갈 한자를 <보기>에서 찾아 쓰시오.' },
+        { lo: 74, hi: 75, text: '※ 문장에서 잘못 쓴 한자를 바르게 고쳐 쓰시오. (단, 음이 같은 한자로 고칠 것)' },
+        { lo: 76, hi: 80, text: '※ [     ] 안의 단어를 한자로 쓰시오.' },
+        { lo: 96, hi: 100, text: '※ 한자성어의 설명을 읽고 ○ 안에 들어갈 한자를 차례대로 쓰시오.' },
+      ],
+      late: [ // 121~124회
+        { lo: 41, hi: 50, text: '※ 훈과 음에 맞는 한자[正字]를 <보기>에서 찾아 쓰시오.' },
+        { lo: 68, hi: 70, text: '※ <보기>의 뜻을 참고하여 ○안에 공통으로 들어갈 한자[正字]를 쓰시오.' },
+        { lo: 71, hi: 73, text: '※ ○ 안에 공통으로 들어갈 한자[正字]를 <보기>에서 찾아 쓰시오.' },
+        { lo: 74, hi: 75, text: '※ 문장에서 잘못 쓴 한자를 바르게 고쳐 쓰시오. (단, 음이 같은 한자[正字]로 고칠 것)' },
+        { lo: 76, hi: 80, text: '※ [     ] 안의 단어를 한자[正字]로 쓰시오.' },
+        { lo: 96, hi: 100, text: '※ 한자성어의 설명을 읽고 ○ 안에 들어갈 한자[正字]를 차례대로 쓰시오.' },
+      ],
+    },
+  },
+  '4급': {
+    common: [
+      { lo: 1, hi: 5, text: '※ [    ] 안의 한자와 음(소리)이 같은 한자는?' },
+      { lo: 6, hi: 7, text: '※ [  ] 안의 한자와 뜻이 비슷하거나 같은 한자는?' },
+      { lo: 8, hi: 9, text: '※ [  ] 안의 한자와 뜻이 반대되거나 상대되는 한자는?' },
+      { lo: 10, hi: 12, text: '※ <보기>의 단어들과 가장 관련이 깊은 한자는?' },
+      { lo: 13, hi: 15, text: '※ [    ] 안의 단어를 한자로 알맞게 쓴 것은?' },
+      { lo: 16, hi: 20, text: '※ [    ] 안의 한자어의 독음(소리)으로 알맞은 것은?' },
+      { lo: 21, hi: 25, text: '※ 주어진 뜻에 알맞은 한자어는?' },
+      { lo: 26, hi: 30, text: '※ [   ] 안에 들어갈 한자어로 알맞은 것은?' },
+      { lo: 31, hi: 40, text: '※ 한자의 훈(뜻)과 음(소리)을 한글로 쓰시오.' },
+      { lo: 51, hi: 67, text: '※ 한자어의 독음을 한글로 쓰시오.' },
+      { lo: 81, hi: 95, text: '※ [     ] 안의 한자어 독음을 한글로 쓰시오.' },
+    ],
+    byEra: {
+      early: [ // 111~120회
+        { lo: 41, hi: 50, text: '※ 훈과 음에 맞는 한자를 <보기>에서 찾아 쓰시오.' },
+        { lo: 68, hi: 70, text: '※ <보기>의 뜻을 참고하여 ○안에 공통으로 들어갈 한자를 쓰시오.' },
+        { lo: 71, hi: 73, text: '※ ○ 안에 공통으로 들어갈 한자를 <보기>에서 찾아 쓰시오.' },
+        { lo: 74, hi: 75, text: '※ 문장에서 잘못 쓴 한자를 바르게 고쳐 쓰시오. (단, 음이 같은 한자로 고칠 것)' },
+        { lo: 76, hi: 80, text: '※ [     ] 안의 단어를 한자로 쓰시오.' },
+        { lo: 96, hi: 100, text: '※ 한자성어의 설명을 읽고 ○ 안에 들어갈 한자를 <보기>에서 찾아 차례대로 쓰시오.' },
+      ],
+      late: [ // 121~124회
+        { lo: 41, hi: 50, text: '※ 훈과 음에 맞는 한자[正字]를 <보기>에서 찾아 쓰시오.' },
+        { lo: 68, hi: 70, text: '※ <보기>의 뜻을 참고하여 ○안에 공통으로 들어갈 한자[正字]를 쓰시오.' },
+        { lo: 71, hi: 73, text: '※ ○ 안에 공통으로 들어갈 한자[正字]를 <보기>에서 찾아 쓰시오.' },
+        { lo: 74, hi: 75, text: '※ 문장에서 잘못 쓴 한자를 바르게 고쳐 쓰시오. (단, 음이 같은 한자[正字]로 고칠 것)' },
+        { lo: 76, hi: 80, text: '※ [     ] 안의 단어를 한자[正字]로 쓰시오.' },
+        { lo: 96, hi: 100, text: '※ 한자성어의 설명을 읽고 ○ 안에 들어갈 한자[正字]를 <보기>에서 찾아 차례대로 쓰시오.' },
+      ],
+    },
+  },
+  // 준4급은 원문 대조 결과 4급과 문제 유형·번호대·지시문 문구까지 전부 동일해 그대로 복사.
+  '준4급': {
+    common: [
+      { lo: 1, hi: 5, text: '※ [    ] 안의 한자와 음(소리)이 같은 한자는?' },
+      { lo: 6, hi: 7, text: '※ [  ] 안의 한자와 뜻이 비슷하거나 같은 한자는?' },
+      { lo: 8, hi: 9, text: '※ [  ] 안의 한자와 뜻이 반대되거나 상대되는 한자는?' },
+      { lo: 10, hi: 12, text: '※ <보기>의 단어들과 가장 관련이 깊은 한자는?' },
+      { lo: 13, hi: 15, text: '※ [    ] 안의 단어를 한자로 알맞게 쓴 것은?' },
+      { lo: 16, hi: 20, text: '※ [    ] 안의 한자어의 독음(소리)으로 알맞은 것은?' },
+      { lo: 21, hi: 25, text: '※ 주어진 뜻에 알맞은 한자어는?' },
+      { lo: 26, hi: 30, text: '※ [   ] 안에 들어갈 한자어로 알맞은 것은?' },
+      { lo: 31, hi: 40, text: '※ 한자의 훈(뜻)과 음(소리)을 한글로 쓰시오.' },
+      { lo: 51, hi: 67, text: '※ 한자어의 독음을 한글로 쓰시오.' },
+      { lo: 81, hi: 95, text: '※ [     ] 안의 한자어 독음을 한글로 쓰시오.' },
+    ],
+    byEra: {
+      early: [
+        { lo: 41, hi: 50, text: '※ 훈과 음에 맞는 한자를 <보기>에서 찾아 쓰시오.' },
+        { lo: 68, hi: 70, text: '※ <보기>의 뜻을 참고하여 ○안에 공통으로 들어갈 한자를 쓰시오.' },
+        { lo: 71, hi: 73, text: '※ ○ 안에 공통으로 들어갈 한자를 <보기>에서 찾아 쓰시오.' },
+        { lo: 74, hi: 75, text: '※ 문장에서 잘못 쓴 한자를 바르게 고쳐 쓰시오. (단, 음이 같은 한자로 고칠 것)' },
+        { lo: 76, hi: 80, text: '※ [     ] 안의 단어를 한자로 쓰시오.' },
+        { lo: 96, hi: 100, text: '※ 한자성어의 설명을 읽고 ○ 안에 들어갈 한자를 <보기>에서 찾아 차례대로 쓰시오.' },
+      ],
+      late: [
+        { lo: 41, hi: 50, text: '※ 훈과 음에 맞는 한자[正字]를 <보기>에서 찾아 쓰시오.' },
+        { lo: 68, hi: 70, text: '※ <보기>의 뜻을 참고하여 ○안에 공통으로 들어갈 한자[正字]를 쓰시오.' },
+        { lo: 71, hi: 73, text: '※ ○ 안에 공통으로 들어갈 한자[正字]를 <보기>에서 찾아 쓰시오.' },
+        { lo: 74, hi: 75, text: '※ 문장에서 잘못 쓴 한자를 바르게 고쳐 쓰시오. (단, 음이 같은 한자[正字]로 고칠 것)' },
+        { lo: 76, hi: 80, text: '※ [     ] 안의 단어를 한자[正字]로 쓰시오.' },
+        { lo: 96, hi: 100, text: '※ 한자성어의 설명을 읽고 ○ 안에 들어갈 한자[正字]를 <보기>에서 찾아 차례대로 쓰시오.' },
+      ],
+    },
+  },
+  // 5급 - 원문 대조로 새로 만듦. 번호대가 준3급/4급과 다르게 재배치되어 있다(Q-1 표 참고).
+  '5급': {
+    common: [
+      { lo: 1, hi: 5, text: '※ [    ] 안의 한자와 음(소리)이 같은 한자는?' },
+      { lo: 6, hi: 8, text: '※ [    ] 안의 한자의 뜻으로 알맞은 것은?' },
+      { lo: 9, hi: 10, text: '※ [  ] 안의 한자와 뜻이 비슷하거나 같은 한자는?' },
+      { lo: 11, hi: 12, text: '※ [  ] 안의 한자와 뜻이 반대되거나 상대되는 한자는?' },
+      { lo: 13, hi: 15, text: '※ <보기>의 단어들과 가장 관련이 깊은 한자는?' },
+      { lo: 16, hi: 20, text: '※ [  ] 안의 한자어의 독음(소리)으로 알맞은 것은?' },
+      { lo: 21, hi: 25, text: '※ [      ] 안의 한자어의 뜻으로 알맞은 것은?' },
+      { lo: 26, hi: 30, text: '※ [       ] 안에 들어갈 한자어로 알맞은 것은?' },
+      { lo: 31, hi: 40, text: '※ 한자의 훈(뜻)과 음(소리)을 한글로 쓰시오.' },
+      { lo: 51, hi: 70, text: '※ 한자어의 독음을 한글로 쓰시오.' },
+      { lo: 84, hi: 98, text: '※ [   ] 안의 한자어 독음을 한글로 쓰시오.' },
+    ],
+    byEra: {
+      // 5급은 다른 급수와 달리 41~50/74~76번만 121회가 아니라 122회부터 [正字] 표기가
+      // 붙는 것을 원문으로 직접 확인했다(같은 121회인데 71~73/77~78/79~83/99~100번은 이미
+      // [正字]가 붙어있고 41~50/74~76번만 아직 안 붙어있음 - 출제 기관이 구간별로 순차
+      // 개정한 것으로 보인다). getExamTestInstruction()에서 이 두 구간만 122회 기준으로
+      // era를 다시 판정한다.
+      early: [
+        { lo: 41, hi: 50, text: '※ 훈과 음에 맞는 한자를 <보기>에서 찾아 쓰시오.' },
+        { lo: 71, hi: 73, text: '※ <보기>의 뜻을 참고하여 ○ 안에 공통으로 들어갈 한자를 쓰시오.' },
+        { lo: 74, hi: 76, text: '※ ○ 안에 공통으로 들어갈 한자를 <보기>에서 찾아 쓰시오.' },
+        { lo: 77, hi: 78, text: '※ 문장에서 잘못 쓴 한자를 바르게 고쳐 쓰시오. (단, 음이 같은 한자로 고칠 것)' },
+        { lo: 79, hi: 83, text: '※ [   ] 안의 단어를 한자로 쓰시오.' },
+        { lo: 99, hi: 100, text: '※ 한자성어의 설명을 읽고 ○ 안에 들어갈 한자를 쓰시오.' },
+      ],
+      late: [
+        { lo: 41, hi: 50, text: '※ 훈과 음에 맞는 한자[正字]를 <보기>에서 찾아 쓰시오.' },
+        { lo: 71, hi: 73, text: '※ <보기>의 뜻을 참고하여 ○ 안에 공통으로 들어갈 한자[正字]를 쓰시오.' },
+        { lo: 74, hi: 76, text: '※ ○ 안에 공통으로 들어갈 한자를 <보기>에서 찾아 쓰시오.' },
+        { lo: 77, hi: 78, text: '※ 문장에서 잘못 쓴 한자를 바르게 고쳐 쓰시오. (단, 음이 같은 한자[正字]로 고칠 것)' },
+        { lo: 79, hi: 83, text: '※ [   ] 안의 단어를 한자[正字]로 쓰시오.' },
+        { lo: 99, hi: 100, text: '※ 한자성어의 설명을 읽고 ○ 안에 들어갈 한자[正字]를 쓰시오.' },
+      ],
+    },
+  },
 };
 function getExamTestInstruction(no, round) {
-  const common = EX_INSTRUCTION_COMMON.find(r => no >= r.lo && no <= r.hi);
+  const levelData = EX_INSTRUCTION_BY_LEVEL[EX.level] || EX_INSTRUCTION_BY_LEVEL['준3급'];
+  const common = levelData.common.find(r => no >= r.lo && no <= r.hi);
   if (common) return common.text;
-  const era = Number(round) >= 121 ? 'late' : 'early';
-  const byEra = EX_INSTRUCTION_BY_ERA[era].find(r => no >= r.lo && no <= r.hi);
+  // 5급의 41~50/74~76번은 다른 구간과 달리 122회부터 [正字] 표기가 붙는다(원문 확인).
+  const lateThreshold = (EX.level === '5급' && ((no >= 41 && no <= 50) || (no >= 74 && no <= 76))) ? 122 : 121;
+  const era = Number(round) >= lateThreshold ? 'late' : 'early';
+  const byEra = (levelData.byEra[era] || []).find(r => no >= r.lo && no <= r.hi);
   return byEra ? byEra.text : '';
 }
 let EX = {
@@ -5103,9 +5220,11 @@ function loadExamTestQuestionState() {
     EX.isCorrect = saved.isCorrect;
     EX.writeInput = saved.writeInput;
     EX.selfCheckRevealed = saved.selfCheckRevealed;
-    EX.checked = saved.selected !== null || saved.writeInput !== '';
+    EX.checked = saved.selected !== null || saved.writeInput !== '' || !!saved.selected2;
+    EX.selected2 = saved.selected2 ? [...saved.selected2] : [null, null];
   } else {
     EX.selected = null; EX.isCorrect = false; EX.writeInput = ''; EX.selfCheckRevealed = false; EX.checked = false;
+    EX.selected2 = [null, null];
   }
 }
 
@@ -5201,21 +5320,28 @@ function exOptFontSize() {
   const w = window.innerWidth;
   return Math.min(Math.max(Math.round(w * .126), 40), 54);
 }
+function isKoreanText(s) { return /[가-힣]/.test(s || ''); }
 function examTestChoiceContent(it) {
   const qText = exQuestionText(it);
   const choices = it.choices || [];
-  const isSingleChar = choices.length === 4; // 1~30번은 전부 4지선다 → 항상 그리드
-  const optSize = exOptFontSize();
+  const isKorChoice = choices.length > 0 && isKoreanText(choices[0]);
+  const useGrid = !isKorChoice; // 한자 보기 → 그리드(크게), 한글 보기 → 목록(작게, 자연스럽게 읽기)
+  const optSize = isKorChoice
+    ? Math.min(Math.max(Math.round(window.innerWidth * .042), 14), 18)
+    : exOptFontSize();
+  const optFont = isKorChoice ? '' : "font-family:'Nanum Myeongjo',serif;";
   const isDescType = ['fill_in_hanja','meaning_to_word','fill_in_word'].includes(it.type);
   const qSize = isDescType ? exDescFontSize() : exChoiceQFontSize(qText);
   const opts = choices.map((c, i) => {
     const cls = (i === EX.selected) ? 'chosen' : '';
     const num = EX_CIRCLE_NUMS[i] || (i + 1) + '.';
-    return `<button class="quiz-opt ${cls}" onclick="examTestChooseOpt(${i})" ${EX.checked?'disabled':''}><span class="num">${num}</span><span class="opt-text" style="font-size:${optSize}px;font-family:'Nanum Myeongjo',serif;">${c}</span><span></span></button>`;
+    return `<button class="quiz-opt ${cls}" onclick="examTestChooseOpt(${i})" ${EX.checked?'disabled':''}>
+      <span class="num">${num}</span><span class="opt-text" style="font-size:${optSize}px;${optFont}text-align:left;white-space:pre-wrap;">${c}</span><span></span>
+    </button>`;
   }).join('');
   return `
     <div style="font-size:${qSize}px;font-weight:800;font-family:'Nanum Myeongjo',serif;text-align:center;padding:8px;white-space:pre-wrap;">${qText}</div>
-    <div class="${isSingleChar?'quiz-options-grid':'quiz-options'}">${opts}</div>`;
+    <div class="${useGrid?'quiz-options-grid':'quiz-options'}">${opts}</div>`;
 }
 function examTestChoiceFooter() {
   return exNavButtonsHtml();
@@ -5314,6 +5440,48 @@ function checkExamTestWordbank() {
   renderExamTestQuiz();
 }
 
+// 4급 96~100번(idiom_word_choice) 전용 - <보기> 한자 10개 중 빈칸 2개를 순서대로 탭해서 고른다.
+function examTestWordbank2Content(it) {
+  const choices = it.choices || [];
+  const cols = choices.length <= 6 ? choices.length : 5; // 41~50/71~73과 동일한 그리드 규칙
+  const sel = EX.selected2 || [null, null]; // [빈칸1 선택 인덱스, 빈칸2 선택 인덱스]
+  const checked = EX.checked;
+  const bank = choices.map((c, i) => {
+    const slotIdx = sel.indexOf(i);
+    const cls = slotIdx >= 0 ? 'chosen' : '';
+    return `<button class="ex-bank-cell ${cls}" onclick="chooseExamTestWordbank2(${i})" ${checked?'disabled':''}>
+      <span class="num">${EX_CIRCLE_NUMS[i]||(i+1)+'.'}</span>${c}
+      ${slotIdx >= 0 ? `<span style="font-size:11px;color:#1A56C4;">빈칸${slotIdx+1}</span>` : ''}
+    </button>`;
+  }).join('');
+  return `
+    <div class="ex-bank-box" style="grid-template-columns:repeat(${cols},1fr);">${bank}</div>
+    <div style="font-size:${hanjaFontSize(it.pattern||'')}px;font-weight:800;text-align:center;padding:8px;white-space:pre-wrap;font-family:'Nanum Myeongjo',serif;">${it.pattern||''}</div>
+    <div style="text-align:center;font-size:14px;color:var(--gray);margin-top:6px;">
+      빈칸1: ${sel[0]!==null ? choices[sel[0]] : '-'} &nbsp;&nbsp; 빈칸2: ${sel[1]!==null ? choices[sel[1]] : '-'}
+    </div>
+    <div class="write-result">${checked?'✔ 답안이 저장되었습니다':''}</div>`;
+}
+function chooseExamTestWordbank2(i) {
+  if (EX.checked) return;
+  let sel = EX.selected2 || [null, null];
+  const existing = sel.indexOf(i);
+  if (existing >= 0) { sel[existing] = null; EX.selected2 = sel; renderExamTestQuiz(); return; } // 다시 누르면 선택 취소
+  if (sel[0] === null) sel[0] = i;
+  else if (sel[1] === null) sel[1] = i;
+  else return; // 이미 2개 다 선택함
+  EX.selected2 = sel;
+  if (sel[0] !== null && sel[1] !== null) {
+    const it = EX.items[EX.idx];
+    const myAnswer = (it.choices || [])[sel[0]] + (it.choices || [])[sel[1]];
+    EX.checked = true;
+    EX.isCorrect = (myAnswer === it.answer);
+    saveExamTestAnswer(it.no, { selected2: [...sel], isCorrect: EX.isCorrect });
+  }
+  renderExamTestQuiz();
+}
+function examTestWordbank2Footer() { return exNavButtonsHtml(); }
+
 function examTestSelfCheckContent(it) {
   const bigFields = ['pattern1','pattern2','pattern'];   // 68~70·96~100 - 한자+○ 패턴, 크게
   const sentenceFields = ['sentence'];                    // 74~75 - 문장, 16~30번과 동일 크기
@@ -5392,10 +5560,12 @@ function renderExamTestQuiz() {
   const content = group === 'choice' ? examTestChoiceContent(it)
     : group === 'write' ? examTestWriteContent(it)
     : group === 'wordbank' ? examTestWordbankContent(it)
+    : group === 'wordbank2' ? examTestWordbank2Content(it)
     : examTestSelfCheckContent(it);
   const footer = group === 'choice' ? examTestChoiceFooter()
     : group === 'write' ? examTestWriteFooter()
     : group === 'wordbank' ? examTestWordbankFooter()
+    : group === 'wordbank2' ? examTestWordbank2Footer()
     : examTestSelfCheckFooter(it);
   // 문제 내용(content)은 스크롤 영역, 버튼(footer)은 카드 하단 고정 - 시험 중엔 나가기
   // 버튼도 없앴다(이전/다음/채점하기로만 이동, 실전 시험처럼 중간 이탈 불가).
@@ -5593,6 +5763,11 @@ function showWrongAnswerPopup(no) {
   } else if (group === 'wordbank') {
     correctAnswer = it.answer;
     if (rec && rec.selected !== null) myAnswer = it.choices[rec.selected];
+  } else if (group === 'wordbank2') {
+    correctAnswer = it.answer;
+    if (rec && rec.selected2 && rec.selected2[0] !== null && rec.selected2[1] !== null) {
+      myAnswer = (it.choices || [])[rec.selected2[0]] + (it.choices || [])[rec.selected2[1]];
+    }
   } else if (group === 'write' && rec && rec.writeInput) {
     myAnswer = rec.writeInput;
   }
@@ -5995,9 +6170,21 @@ async function loadReadingQuizData() {
 }
 
 let EXAM_TEST_DATA = {};
+const EX_LEVEL_FILES = { '준3급': 'hanja_exam_jun3.json', '4급': 'hanja_exam_4level.json', '준4급': 'hanja_exam_junsa4.json', '5급': 'hanja_exam_5level.json' };
 async function loadExamTestData() {
-  try { const r = await fetch('hanja_exam_jun3.json'); EXAM_TEST_DATA = await r.json(); }
-  catch(e) { console.log('hanja_exam_jun3.json load failed'); EXAM_TEST_DATA = {}; }
+  EXAM_TEST_DATA = {};
+  await Promise.all(Object.entries(EX_LEVEL_FILES).map(async ([lv, file]) => {
+    try {
+      const r = await fetch(file);
+      const raw = await r.json();
+      // hanja_exam_jun3.json은 최상위가 이미 {"준3급": {회차: ...}}로 감싸져 있고(과거부터
+      // 그렇게 만들어짐), 새로 만든 hanja_exam_4level.json은 회차가 바로 최상위라 감싸지
+      // 않았다 - 파일마다 다른 이 구조를 여기서 흡수해서 EXAM_TEST_DATA[lv]는 항상
+      // {회차: ...} 형태가 되도록 정규화한다.
+      EXAM_TEST_DATA[lv] = (raw && raw[lv]) ? raw[lv] : raw;
+    }
+    catch(e) { console.log(file + ' load failed'); EXAM_TEST_DATA[lv] = {}; }
+  }));
   window.EXAM_TEST_DATA = EXAM_TEST_DATA;
 }
 
