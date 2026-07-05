@@ -424,6 +424,8 @@ body {
 .ex-no-wrong { background: #FFF0F0; color: var(--wrong); border-color: var(--wrong); }
 .ex-no-unanswered { background: #F2F2F2; color: #888; border-color: #BBB; }
 .ex-no-reviewed { background: #F2F2F2; color: #888; border-color: #BBB; }
+.ex-no-solved { background: #333; color: #fff; border-color: #333; }
+.ex-no-unsolved { background: #fff; color: #BBB; border-color: #DDD; }
 .ex-legend-dot { display: inline-block; width: 10px; height: 10px; border-radius: 3px; margin-right: 3px; vertical-align: middle; }
 .badge-tile { background: white; border-radius: 12px; padding: 10px 6px; text-align: center; }
 .badge-tile.locked { opacity: .3; filter: grayscale(1); }
@@ -3147,9 +3149,9 @@ const HG_Sound = (() => {
     <div class="card" id="ex-quiz-inner"></div>
   </div>
 
-  <!-- 시험 모드: 결과 -->
+  <!-- 시험 모드: 결과 (찾아가기 모드일 땐 같은 화면을 재사용해 안 푼 문제 목록을 보여준다) -->
   <div id="exam_test_result" class="subscreen">
-    <div class="top-label">시험 결과</div>
+    <div class="top-label" id="exam-result-top-label">시험 결과</div>
     <div class="card" id="ex-result-inner"></div>
   </div>
 
@@ -3158,6 +3160,18 @@ const HG_Sound = (() => {
     <div id="ex-popup-box">
       <div id="ex-popup-msg"></div>
       <button id="ex-popup-close" onclick="closeExamTestPopup()">확인</button>
+    </div>
+  </div>
+
+  <!-- 시험 모드: 나가기 확인 팝업(실수로 바깥을 눌러도 안 나가지도록 확인/취소 버튼 분리) -->
+  <div id="ex-exit-popup" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.55);align-items:center;justify-content:center;z-index:10000;padding:24px;">
+    <div style="background:#fff;border-radius:20px;padding:26px 22px;width:100%;max-width:300px;text-align:center;">
+      <div style="font-size:18px;font-weight:800;margin-bottom:8px;">시험을 종료하고 나가시겠어요?</div>
+      <div style="font-size:13px;color:var(--gray);margin-bottom:22px;">진행 상황은 저장되지 않습니다</div>
+      <div style="display:flex;gap:10px;">
+        <button onclick="examTestExitCancel()" style="flex:1;background:#F0F0F0;color:#333;border:none;border-radius:12px;padding:13px;font-size:15px;font-weight:700;cursor:pointer;">계속 풀기</button>
+        <button onclick="examTestExitConfirm()" style="flex:1;background:var(--wrong);color:white;border:none;border-radius:12px;padding:13px;font-size:15px;font-weight:800;cursor:pointer;">나가기</button>
+      </div>
     </div>
   </div>
 
@@ -3592,7 +3606,7 @@ function goSub(screen) {
   else if (screen==='exam_test_round') renderExamTestRound();
   else if (screen==='exam_test_intro') renderExamTestIntro();
   else if (screen==='exam_test_quiz') renderExamTestQuiz();
-  else if (screen==='exam_test_result') renderExamTestResult();
+  else if (screen==='exam_test_result') renderExamTestResultOrFindList();
 }
 // Legacy alias used by some callbacks
 function go(screen) {
@@ -5493,7 +5507,8 @@ function examTestChoiceContent(it) {
   const opts = choices.map((c, i) => {
     const cls = (i === EX.selected) ? 'chosen' : '';
     const num = EX_CIRCLE_NUMS[i] || (i + 1) + '.';
-    return `<button class="quiz-opt ${cls}" onclick="examTestChooseOpt(${i})" ${EX.checked?'disabled':''}>
+    // 이전 버튼으로 되돌아온 문제도 답을 다시 고를 수 있도록 확정되어도 잠그지 않는다.
+    return `<button class="quiz-opt ${cls}" onclick="examTestChooseOpt(${i})">
       <span class="num">${num}</span><span class="opt-text" style="font-size:${optSize}px;${optFont}text-align:center;white-space:pre-wrap;">${c}</span><span></span>
     </button>`;
   }).join('');
@@ -5505,13 +5520,12 @@ function examTestChoiceFooter() {
   return exNavButtonsHtml();
 }
 function examTestChooseOpt(i) {
-  if (EX.checked) return;
   const it = EX.items[EX.idx];
   EX.selected = i;
   EX.checked = true;
   EX.isCorrect = (i === examTestCorrectChoiceIndex(it)); // 채점용으로 계산만 해두고 화면엔 표시하지 않음(실전 시험 모드)
   saveExamTestAnswer(it.no, { selected: i, isCorrect: EX.isCorrect });
-  renderExamTestQuiz();
+  afterExamTestAnswerCommit();
 }
 
 // 81~95번(reading_in_sentence)은 문장 속 정답 대상 한자 [XX] 부분을 하이라이트
@@ -5526,23 +5540,21 @@ function examTestWriteContent(it) {
   const qSize = it.type === 'reading_in_sentence' ? exSentenceFontSize(rawText) : hanjaFontSize(rawText);
   const displayText = (it.type === 'reading_in_sentence' && it.hanja) ? exHighlightBracket(rawText, it.hanja) : rawText;
   const checked = EX.checked;
+  // 이전 버튼으로 되돌아온 문제도 고쳐서 다시 제출할 수 있도록 readonly로 잠그지 않는다.
   return `
     <div style="font-size:${qSize}px;font-weight:800;font-family:'Nanum Myeongjo',serif;text-align:center;padding:8px;white-space:pre-wrap;line-height:1.3;">${displayText}</div>
-    <input class="write-input" id="ex-write-input" type="text" placeholder="정답을 입력하세요"
+    <input class="write-input" id="ex-write-input" type="text" placeholder="정답을 입력하고 엔터"
       value="${checked ? EX.writeInput : ''}"
-      ${checked?'readonly':''}
       onkeydown="handleExTestWriteKey(event)" autofocus/>
     <div class="write-result">${checked?'✔ 답안이 저장되었습니다':''}</div>`;
 }
 function examTestWriteFooter() {
-  const checked = EX.checked;
-  return (!checked ? `<div class="ex-confirm-row"><button class="ex-btn ex-btn-primary" onclick="checkExamTestWrite()">확인</button></div>` : '') + exNavButtonsHtml();
+  return exNavButtonsHtml();
 }
 function handleExTestWriteKey(e) {
-  if (e.key === 'Enter') { e.preventDefault(); if (EX.checked) nextExamTestItem(); else checkExamTestWrite(); }
+  if (e.key === 'Enter') { e.preventDefault(); checkExamTestWrite(); }
 }
 function checkExamTestWrite() {
-  if (EX.checked) return;
   const inp = document.getElementById('ex-write-input');
   const val = inp ? inp.value : '';
   if (!val.trim()) { toast('답을 입력해 주세요 ✏️'); return; }
@@ -5551,7 +5563,7 @@ function checkExamTestWrite() {
   EX.checked = true;
   EX.isCorrect = compareWrite(val, String(it.answer || '')); // 채점용으로 계산만, 화면엔 표시 안 함
   saveExamTestAnswer(it.no, { writeInput: val, isCorrect: EX.isCorrect });
-  renderExamTestQuiz();
+  afterExamTestAnswerCommit();
 }
 
 function examTestWordbankCorrectIndex(it) {
@@ -5568,13 +5580,15 @@ function bankCellFontSize(choices) {
 }
 function examTestWordbankContent(it) {
   const choices = it.choices || [];
-  const cols = choices.length <= 6 ? choices.length : 5; // 71~73(6개)=한 줄, 41~50(10개)=5개씩 두 줄
+  // 3개 이하=한 줄, 4~6개=3열x2줄(6개를 한 줄에 다 넣으면 화면 폭을 넘어 잘림), 7개 이상=기존처럼 5열.
+  const cols = choices.length <= 3 ? choices.length : (choices.length <= 6 ? 3 : 5);
   const qText = (it.hint && it.target) ? exHighlightBracket(it.hint, it.target) : (it.hint || it.question || '');
   const checked = EX.checked;
   const cellSize = bankCellFontSize(choices);
+  // 이전 버튼으로 되돌아온 문제도 다시 고를 수 있도록 확정되어도 잠그지 않는다.
   const bank = choices.map((c, i) => {
     const cls = (i === EX.selected) ? 'chosen' : '';
-    return `<button class="ex-bank-cell ${cls}" style="font-size:${cellSize}px;" onclick="examTestChooseWordbank(${i})" ${checked?'disabled':''}>
+    return `<button class="ex-bank-cell ${cls}" style="font-size:${cellSize}px;" onclick="examTestChooseWordbank(${i})">
       <span class="num">${EX_CIRCLE_NUMS[i]||(i+1)+'.'}</span>${c}
     </button>`;
   }).join('');
@@ -5590,13 +5604,12 @@ function examTestWordbankFooter() {
   return exNavButtonsHtml();
 }
 function examTestChooseWordbank(i) {
-  if (EX.checked) return;
   const it = EX.items[EX.idx];
   EX.selected = i;
   EX.checked = true;
   EX.isCorrect = (i === examTestWordbankCorrectIndex(it)); // 채점용으로 계산만, 화면엔 표시 안 함
   saveExamTestAnswer(it.no, { selected: i, isCorrect: EX.isCorrect });
-  renderExamTestQuiz();
+  afterExamTestAnswerCommit();
 }
 
 // 4급 96~100번(idiom_word_choice) 전용 - <보기> 한자 10개 중 빈칸 2개를 순서대로 탭해서 고른다.
@@ -5702,6 +5715,15 @@ function markExamTestSelfCheck(isCorrect) {
   const idx = EX.selfCheckResults.findIndex(r => r.no === it.no);
   if (idx >= 0) EX.selfCheckResults[idx] = rec; else EX.selfCheckResults.push(rec);
   saveExamTestAnswer(it.no, { selfCheckRevealed: true, selfCheckResult: rec.result });
+  afterExamTestAnswerCommit();
+}
+// 4개 그룹(선택/입력/보기카드/자가채점) 공통 - 답을 확정한 직후 호출. 평소엔 같은 문제
+// 화면을 다시 그릴 뿐이지만("이전"으로 돌아와 답을 고친 경우도 포함), "찾아가기 모드"
+// (채점 시 미응답 문제를 하나씩 찾아 푸는 중) 중이면 다음 문제로 넘기지 않고 gradeExamTest()를
+// 다시 호출해 아직 안 푼 문제가 있는지 재확인한다 - 있으면 찾아가기 목록으로, 없으면
+// 실제 채점으로 자연스럽게 이어진다.
+function afterExamTestAnswerCommit() {
+  if (EX.reviewMode) { gradeExamTest(); return; }
   renderExamTestQuiz();
 }
 
@@ -5712,7 +5734,7 @@ function renderExamTestQuiz() {
   const group = EX_TYPE_GROUP[it.type] || 'selfcheck';
   const instruction = getExamTestInstruction(it, EX.round);
   const header = `
-    <div class="study-header"><div class="badge">${EX.level} 제${EX.round}회 <span>+</span></div></div>
+    <div class="study-header"><div class="badge">${EX.level} 제${EX.round}회 <span>+</span></div><button onclick="examTestAskExit()" style="background:#F0F0F0;border:none;color:#666;font-size:13px;font-weight:700;border-radius:10px;padding:6px 12px;cursor:pointer;">나가기</button></div>
     <div class="counter mb-8"><strong>${EX.idx+1}</strong>번째 문제 / ${EX.items.length}</div>
     <div id="ex-timer" style="text-align:center;font-size:28px;font-weight:800;color:var(--blue);margin-bottom:12px;">${formatExTime(EX.timeLeft)}</div>
     ${instruction ? `<div style="font-size:15px;font-weight:700;color:#4A5568;background:#EEF4FF;border-radius:10px;padding:9px 12px;margin-bottom:10px;white-space:pre-wrap;">${instruction}</div>` : ''}`;
@@ -5726,8 +5748,7 @@ function renderExamTestQuiz() {
     : group === 'wordbank' ? examTestWordbankFooter()
     : group === 'wordbank2' ? examTestWordbank2Footer()
     : examTestSelfCheckFooter(it);
-  // 문제 내용(content)은 스크롤 영역, 버튼(footer)은 카드 하단 고정 - 시험 중엔 나가기
-  // 버튼도 없앴다(이전/다음/채점하기로만 이동, 실전 시험처럼 중간 이탈 불가).
+  // 문제 내용(content)은 스크롤 영역, 버튼(footer)은 카드 하단 고정
   box.innerHTML = header + `<div class="ex-content-area">${content}</div>` + `<div class="ex-footer">${footer}</div>`;
   startExamTestTimer();
   if (group === 'write') {
@@ -5739,10 +5760,10 @@ function renderExamTestQuiz() {
 // "다음 문제" 대신 "채점하기"로 바뀐다(gradeExamTest는 [2]단계에서 정의).
 function exNavButtonsHtml() {
   if (EX.reviewMode) {
-    // 결과 화면에서 미응답 문제 하나를 골라 들어온 상태 - 이전/다음으로 다른 문제를
-    // 순회하지 않고, 풀었든 안 풀었든 바로 결과 화면으로 돌아가는 버튼만 보여준다.
+    // 채점 시 미응답 문제를 하나씩 찾아 푸는 "찾아가기 모드" 중 - 이전/다음으로 순회하지
+    // 않고, 풀었든 안 풀었든 바로 찾아가기 목록으로 돌아가는 버튼만 보여준다.
     return `<div class="ex-nav-row">
-      <button class="ex-btn ex-btn-primary" onclick="backToExamTestResult()">결과 화면으로 돌아가기</button>
+      <button class="ex-btn ex-btn-primary" onclick="backToExamTestFindList()">목록으로 돌아가기</button>
     </div>`;
   }
   const isLast = EX.idx === EX.items.length - 1;
@@ -5756,11 +5777,25 @@ function nextExamTestItem() {
   loadExamTestQuestionState();
   renderExamTestQuiz();
 }
-function backToExamTestResult() {
+// EX.reviewMode는 그대로 true로 둔다(아직 다 풀었는지 모르는 상태) - goSub의
+// exam_test_result 디스패치가 reviewMode를 보고 찾아가기 목록을 그려준다.
+function backToExamTestFindList() {
+  goSub('exam_test_result');
+}
+function examTestAskExit() {
+  stopExamTestTimer();
+  document.getElementById('ex-exit-popup').style.display = 'flex';
+}
+function examTestExitCancel() {
+  document.getElementById('ex-exit-popup').style.display = 'none';
+  startExamTestTimer();
+}
+function examTestExitConfirm() {
+  document.getElementById('ex-exit-popup').style.display = 'none';
+  stopExamTestTimer();
   EX.reviewMode = false;
   EX.reviewQueue = [];
-  goSub('exam_test_result');
-  renderExamTestResult();
+  goSub('exam_test_level');
 }
 function prevExamTestItem() {
   if (EX.idx > 0) EX.idx--;
@@ -5795,14 +5830,15 @@ function closeExamTestPopup(e) {
 // 넘어갈 수 있었다 - 이 경우 레코드는 생기지만(selfCheckRevealed:true) selfCheckResult가
 // 없어서 실제로는 채점을 안 한 것과 같다. 레코드 존재 여부만으로 "풀었다"고 판단하면
 // 이런 문제를 놓치므로, 자가채점은 selfCheckResult가 실제로 있는지까지 확인한다.
+function isExamTestItemSolved(it) {
+  const rec = getExamTestAnswer(it.no);
+  if (!rec) return false;
+  const group = EX_TYPE_GROUP[it.type] || 'selfcheck';
+  if (group === 'selfcheck') return rec.selfCheckResult === 'correct' || rec.selfCheckResult === 'wrong';
+  return true;
+}
 function findUnansweredExamTestNos() {
-  return EX.items.filter(it => {
-    const rec = getExamTestAnswer(it.no);
-    if (!rec) return true;
-    const group = EX_TYPE_GROUP[it.type] || 'selfcheck';
-    if (group === 'selfcheck') return rec.selfCheckResult !== 'correct' && rec.selfCheckResult !== 'wrong';
-    return false;
-  }).map(it => it.no);
+  return EX.items.filter(it => !isExamTestItemSolved(it)).map(it => it.no);
 }
 function jumpToExamTestNo(no) {
   const idx = EX.items.findIndex(x => x.no === no);
@@ -5846,10 +5882,20 @@ function countRoundsThisWeek(level) {
 function gradeExamTest() {
   const unanswered = findUnansweredExamTestNos();
   if (unanswered.length) {
-    const list = unanswered.map(n => n + '번').join(', ');
-    showExamTestPopup(`아직 풀지 않은 문제가 있어요: ${list}`, () => jumpToExamTestNo(unanswered[0]));
+    if (EX.reviewMode) {
+      // 이미 찾아가기 모드로 문제를 하나씩 푸는 중 - 매번 팝업을 다시 띄우지 않고
+      // 바로 찾아가기 목록(안 푼 문제만 표시)으로 돌려보낸다.
+      goSub('exam_test_result');
+    } else {
+      const list = unanswered.map(n => n + '번').join(', ');
+      showExamTestPopup(`아직 풀지 않은 문제가 있어요: ${list}`, () => {
+        EX.reviewMode = true;
+        jumpToExamTestNo(unanswered[0]);
+      });
+    }
     return;
   }
+  EX.reviewMode = false;
   stopExamTestTimer();
   const r = computeExamTestResult();
   const prevAttempts = (settings.examScoreLog && settings.examScoreLog[EX.level] && settings.examScoreLog[EX.level][EX.round]) ? [...settings.examScoreLog[EX.level][EX.round]] : [];
@@ -5892,20 +5938,11 @@ function computeExamTestResult() {
   return { autoTotal, autoCorrect, selfTotal, selfCorrect, items, wrongNos, totalScore };
 }
 function reviewExamTestNo(no) {
-  const r = computeExamTestResult();
-  const item = r.items.find(x => x.no === no);
-  if (item && item.status === 'unanswered') {
-    // 미응답 문제는 이 한 문제만 풀도록 단일 문제 모드로 진입 - 다 풀고 나면
-    // exNavButtonsHtml()의 reviewMode 분기(결과 화면으로 돌아가기)로 복귀한다.
-    EX.reviewMode = true;
-    EX.reviewQueue = [no];
-    jumpToExamTestNo(no);
-    return;
-  }
-  // 정답/오답/이미 검토한 오답 모두 팝업으로 문제·내 답·정답을 보여준다(정답도 오답과
-  // 동일하게 팝업으로 확인 가능해야 한다 - 이전엔 정답 클릭 시 실제 풀이 화면으로
-  // 잘못 진입하는 버그가 있었음).
-  EX.reviewMode = false;
+  // gradeExamTest()가 미응답 문제를 다 풀 때까지("찾아가기 모드") 실제 채점(exam_test_result
+  // 진입)을 막아주기 때문에, 이 함수는 최종 결과 화면에서만 호출되고 그 시점엔 모든 문제가
+  // correct/wrong 중 하나다(unanswered는 나올 수 없음) - 정답/오답 모두 팝업으로 통일해서
+  // 보여준다(정답도 오답과 동일하게 팝업으로 확인 가능해야 한다 - 이전엔 정답 클릭 시 실제
+  // 풀이 화면으로 잘못 진입하는 버그가 있었음).
   showAnswerReviewPopup(no);
 }
 function showAnswerReviewPopup(no) {
@@ -5962,6 +5999,8 @@ function examResultMotivMessage() {
 }
 function renderExamTestResult() {
   const box = document.getElementById('ex-result-inner');
+  const label = document.getElementById('exam-result-top-label');
+  if (label) label.textContent = '시험 결과'; // 찾아가기 목록에서 바뀐 라벨을 원래대로 되돌림
   const r = computeExamTestResult();
   const statusCls = { correct: 'ex-no-correct', wrong: 'ex-no-wrong', unanswered: 'ex-no-unanswered', reviewed: 'ex-no-reviewed' };
   const allListHtml = r.items.map(x =>
@@ -5993,6 +6032,31 @@ function renderExamTestResult() {
       <button class="btn btn-black" onclick="showTab('study')" style="min-width:120px;height:52px;font-size:16px;">홈으로</button>
       <button class="btn btn-black" onclick="goSub('exam_test_intro')" style="min-width:120px;height:52px;font-size:16px;">다시 풀기</button>
     </div>`;
+}
+// 채점(gradeExamTest)을 눌렀는데 미응답 문제가 있을 때 보여주는 "찾아가기 목록" - 아직
+// 최종 결과가 아니므로 정답(파랑)/오답(빨강) 색은 쓰지 않고 풀었음/안풀었음 2단계로만
+// 구분한다. goSub('exam_test_result')가 EX.reviewMode를 보고 이 화면과 renderExamTestResult()
+// 중 하나를 골라 그린다(같은 subscreen/컨테이너를 재사용).
+function renderExamTestFindList() {
+  const box = document.getElementById('ex-result-inner');
+  const label = document.getElementById('exam-result-top-label');
+  if (label) label.textContent = '안 푼 문제 찾아가기';
+  const gridHtml = EX.items.map(it => {
+    const solved = isExamTestItemSolved(it);
+    return `<button class="ex-no-btn ${solved ? 'ex-no-solved' : 'ex-no-unsolved'}" onclick="jumpToExamTestNo(${it.no})">${it.no}</button>`;
+  }).join('');
+  box.innerHTML = `
+    <div class="section-title mb-8" style="font-size:clamp(20px,5.5vw,26px);">안 푼 문제를 찾아 풀어주세요</div>
+    <div style="text-align:center;font-size:14px;color:var(--gray);margin-bottom:6px;">${EX.level} 제${EX.round}회</div>
+    <div style="display:flex;gap:12px;font-size:12px;color:var(--gray);margin:10px 0 8px;justify-content:center;">
+      <span><span class="ex-legend-dot ex-no-solved"></span>풀었음</span>
+      <span><span class="ex-legend-dot ex-no-unsolved"></span>안 풀었음</span>
+    </div>
+    <div style="flex:1;overflow-y:auto;display:flex;flex-wrap:wrap;align-content:flex-start;gap:6px;padding:4px;">${gridHtml}</div>`;
+}
+function renderExamTestResultOrFindList() {
+  if (EX.reviewMode) renderExamTestFindList();
+  else renderExamTestResult();
 }
 
 /* ===== 쿠폰 홈 카드 렌더 ===== */
