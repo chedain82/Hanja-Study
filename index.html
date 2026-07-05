@@ -3733,13 +3733,20 @@ function renderExamScoreChartForLevel(level) {
   const xFor = i => padL + xStep * i;
   const yFor = score => padT + plotH * (1 - score / 100);
 
-  const latestPts = rounds.map((r, i) => ({ x: xFor(i), y: yFor(getExamScoreStats(level, r).latest) }));
-  const bestPts = rounds.map((r, i) => ({ x: xFor(i), y: yFor(getExamScoreStats(level, r).best) }));
+  const latestPts = rounds.map((r, i) => ({ x: xFor(i), y: yFor(getExamScoreStats(level, r).latest), score: getExamScoreStats(level, r).latest }));
+  const bestPts = rounds.map((r, i) => ({ x: xFor(i), y: yFor(getExamScoreStats(level, r).best), score: getExamScoreStats(level, r).best }));
   const toPath = pts => pts.map((p,i) => (i===0?'M':'L') + p.x.toFixed(1) + ',' + p.y.toFixed(1)).join(' ');
 
   const latestLine = `<path d="${toPath(latestPts)}" fill="none" stroke="#3B7DE0" stroke-width="2.5"/>`;
   const bestLine = `<path d="${toPath(bestPts)}" fill="none" stroke="#F0B429" stroke-width="2" stroke-dasharray="4,3"/>`;
   const dots = latestPts.map((p,i) => `<circle cx="${p.x}" cy="${p.y}" r="3.5" fill="#3B7DE0"/>`).join('');
+  // 점수 숫자 표시 - 파란 점(최근) 위, 노란 점(최고) 아래에 표시. 두 점수가 같으면 점 위치도
+  // 같아지므로 최고 점수 숫자를 조금 더 아래로 내려 겹치지 않게 한다.
+  const latestLabels = latestPts.map(p => `<text x="${p.x}" y="${p.y-7}" font-size="10" font-weight="700" text-anchor="middle" fill="#3B7DE0">${p.score}</text>`).join('');
+  const bestLabels = bestPts.map((p,i) => {
+    const dy = p.score === latestPts[i].score ? 16 : 13;
+    return `<text x="${p.x}" y="${p.y+dy}" font-size="10" font-weight="700" text-anchor="middle" fill="#C9950A">${p.score}</text>`;
+  }).join('');
   const xLabels = rounds.map((r,i) => `<text x="${xFor(i)}" y="${H-6}" font-size="10" text-anchor="middle" fill="#888">${r}</text>`).join('');
   const gridLines = [0,50,100].map(v => `<line x1="${padL}" y1="${yFor(v)}" x2="${W-padR}" y2="${yFor(v)}" stroke="#EEE" stroke-width="1"/><text x="4" y="${yFor(v)+3}" font-size="9" fill="#AAA">${v}</text>`).join('');
 
@@ -3750,7 +3757,7 @@ function renderExamScoreChartForLevel(level) {
         <div style="font-size:11px;color:var(--gray);"><span style="color:#3B7DE0;">●</span> 최근  <span style="color:#F0B429;">- - -</span> 최고</div>
       </div>
       <svg viewBox="0 0 ${W} ${H}" style="width:100%;height:auto;">
-        ${gridLines}${bestLine}${latestLine}${dots}${xLabels}
+        ${gridLines}${bestLine}${latestLine}${dots}${xLabels}${bestLabels}${latestLabels}
       </svg>
     </div>`;
 }
@@ -5487,7 +5494,7 @@ function examTestChoiceContent(it) {
     const cls = (i === EX.selected) ? 'chosen' : '';
     const num = EX_CIRCLE_NUMS[i] || (i + 1) + '.';
     return `<button class="quiz-opt ${cls}" onclick="examTestChooseOpt(${i})" ${EX.checked?'disabled':''}>
-      <span class="num">${num}</span><span class="opt-text" style="font-size:${optSize}px;${optFont}text-align:left;white-space:pre-wrap;">${c}</span><span></span>
+      <span class="num">${num}</span><span class="opt-text" style="font-size:${optSize}px;${optFont}text-align:center;white-space:pre-wrap;">${c}</span><span></span>
     </button>`;
   }).join('');
   return `
@@ -5550,47 +5557,45 @@ function checkExamTestWrite() {
 function examTestWordbankCorrectIndex(it) {
   return (it.choices || []).indexOf(it.answer);
 }
+// 카드 글자 수가 늘어날수록(find_hanja_sentence의 2~3글자 한자어/한글 단어) 고정 34px로는
+// 카드 폭을 넘어 잘려 보이므로, 보기 중 가장 긴 글자 수 기준으로 폰트 크기를 줄인다.
+function bankCellFontSize(choices) {
+  const maxLen = Math.max(1, ...(choices || []).map(c => String(c || '').replace(/\s/g, '').length));
+  const w = window.innerWidth;
+  if (maxLen <= 1) return Math.min(Math.max(Math.round(w * .085), 28), 34);
+  if (maxLen === 2) return Math.min(Math.max(Math.round(w * .06), 20), 26);
+  return Math.min(Math.max(Math.round(w * .045), 15), 20);
+}
 function examTestWordbankContent(it) {
   const choices = it.choices || [];
   const cols = choices.length <= 6 ? choices.length : 5; // 71~73(6개)=한 줄, 41~50(10개)=5개씩 두 줄
   const qText = (it.hint && it.target) ? exHighlightBracket(it.hint, it.target) : (it.hint || it.question || '');
   const checked = EX.checked;
-  const bank = choices.map((c, i) =>
-    `<div class="ex-bank-cell"><span class="num">${EX_CIRCLE_NUMS[i]||(i+1)+'.'}</span>${c}</div>`
-  ).join('');
+  const cellSize = bankCellFontSize(choices);
+  const bank = choices.map((c, i) => {
+    const cls = (i === EX.selected) ? 'chosen' : '';
+    return `<button class="ex-bank-cell ${cls}" style="font-size:${cellSize}px;" onclick="examTestChooseWordbank(${i})" ${checked?'disabled':''}>
+      <span class="num">${EX_CIRCLE_NUMS[i]||(i+1)+'.'}</span>${c}
+    </button>`;
+  }).join('');
   // find_hanja_sentence(6~8급)는 힌트가 짧은 훈음이 아니라 문장 전체라 bankHintFontSize(고정
   // 26~34px)로는 너무 크다 - 81~95번에 쓰던 길이 기반 exSentenceFontSize로 따로 계산한다.
   const hintSize = it.type === 'find_hanja_sentence' ? exSentenceFontSize(it.hint || '') : bankHintFontSize(qText);
   return `
     <div class="ex-bank-box" style="grid-template-columns:repeat(${cols},1fr);">${bank}</div>
     <div style="font-size:${hintSize}px;font-weight:800;text-align:center;padding:8px;white-space:pre-wrap;">${qText}</div>
-    <input class="write-input" id="ex-wordbank-input" type="number" inputmode="numeric" placeholder="1~${choices.length} 중 번호 입력"
-      value="${checked && EX.selected !== null ? (EX.selected+1) : ''}"
-      ${checked?'readonly':''}
-      onkeydown="handleExTestWordbankKey(event)" autofocus/>
     <div class="write-result">${checked?'✔ 답안이 저장되었습니다':''}</div>`;
 }
 function examTestWordbankFooter() {
-  const checked = EX.checked;
-  return (!checked ? `<div class="ex-confirm-row"><button class="ex-btn ex-btn-primary" onclick="checkExamTestWordbank()">확인</button></div>` : '') + exNavButtonsHtml();
+  return exNavButtonsHtml();
 }
-function handleExTestWordbankKey(e) {
-  if (e.key === 'Enter') { e.preventDefault(); if (EX.checked) nextExamTestItem(); else checkExamTestWordbank(); }
-}
-function checkExamTestWordbank() {
+function examTestChooseWordbank(i) {
   if (EX.checked) return;
-  const inp = document.getElementById('ex-wordbank-input');
-  const val = inp ? inp.value.trim() : '';
-  if (!val) { toast('번호를 입력해 주세요 ✏️'); return; }
   const it = EX.items[EX.idx];
-  const choices = it.choices || [];
-  const n = parseInt(val, 10);
-  if (!Number.isFinite(n) || n < 1 || n > choices.length) { toast(`1~${choices.length} 사이 번호를 입력해 주세요`); return; }
-  const selIdx = n - 1;
-  EX.selected = selIdx;
+  EX.selected = i;
   EX.checked = true;
-  EX.isCorrect = (selIdx === examTestWordbankCorrectIndex(it)); // 채점용으로 계산만, 화면엔 표시 안 함
-  saveExamTestAnswer(it.no, { selected: selIdx, isCorrect: EX.isCorrect });
+  EX.isCorrect = (i === examTestWordbankCorrectIndex(it)); // 채점용으로 계산만, 화면엔 표시 안 함
+  saveExamTestAnswer(it.no, { selected: i, isCorrect: EX.isCorrect });
   renderExamTestQuiz();
 }
 
@@ -5725,8 +5730,8 @@ function renderExamTestQuiz() {
   // 버튼도 없앴다(이전/다음/채점하기로만 이동, 실전 시험처럼 중간 이탈 불가).
   box.innerHTML = header + `<div class="ex-content-area">${content}</div>` + `<div class="ex-footer">${footer}</div>`;
   startExamTestTimer();
-  if (group === 'write' || group === 'wordbank') {
-    const inp = document.getElementById(group === 'write' ? 'ex-write-input' : 'ex-wordbank-input');
+  if (group === 'write') {
+    const inp = document.getElementById('ex-write-input');
     if (inp) setTimeout(() => inp.focus(), 50);
   }
 }
@@ -5734,9 +5739,10 @@ function renderExamTestQuiz() {
 // "다음 문제" 대신 "채점하기"로 바뀐다(gradeExamTest는 [2]단계에서 정의).
 function exNavButtonsHtml() {
   if (EX.reviewMode) {
+    // 결과 화면에서 미응답 문제 하나를 골라 들어온 상태 - 이전/다음으로 다른 문제를
+    // 순회하지 않고, 풀었든 안 풀었든 바로 결과 화면으로 돌아가는 버튼만 보여준다.
     return `<div class="ex-nav-row">
-      <button class="ex-btn ex-btn-prev" onclick="prevExamTestItem()" ${EX.idx===0?'disabled':''}>이전</button>
-      <button class="ex-btn ex-btn-primary" onclick="nextReviewItem()">다음 미응답 문제</button>
+      <button class="ex-btn ex-btn-primary" onclick="backToExamTestResult()">결과 화면으로 돌아가기</button>
     </div>`;
   }
   const isLast = EX.idx === EX.items.length - 1;
@@ -5750,18 +5756,11 @@ function nextExamTestItem() {
   loadExamTestQuestionState();
   renderExamTestQuiz();
 }
-function nextReviewItem() {
-  const it = EX.items[EX.idx];
-  EX.reviewQueue = EX.reviewQueue.filter(n => n !== it.no);
-  const stillUnanswered = computeExamTestResult().items.filter(x => x.status === 'unanswered').map(x => x.no);
-  EX.reviewQueue = EX.reviewQueue.filter(n => stillUnanswered.includes(n));
-  if (!EX.reviewQueue.length) {
-    EX.reviewMode = false;
-    goSub('exam_test_result');
-    renderExamTestResult();
-    return;
-  }
-  jumpToExamTestNo(EX.reviewQueue[0]);
+function backToExamTestResult() {
+  EX.reviewMode = false;
+  EX.reviewQueue = [];
+  goSub('exam_test_result');
+  renderExamTestResult();
 }
 function prevExamTestItem() {
   if (EX.idx > 0) EX.idx--;
@@ -5895,22 +5894,25 @@ function computeExamTestResult() {
 function reviewExamTestNo(no) {
   const r = computeExamTestResult();
   const item = r.items.find(x => x.no === no);
-  if (item && item.status === 'wrong') {
-    showWrongAnswerPopup(no);
+  if (item && item.status === 'unanswered') {
+    // 미응답 문제는 이 한 문제만 풀도록 단일 문제 모드로 진입 - 다 풀고 나면
+    // exNavButtonsHtml()의 reviewMode 분기(결과 화면으로 돌아가기)로 복귀한다.
+    EX.reviewMode = true;
+    EX.reviewQueue = [no];
+    jumpToExamTestNo(no);
     return;
   }
-  if (item && item.status === 'unanswered') {
-    EX.reviewMode = true;
-    EX.reviewQueue = r.items.filter(x => x.status === 'unanswered').map(x => x.no);
-  } else {
-    EX.reviewMode = false;
-  }
-  jumpToExamTestNo(no);
+  // 정답/오답/이미 검토한 오답 모두 팝업으로 문제·내 답·정답을 보여준다(정답도 오답과
+  // 동일하게 팝업으로 확인 가능해야 한다 - 이전엔 정답 클릭 시 실제 풀이 화면으로
+  // 잘못 진입하는 버그가 있었음).
+  EX.reviewMode = false;
+  showAnswerReviewPopup(no);
 }
-function showWrongAnswerPopup(no) {
+function showAnswerReviewPopup(no) {
   const it = EX.items.find(x => x.no === no);
   const rec = getExamTestAnswer(no);
   const group = EX_TYPE_GROUP[it.type] || 'selfcheck';
+  const isCorrect = group === 'selfcheck' ? !!(rec && rec.selfCheckResult === 'correct') : !!(rec && rec.isCorrect);
   let myAnswer = '(선택 안 함)';
   let correctAnswer = it.answer;
   if (group === 'choice') {
@@ -5930,6 +5932,10 @@ function showWrongAnswerPopup(no) {
     myAnswer = rec.writeInput;
   }
   const instruction = getExamTestInstruction(it, EX.round);
+  const answerHtml = isCorrect
+    ? `<div style="color:var(--correct);">✅ 정답을 맞췄어요: ${correctAnswer}</div>`
+    : `<div style="color:var(--wrong);">내 답: ${myAnswer}</div>
+       <div style="color:var(--correct);margin-top:4px;">정답: ${correctAnswer}</div>`;
   const html = `
     <div style="font-size:14px;font-weight:800;color:var(--gray);text-align:center;margin-bottom:8px;">${no}번</div>
     ${instruction ? `<div style="font-size:13px;font-weight:700;color:#4A5568;background:#EEF4FF;border-radius:10px;padding:8px 12px;margin-bottom:10px;">${instruction}</div>` : ''}
@@ -5937,11 +5943,10 @@ function showWrongAnswerPopup(no) {
       ${examTestReviewSnapshotHtml(it)}
     </div>
     <div style="text-align:center;font-size:16px;font-weight:800;">
-      <div style="color:var(--wrong);">내 답: ${myAnswer}</div>
-      <div style="color:var(--correct);margin-top:4px;">정답: ${correctAnswer}</div>
+      ${answerHtml}
     </div>`;
   showExamTestRichPopup(html, () => {
-    saveExamTestAnswer(no, { reviewed: true });
+    if (!isCorrect) saveExamTestAnswer(no, { reviewed: true });
     renderExamTestResult();
   });
 }
