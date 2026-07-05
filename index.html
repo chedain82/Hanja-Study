@@ -3403,7 +3403,7 @@ function startSession() {
   S.sessionLogged = false;
   S.liveEntryId = null;
 }
-function saveSessionLog(correct, wrong, total, desc, writePct) {
+function saveSessionLog(correct, wrong, total, desc, writePct, examBonus) {
   if (S.sessionLogged) return;
   S.sessionLogged = true;
   const duration = S.sessionStart ? Math.floor((Date.now() - S.sessionStart) / 1000) : 60;
@@ -3424,7 +3424,8 @@ function saveSessionLog(correct, wrong, total, desc, writePct) {
     date: todayStr(),
     duration: Math.max(duration, 5),
     correct: correct||0, wrong: wrong||0, total: total||0,
-    desc: desc||'', mode, range, category, pct
+    desc: desc||'', mode, range, category, pct,
+    examBonus: examBonus || 0
   };
   const liveIdx = S.liveEntryId ? studyLog.findIndex(e => e.id === S.liveEntryId) : -1;
   if (liveIdx !== -1) studyLog[liveIdx] = entry; else studyLog.push(entry);
@@ -5357,6 +5358,7 @@ let EX = {
   selfCheckRevealed: false, selfCheckResults: [], userAnswers: [],
   reviewMode: false, reviewQueue: [],
   lastScoreIsFirst: false, lastScoreDelta: null,
+  sessionStart: null, lastBonus: 0,
 };
 
 // 문제 번호별로 이미 입력/판정한 답을 저장해두는 곳 - "이전" 버튼으로 돌아갔을 때
@@ -5451,6 +5453,7 @@ function startExamTest() {
   EX.timeLeft = EX_TOTAL_SEC;
   EX.selfCheckResults = [];
   EX.userAnswers = [];
+  EX.sessionStart = Date.now();
   loadExamTestQuestionState();
   stopExamTestTimer();
   goSub('exam_test_quiz');
@@ -5956,7 +5959,21 @@ function finalizeExamTestGrade() {
   const prevAttempts = (settings.examScoreLog && settings.examScoreLog[EX.level] && settings.examScoreLog[EX.level][EX.round]) ? [...settings.examScoreLog[EX.level][EX.round]] : [];
   EX.lastScoreIsFirst = prevAttempts.length === 0;
   EX.lastScoreDelta = prevAttempts.length ? r.totalScore - prevAttempts[prevAttempts.length - 1].score : null;
-  recordExamScore(EX.level, EX.round, r.totalScore);
+  recordExamScore(EX.level, EX.round, r.totalScore); // 기존 그대로 (리포트용)
+  // 랭킹 점수(getWeeklyScore) 반영용 studyLog 기록 - exam 분기가 정답수x2점, 80/90점 이상은 보너스 추가
+  const totalCorrect = r.autoCorrect + r.selfCorrect;
+  const totalCount = r.autoTotal + r.selfTotal;
+  S.mode = 'exam';
+  S.category = '';
+  S.ranges = [];
+  S.level = null; // levelProgress(커리큘럼 진도율)에 안 섞이게
+  S.sessionStart = EX.sessionStart || Date.now();
+  S.sessionLogged = false;
+  S.liveEntryId = null;
+  const desc = `시험모드 ${EX.level} 제${EX.round}회`;
+  const bonus = r.totalScore >= 90 ? 300 : r.totalScore >= 80 ? 200 : 0;
+  saveSessionLog(totalCorrect, totalCount - totalCorrect, totalCount, desc, undefined, bonus);
+  EX.lastBonus = bonus; // 결과 화면에서 보너스 문구 표시용
   goSub('exam_test_result');
 }
 // 찾아가기 목록의 "이대로 채점하기" - 안 푼 문제가 남아있어도 미응답으로 집계해 최종 채점한다.
@@ -6056,6 +6073,16 @@ function examResultMotivMessage() {
   if (d === 0) return `<div style="text-align:center;font-size:14px;font-weight:700;color:var(--gray);background:#F4F4F4;border-radius:12px;padding:8px 12px;margin-bottom:14px;">지난번과 똑같은 점수예요. 다음엔 더 올려봐요!</div>`;
   return `<div style="text-align:center;font-size:14px;font-weight:700;color:var(--wrong);background:#FFF0F0;border-radius:12px;padding:8px 12px;margin-bottom:14px;">지난번보다 ${Math.abs(d)}점 낮아요. 다시 도전해봐요!</div>`;
 }
+function examBonusMessage() {
+  const bonus = EX.lastBonus || 0;
+  if (bonus >= 300) {
+    return `<div style="text-align:center;font-size:15px;font-weight:800;color:#fff;background:linear-gradient(90deg,#FF6FA5,#FF9ECF);border-radius:12px;padding:10px 12px;margin-bottom:10px;">🎉 90점 이상! 랭킹 보너스 +300점 획득!</div>`;
+  }
+  if (bonus >= 200) {
+    return `<div style="text-align:center;font-size:15px;font-weight:800;color:#fff;background:linear-gradient(90deg,#FFB6C1,#FFD1DC);border-radius:12px;padding:10px 12px;margin-bottom:10px;">🌟 80점 이상! 랭킹 보너스 +200점 획득!</div>`;
+  }
+  return '';
+}
 function renderExamTestResult() {
   const box = document.getElementById('ex-result-inner');
   const label = document.getElementById('exam-result-top-label');
@@ -6069,6 +6096,7 @@ function renderExamTestResult() {
     <div class="section-title mb-8" style="font-size:clamp(22px,6vw,30px);">시험 결과</div>
     <div style="text-align:center;font-size:15px;color:var(--gray);margin-bottom:6px;">${EX.level} 제${EX.round}회</div>
     <div style="text-align:center;font-size:48px;font-weight:900;color:var(--blue);margin:8px 0 16px;">${r.totalScore}점</div>
+    ${examBonusMessage()}
     ${examResultMotivMessage()}
     <div style="display:flex;gap:10px;justify-content:center;margin-bottom:16px;">
       <div style="background:#F7F8FA;border-radius:12px;padding:12px 18px;text-align:center;">
@@ -6190,6 +6218,7 @@ function getWeeklyScore() {
       else if (d.includes('쓰기') || d.includes('write') || d.includes('기출')) score += (e.correct||0) * 2;
     }
     // 카드 등 = 0점
+    score += (e.examBonus || 0); // 80/90점 이상 시험 모드 보너스 - 모드와 무관하게 항상 더함
   }
   return score;
 }
