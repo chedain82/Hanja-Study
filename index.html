@@ -2612,6 +2612,10 @@ const HG_Sound = (() => {
         <button class="t-rank-tab active" id="t-rank-class" onclick="setTeacherRankTab('class')">우리 반</button>
         <button class="t-rank-tab" id="t-rank-all" onclick="setTeacherRankTab('all')">전 체</button>
       </div>
+      <div class="teacher-rank-tabs">
+        <button class="t-rank-tab active" id="t-rank-period-current" onclick="setTeacherRankPeriod('current')">이번 주</button>
+        <button class="t-rank-tab" id="t-rank-period-last" onclick="setTeacherRankPeriod('last')">지난주</button>
+      </div>
       <div id="teacher-rank-list"><div class="t-rank-empty">불러오는 중...</div></div>
     </div>
 
@@ -3422,6 +3426,7 @@ function saveSessionLog(correct, wrong, total, desc, writePct, examBonus) {
   const entry = {
     id: entryId,
     date: todayStr(),
+    weekKey: getWeekStart(),
     duration: Math.max(duration, 5),
     correct: correct||0, wrong: wrong||0, total: total||0,
     desc: desc||'', mode, range, category, pct,
@@ -3503,7 +3508,7 @@ function syncWriteProgressLive() {
   if (!S.liveEntryId) {
     S.liveEntryId = Date.now() + '_' + Math.random().toString(36).substr(2,6);
     studyLog.push({
-      id: S.liveEntryId, date: todayStr(), duration,
+      id: S.liveEntryId, date: todayStr(), weekKey: getWeekStart(), duration,
       correct: S.correct||0, wrong: S.wrong||0, total,
       desc: S.lastStudy||'쓰기', mode: 'write', range, category: S.category||'', pct
     });
@@ -6181,9 +6186,20 @@ async function doPasswordReset() {
 /* ===== 주간 문제 수 계산 ===== */
 function getWeekStart() {
   const d = new Date();
+  // 랭킹 마감을 일요일 밤 12시가 아니라 밤 9시로 앞당김.
+  // 일요일 21시 이후는 이미 다음 주(월요일)로 취급해서, 그 순간부터
+  // 랭킹이 0점으로 새로 시작되고 지난주 결과는 더 이상 바뀌지 않는다.
+  if (d.getDay() === 0 && d.getHours() >= 21) {
+    d.setDate(d.getDate() + 1);
+  }
   const day = d.getDay(); // 0=일, 1=월...
   const diff = day === 0 ? -6 : 1 - day;
   d.setDate(d.getDate() + diff);
+  return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');
+}
+function getPrevWeekStart() {
+  const d = new Date(getWeekStart() + 'T00:00:00');
+  d.setDate(d.getDate() - 7);
   return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');
 }
 /* 학습 아이템에서 실제 학습한 범위 목록 추출 */
@@ -6200,8 +6216,8 @@ function getWeeklyProblems() {
 
 /* 랭킹 점수: 퀴즈 정답×1 + 쓰기 정답×(선정 3/교과서 2) + 기출 정답×2 */
 function getWeeklyScore() {
-  const ws = getWeekStart();
-  const weekLogs = studyLog.filter(e => e.date >= ws);
+  const currentWeek = getWeekStart();
+  const weekLogs = studyLog.filter(e => e.weekKey ? e.weekKey === currentWeek : e.date >= currentWeek);
   let score = 0;
   for (const e of weekLogs) {
     const m = e.mode || '';
@@ -8299,6 +8315,8 @@ async function sendPersonalMsg() {
 
 /* ===== 선생님 랭킹 ===== */
 let _teacherRankTab = 'class';
+let _teacherRankPeriod = 'current'; // 'current' | 'last'
+let _teacherRankTabBeforeLast = 'class'; // 지난주에서 이번 주로 돌아왔을 때 복원할 스코프
 
 function setTeacherRankTab(tab) {
   _teacherRankTab = tab;
@@ -8307,6 +8325,42 @@ function setTeacherRankTab(tab) {
   if(c) c.classList.toggle('active', tab==='class');
   if(a) a.classList.toggle('active', tab==='all');
   renderTeacherRanking();
+}
+
+function setTeacherRankPeriod(period) {
+  _teacherRankPeriod = period;
+  const curBtn = document.getElementById('t-rank-period-current');
+  const lastBtn = document.getElementById('t-rank-period-last');
+  if (curBtn) curBtn.classList.toggle('active', period==='current');
+  if (lastBtn) lastBtn.classList.toggle('active', period==='last');
+
+  const allBtn = document.getElementById('t-rank-all');
+  if (period === 'last') {
+    // 지난주는 우리 반 전용: 전체 탭 비활성화하고 우리 반으로 강제 전환
+    _teacherRankTabBeforeLast = _teacherRankTab;
+    if (allBtn) { allBtn.disabled = true; allBtn.style.opacity = '0.4'; allBtn.style.cursor = 'not-allowed'; }
+    setTeacherRankTab('class');
+  } else {
+    if (allBtn) { allBtn.disabled = false; allBtn.style.opacity = ''; allBtn.style.cursor = ''; }
+    setTeacherRankTab(_teacherRankTabBeforeLast);
+  }
+}
+
+function _renderRankListHTML(items) {
+  const icons=['🥇','🥈','🥉'];
+  return items.map((item,i) => {
+    const nc = i===0?'top1':i===1?'top2':i===2?'top3':'';
+    const sub = (_teacherRankTab==='all' && item.teacherName)
+      ? `<span style="font-size:11px;color:var(--gray);"> · ${item.teacherName} 반</span>` : '';
+    return `<div class="t-rank-row">
+      <div class="t-rank-num ${nc}">${icons[i]||i+1}</div>
+      <div class="t-rank-name">${item.name}${sub}</div>
+      <div style="text-align:right">
+        <div class="t-rank-score">${item.weeklyProblems}</div>
+        <div class="t-rank-lbl">점수/주</div>
+      </div>
+    </div>`;
+  }).join('');
 }
 
 async function renderTeacherRanking() {
@@ -8318,6 +8372,25 @@ async function renderTeacherRanking() {
   }
   listEl.innerHTML = '<div class="t-rank-empty">🔄 불러오는 중...</div>';
   try {
+    if (_teacherRankPeriod === 'last') {
+      const prevWeek = getPrevWeekStart();
+      const students = await window._fbGetTeacherStudents(currentUser.id);
+      const results = await Promise.allSettled(
+        students.map(s => window._fbGetWeeklyRankingHistory ? window._fbGetWeeklyRankingHistory(s.id, prevWeek) : Promise.resolve(null))
+      );
+      let lastItems = results.map((r,i) => {
+        const d = (r.status==='fulfilled' && r.value) ? r.value : {};
+        return { id: students[i].id, name: students[i].name, weeklyProblems: d.weeklyProblems||0 };
+      });
+      lastItems.sort((a,b) => b.weeklyProblems - a.weeklyProblems);
+      lastItems = lastItems.filter(item => item.weeklyProblems > 0);
+      if (!lastItems.length) {
+        listEl.innerHTML='<div class="t-rank-empty">지난주 학습 데이터가 없어요</div>'; return;
+      }
+      listEl.innerHTML = _renderRankListHTML(lastItems);
+      return;
+    }
+
     let items = [];
     const currentWeek = getWeekStart();
     if (_teacherRankTab==='class') {
@@ -8343,20 +8416,7 @@ async function renderTeacherRanking() {
     if (!items.length) {
       listEl.innerHTML='<div class="t-rank-empty">이번 주 학습 데이터가 없어요<br>학생들이 학습하면 나타나요 🏆</div>'; return;
     }
-    const icons=['🥇','🥈','🥉'];
-    listEl.innerHTML = items.map((item,i) => {
-      const nc = i===0?'top1':i===1?'top2':i===2?'top3':'';
-      const sub = (_teacherRankTab==='all' && item.teacherName)
-        ? `<span style="font-size:11px;color:var(--gray);"> · ${item.teacherName} 반</span>` : '';
-      return `<div class="t-rank-row">
-        <div class="t-rank-num ${nc}">${icons[i]||i+1}</div>
-        <div class="t-rank-name">${item.name}${sub}</div>
-        <div style="text-align:right">
-          <div class="t-rank-score">${item.weeklyProblems}</div>
-          <div class="t-rank-lbl">점수/주</div>
-        </div>
-      </div>`;
-    }).join('');
+    listEl.innerHTML = _renderRankListHTML(items);
   } catch(e) {
     listEl.innerHTML='<div class="t-rank-empty" style="color:var(--wrong);">오류: '+e.message+'</div>';
   }
@@ -9085,7 +9145,25 @@ document.addEventListener('visibilitychange', async () => {
         }
       }
     } catch(e) {}
+    const historyId = studentId + '_' + data.weekKey;
+    let historyProblems = data.weeklyProblems;
+    try {
+      const histSnap = await getDoc(doc(db, 'weeklyRankingHistory', historyId));
+      if (histSnap.exists()) {
+        // 지난 주 기록도 같은 주차 안에서는 더 큰 값만 저장 (절대 내려가지 않음)
+        historyProblems = Math.max(histSnap.data().weeklyProblems||0, historyProblems||0);
+      }
+    } catch(e) {}
+    setDoc(doc(db, 'weeklyRankingHistory', historyId), {
+      studentId, name: data.name, teacherId: data.teacherId, teacherName: data.teacherName,
+      weeklyProblems: historyProblems, weekKey: data.weekKey, updatedAt: data.updatedAt
+    }, { merge: true }).catch(()=>{});
     return setDoc(doc(db, 'weeklyRanking', studentId), data);
+  };
+
+  window._fbGetWeeklyRankingHistory = async (studentId, weekKey) => {
+    const snap = await getDoc(doc(db, 'weeklyRankingHistory', studentId + '_' + weekKey));
+    return snap.exists() ? snap.data() : null;
   };
 
   window._fbGetWeeklyRanking = async (studentId) => {
