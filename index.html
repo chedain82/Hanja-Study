@@ -4077,7 +4077,7 @@ function renderLevelProgress() {
 }
 
 /* ===== WRONG NOTE FUNCTIONS ===== */
-function answerText(it) { if(it.타입==='선정') { if(it.단계==='A-6'||it.표시단계==='A6') return it.뜻||''; return`${it.뜻} ${it.독음}`.trim(); } return it.독음||''; }
+function answerText(it) { if(it.타입==='선정') { if((it.단계==='A-6'||it.표시단계==='A6') && it.뜻===it.독음) return it.뜻||''; return`${it.뜻} ${it.독음}`.trim(); } return it.독음||''; }
 function itemKey(it) { return `${it.급수}_${it.단계}_${it.번호}_${it.타입}`; }
 
 function addToWrongNote(item) {
