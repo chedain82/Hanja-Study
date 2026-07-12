@@ -6201,10 +6201,15 @@ function getWeeklyProblems() {
   return studyLog.filter(e => e.date >= ws).reduce((s,e)=>s+(e.total||0),0);
 }
 
-/* 랭킹 점수: 퀴즈 정답×1 + 쓰기 정답×(선정 3/교과서 2) + 기출 정답×2 */
-function getWeeklyScore() {
-  const currentWeek = getWeekStart();
-  const weekLogs = studyLog.filter(e => e.weekKey ? e.weekKey === currentWeek : e.date >= currentWeek);
+/* 랭킹 점수: 퀴즈 정답×1 + 쓰기 정답×(선정 3/교과서 2) + 기출 정답×2
+ * weekKey를 인자로 받아 임의의 주(지난주 포함)에 대해서도 studyLog 원본에서
+ * 바로 재계산할 수 있게 분리 - 지난주 랭킹 표시가 weeklyRankingHistory 동기화
+ * 실패에도 studyLog를 기준으로 스스로 복구할 수 있는 안전망으로 재사용된다. */
+function computeWeekScore(logArr, weekKey) {
+  const d0 = new Date(weekKey + 'T00:00:00');
+  d0.setDate(d0.getDate() + 7);
+  const nextWeekKey = d0.getFullYear()+'-'+String(d0.getMonth()+1).padStart(2,'0')+'-'+String(d0.getDate()).padStart(2,'0');
+  const weekLogs = (logArr||[]).filter(e => e.weekKey ? e.weekKey === weekKey : (e.date >= weekKey && e.date < nextWeekKey));
   let score = 0;
   for (const e of weekLogs) {
     const m = e.mode || '';
@@ -6225,6 +6230,9 @@ function getWeeklyScore() {
     // 카드 등 = 0점
   }
   return score;
+}
+function getWeeklyScore() {
+  return computeWeekScore(studyLog, getWeekStart());
 }
 
 /* ===== 연속 정답 100% 체크 ===== */
@@ -8366,10 +8374,31 @@ async function renderTeacherRanking() {
       const results = await Promise.allSettled(
         students.map(s => window._fbGetWeeklyRankingHistory ? window._fbGetWeeklyRankingHistory(s.id, prevWeek) : Promise.resolve(null))
       );
-      let lastItems = results.map((r,i) => {
+      // history 문서가 없거나 0점이면, 동기화가 누락됐을 수 있으니 studyLog 원본에서
+      // 직접 재계산해서 보여준다(안전망). 복구된 값은 다음에도 바로 보이도록
+      // weeklyRankingHistory에 최선을 다해 다시 써둔다(실패해도 화면 표시엔 지장 없음).
+      let lastItems = await Promise.all(results.map(async (r, i) => {
         const d = (r.status==='fulfilled' && r.value) ? r.value : {};
-        return { id: students[i].id, name: students[i].name, weeklyProblems: d.weeklyProblems||0 };
-      });
+        let score = d.weeklyProblems || 0;
+        if (!score) {
+          try {
+            const sdata = await window._fbGetStudentData(students[i].id);
+            const recalculated = sdata ? computeWeekScore(sdata.studyLog, prevWeek) : 0;
+            if (recalculated > 0) {
+              score = recalculated;
+              window._fbUpdateWeeklyRanking(students[i].id, {
+                name: students[i].name,
+                teacherId: currentUser.id,
+                teacherName: currentUser.teacherName || '',
+                weeklyProblems: recalculated,
+                weekKey: prevWeek,
+                updatedAt: new Date().toISOString()
+              }).catch(e => console.warn('지난주 랭킹 자동 복구 실패:', students[i].id, e));
+            }
+          } catch(e) {}
+        }
+        return { id: students[i].id, name: students[i].name, weeklyProblems: score };
+      }));
       lastItems.sort((a,b) => b.weeklyProblems - a.weeklyProblems);
       lastItems = lastItems.filter(item => item.weeklyProblems > 0);
       if (!lastItems.length) {
@@ -9142,11 +9171,14 @@ document.addEventListener('visibilitychange', async () => {
         historyProblems = Math.max(histSnap.data().weeklyProblems||0, historyProblems||0);
       }
     } catch(e) {}
-    setDoc(doc(db, 'weeklyRankingHistory', historyId), {
+    const historyWrite = setDoc(doc(db, 'weeklyRankingHistory', historyId), {
       studentId, name: data.name, teacherId: data.teacherId, teacherName: data.teacherName,
       weeklyProblems: historyProblems, weekKey: data.weekKey, updatedAt: data.updatedAt
-    }, { merge: true }).catch(()=>{});
-    return setDoc(doc(db, 'weeklyRanking', studentId), data);
+    }, { merge: true }).catch(e => console.warn('weeklyRankingHistory 저장 실패:', historyId, e));
+    const rankingWrite = setDoc(doc(db, 'weeklyRanking', studentId), data);
+    // 두 문서를 함께 기다려서, history 쓰기가 완료되기 전에 호출부가 넘어가
+    // 페이지 전환/새로고침에 의해 조용히 유실되는 일이 없게 한다.
+    await Promise.all([historyWrite, rankingWrite]);
   };
 
   // TEMP(일회성 examBonus 재계산용) - max 보호 없이 weeklyRanking/weeklyRankingHistory를 그대로 덮어씀.
