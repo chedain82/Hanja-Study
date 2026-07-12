@@ -8507,21 +8507,34 @@ function setTeacherRankPeriod(period) {
   }
 }
 
-/* "지난 기록 ▾" 버튼 클릭 시: 데이터가 있는 과거 주차 목록을 급수 피커와
- * 동일한 드럼롤 UI로 보여주고, 선택한 주차를 조회한다. */
+/* "지난 기록 ▾" 버튼 클릭 시: 급수 선택 팝업처럼 지연 없이 즉시 팝업부터 띄우고,
+ * 그 안에서 주차 목록을 비동기로 불러온다 (팝업이 뜨기 전에 데이터부터 기다리지 않음).
+ * 버튼 자체의 라벨은 로딩 중에도 바꾸지 않는다. */
 async function openTeacherWeekHistoryPicker() {
   if (!currentUser || currentUser.role !== 'teacher') return;
-  const lastBtn = document.getElementById('t-rank-period-last');
-  const prevLabel = lastBtn ? lastBtn.textContent : '지난 기록 ▾';
-  if (lastBtn) lastBtn.textContent = '불러오는 중...';
+
+  const overlay = document.getElementById('week-picker-overlay');
+  const track = _weekPickerTrack();
+  _weekPickerOptions = [];
+  _weekPickerOnConfirm = null;
+  track.innerHTML = '<div style="height:100%;display:flex;align-items:center;justify-content:center;color:#999;font-size:14px;">불러오는 중...</div>';
+  overlay.classList.add('active');
+
   let weekKeys = [];
   try {
     weekKeys = await window._fbGetAvailableWeekKeys(currentUser.id);
   } catch (e) {
     console.warn('지난 기록 주차 목록 조회 실패:', e);
   }
-  if (lastBtn) lastBtn.textContent = prevLabel;
-  if (!weekKeys.length) { toast('아직 지난 기록이 없어요.'); return; }
+
+  // 로딩되는 동안 사용자가 이미 팝업을 닫았으면(취소) 그대로 둔다
+  if (!overlay.classList.contains('active')) return;
+
+  if (!weekKeys.length) {
+    closeWeekPicker();
+    toast('아직 지난 기록이 없어요.');
+    return;
+  }
   const options = weekKeys.map(k => ({ key: k, label: formatWeekRangeLabel(k) }));
   openWeekPicker(options, (key) => selectTeacherRankWeek(key));
 }
