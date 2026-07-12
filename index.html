@@ -2028,6 +2028,9 @@ const HG_Sound = (() => {
 .grade-picker-actions{display:flex;gap:12px;padding:16px 20px 0;}
 .grade-picker-cancel{flex:1;height:48px;border-radius:24px;background:#f5f5f5;color:#888;font-size:16px;font-weight:700;border:none;cursor:pointer;font-family:inherit;}
 .grade-picker-confirm{flex:2;height:48px;border-radius:24px;background:#4A90D9;color:#fff;font-size:16px;font-weight:800;border:none;cursor:pointer;font-family:inherit;}
+/* ===== 지난 기록(주차) 드럼롤 피커 - 급수 피커와 동일 스타일(.grade-picker-* 클래스 재사용) ===== */
+#week-picker-overlay{position:fixed;inset:0;z-index:500;background:rgba(0,0,0,.45);backdrop-filter:blur(3px);display:none;align-items:center;justify-content:center;}
+#week-picker-overlay.active{display:flex;}
 /* ===== 범위 팝업 (center modal) ===== */
 #range-popup-overlay{position:fixed;inset:0;z-index:400;background:rgba(0,0,0,.4);backdrop-filter:blur(3px);display:none;align-items:center;justify-content:center;}
 #range-popup-overlay.active{display:flex;}
@@ -2614,7 +2617,7 @@ const HG_Sound = (() => {
       </div>
       <div class="teacher-rank-tabs">
         <button class="t-rank-tab active" id="t-rank-period-current" onclick="setTeacherRankPeriod('current')">이번 주</button>
-        <button class="t-rank-tab" id="t-rank-period-last" onclick="setTeacherRankPeriod('last')">지난주</button>
+        <button class="t-rank-tab" id="t-rank-period-last" onclick="openTeacherWeekHistoryPicker()">지난 기록 ▾</button>
       </div>
       <div id="teacher-rank-list"><div class="t-rank-empty">불러오는 중...</div></div>
     </div>
@@ -3196,6 +3199,21 @@ const HG_Sound = (() => {
       <div class="grade-picker-actions">
         <button class="grade-picker-cancel" onclick="closeGradePicker()">취소</button>
         <button class="grade-picker-confirm" onclick="confirmGradePicker()">확인</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 선생님 랭킹: 지난 기록(주차) 드럼롤 피커 - 급수 피커와 동일한 클래스로 스타일 재사용 -->
+  <div id="week-picker-overlay" onclick="if(event.target===this)closeWeekPicker()">
+    <div class="grade-picker-box">
+      <div class="grade-picker-title">지난 기록 선택</div>
+      <div class="grade-picker-wrap">
+        <div class="grade-picker-highlight"></div>
+        <div class="grade-picker-track" id="week-picker-track"></div>
+      </div>
+      <div class="grade-picker-actions">
+        <button class="grade-picker-cancel" onclick="closeWeekPicker()">취소</button>
+        <button class="grade-picker-confirm" onclick="confirmWeekPicker()">확인</button>
       </div>
     </div>
   </div>
@@ -6189,6 +6207,14 @@ function getPrevWeekStart() {
   d.setDate(d.getDate() - 7);
   return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');
 }
+/* weekKey(월요일)를 "7/6~7/12" 형태로 사람이 읽기 쉬운 날짜 범위로 변환 */
+function formatWeekRangeLabel(weekKey) {
+  const start = new Date(weekKey + 'T00:00:00');
+  const end = new Date(start);
+  end.setDate(end.getDate() + 6);
+  const fmt = (d) => `${d.getMonth()+1}/${d.getDate()}`;
+  return `${fmt(start)}~${fmt(end)}`;
+}
 /* 학습 아이템에서 실제 학습한 범위 목록 추출 */
 function _getRangesFromItems(items, fallbackRanges) {
   if (!items || !items.length) return fallbackRanges || [];
@@ -7547,6 +7573,140 @@ function confirmGradePicker() {
   closeGradePicker();
 }
 
+/* ===== 지난 기록(주차) 드럼롤 피커 - 급수 피커와 동일한 조작 방식을 임의의
+ * 옵션 목록에 재사용할 수 있도록 일반화한 버전. openWeekPicker(options, onConfirm)
+ * 형태로 호출하는 쪽에서 데이터와 콜백만 넘기면 된다. */
+let _weekPickerOptions = []; // [{key, label}, ...] - 배열 순서 그대로 위→아래 표시
+let _weekPickerIdx = 0;
+let _weekPickerDragging = false, _weekPickerDragStartY = 0, _weekPickerDragStartScroll = 0;
+let _weekPickerLastWheelTime = 0;
+let _weekPickerOnConfirm = null;
+const _WEEK_PICKER_H = 44;
+
+function _weekPickerTrack() { return document.getElementById('week-picker-track'); }
+
+function _setWeekPickerIdx(idx, smooth) {
+  idx = Math.max(0, Math.min(idx, _weekPickerOptions.length - 1));
+  _weekPickerIdx = idx;
+  const track = _weekPickerTrack();
+  track.scrollTo({top: idx * _WEEK_PICKER_H, behavior: smooth ? 'smooth' : 'auto'});
+  track.querySelectorAll('.grade-picker-item').forEach((el, i) => el.classList.toggle('active-item', i === idx));
+}
+
+function _moveWeekPicker(delta) { _setWeekPickerIdx(_weekPickerIdx + delta, true); }
+
+function _onWeekPickerScroll() {
+  const track = _weekPickerTrack();
+  const idx = Math.max(0, Math.min(Math.round(track.scrollTop / _WEEK_PICKER_H), _weekPickerOptions.length - 1));
+  if (idx !== _weekPickerIdx) {
+    _weekPickerIdx = idx;
+    track.querySelectorAll('.grade-picker-item').forEach((el, i) => el.classList.toggle('active-item', i === idx));
+  }
+}
+
+function _onWeekPickerWheel(e) {
+  e.preventDefault();
+  const now = Date.now();
+  if (now - _weekPickerLastWheelTime < 120) return;
+  _weekPickerLastWheelTime = now;
+  _moveWeekPicker(e.deltaY > 0 ? 1 : -1);
+}
+
+function _onWeekPickerKeydown(e) {
+  if (e.key === 'ArrowUp') { e.preventDefault(); _moveWeekPicker(-1); }
+  else if (e.key === 'ArrowDown') { e.preventDefault(); _moveWeekPicker(1); }
+  else if (e.key === 'Enter') { e.preventDefault(); confirmWeekPicker(); }
+  else if (e.key === 'Escape') { e.preventDefault(); closeWeekPicker(); }
+}
+
+function _onWeekPickerItemClick(e) {
+  const item = e.target.closest('.grade-picker-item');
+  if (!item) return;
+  const idx = Number(item.dataset.idx);
+  if (!Number.isNaN(idx)) _setWeekPickerIdx(idx, true);
+}
+
+function _onWeekPickerMouseDown(e) {
+  _weekPickerDragging = true;
+  _weekPickerDragStartY = e.clientY;
+  _weekPickerDragStartScroll = _weekPickerTrack().scrollTop;
+  document.addEventListener('mousemove', _onWeekPickerMouseMove);
+  document.addEventListener('mouseup', _onWeekPickerMouseUp);
+  e.preventDefault();
+}
+function _onWeekPickerMouseMove(e) {
+  if (!_weekPickerDragging) return;
+  _weekPickerTrack().scrollTop = _weekPickerDragStartScroll - (e.clientY - _weekPickerDragStartY);
+}
+function _onWeekPickerMouseUp() {
+  if (!_weekPickerDragging) return;
+  _weekPickerDragging = false;
+  document.removeEventListener('mousemove', _onWeekPickerMouseMove);
+  document.removeEventListener('mouseup', _onWeekPickerMouseUp);
+  _setWeekPickerIdx(_weekPickerIdx, true);
+}
+
+function _onWeekPickerTouchStart(e) {
+  _weekPickerDragging = true;
+  _weekPickerDragStartY = e.touches[0].clientY;
+  _weekPickerDragStartScroll = _weekPickerTrack().scrollTop;
+}
+function _onWeekPickerTouchMove(e) {
+  if (!_weekPickerDragging) return;
+  e.preventDefault();
+  _weekPickerTrack().scrollTop = _weekPickerDragStartScroll - (e.touches[0].clientY - _weekPickerDragStartY);
+}
+function _onWeekPickerTouchEnd() {
+  if (!_weekPickerDragging) return;
+  _weekPickerDragging = false;
+  _setWeekPickerIdx(_weekPickerIdx, true);
+}
+
+/* options: [{key, label}, ...] (배열 맨 앞이 기본 선택/최상단). onConfirm(key)는
+ * "확인" 클릭 시 선택된 항목의 key를 받는다. */
+function openWeekPicker(options, onConfirm) {
+  if (!options || !options.length) { toast('아직 지난 기록이 없어요.'); return; }
+  _weekPickerOptions = options;
+  _weekPickerOnConfirm = onConfirm;
+  _weekPickerIdx = 0;
+  const track = _weekPickerTrack();
+  track.innerHTML = options.map((o, i) =>
+    `<div class="grade-picker-item${i===0?' active-item':''}" data-idx="${i}">${o.label}</div>`
+  ).join('');
+  document.getElementById('week-picker-overlay').classList.add('active');
+  track.scrollTop = 0;
+  track.addEventListener('scroll', _onWeekPickerScroll);
+  track.addEventListener('wheel', _onWeekPickerWheel, {passive:false});
+  track.addEventListener('click', _onWeekPickerItemClick);
+  track.addEventListener('mousedown', _onWeekPickerMouseDown);
+  track.addEventListener('touchstart', _onWeekPickerTouchStart, {passive:true});
+  track.addEventListener('touchmove', _onWeekPickerTouchMove, {passive:false});
+  track.addEventListener('touchend', _onWeekPickerTouchEnd);
+  document.addEventListener('keydown', _onWeekPickerKeydown);
+}
+
+function closeWeekPicker() {
+  const track = _weekPickerTrack();
+  track.removeEventListener('scroll', _onWeekPickerScroll);
+  track.removeEventListener('wheel', _onWeekPickerWheel);
+  track.removeEventListener('click', _onWeekPickerItemClick);
+  track.removeEventListener('mousedown', _onWeekPickerMouseDown);
+  track.removeEventListener('touchstart', _onWeekPickerTouchStart);
+  track.removeEventListener('touchmove', _onWeekPickerTouchMove);
+  track.removeEventListener('touchend', _onWeekPickerTouchEnd);
+  document.removeEventListener('keydown', _onWeekPickerKeydown);
+  document.removeEventListener('mousemove', _onWeekPickerMouseMove);
+  document.removeEventListener('mouseup', _onWeekPickerMouseUp);
+  document.getElementById('week-picker-overlay').classList.remove('active');
+}
+
+function confirmWeekPicker() {
+  const opt = _weekPickerOptions[_weekPickerIdx];
+  const cb = _weekPickerOnConfirm;
+  closeWeekPicker();
+  if (opt && cb) cb(opt.key);
+}
+
 /* ===== 범위 팝업 ===== */
 function _renderRangePopupGroups() {
   const steps = LEVEL_STEPS[S.level] || [];
@@ -8312,7 +8472,8 @@ async function sendPersonalMsg() {
 /* ===== 선생님 랭킹 ===== */
 let _teacherRankTab = 'class';
 let _teacherRankPeriod = 'current'; // 'current' | 'last'
-let _teacherRankTabBeforeLast = 'class'; // 지난주에서 이번 주로 돌아왔을 때 복원할 스코프
+let _teacherRankTabBeforeLast = 'class'; // 지난 기록에서 이번 주로 돌아왔을 때 복원할 스코프
+let _teacherRankSelectedWeek = null; // '지난 기록' 피커에서 선택한 weekKey (null이면 getPrevWeekStart()로 폴백)
 
 function setTeacherRankTab(tab) {
   _teacherRankTab = tab;
@@ -8329,10 +8490,14 @@ function setTeacherRankPeriod(period) {
   const lastBtn = document.getElementById('t-rank-period-last');
   if (curBtn) curBtn.classList.toggle('active', period==='current');
   if (lastBtn) lastBtn.classList.toggle('active', period==='last');
+  if (period === 'current') {
+    _teacherRankSelectedWeek = null;
+    if (lastBtn) lastBtn.textContent = '지난 기록 ▾';
+  }
 
   const allBtn = document.getElementById('t-rank-all');
   if (period === 'last') {
-    // 지난주는 우리 반 전용: 전체 탭 비활성화하고 우리 반으로 강제 전환
+    // 지난 기록은 우리 반 전용: 전체 탭 비활성화하고 우리 반으로 강제 전환
     _teacherRankTabBeforeLast = _teacherRankTab;
     if (allBtn) { allBtn.disabled = true; allBtn.style.opacity = '0.4'; allBtn.style.cursor = 'not-allowed'; }
     setTeacherRankTab('class');
@@ -8340,6 +8505,32 @@ function setTeacherRankPeriod(period) {
     if (allBtn) { allBtn.disabled = false; allBtn.style.opacity = ''; allBtn.style.cursor = ''; }
     setTeacherRankTab(_teacherRankTabBeforeLast);
   }
+}
+
+/* "지난 기록 ▾" 버튼 클릭 시: 데이터가 있는 과거 주차 목록을 급수 피커와
+ * 동일한 드럼롤 UI로 보여주고, 선택한 주차를 조회한다. */
+async function openTeacherWeekHistoryPicker() {
+  if (!currentUser || currentUser.role !== 'teacher') return;
+  const lastBtn = document.getElementById('t-rank-period-last');
+  const prevLabel = lastBtn ? lastBtn.textContent : '지난 기록 ▾';
+  if (lastBtn) lastBtn.textContent = '불러오는 중...';
+  let weekKeys = [];
+  try {
+    weekKeys = await window._fbGetAvailableWeekKeys(currentUser.id);
+  } catch (e) {
+    console.warn('지난 기록 주차 목록 조회 실패:', e);
+  }
+  if (lastBtn) lastBtn.textContent = prevLabel;
+  if (!weekKeys.length) { toast('아직 지난 기록이 없어요.'); return; }
+  const options = weekKeys.map(k => ({ key: k, label: formatWeekRangeLabel(k) }));
+  openWeekPicker(options, (key) => selectTeacherRankWeek(key));
+}
+
+function selectTeacherRankWeek(weekKey) {
+  _teacherRankSelectedWeek = weekKey;
+  setTeacherRankPeriod('last');
+  const lastBtn = document.getElementById('t-rank-period-last');
+  if (lastBtn) lastBtn.textContent = formatWeekRangeLabel(weekKey) + ' ▾';
 }
 
 function _renderRankListHTML(items) {
@@ -8369,14 +8560,17 @@ async function renderTeacherRanking() {
   listEl.innerHTML = '<div class="t-rank-empty">🔄 불러오는 중...</div>';
   try {
     if (_teacherRankPeriod === 'last') {
-      const prevWeek = getPrevWeekStart();
+      // 지난 기록 피커에서 고른 주차를 우선 사용하고, 선택 없이 진입한 경우에만
+      // 가장 최근에 끝난 주로 폴백한다.
+      const prevWeek = _teacherRankSelectedWeek || getPrevWeekStart();
       const students = await window._fbGetTeacherStudents(currentUser.id);
       const results = await Promise.allSettled(
         students.map(s => window._fbGetWeeklyRankingHistory ? window._fbGetWeeklyRankingHistory(s.id, prevWeek) : Promise.resolve(null))
       );
       // history 문서가 없거나 0점이면, 동기화가 누락됐을 수 있으니 studyLog 원본에서
-      // 직접 재계산해서 보여준다(안전망). 복구된 값은 다음에도 바로 보이도록
-      // weeklyRankingHistory에 최선을 다해 다시 써둔다(실패해도 화면 표시엔 지장 없음).
+      // 직접 재계산해서 보여준다(안전망, 임의의 과거 주차에도 동일하게 적용됨).
+      // 복구된 값은 다음에도 바로 보이도록 weeklyRankingHistory에만 다시 써둔다
+      // (weeklyRanking은 "현재 주"를 나타내는 단일 문서라 여기서 건드리면 안 된다).
       let lastItems = await Promise.all(results.map(async (r, i) => {
         const d = (r.status==='fulfilled' && r.value) ? r.value : {};
         let score = d.weeklyProblems || 0;
@@ -8386,14 +8580,14 @@ async function renderTeacherRanking() {
             const recalculated = sdata ? computeWeekScore(sdata.studyLog, prevWeek) : 0;
             if (recalculated > 0) {
               score = recalculated;
-              window._fbUpdateWeeklyRanking(students[i].id, {
+              window._fbSetWeeklyRankingHistoryOnly(students[i].id, {
                 name: students[i].name,
                 teacherId: currentUser.id,
                 teacherName: currentUser.teacherName || '',
                 weeklyProblems: recalculated,
                 weekKey: prevWeek,
                 updatedAt: new Date().toISOString()
-              }).catch(e => console.warn('지난주 랭킹 자동 복구 실패:', students[i].id, e));
+              }).catch(e => console.warn('지난 기록 자동 복구 실패:', students[i].id, e));
             }
           } catch(e) {}
         }
@@ -8402,7 +8596,7 @@ async function renderTeacherRanking() {
       lastItems.sort((a,b) => b.weeklyProblems - a.weeklyProblems);
       lastItems = lastItems.filter(item => item.weeklyProblems > 0);
       if (!lastItems.length) {
-        listEl.innerHTML='<div class="t-rank-empty">지난주 학습 데이터가 없어요</div>'; return;
+        listEl.innerHTML='<div class="t-rank-empty">해당 주차 학습 데이터가 없어요</div>'; return;
       }
       listEl.innerHTML = _renderRankListHTML(lastItems);
       return;
@@ -9181,6 +9375,26 @@ document.addEventListener('visibilitychange', async () => {
     await Promise.all([historyWrite, rankingWrite]);
   };
 
+  // "지난 기록"에서 임의의 과거 주차를 studyLog 기준으로 자가복구할 때 전용으로 쓴다.
+  // _fbUpdateWeeklyRanking/_fbForceSetWeeklyRanking은 둘 다 weeklyRanking/{studentId}
+  // (현재 진행 중인 주를 나타내는 단일 문서)도 함께 덮어쓰기 때문에, 과거 주차를
+  // 백필하는 용도로 그대로 쓰면 "현재 주"의 실시간 랭킹이 과거 데이터로 사고 나듯
+  // 덮어써질 수 있다. 그래서 weeklyRankingHistory만 갱신하고 weeklyRanking은 건드리지 않는다.
+  window._fbSetWeeklyRankingHistoryOnly = async (studentId, data) => {
+    const historyId = studentId + '_' + data.weekKey;
+    let historyProblems = data.weeklyProblems;
+    try {
+      const histSnap = await getDoc(doc(db, 'weeklyRankingHistory', historyId));
+      if (histSnap.exists()) {
+        historyProblems = Math.max(histSnap.data().weeklyProblems||0, historyProblems||0);
+      }
+    } catch(e) {}
+    await setDoc(doc(db, 'weeklyRankingHistory', historyId), {
+      studentId, name: data.name, teacherId: data.teacherId, teacherName: data.teacherName,
+      weeklyProblems: historyProblems, weekKey: data.weekKey, updatedAt: data.updatedAt
+    }, { merge: true });
+  };
+
   // TEMP(일회성 examBonus 재계산용) - max 보호 없이 weeklyRanking/weeklyRankingHistory를 그대로 덮어씀.
   // 재계산 작업이 끝나면 이 함수와 호출부(recalcWeeklyScoreFix 등)는 지워도 됨.
   window._fbForceSetWeeklyRanking = async (studentId, data) => {
@@ -9195,6 +9409,37 @@ document.addEventListener('visibilitychange', async () => {
   window._fbGetWeeklyRankingHistory = async (studentId, weekKey) => {
     const snap = await getDoc(doc(db, 'weeklyRankingHistory', studentId + '_' + weekKey));
     return snap.exists() ? snap.data() : null;
+  };
+
+  // teacherId 소속 학생들 중 한 명이라도 weeklyRankingHistory 기록이 남아있는
+  // "완료된"(진행 중인 이번 주는 제외) 주차 목록을 최신순으로 반환한다.
+  // weeklyRankingHistory 컬렉션 전체를 훑는 getDocs(collection(...))는 보안 규칙상
+  // 막혀 있어서, 학생별/주차별로 문서를 개별 조회(getDoc)하는 방식으로 확인한다.
+  window._fbGetAvailableWeekKeys = async (teacherId, opts) => {
+    const maxWeeksBack = (opts && opts.maxWeeksBack) || 26;
+    const students = window._fbGetTeacherStudents ? await window._fbGetTeacherStudents(teacherId) : [];
+    if (!students.length) return [];
+
+    const candidateWeeks = [];
+    let cursor = window.getPrevWeekStart(); // 가장 최근에 "끝난" 주 (진행 중인 이번 주는 제외)
+    for (let i = 0; i < maxWeeksBack; i++) {
+      candidateWeeks.push(cursor);
+      const d = new Date(cursor + 'T00:00:00');
+      d.setDate(d.getDate() - 7);
+      cursor = d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');
+    }
+
+    const checks = await Promise.all(candidateWeeks.map(async (wk) => {
+      for (const s of students) {
+        try {
+          const h = await window._fbGetWeeklyRankingHistory(s.id, wk);
+          if (h && (h.weeklyProblems || 0) > 0) return wk;
+        } catch (e) {}
+      }
+      return null;
+    }));
+
+    return checks.filter(Boolean); // candidateWeeks 순서(최신순) 그대로 유지됨
   };
 
   window._fbGetWeeklyRanking = async (studentId) => {
