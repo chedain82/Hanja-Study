@@ -906,6 +906,26 @@ body {
 .teacher-body { padding: 16px; }
 .teacher-card { background: white; border-radius: 18px; padding: 18px; margin-bottom: 14px; }
 .teacher-card-title { font-size: 15px; font-weight: 800; color: #222; margin-bottom: 14px; }
+/* ===== 선생님 대시보드 탭 ===== */
+.teacher-sticky-top { position: sticky; top: 0; z-index: 5; }
+.teacher-tabs-bar {
+  display: flex; background: white; box-shadow: 0 1px 0 rgba(0,0,0,.06);
+}
+.teacher-tab-btn {
+  flex: 1; text-align: center; padding: 13px 4px; font-size: 13px; font-weight: 700;
+  color: #999; background: none; border: none; cursor: pointer; font-family: inherit;
+  border-bottom: 3px solid transparent; transition: color .15s, border-color .15s;
+}
+.teacher-tab-btn.active { color: var(--blue); border-bottom-color: var(--blue); }
+.teacher-tab-panel { display: none; }
+.teacher-tab-panel.active { display: block; }
+.recent-access-row {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 10px 0; border-bottom: 1px solid #f2f2f2;
+}
+.recent-access-row:last-child { border-bottom: none; }
+.recent-access-name { font-size: 14px; font-weight: 700; color: #222; }
+.recent-access-time { font-size: 12px; font-weight: 600; color: var(--gray); }
 .teacher-input-row { display: flex; gap: 10px; margin-bottom: 10px; }
 .teacher-input {
   height: 48px; border-radius: 14px; border: 2px solid #DDD;
@@ -2552,74 +2572,105 @@ const HG_Sound = (() => {
 
 <!-- ===== TEACHER DASHBOARD ===== -->
 <div id="teacher-app">
-  <div class="teacher-header">
-    <div>
-      <div style="font-size:12px;font-weight:700;opacity:.6;margin-bottom:2px;">선생님 대시보드</div>
-      <div class="teacher-header-title" id="teacher-header-name">선생님</div>
+  <div class="teacher-sticky-top">
+    <div class="teacher-header">
+      <div>
+        <div style="font-size:12px;font-weight:700;opacity:.6;margin-bottom:2px;">선생님 대시보드</div>
+        <div class="teacher-header-title" id="teacher-header-name">선생님</div>
+      </div>
+      <button class="teacher-logout-btn" onclick="doLogout()">로그아웃</button>
     </div>
-    <button class="teacher-logout-btn" onclick="doLogout()">로그아웃</button>
+    <div class="teacher-tabs-bar">
+      <button class="teacher-tab-btn active" data-tab="home"     onclick="setTeacherDashTab('home')">홈</button>
+      <button class="teacher-tab-btn"        data-tab="add"      onclick="setTeacherDashTab('add')">학생추가</button>
+      <button class="teacher-tab-btn"        data-tab="students" onclick="setTeacherDashTab('students')">학생목록</button>
+      <button class="teacher-tab-btn"        data-tab="ranking"  onclick="setTeacherDashTab('ranking')">주간랭킹</button>
+    </div>
   </div>
   <div class="teacher-body">
 
-    <!-- B: 학급 요약 대시보드 -->
-    <div class="teacher-dash" id="teacher-dash">
-      <div class="dash-card"><div class="dash-val">-</div><div class="dash-lbl">📖 오늘 학습</div></div>
-      <div class="dash-card"><div class="dash-val">-</div><div class="dash-lbl">✅ 평균 정답률</div></div>
-      <div class="dash-card"><div class="dash-val">-</div><div class="dash-lbl">🔥 평균 연속</div></div>
-    </div>
-
-    <!-- 학생 추가 -->
-    <div class="teacher-card">
-      <div class="teacher-card-title">➕ 학생 추가</div>
-      <div class="teacher-input-row">
-        <input class="teacher-input" id="new-student-name" style="flex:1;" placeholder="이름" maxlength="10"/>
-        <input class="teacher-input" id="new-student-pin" style="width:100px;text-align:center;" placeholder="PIN 4자리" maxlength="4" type="tel"
-          onkeydown="if(event.key==='Enter')addStudent()"/>
-      </div>
-      <button class="teacher-add-btn" onclick="addStudent()">추가하기</button>
-    </div>
-
-    <!-- 학생 목록 (A/E/F 포함) -->
-    <div class="teacher-card">
-      <div class="teacher-card-title">👥 학생 목록</div>
-
-      <!-- F: 필터/정렬 바 -->
-      <div class="filter-bar" id="filter-bar">
-        <button class="filter-btn active" id="fb-all"      onclick="setTeacherFilter('all')">전체</button>
-        <button class="filter-btn"        id="fb-nottoday" onclick="setTeacherFilter('not-today')">오늘 미학습</button>
-        <button class="filter-btn"        id="fb-danger"   onclick="setTeacherFilter('danger')">3일+ 미접속</button>
-        <select class="sort-select" id="sort-select" onchange="setTeacherSort(this.value)">
-          <option value="name">이름순</option>
-          <option value="inactive">미접속순</option>
-          <option value="accuracy">정답률 낮은순</option>
-        </select>
+    <!-- [홈] 탭 -->
+    <div class="teacher-tab-panel active" id="teacher-tab-home">
+      <!-- B: 학급 요약 대시보드 -->
+      <div class="teacher-dash" id="teacher-dash">
+        <div class="dash-card"><div class="dash-val">-</div><div class="dash-lbl">📖 오늘 학습</div></div>
+        <div class="dash-card"><div class="dash-val">-</div><div class="dash-lbl">✅ 평균 정답률</div></div>
+        <div class="dash-card"><div class="dash-val">-</div><div class="dash-lbl">🔥 평균 연속</div></div>
       </div>
 
-      <div id="teacher-student-list">
-        <div class="teacher-notice">불러오는 중...</div>
+      <!-- 최근 접속 학생 -->
+      <div class="teacher-card">
+        <div class="teacher-card-title">🕐 최근 접속 학생</div>
+        <div id="home-recent-access">
+          <div class="teacher-notice">불러오는 중...</div>
+        </div>
+      </div>
+
+      <!-- 주간 랭킹 TOP5 미리보기 -->
+      <div class="teacher-card">
+        <div class="teacher-card-title">🏆 주간 랭킹 TOP5</div>
+        <div id="home-rank-top5"><div class="t-rank-empty">불러오는 중...</div></div>
+      </div>
+
+      <!-- 오늘의 미션 설정 -->
+      <div class="teacher-card">
+        <div class="teacher-card-title">🎯 오늘의 미션 설정</div>
+        <textarea class="teacher-textarea" id="mission-input" placeholder="예) 오늘은 8급 A-1 구간 퀴즈 완주하기!"></textarea>
+        <button class="teacher-add-btn" style="margin-top:8px;" onclick="saveMission()">미션 저장</button>
+        <div class="teacher-preview-box" id="mission-preview">현재 미션 없음</div>
       </div>
     </div>
 
-    <!-- 오늘의 미션 설정 -->
-    <div class="teacher-card">
-      <div class="teacher-card-title">🎯 오늘의 미션 설정</div>
-      <textarea class="teacher-textarea" id="mission-input" placeholder="예) 오늘은 8급 A-1 구간 퀴즈 완주하기!"></textarea>
-      <button class="teacher-add-btn" style="margin-top:8px;" onclick="saveMission()">미션 저장</button>
-      <div class="teacher-preview-box" id="mission-preview">현재 미션 없음</div>
+    <!-- [학생추가] 탭 -->
+    <div class="teacher-tab-panel" id="teacher-tab-add">
+      <div class="teacher-card">
+        <div class="teacher-card-title">➕ 학생 추가</div>
+        <div class="teacher-input-row">
+          <input class="teacher-input" id="new-student-name" style="flex:1;" placeholder="이름" maxlength="10"/>
+          <input class="teacher-input" id="new-student-pin" style="width:100px;text-align:center;" placeholder="PIN 4자리" maxlength="4" type="tel"
+            onkeydown="if(event.key==='Enter')addStudent()"/>
+        </div>
+        <button class="teacher-add-btn" onclick="addStudent()">추가하기</button>
+      </div>
     </div>
 
-    <!-- 선생님 랭킹 -->
-    <div class="teacher-card">
-      <div class="teacher-card-title">🏆 주간 랭킹</div>
-      <div class="teacher-rank-tabs">
-        <button class="t-rank-tab active" id="t-rank-class" onclick="setTeacherRankTab('class')">우리 반</button>
-        <button class="t-rank-tab" id="t-rank-all" onclick="setTeacherRankTab('all')">전 체</button>
+    <!-- [학생목록] 탭 (A/E/F 포함) -->
+    <div class="teacher-tab-panel" id="teacher-tab-students">
+      <div class="teacher-card">
+        <div class="teacher-card-title">👥 학생 목록</div>
+
+        <!-- F: 필터/정렬 바 -->
+        <div class="filter-bar" id="filter-bar">
+          <button class="filter-btn active" id="fb-all"      onclick="setTeacherFilter('all')">전체</button>
+          <button class="filter-btn"        id="fb-nottoday" onclick="setTeacherFilter('not-today')">오늘 미학습</button>
+          <button class="filter-btn"        id="fb-danger"   onclick="setTeacherFilter('danger')">3일+ 미접속</button>
+          <select class="sort-select" id="sort-select" onchange="setTeacherSort(this.value)">
+            <option value="name">이름순</option>
+            <option value="inactive">미접속순</option>
+            <option value="accuracy">정답률 낮은순</option>
+          </select>
+        </div>
+
+        <div id="teacher-student-list">
+          <div class="teacher-notice">불러오는 중...</div>
+        </div>
       </div>
-      <div class="teacher-rank-tabs">
-        <button class="t-rank-tab active" id="t-rank-period-current" onclick="setTeacherRankPeriod('current')">이번 주</button>
-        <button class="t-rank-tab" id="t-rank-period-last" onclick="openTeacherWeekHistoryPicker()">지난 기록 ▾</button>
+    </div>
+
+    <!-- [주간랭킹] 탭 -->
+    <div class="teacher-tab-panel" id="teacher-tab-ranking">
+      <div class="teacher-card">
+        <div class="teacher-card-title">🏆 주간 랭킹</div>
+        <div class="teacher-rank-tabs">
+          <button class="t-rank-tab active" id="t-rank-class" onclick="setTeacherRankTab('class')">우리 반</button>
+          <button class="t-rank-tab" id="t-rank-all" onclick="setTeacherRankTab('all')">전 체</button>
+        </div>
+        <div class="teacher-rank-tabs">
+          <button class="t-rank-tab active" id="t-rank-period-current" onclick="setTeacherRankPeriod('current')">이번 주</button>
+          <button class="t-rank-tab" id="t-rank-period-last" onclick="openTeacherWeekHistoryPicker()">지난 기록 ▾</button>
+        </div>
+        <div id="teacher-rank-list"><div class="t-rank-empty">불러오는 중...</div></div>
       </div>
-      <div id="teacher-rank-list"><div class="t-rank-empty">불러오는 중...</div></div>
     </div>
 
   </div>
@@ -8380,9 +8431,21 @@ function enterTeacherApp() {
   document.getElementById('teacher-app').classList.add('active');
   const h = document.getElementById('teacher-header-name');
   if (h) h.textContent = currentUser.name;
+  setTeacherDashTab('home');
   renderTeacherStudentList();
   loadTeacherSettingsPreview();
   _waitFirebaseRanking();
+  renderHomeRankingTop5();
+}
+
+/* ===== 선생님 대시보드 탭 전환 =====
+ * 탭 전환은 이미 로드된 데이터를 다시 그리기만 할 뿐, 새로 Firebase를
+ * 조회하지 않는다 (학생 목록/랭킹 데이터는 enterTeacherApp()에서 한 번만 불러옴). */
+let _teacherActiveTab = 'home';
+function setTeacherDashTab(tab) {
+  _teacherActiveTab = tab;
+  document.querySelectorAll('.teacher-tab-btn').forEach(b => b.classList.toggle('active', b.dataset.tab === tab));
+  document.querySelectorAll('.teacher-tab-panel').forEach(p => p.classList.toggle('active', p.id === 'teacher-tab-' + tab));
 }
 
 /* ===== 개인별 메시지 (선생님) ===== */
@@ -8557,6 +8620,40 @@ function _renderRankListHTML(items) {
       </div>
     </div>`;
   }).join('');
+}
+
+// [홈] 탭 미리보기용 - 우리 반 이번 주 TOP5만 별도로 가져온다. 결과를 캐시해서
+// 홈 탭을 다시 열 때는(주간랭킹 탭과 별개로) Firebase를 다시 조회하지 않는다.
+let _teacherHomeRankTop5Cache = null;
+async function renderHomeRankingTop5(force) {
+  const el = document.getElementById('home-rank-top5');
+  if (!el || !currentUser || currentUser.role !== 'teacher') return;
+  if (_teacherHomeRankTop5Cache && !force) {
+    el.innerHTML = _teacherHomeRankTop5Cache.length
+      ? _renderRankListHTML(_teacherHomeRankTop5Cache)
+      : '<div class="t-rank-empty">아직 이번 주 기록이 없어요 🏆</div>';
+    return;
+  }
+  if (!window._firebaseReady || !window._fbGetTeacherStudents) {
+    setTimeout(() => renderHomeRankingTop5(force), 600); return;
+  }
+  el.innerHTML = '<div class="t-rank-empty">🔄 불러오는 중...</div>';
+  try {
+    const students = await window._fbGetTeacherStudents(currentUser.id);
+    const results = await Promise.allSettled(students.map(s => window._fbGetWeeklyRanking(s.id)));
+    const currentWeek = getWeekStart();
+    let items = results.map((r,i) => {
+      const d = (r.status==='fulfilled' && r.value) ? r.value : {};
+      const score = (d.weekKey === currentWeek) ? (d.weeklyProblems||0) : 0;
+      return { id: students[i].id, name: students[i].name, weeklyProblems: score };
+    });
+    items.sort((a,b)=>b.weeklyProblems-a.weeklyProblems);
+    items = items.filter(it => it.weeklyProblems > 0).slice(0, 5);
+    _teacherHomeRankTop5Cache = items;
+    el.innerHTML = items.length ? _renderRankListHTML(items) : '<div class="t-rank-empty">아직 이번 주 기록이 없어요 🏆</div>';
+  } catch(e) {
+    el.innerHTML = `<div class="t-rank-empty" style="color:var(--wrong);">오류: ${e.message}</div>`;
+  }
 }
 
 async function renderTeacherRanking() {
@@ -8930,10 +9027,11 @@ async function renderTeacherStudentList() {
     if (!students.length) {
       list.innerHTML = '<div class="teacher-notice">등록된 학생이 없습니다.<br>위에서 학생을 추가하세요.</div>';
       _renderTeacherDash([]);
+      renderRecentAccess([]);
       return;
     }
     // 우선 이름만 표시
-    _teacherCache = students.map(s => ({...s, _loading: true, daysSince: 999, acc: -1, streak: 0, levelInfo: null, lastUpdated: ''}));
+    _teacherCache = students.map(s => ({...s, _loading: true, daysSince: 999, acc: -1, streak: 0, levelInfo: null, lastUpdated: '', lastUpdatedFull: ''}));
     renderTeacherList();
 
     // 병렬로 전체 데이터 로드
@@ -8941,6 +9039,7 @@ async function renderTeacherStudentList() {
     _teacherCache = students.map((s, i) => {
       const d = results[i].status === 'fulfilled' ? results[i].value : null;
       const st = d?.settings || {};
+      const lastUpdatedFull = d?.lastUpdated || ''; // 최근 접속 표시용 (시각까지 포함된 원본)
       const lastUpdated = d?.lastUpdated ? d.lastUpdated.slice(0,10) : '';
       const daysSince = _getDaysSince(lastUpdated);
       const totalQ = st.totalQuestions || 0;
@@ -8948,13 +9047,50 @@ async function renderTeacherStudentList() {
       const acc    = totalQ > 0 ? Math.round(totalC / totalQ * 100) : -1;
       const streak = st.streak || 0;
       const levelInfo = _getCurrentLevel(st.levelProgress || {});
-      return {...s, _loading: false, lastUpdated, daysSince, acc, streak, levelInfo, totalQ};
+      return {...s, _loading: false, lastUpdated, lastUpdatedFull, daysSince, acc, streak, levelInfo, totalQ};
     });
     _renderTeacherDash(_teacherCache);
+    renderRecentAccess(_teacherCache);
     renderTeacherList();
   } catch(e) {
     list.innerHTML = `<div class="teacher-notice" style="color:var(--wrong);">오류: ${e.message}</div>`;
   }
+}
+
+/* 최근 접속(마지막 studentData 동기화) 순으로 최대 5명 표시.
+ * 새 Firebase 필드 없이 기존 studentData.lastUpdated(ISO 타임스탬프)를 재사용한다. */
+function _formatRelativeAccessTime(iso) {
+  if (!iso) return '접속 기록 없음';
+  const then = new Date(iso);
+  if (isNaN(then.getTime())) return '접속 기록 없음';
+  const diffMs = Date.now() - then.getTime();
+  if (diffMs < 0) return '방금 전';
+  const diffMin = Math.floor(diffMs / 60000);
+  if (diffMin < 1) return '방금 전';
+  if (diffMin < 60) return `${diffMin}분 전`;
+  const diffHour = Math.floor(diffMin / 60);
+  if (diffHour < 24) return `${diffHour}시간 전`;
+  const diffDay = Math.floor(diffHour / 24);
+  if (diffDay < 7) return `${diffDay}일 전`;
+  return `${then.getMonth()+1}/${then.getDate()}`;
+}
+
+function renderRecentAccess(cache) {
+  const el = document.getElementById('home-recent-access');
+  if (!el) return;
+  const withTime = cache
+    .filter(s => s.lastUpdatedFull)
+    .sort((a,b) => new Date(b.lastUpdatedFull) - new Date(a.lastUpdatedFull))
+    .slice(0, 5);
+  if (!withTime.length) {
+    el.innerHTML = '<div class="teacher-notice">접속 기록이 없어요.</div>';
+    return;
+  }
+  el.innerHTML = withTime.map(s => `
+    <div class="recent-access-row">
+      <div class="recent-access-name">${s.name}</div>
+      <div class="recent-access-time">${_formatRelativeAccessTime(s.lastUpdatedFull)}</div>
+    </div>`).join('');
 }
 
 function _renderTeacherDash(cache) {
