@@ -1235,6 +1235,35 @@ body {
 .t-rank-score { font-size:18px; font-weight:800; color:var(--blue); }
 .t-rank-lbl { font-size:10px; font-weight:700; color:var(--gray); }
 .t-rank-empty { text-align:center; color:var(--gray); font-size:13px; font-weight:700; padding:20px 0; }
+.rank-print-header { display:none; }
+
+/* ===== 주간 랭킹 A4 인쇄 =====
+ * body 전체를 숨기고 랭킹 카드(#teacher-tab-ranking)만 보이게 하는 방식으로,
+ * 헤더/탭바/필터 버튼/인쇄 버튼 자체는 인쇄물에서 제외한다.
+ * 랭킹 계산 로직(_renderRankListHTML 등)은 건드리지 않고, 1~3등 강조는
+ * .t-rank-num.topN을 자식으로 갖는 .t-rank-row를 :has()로 골라 스타일만 입힌다. */
+@media print {
+  @page { size: A4; margin: 22mm; }
+  body * { visibility: hidden; }
+  #teacher-tab-ranking, #teacher-tab-ranking * { visibility: visible; }
+  #teacher-tab-ranking { position: absolute; left: 0; top: 0; width: 100%; }
+  .teacher-rank-tabs, #rank-print-btn { display: none !important; }
+  .teacher-card { box-shadow: none; padding: 0; }
+  .rank-print-header { display: block !important; text-align: center; margin: 0 0 28px; }
+  .rank-print-header .rph-title { font-size: 26px; font-weight: 900; color: #000; margin-bottom: 6px; }
+  .rank-print-header .rph-sub { font-size: 15px; font-weight: 700; color: #555; }
+  #teacher-rank-list { max-width: 480px; margin: 0 auto; }
+  .t-rank-row { padding: 10px 0; page-break-inside: avoid; break-inside: avoid; }
+  .t-rank-row:has(.t-rank-num.top1),
+  .t-rank-row:has(.t-rank-num.top2),
+  .t-rank-row:has(.t-rank-num.top3) {
+    font-size: 1.3em; font-weight: 900; background: #F7F7F7;
+    border-radius: 10px; padding: 12px 14px; margin-bottom: 6px; border-bottom: none;
+  }
+  .t-rank-row:has(.t-rank-num.top1) { background: #FFF7E0; }
+  .t-rank-row:has(.t-rank-num.top2) { background: #F3F3F3; }
+  .t-rank-row:has(.t-rank-num.top3) { background: #FBF0E6; }
+}
 
 
 /* ===== 급수별 상세 모달 ===== */
@@ -2669,6 +2698,8 @@ const HG_Sound = (() => {
           <button class="t-rank-tab active" id="t-rank-period-current" onclick="setTeacherRankPeriod('current')">이번 주</button>
           <button class="t-rank-tab" id="t-rank-period-last" onclick="openTeacherWeekHistoryPicker()">지난 기록 ▾</button>
         </div>
+        <button class="teacher-add-btn" id="rank-print-btn" style="margin:10px 0;" onclick="printTeacherRanking()">🖨️ 인쇄하기</button>
+        <div id="rank-print-header" class="rank-print-header"></div>
         <div id="teacher-rank-list"><div class="t-rank-empty">불러오는 중...</div></div>
       </div>
     </div>
@@ -8620,6 +8651,24 @@ function _renderRankListHTML(items) {
       </div>
     </div>`;
   }).join('');
+}
+
+/* 주간 랭킹 인쇄 - 현재 화면에 표시된 기간(이번 주/지난 기록)과 범위(우리 반/전체)를
+ * 그대로 반영한 제목을 인쇄용 헤더에 채운 뒤 브라우저 인쇄 기능을 띄운다.
+ * 랭킹 데이터/계산 로직은 건드리지 않고, 이미 화면에 그려진 #teacher-rank-list를
+ * @media print 스타일로 그대로 인쇄한다. */
+function printTeacherRanking() {
+  const weekKey = _teacherRankPeriod === 'last'
+    ? (_teacherRankSelectedWeek || getPrevWeekStart())
+    : getWeekStart();
+  const scopeLabel = _teacherRankTab === 'all' ? '전체' : '우리 반';
+  const header = document.getElementById('rank-print-header');
+  if (header) {
+    header.innerHTML =
+      `<div class="rph-title">주간 랭킹 (${formatWeekRangeLabel(weekKey)})</div>` +
+      `<div class="rph-sub">${scopeLabel}</div>`;
+  }
+  window.print();
 }
 
 // [홈] 탭 미리보기용 - 우리 반 이번 주 TOP5만 별도로 가져온다. 결과를 캐시해서
