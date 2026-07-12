@@ -9100,8 +9100,8 @@ function _renderTeacherDash(cache) {
   const todayCnt = cache.filter(s => s.daysSince === 0).length;
   const withAcc  = cache.filter(s => s.acc >= 0);
   const avgAcc   = withAcc.length ? Math.round(withAcc.reduce((s,c)=>s+c.acc,0)/withAcc.length) : -1;
-  const withStrk = cache.filter(s => s.streak > 0);
-  const avgStrk  = withStrk.length ? Math.round(withStrk.reduce((s,c)=>s+c.streak,0)/withStrk.length) : 0;
+  // [학생목록] 탭의 "3일+ 미접속" 필터(renderTeacherList의 danger 조건)와 동일한 기준
+  const dangerCnt = cache.filter(s => s.daysSince >= 3).length;
   const todayColor = (total > 0 && todayCnt === total) ? 'var(--correct)' : '#222';
   el.innerHTML = `
     <div class="dash-card">
@@ -9112,10 +9112,17 @@ function _renderTeacherDash(cache) {
       <div class="dash-val">${avgAcc>=0?avgAcc+'%':'-'}</div>
       <div class="dash-lbl">✅ 평균 정답률</div>
     </div>
-    <div class="dash-card">
-      <div class="dash-val">${avgStrk>0?avgStrk+'일':'-'}</div>
-      <div class="dash-lbl">🔥 평균 연속</div>
+    <div class="dash-card" onclick="goToInactiveStudents()" style="cursor:pointer;">
+      <div class="dash-val">${total>0?dangerCnt+'명':'-'}</div>
+      <div class="dash-lbl">⚠️ 3일 미접속 학생수</div>
     </div>`;
+}
+
+/* 홈 화면의 "3일 미접속 학생수" 카드 클릭 시 [학생목록] 탭으로 이동하면서
+ * "3일+ 미접속" 필터를 바로 적용해준다. */
+function goToInactiveStudents() {
+  setTeacherDashTab('students');
+  setTeacherFilter('danger');
 }
 
 function renderTeacherList() {
