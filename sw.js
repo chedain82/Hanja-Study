@@ -1,4 +1,4 @@
-const CACHE_NAME = 'hanja-v17';
+const CACHE_NAME = 'hanja-v18';
 
 // 설치 즉시 대기 건너뜀 → 새 SW가 바로 활성화
 self.addEventListener('install', (e) => {
