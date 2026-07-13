@@ -1238,15 +1238,25 @@ body {
 .rank-print-header { display:none; }
 
 /* ===== 주간 랭킹 A4 인쇄 =====
- * body 전체를 숨기고 랭킹 카드(#teacher-tab-ranking)만 보이게 하는 방식으로,
- * 헤더/탭바/필터 버튼/인쇄 버튼 자체는 인쇄물에서 제외한다.
+ * body의 다른 화면과 대시보드 상단 헤더/탭바/다른 탭 패널/필터/인쇄 버튼을
+ * display:none으로 완전히 문서 흐름에서 제거해서 #teacher-rank-list만 인쇄한다.
+ * (이전 버전은 visibility:hidden + position:absolute 방식이었는데, #teacher-app이
+ * position:fixed+overflow-y:auto로 한 페이지 높이에 갇혀 있어서 목록이 길면 뒷부분이
+ * 잘리는 문제가 있었다. display:none은 레이아웃 공간 자체를 없애고, #teacher-app도
+ * static/visible로 풀어줘야 문서가 정상적으로 여러 페이지에 걸쳐 흐른다.)
  * 랭킹 계산 로직(_renderRankListHTML 등)은 건드리지 않고, 1~3등 강조는
  * .t-rank-num.topN을 자식으로 갖는 .t-rank-row를 :has()로 골라 스타일만 입힌다. */
 @media print {
   @page { size: A4; margin: 22mm; }
-  body * { visibility: hidden; }
-  #teacher-tab-ranking, #teacher-tab-ranking * { visibility: visible; }
-  #teacher-tab-ranking { position: absolute; left: 0; top: 0; width: 100%; }
+  body > *:not(#teacher-app) { display: none !important; }
+  #teacher-app {
+    position: static !important; inset: auto !important;
+    overflow: visible !important; height: auto !important; z-index: auto !important;
+  }
+  #teacher-app > *:not(.teacher-body) { display: none !important; }
+  .teacher-body { padding: 0; overflow: visible !important; }
+  .teacher-body > *:not(#teacher-tab-ranking) { display: none !important; }
+  #teacher-tab-ranking { display: block !important; }
   .teacher-rank-tabs, #rank-print-btn { display: none !important; }
   .teacher-card { box-shadow: none; padding: 0; }
   .rank-print-header { display: block !important; text-align: center; margin: 0 0 28px; }
