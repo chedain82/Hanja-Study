@@ -4720,6 +4720,20 @@ function compareWrite(u, c) {
   // 모든 뜻+음이 입력에 포함되어 있는지 확인
   return meanings.every(m => uNorm.includes(norm(m))) && uNorm.includes(norm(sound));
 }
+function compareWriteExam(u, c) {
+  const norm = s => s.replace(/\s/g,'');
+  // /가 없으면 기존 방식
+  if (!c.includes('/')) return norm(u) === norm(c);
+  // "뜻1/뜻2 음" 형태 파싱 → 예: "개/지지 술"
+  const parts = c.split(' ');
+  const meaningPart = parts.find(p => p.includes('/')) || '';
+  const soundPart = parts.find(p => !p.includes('/')) || '';
+  const meanings = meaningPart.split('/').map(m => m.trim()).filter(Boolean);
+  const sound = soundPart.trim();
+  const uNorm = norm(u);
+  // 시험 모드: 뜻 중 하나만 맞아도 정답 처리
+  return meanings.some(m => uNorm.includes(norm(m))) && uNorm.includes(norm(sound));
+}
 
 function renderWrite() {
   const box=document.getElementById('write-inner');
@@ -5703,7 +5717,7 @@ function checkExamTestWrite() {
   const it = EX.items[EX.idx];
   EX.writeInput = val;
   EX.checked = true;
-  EX.isCorrect = compareWrite(val, String(it.answer || '')); // 채점용으로 계산만, 화면엔 표시 안 함
+  EX.isCorrect = compareWriteExam(val, String(it.answer || '')); // 채점용으로 계산만, 화면엔 표시 안 함
   saveExamTestAnswer(it.no, { writeInput: val, isCorrect: EX.isCorrect });
   afterExamTestAnswerCommit();
 }
