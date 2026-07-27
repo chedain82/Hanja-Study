@@ -358,6 +358,25 @@ body {
 .weak-action-btn.primary { background: var(--black-btn); color: white; }
 .weak-action-btn.secondary { background: white; color: #222; border: 1.5px solid #DDD; }
 
+.weak-date-group { margin-bottom: 10px; }
+.weak-date-header {
+  font-size: 13px; font-weight: 800; color: var(--gray);
+  padding: 8px 2px; cursor: pointer; list-style: none;
+}
+.weak-date-header::-webkit-details-marker { display: none; }
+.weak-date-header::before { content: '▸ '; }
+.weak-date-group[open] .weak-date-header::before { content: '▾ '; }
+.weak-date-items { padding-top: 2px; }
+
+.exam-history-item {
+  width: 100%; display: flex; justify-content: space-between; align-items: center;
+  background: white; border: 1.2px solid #E5E5E5; border-radius: 12px;
+  padding: 14px 16px; margin-bottom: 8px; cursor: pointer; font-family: inherit;
+}
+.exam-history-item:active { opacity: .7; transform: scale(.98); }
+.exam-history-main { font-size: 15px; font-weight: 800; }
+.exam-history-meta { font-size: 13px; font-weight: 700; color: var(--gray); }
+
 /* ===== PROFILE TAB ===== */
 .profile-header { text-align: center; padding: 24px 18px 16px; }
 .profile-avatar {
@@ -2980,16 +2999,19 @@ const HG_Sound = (() => {
   <!-- WEAK TAB -->
   <div id="tab-weak" class="tab-pane">
     <div class="weak-header">오답노트</div>
+
     <div class="weak-section">
+      <div class="weak-section-label">📅 오늘의 오답</div>
       <div class="weak-action-btns" id="weak-action-btns" style="display:none;">
         <button class="weak-action-btn primary" onclick="startWrongCard()">카드 보기</button>
         <button class="weak-action-btn secondary" onclick="startWrongQuiz()">퀴즈 풀기</button>
       </div>
-      <div class="weak-section-label">🔴 자주 틀린 한자 (Top 15)</div>
-      <div id="weak-list"></div>
-      <div id="weak-empty" class="empty-weak" style="display:none;">
-        아직 틀린 문제가 없어요.<br>퀴즈를 풀어보세요! 🌱
-      </div>
+      <div id="weak-today-list"></div>
+    </div>
+
+    <div class="weak-section">
+      <div class="weak-section-label">⏱ 시험모드 오답</div>
+      <div id="weak-exam-list"></div>
     </div>
   </div>
 
@@ -4027,30 +4049,69 @@ function renderVolumeChart() {
 
 /* ===== WEAK TAB RENDER ===== */
 function renderWeakTab() {
-  const items = [...S.wrongNote].sort((a,b)=>(b._wrongCount||1)-(a._wrongCount||1));
-  const list = document.getElementById('weak-list');
-  const empty = document.getElementById('weak-empty');
+  renderWeakTodaySection();
+  renderWeakExamSection();
+}
+
+function renderWeakTodaySection() {
+  const box = document.getElementById('weak-today-list');
   const actionBtns = document.getElementById('weak-action-btns');
+  const items = S.wrongNote;
   if (!items.length) {
-    list.innerHTML = '';
-    empty.style.display = 'block';
     actionBtns.style.display = 'none';
+    box.innerHTML = `<div class="empty-weak">아직 틀린 문제가 없어요.<br>퀴즈를 풀어보세요! 🌱</div>`;
     return;
   }
-  empty.style.display = 'none';
   actionBtns.style.display = 'flex';
-  const top = items.slice(0, 15);
-  list.innerHTML = top.map((it, i) => `
-    <div class="weak-item">
-      <span class="weak-rank">${i+1}</span>
-      <span class="weak-hanja">${it.한자||''}</span>
-      <div class="weak-text">
-        <div class="w-meaning">${answerText(it)}</div>
-        <div class="w-meta">${it.급수||''} / ${it.단계||''} / ${it.타입||''}</div>
-      </div>
-      <span class="wrong-badge">${(it._wrongCount||1)}회 오답</span>
-    </div>
-  `).join('');
+  const groups = {};
+  items.forEach(it => {
+    const d = it._lastWrong || '기타';
+    (groups[d] = groups[d] || []).push(it);
+  });
+  const today = todayStr();
+  const dates = Object.keys(groups).sort((a,b) => b.localeCompare(a));
+  box.innerHTML = dates.map(d => {
+    const list = [...groups[d]].sort((a,b)=>(b._wrongCount||1)-(a._wrongCount||1));
+    const label = d === today ? `오늘 (${list.length})` : `${d} (${list.length})`;
+    return `
+      <details class="weak-date-group"${d === today ? ' open' : ''}>
+        <summary class="weak-date-header">${label}</summary>
+        <div class="weak-date-items">
+          ${list.map(it => `
+            <div class="weak-item">
+              <span class="weak-hanja">${it.한자||''}</span>
+              <div class="weak-text">
+                <div class="w-meaning">${answerText(it)}</div>
+                <div class="w-meta">${it.급수||''} / ${it.단계||''} / ${it.타입||''}</div>
+              </div>
+              <span class="wrong-badge">${it._wrongCount||1}회 오답</span>
+            </div>`).join('')}
+        </div>
+      </details>`;
+  }).join('');
+}
+
+function renderWeakExamSection() {
+  const box = document.getElementById('weak-exam-list');
+  const log = settings.examScoreLog || {};
+  const rows = [];
+  Object.keys(log).forEach(level => {
+    Object.keys(log[level]).forEach(round => {
+      (log[level][round] || []).forEach(attempt => {
+        rows.push({ level, round, ...attempt });
+      });
+    });
+  });
+  if (!rows.length) {
+    box.innerHTML = `<div class="empty-weak">아직 응시한 시험이 없어요.</div>`;
+    return;
+  }
+  rows.sort((a, b) => b.date.localeCompare(a.date));
+  box.innerHTML = rows.map(r => `
+    <button class="exam-history-item" onclick="openExamHistoryResult('${r.level}','${r.round}','${r.id||''}')">
+      <span class="exam-history-main">${r.level} 제${r.round}회</span>
+      <span class="exam-history-meta">${r.date} · ${r.score}점</span>
+    </button>`).join('');
 }
 
 /* ===== PROFILE TAB RENDER ===== */
@@ -5501,6 +5562,7 @@ let EX = {
   reviewMode: false, reviewQueue: [],
   lastScoreIsFirst: false, lastScoreDelta: null,
   sessionStart: null,
+  viewingHistory: false,
 };
 
 // 문제 번호별로 이미 입력/판정한 답을 저장해두는 곳 - "이전" 버튼으로 돌아갔을 때
@@ -5580,8 +5642,9 @@ function renderExamTestIntro() {
   document.getElementById('ex-intro-count').textContent = `${n}문제 · 제한시간 60분`;
 }
 
-function buildExamTestItems() {
-  const sections = (EXAM_TEST_DATA[EX.level] || {})[EX.round] || {};
+function buildExamTestItems(level, round) {
+  level = level || EX.level; round = round || EX.round;
+  const sections = (EXAM_TEST_DATA[level] || {})[round] || {};
   const items = [];
   Object.values(sections).forEach(list => { if (Array.isArray(list)) items.push(...list); });
   items.sort((a, b) => (a.no||0) - (b.no||0));
@@ -6041,17 +6104,39 @@ function jumpToExamTestNo(no) {
   loadExamTestQuestionState();
   goSub('exam_test_quiz');
 }
-function recordExamScore(level, round, score) {
+function genAttemptId() {
+  return (window.crypto && crypto.randomUUID) ? crypto.randomUUID() : (Date.now() + '_' + Math.random().toString(36).slice(2));
+}
+function recordExamScore(level, round, score, answers) {
   if (!settings.examScoreLog) settings.examScoreLog = {};
   if (!settings.examScoreLog[level]) settings.examScoreLog[level] = {};
   if (!settings.examScoreLog[level][round]) settings.examScoreLog[level][round] = [];
-  settings.examScoreLog[level][round].push({ date: todayStr(), score });
+  settings.examScoreLog[level][round].push({
+    id: genAttemptId(),
+    date: todayStr(),
+    score,
+    answers: JSON.parse(JSON.stringify(answers || [])) // 문항별 내 답안 스냅샷 - 나중에 오답노트에서 다시 보는 용도
+  });
   saveSettings(); // 로컬 저장 + Firebase 동기화가 이 한 줄로 다 됨
 }
 function getExamScoreStats(level, round) {
   const arr = (settings.examScoreLog && settings.examScoreLog[level] && settings.examScoreLog[level][round]) || [];
   if (!arr.length) return null;
   return { latest: arr[arr.length - 1].score, best: Math.max(...arr.map(x => x.score)), attempts: arr.length };
+}
+function openExamHistoryResult(level, round, attemptId) {
+  const arr = (settings.examScoreLog && settings.examScoreLog[level] && settings.examScoreLog[level][round]) || [];
+  const record = arr.find(a => a.id === attemptId);
+  if (!record) { toast('기록을 찾을 수 없어요.'); return; }
+  if (!record.answers) { toast(`이 기록은 문항별 복습을 지원하지 않아요 (점수: ${record.score}점, ${record.date})`); return; }
+  EX.level = level; EX.round = round;
+  EX.items = buildExamTestItems(level, round);
+  EX.userAnswers = JSON.parse(JSON.stringify(record.answers)); // 저장된 스냅샷의 사본 - 여기서 뭘 눌러도 원본 기록은 안 바뀜
+  EX.reviewMode = false; // 이전 미완료 시험의 찾아가기 모드가 남아있으면 결과 화면 대신 그 화면이 뜨는 걸 방지
+  EX.viewingHistory = true;
+  EX.lastScoreIsFirst = false;
+  EX.lastScoreDelta = null;
+  goSub('exam_test_result');
 }
 function getExamWeeklyGoal(level) {
   return (settings.examWeeklyGoal && settings.examWeeklyGoal[level]) || 3; // 기본 주 3회차
@@ -6101,7 +6186,8 @@ function finalizeExamTestGrade() {
   const prevAttempts = (settings.examScoreLog && settings.examScoreLog[EX.level] && settings.examScoreLog[EX.level][EX.round]) ? [...settings.examScoreLog[EX.level][EX.round]] : [];
   EX.lastScoreIsFirst = prevAttempts.length === 0;
   EX.lastScoreDelta = prevAttempts.length ? r.totalScore - prevAttempts[prevAttempts.length - 1].score : null;
-  recordExamScore(EX.level, EX.round, r.totalScore); // 기존 그대로 (리포트용)
+  EX.viewingHistory = false; // 방금 실제로 끝낸 시험이니 결과 화면은 항상 "홈으로" 버튼이 보이도록
+  recordExamScore(EX.level, EX.round, r.totalScore, EX.userAnswers);
   // 랭킹 점수(getWeeklyScore) 반영용 studyLog 기록 - exam 분기는 받은 점수(100점 만점) 그대로 반영
   const totalCorrect = r.autoCorrect + r.selfCorrect;
   const totalCount = r.autoTotal + r.selfTotal;
@@ -6245,7 +6331,9 @@ function renderExamTestResult() {
     </div>
     <div style="flex:1;overflow-y:auto;display:flex;flex-wrap:wrap;align-content:flex-start;gap:6px;padding:4px;">${allListHtml}</div>
     <div class="btn-row" style="margin-top:12px;">
-      <button class="btn btn-black" onclick="showTab('study')" style="min-width:120px;height:52px;font-size:16px;">홈으로</button>
+      ${EX.viewingHistory
+        ? `<button class="btn btn-black" onclick="EX.viewingHistory=false;showTab('weak');" style="min-width:120px;height:52px;font-size:16px;">오답노트로</button>`
+        : `<button class="btn btn-black" onclick="showTab('study')" style="min-width:120px;height:52px;font-size:16px;">홈으로</button>`}
       <button class="btn btn-black" onclick="goSub('exam_test_intro')" style="min-width:120px;height:52px;font-size:16px;">다시 풀기</button>
     </div>`;
 }
@@ -8997,7 +9085,8 @@ async function loadStudentDataFromFirestore() {
             const localArr = localExamLog[lv][round] || [];
             const merged = [...remoteArr];
             localArr.forEach(entry => {
-              const dup = merged.some(m => m.date === entry.date && m.score === entry.score);
+              // id가 있으면 id로만 중복 판정 (예전 기록처럼 id가 없는 경우만 date+score로 판정)
+              const dup = merged.some(m => entry.id ? m.id === entry.id : (m.date === entry.date && m.score === entry.score));
               if (!dup) merged.push(entry);
             });
             merged.sort((a,b) => a.date.localeCompare(b.date));
