@@ -358,6 +358,14 @@ body {
 .weak-action-btn.primary { background: var(--black-btn); color: white; }
 .weak-action-btn.secondary { background: white; color: #222; border: 1.5px solid #DDD; }
 
+.weak-subtabs { display:flex; gap:8px; padding:0 14px 14px; }
+.weak-subtab-btn {
+  flex:1; height:44px; border-radius:14px; border:1.5px solid #DDD; background:#fff; color:#222;
+  font-size:14px; font-weight:700; cursor:pointer; font-family:inherit; transition:all .15s;
+}
+.weak-subtab-btn.active { background:var(--black-btn); color:#fff; border-color:var(--black-btn); }
+.weak-subtab-btn:active { opacity:.7; transform:scale(.97); }
+
 .weak-date-group { margin-bottom: 10px; }
 .weak-date-header {
   font-size: 13px; font-weight: 800; color: var(--gray);
@@ -2122,6 +2130,8 @@ const HG_Sound = (() => {
 /* ===== 범위 팝업 (center modal) ===== */
 #range-popup-overlay{position:fixed;inset:0;z-index:400;background:rgba(0,0,0,.4);backdrop-filter:blur(3px);display:none;align-items:center;justify-content:center;}
 #range-popup-overlay.active{display:flex;}
+#weak-date-popup-overlay{position:fixed;inset:0;z-index:400;background:rgba(0,0,0,.4);backdrop-filter:blur(3px);display:none;align-items:center;justify-content:center;}
+#weak-date-popup-overlay.active{display:flex;}
 .range-popup-box{width:90%;max-width:400px;max-height:70vh;background:#fff;border-radius:20px;padding:20px 16px 20px;display:flex;flex-direction:column;gap:10px;overflow:hidden;}
 .range-popup-title{font-size:16px;font-weight:800;color:#222;text-align:center;}
 .range-popup-groups{overflow-y:auto;flex:1;}
@@ -3000,18 +3010,25 @@ const HG_Sound = (() => {
   <div id="tab-weak" class="tab-pane">
     <div class="weak-header">오답노트</div>
 
-    <div class="weak-section">
-      <div class="weak-section-label">📅 오늘의 오답</div>
-      <div class="weak-action-btns" id="weak-action-btns" style="display:none;">
-        <button class="weak-action-btn primary" onclick="startWrongCard()">카드 보기</button>
-        <button class="weak-action-btn secondary" onclick="startWrongQuiz()">퀴즈 풀기</button>
-      </div>
-      <div id="weak-today-list"></div>
+    <div class="weak-subtabs">
+      <button class="weak-subtab-btn active" id="weak-subtab-today" onclick="switchWeakSubtab('today')">📅 오늘의 오답</button>
+      <button class="weak-subtab-btn" id="weak-subtab-exam" onclick="switchWeakSubtab('exam')">⏱ 시험모드 오답</button>
     </div>
 
-    <div class="weak-section">
-      <div class="weak-section-label">⏱ 시험모드 오답</div>
-      <div id="weak-exam-list"></div>
+    <div id="weak-subtab-content-today">
+      <div class="weak-section">
+        <div class="weak-action-btns" id="weak-action-btns" style="display:none;">
+          <button class="weak-action-btn primary" onclick="openWeakDatePopup('card')">카드 보기</button>
+          <button class="weak-action-btn secondary" onclick="openWeakDatePopup('quiz')">퀴즈 풀기</button>
+        </div>
+        <div id="weak-today-list"></div>
+      </div>
+    </div>
+
+    <div id="weak-subtab-content-exam" style="display:none;">
+      <div class="weak-section">
+        <div id="weak-exam-list"></div>
+      </div>
     </div>
   </div>
 
@@ -3351,6 +3368,15 @@ const HG_Sound = (() => {
       <div class="range-popup-count" id="range-popup-count">범위를 선택해 주세요</div>
       <div class="range-popup-groups" id="range-popup-groups"></div>
       <button class="range-popup-confirm" onclick="closeRangePopup()">적용 완료</button>
+    </div>
+  </div>
+
+  <div id="weak-date-popup-overlay" onclick="if(event.target===this)closeWeakDatePopup()">
+    <div class="range-popup-box">
+      <div class="range-popup-title">복습할 날짜 선택</div>
+      <div class="range-popup-count" id="weak-date-popup-count">날짜를 선택해 주세요</div>
+      <div class="range-popup-groups" id="weak-date-popup-groups"></div>
+      <button class="range-popup-confirm" onclick="confirmWeakDatePopup()">적용 완료</button>
     </div>
   </div>
 
@@ -4048,9 +4074,21 @@ function renderVolumeChart() {
 }
 
 /* ===== WEAK TAB RENDER ===== */
+let weakActiveSubtab = 'today'; // 'today' | 'exam' - 오답노트 탭에서 마지막으로 보던 서브탭 기억
+function switchWeakSubtab(name) {
+  weakActiveSubtab = name;
+  applyWeakSubtabUI();
+}
+function applyWeakSubtabUI() {
+  document.getElementById('weak-subtab-today').classList.toggle('active', weakActiveSubtab === 'today');
+  document.getElementById('weak-subtab-exam').classList.toggle('active', weakActiveSubtab === 'exam');
+  document.getElementById('weak-subtab-content-today').style.display = weakActiveSubtab === 'today' ? '' : 'none';
+  document.getElementById('weak-subtab-content-exam').style.display = weakActiveSubtab === 'exam' ? '' : 'none';
+}
 function renderWeakTab() {
   renderWeakTodaySection();
   renderWeakExamSection();
+  applyWeakSubtabUI(); // 탭 전환 상태 유지
 }
 
 function renderWeakTodaySection() {
@@ -4089,6 +4127,50 @@ function renderWeakTodaySection() {
         </div>
       </details>`;
   }).join('');
+}
+
+let weakSelectedDates = [];
+let weakPendingMode = null; // 'card' | 'quiz'
+
+function openWeakDatePopup(mode) {
+  if (!S.wrongNote.length) { toast('오답 노트가 비어 있습니다.'); return; }
+  weakPendingMode = mode;
+  // 기본값: 전체 날짜 선택된 상태로 시작 - 아무것도 안 건드리고 바로 적용 완료 누르면 예전처럼 전체 복습됨
+  weakSelectedDates = [...new Set(S.wrongNote.map(it => it._lastWrong || '기타'))];
+  _renderWeakDatePopup();
+  document.getElementById('weak-date-popup-overlay').classList.add('active');
+}
+
+function _renderWeakDatePopup() {
+  const countEl = document.getElementById('weak-date-popup-count');
+  const groupsEl = document.getElementById('weak-date-popup-groups');
+  const counts = {};
+  S.wrongNote.forEach(it => { const d = it._lastWrong || '기타'; counts[d] = (counts[d] || 0) + 1; });
+  const today = todayStr();
+  const dates = Object.keys(counts).sort((a, b) => b.localeCompare(a));
+  countEl.textContent = weakSelectedDates.length > 0 ? `${weakSelectedDates.length}개 날짜 선택됨` : '날짜를 선택해 주세요';
+  groupsEl.innerHTML = `<div class="range-grid" style="grid-template-columns:repeat(2,1fr);">${
+    dates.map(d => `<button class="range-btn${weakSelectedDates.includes(d) ? ' selected' : ''}" onclick="_toggleWeakDate('${d}')">${d === today ? '오늘' : d} (${counts[d]})</button>`).join('')
+  }</div>`;
+}
+
+function _toggleWeakDate(d) {
+  const i = weakSelectedDates.indexOf(d);
+  if (i >= 0) weakSelectedDates.splice(i, 1); else weakSelectedDates.push(d);
+  _renderWeakDatePopup();
+}
+
+function closeWeakDatePopup() {
+  document.getElementById('weak-date-popup-overlay').classList.remove('active');
+}
+
+function confirmWeakDatePopup() {
+  if (!weakSelectedDates.length) { toast('날짜를 하나 이상 선택해 주세요.'); return; }
+  const filtered = S.wrongNote.filter(it => weakSelectedDates.includes(it._lastWrong || '기타'));
+  if (!filtered.length) { toast('선택한 날짜에 오답이 없습니다.'); return; }
+  closeWeakDatePopup();
+  if (weakPendingMode === 'card') startWrongCard(filtered);
+  else startWrongQuiz(filtered);
 }
 
 function renderWeakExamSection() {
@@ -4332,23 +4414,25 @@ function renderWrongNote() {
   `;
 }
 
-function startWrongCard() {
+function startWrongCard(items) {
   if (!S.wrongNote.length) { toast('오답 노트가 비어 있습니다.'); return; }
-  S.items = S.random ? shuffle([...S.wrongNote]) : [...S.wrongNote];
+  const src = items || S.wrongNote;
+  S.items = S.random ? shuffle([...src]) : [...src];
   S.idx = 0; S.isFinished = false; S.reviewMode = true;
   S.showBack = false; S.cardFinishMsg = '오답 노트 카드가 끝났습니다.\n다시 볼까요?';
   S.lastMain = 'wrong_note'; S.mode = 'card';
   startSession();
   goSub('card');
 }
-function startWrongQuiz() {
+function startWrongQuiz(items) {
   if (!S.wrongNote.length) { toast('오답 노트가 비어 있습니다.'); return; }
-  S.items = S.random ? shuffle([...S.wrongNote]) : [...S.wrongNote];
+  const src = items || S.wrongNote;
+  S.items = S.random ? shuffle([...src]) : [...src];
   S.idx = 0; S.isFinished = false; S.reviewMode = true;
   S.correct = 0; S.wrong = 0; S.wrongItems = []; S.unanswered = [];
   S.quizSelected = null; S.quizChecked = false; S.quizResult = ''; S.quizItemKey = null;
   S.lastMain = 'wrong_note'; S.mode = 'quiz';
-  S.category = S.wrongNote[0]?.타입 || '선정';
+  S.category = src[0]?.타입 || '선정';
   S.wrongNoteBack = 'study';
   startSession();
   goSub('quiz');
