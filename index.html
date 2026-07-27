@@ -4097,8 +4097,10 @@ function renderWeakExamSection() {
   const rows = [];
   Object.keys(log).forEach(level => {
     Object.keys(log[level]).forEach(round => {
-      (log[level][round] || []).forEach(attempt => {
-        rows.push({ level, round, ...attempt });
+      (log[level][round] || []).forEach((attempt, i) => {
+        // id가 없는 예전 기록(이 기능 배포 전에 쌓인 기록)은 인덱스로 대신 찾아갈 수 있게 표시해둔다 -
+        // 안 그러면 attemptId가 빈 문자열이 되어 아래에서 항상 "기록을 찾을 수 없어요"로 잘못 뜬다.
+        rows.push({ level, round, _idx: i, ...attempt });
       });
     });
   });
@@ -4108,7 +4110,7 @@ function renderWeakExamSection() {
   }
   rows.sort((a, b) => b.date.localeCompare(a.date));
   box.innerHTML = rows.map(r => `
-    <button class="exam-history-item" onclick="openExamHistoryResult('${r.level}','${r.round}','${r.id||''}')">
+    <button class="exam-history-item" onclick="openExamHistoryResult('${r.level}','${r.round}','${r.id || ('idx:' + r._idx)}')">
       <span class="exam-history-main">${r.level} 제${r.round}회</span>
       <span class="exam-history-meta">${r.date} · ${r.score}점</span>
     </button>`).join('');
@@ -6126,7 +6128,11 @@ function getExamScoreStats(level, round) {
 }
 function openExamHistoryResult(level, round, attemptId) {
   const arr = (settings.examScoreLog && settings.examScoreLog[level] && settings.examScoreLog[level][round]) || [];
-  const record = arr.find(a => a.id === attemptId);
+  // id가 없는 예전 기록은 'idx:N' 형태로 넘어온다(renderWeakExamSection 참고) - 인덱스로 바로 찾는다.
+  // id가 있는 정상 기록은 String()으로 감싸 비교해 타입이 살짝 달라도(문자열/숫자) 매칭되게 한다.
+  const record = (typeof attemptId === 'string' && attemptId.startsWith('idx:'))
+    ? arr[Number(attemptId.slice(4))]
+    : arr.find(a => String(a.id) === String(attemptId));
   if (!record) { toast('기록을 찾을 수 없어요.'); return; }
   if (!record.answers) { toast(`이 기록은 문항별 복습을 지원하지 않아요 (점수: ${record.score}점, ${record.date})`); return; }
   EX.level = level; EX.round = round;
