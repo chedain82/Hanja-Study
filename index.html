@@ -3752,6 +3752,7 @@ window.addEventListener('beforeunload', function() {
 });
 
 function goSub(screen) {
+  if (screen === '__tab_weak__') { showTab('weak'); return; } // 오답노트 탭으로 바로 복귀 (오늘의 오답 카드/퀴즈에서 뒤로가기용)
   // Hide all subscreens
   document.querySelectorAll('.subscreen').forEach(el => el.classList.remove('active'));
   // Show this subscreen
@@ -4420,7 +4421,7 @@ function startWrongCard(items) {
   S.items = S.random ? shuffle([...src]) : [...src];
   S.idx = 0; S.isFinished = false; S.reviewMode = true;
   S.showBack = false; S.cardFinishMsg = '오답 노트 카드가 끝났습니다.\n다시 볼까요?';
-  S.lastMain = 'wrong_note'; S.mode = 'card';
+  S.lastMain = items ? '__tab_weak__' : 'wrong_note'; S.mode = 'card';
   startSession();
   goSub('card');
 }
@@ -4431,7 +4432,7 @@ function startWrongQuiz(items) {
   S.idx = 0; S.isFinished = false; S.reviewMode = true;
   S.correct = 0; S.wrong = 0; S.wrongItems = []; S.unanswered = [];
   S.quizSelected = null; S.quizChecked = false; S.quizResult = ''; S.quizItemKey = null;
-  S.lastMain = 'wrong_note'; S.mode = 'quiz';
+  S.lastMain = items ? '__tab_weak__' : 'wrong_note'; S.mode = 'quiz';
   S.category = src[0]?.타입 || '선정';
   S.wrongNoteBack = 'study';
   startSession();
