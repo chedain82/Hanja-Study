@@ -1426,6 +1426,12 @@ body {
   cursor:pointer; font-family:inherit; white-space:nowrap; width:100%;
 }
 .exam-attempt-pill:active { opacity:.7; transform:scale(.96); }
+.exam-attempt-pill-nodata {
+  border:1.5px solid #ccc; color:#999; background:#f7f7f7;
+  border-radius:16px; padding:6px 10px; font-size:12px; font-weight:700;
+  cursor:pointer; font-family:inherit; white-space:nowrap; width:100%;
+}
+.exam-attempt-pill-nodata:active { opacity:.7; transform:scale(.96); }
 
 /* ===== 급수별/기출문제 컴팩트 행 + 상세 팝업 ===== */
 #lv-detail-popup-overlay{position:fixed;inset:0;z-index:650;background:rgba(0,0,0,.45);backdrop-filter:blur(3px);display:none;align-items:center;justify-content:center;}
@@ -4029,7 +4035,16 @@ function _buildExamScoreDetailHTML(examLog, level, clickHandlerName, extraArgsJs
     const attemptsDesc = [...attemptsAsc].reverse();
     const attemptRows = attemptsDesc.map((a, i) => {
       const ordinal = attemptsAsc.length - i;
-      return `<button class="exam-attempt-pill" onclick="closeExamLevelDetailPopup();${clickHandlerName}('${level}','${r}','${a.id || ''}'${extraArgsJs || ''})">${a.score}점 (${ordinal}차)</button>`;
+      const hasDetail = !!a.answers;
+      const cls = hasDetail ? 'exam-attempt-pill' : 'exam-attempt-pill-nodata';
+      // 문제별 정답/오답(answers)이 없는 레거시 응시는 애초에 결과 화면을 열 수 없다는 걸
+      // 이미 알고 있는 정상 상태이므로, 클릭해도 팝업을 닫지 않고(화면 전환 없음) 안내만
+      // 띄운다 - "기록을 찾을 수 없어요"(실제 조회 실패/버그 케이스)와 문구를 다르게 둬서
+      // 헷갈리지 않게 한다.
+      const action = hasDetail
+        ? `closeExamLevelDetailPopup();${clickHandlerName}('${level}','${r}','${a.id || ''}'${extraArgsJs || ''})`
+        : `toast('상세 기록이 없어요.')`;
+      return `<button class="${cls}" onclick="${action}">${a.score}점 (${ordinal}차)</button>`;
     }).join('');
     return `<div class="exam-round-col"><div class="exam-round-title">${r}회</div><div class="exam-round-attempts">${attemptRows}</div></div>`;
   }).join('');
