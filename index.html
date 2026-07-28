@@ -595,6 +595,10 @@ body {
   background: transparent; outline: none; padding: 8px 0; color: var(--border); caret-color: var(--blue); align-self: center;
 }
 .write-input:focus { border-bottom-color: var(--dark-blue); border-bottom-width: 4px; }
+/* 전역 input:focus-visible 아웃라인(팝업 접근성용)이 .write-input보다 명시도가 높아 클릭만
+   해도 각진 파란 박스로 보였음 - 여기서만 outline을 다시 꺼서 밑줄 강조만 남긴다.
+   (다른 입력/버튼/pill의 :focus-visible 아웃라인은 그대로 유지됨) */
+.write-input:focus-visible { outline: none; }
 .write-result { font-size: 18px; font-weight: 700; text-align: center; min-height: 32px; }
 .write-result.ok { color: var(--correct); }
 .write-result.fail { color: var(--wrong); }
