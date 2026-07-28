@@ -554,7 +554,7 @@ body {
 .hanja-display { text-align: center; font-family: 'Nanum Myeongjo', serif; font-weight: 800; line-height: 1.1; }
 .meaning-display { text-align: center; font-weight: 700; color: #1A73E8; min-height: 50px; display: flex; align-items: center; justify-content: center; }
 
-.card-nav { display: flex; align-items: center; justify-content: center; gap: 36px; padding: 20px 0 46px; margin-top: -30px; flex-shrink: 0; }
+.card-nav { display: flex; align-items: center; justify-content: center; gap: 36px; padding: 20px 0 58px; margin-top: -30px; flex-shrink: 0; }
 .nav-arrow { width: 64px; height: 64px; border-radius: 50%; background: none; border: none; cursor: pointer; font-size: 44px; color: var(--blue); display: flex; align-items: center; justify-content: center; transition: all .15s; }
 .nav-arrow:disabled { color: #D7D7D7; cursor: default; }
 .nav-arrow:not(:disabled):active { transform: scale(.88); }
@@ -4962,7 +4962,7 @@ function renderQuiz() {
     <div style="font-size:${qSize}px;font-weight:800;font-family:'Nanum Myeongjo',serif;text-align:center;padding:6px 0 2px;flex-shrink:0;line-height:1.2;">${qText}</div>
     <div class="result-msg ${resultCls}">${S.quizResult}</div>
     <div class="quiz-options">${opts}</div>
-    <div class="card-nav" style="padding:8px 0 16px;margin-top:26px;flex-shrink:0;">
+    <div class="card-nav" style="padding:8px 0 58px;margin-top:auto;flex-shrink:0;">
       <button class="reveal-btn quiz-btn" onclick="checkAnswer()">정답</button>
       <button class="reveal-btn quiz-btn" onclick="nextItem()">다음</button>
     </div>
@@ -5412,7 +5412,7 @@ function renderExamReadingQuiz() {
     <div style="font-size:${qSize}px;font-weight:800;font-family:'Nanum Myeongjo',serif;text-align:center;padding:6px 0 2px;flex-shrink:0;line-height:1.2;">${it.한자}</div>
     <div class="result-msg ${resultCls}">${ER.quizResult}</div>
     <div class="quiz-options">${opts}</div>
-    <div class="card-nav" style="padding:8px 0 16px;margin-top:26px;flex-shrink:0;">
+    <div class="card-nav" style="padding:8px 0 58px;margin-top:auto;flex-shrink:0;">
       <button class="reveal-btn quiz-btn" onclick="erCheckAnswer()">정답</button>
       <button class="reveal-btn quiz-btn" onclick="erNextQuizItem()">다음</button>
     </div>
