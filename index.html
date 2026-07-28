@@ -839,14 +839,18 @@ body {
 .login-form-sub   { font-size: 13px; font-weight: 700; color: var(--gray); align-self: center; text-align: center; margin-top: -8px; margin-bottom: 2px; }
 
 /* 입력창 */
+/* -webkit-appearance/appearance:none 필수 - 없으면 iOS/일부 Android가 이 위에 시스템
+   기본 텍스트필드 테두리를 겹쳐 그려서 이중 테두리로 보인다 (.write-input과 같은 원인). */
 .login-input {
   width: 100%; height: 54px; border-radius: 16px;
   border: 2px solid #DDD; padding: 0 18px;
   font-size: 18px; font-family: inherit; font-weight: 700;
+  -webkit-appearance: none; appearance: none; box-shadow: none;
   background: white; outline: none; transition: border .2s;
   text-align: center;
 }
 .login-input:focus { border-color: var(--blue); }
+.login-input:focus-visible { outline: none; }
 .login-error { color: var(--wrong); font-size: 14px; font-weight: 700; text-align: center; min-height: 20px; }
 
 /* 버튼 */
@@ -994,9 +998,11 @@ body {
 .teacher-input {
   height: 48px; border-radius: 14px; border: 2px solid #DDD;
   padding: 0 14px; font-size: 16px; font-family: inherit; font-weight: 700;
+  -webkit-appearance: none; appearance: none; box-shadow: none;
   outline: none; background: #FAFAFA; transition: border .2s;
 }
 .teacher-input:focus { border-color: var(--blue); }
+.teacher-input:focus-visible { outline: none; }
 .teacher-add-btn {
   width: 100%; height: 48px; border-radius: 14px; border: none;
   background: var(--blue); color: white;
@@ -1927,9 +1933,11 @@ const HG_Sound = (() => {
 .hg-input {
   flex:1; background:rgba(255,255,255,.1); border:1.5px solid rgba(255,255,255,.2);
   border-radius:12px; padding:12px 16px; color:white;
+  -webkit-appearance:none; appearance:none; box-shadow:none;
   font-size:16px; font-family:inherit; outline:none;
 }
 .hg-input:focus { border-color:#3B7DE0; }
+.hg-input:focus-visible { outline:none; }
 .hg-input::placeholder { color:rgba(255,255,255,.4); }
 /* 에너지바 */
 .hg-energy-bar {
