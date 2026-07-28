@@ -1415,6 +1415,40 @@ body {
   cursor:pointer; font-family:inherit; white-space:nowrap; width:100%;
 }
 .exam-attempt-pill:active { opacity:.7; transform:scale(.96); }
+
+/* ===== 급수별/기출문제 컴팩트 행 + 상세 팝업 ===== */
+#lv-detail-popup-overlay{position:fixed;inset:0;z-index:650;background:rgba(0,0,0,.45);backdrop-filter:blur(3px);display:none;align-items:center;justify-content:center;}
+#lv-detail-popup-overlay.active{display:flex;}
+#exam-level-popup-overlay{position:fixed;inset:0;z-index:650;background:rgba(0,0,0,.45);backdrop-filter:blur(3px);display:none;align-items:center;justify-content:center;}
+#exam-level-popup-overlay.active{display:flex;}
+
+.lv-compact-row {
+  width:100%; display:flex; align-items:center; gap:12px;
+  background:#fff; border:1.2px solid #E5E5E5; border-radius:14px;
+  padding:14px 16px; margin-bottom:8px; cursor:pointer; font-family:inherit; text-align:left;
+}
+.lv-compact-name { font-weight:800; font-size:15px; min-width:56px; }
+.lv-compact-bar-bg { flex:1; height:8px; background:#EEE; border-radius:4px; overflow:hidden; }
+.lv-compact-bar-fill { height:100%; background:var(--blue); border-radius:4px; }
+.lv-compact-pct { font-size:13px; font-weight:800; color:var(--blue); min-width:70px; text-align:right; white-space:nowrap; }
+
+.exam-compact-row {
+  width:100%; display:flex; align-items:center; gap:10px;
+  background:#fff; border:1.2px solid #E5E5E5; border-radius:14px;
+  padding:12px 14px; margin-bottom:8px; cursor:pointer; font-family:inherit; text-align:left;
+}
+.exam-compact-level { font-weight:800; font-size:15px; min-width:44px; }
+.exam-compact-pills { display:flex; gap:6px; flex-wrap:wrap; flex:1; }
+.exam-compact-pill { font-size:11px; font-weight:700; color:#4A90D9; background:#EEF4FF; border-radius:10px; padding:3px 8px; white-space:nowrap; }
+.exam-compact-arrow { font-size:18px; color:#BBB; flex-shrink:0; }
+
+.report-subtabs { display:flex; gap:8px; padding:0 14px 14px; }
+.report-subtab-btn {
+  flex:1; height:44px; border-radius:14px; border:1.5px solid #DDD; background:#fff; color:#222;
+  font-size:14px; font-weight:700; cursor:pointer; font-family:inherit; transition:all .15s;
+}
+.report-subtab-btn.active { background:var(--black-btn); color:#fff; border-color:var(--black-btn); }
+
 .lv-level-header {
   display:flex; align-items:center;
   margin-bottom:6px;
@@ -2904,20 +2938,24 @@ const HG_Sound = (() => {
         <div class="stat-card"><div class="stat-val" id="today-acc">-</div><div class="stat-unit">%</div><div class="stat-lbl">오늘 정답률</div></div>
         <div class="stat-card"><div class="stat-val" id="today-time">0</div><div class="stat-unit">분</div><div class="stat-lbl">오늘 학습</div></div>
       </div>
-      <div class="goal-card">
-        <div class="goal-top">
-          <span class="goal-title-txt">🎯 오늘 목표</span>
-          <span class="goal-pct-txt" id="goal-pct-txt">0%</span>
-        </div>
-        <div class="goal-bar-bg"><div class="goal-bar-fill" id="goal-bar-fill" style="width:0%"></div></div>
-        <div class="goal-sub-txt" id="goal-sub-txt">목표: 20문제</div>
+      <div class="summary-grid">
+        <div class="summary-card"><div class="summary-val" id="rep-total-q">0</div><div class="summary-lbl">📝 누적 문제 수</div></div>
+        <div class="summary-card"><div class="summary-val" id="rep-total-acc">-</div><div class="summary-lbl">✅ 전체 정답률</div></div>
+        <div class="summary-card"><div class="summary-val" id="rep-total-days">0</div><div class="summary-lbl">📅 총 학습 일수</div></div>
+        <div class="summary-card"><div class="summary-val" id="rep-total-time">0</div><div class="summary-lbl">⏱ 총 학습 시간(분)</div></div>
       </div>
-      <div class="review-nudge" id="review-nudge" style="display:none;">
-        <div class="nudge-info">
-          <div class="nudge-title">📚 오답 복습 추천</div>
-          <div class="nudge-sub" id="nudge-sub">틀린 문제가 쌓여 있어요</div>
-        </div>
-        <button class="nudge-btn" onclick="startWrongReview()">복습하기</button>
+      <div class="report-card">
+        <div class="report-card-title">🌿 최근 35일 학습 기록</div>
+        <div class="heatmap-outer" id="heatmap-outer"></div>
+        <div class="hm-legend">적음<div class="hm-legend-cells"><div class="hm-cell"></div><div class="hm-cell lv1"></div><div class="hm-cell lv2"></div><div class="hm-cell lv3"></div><div class="hm-cell lv4"></div></div>많음</div>
+      </div>
+      <div class="report-card">
+        <div class="report-card-title">📈 최근 7일 정답률</div>
+        <svg id="acc-chart" class="chart-svg" height="90"></svg>
+      </div>
+      <div class="report-card">
+        <div class="report-card-title">📊 최근 7일 학습량 (문제 수)</div>
+        <svg id="vol-chart" class="chart-svg" height="90"></svg>
       </div>
     </div>
     <div class="home-btns">
@@ -2973,44 +3011,17 @@ const HG_Sound = (() => {
   <!-- REPORT TAB -->
   <div id="tab-report" class="tab-pane">
     <div class="report-header">리포트</div>
-    <div class="report-section">
-      <div class="summary-grid">
-        <div class="summary-card"><div class="summary-val" id="rep-total-q">0</div><div class="summary-lbl">📝 누적 문제 수</div></div>
-        <div class="summary-card"><div class="summary-val" id="rep-total-acc">-</div><div class="summary-lbl">✅ 전체 정답률</div></div>
-        <div class="summary-card"><div class="summary-val" id="rep-total-days">0</div><div class="summary-lbl">📅 총 학습 일수</div></div>
-        <div class="summary-card"><div class="summary-val" id="rep-total-time">0</div><div class="summary-lbl">⏱ 총 학습 시간(분)</div></div>
-      </div>
-      <!-- 히트맵 -->
-      <div class="report-card">
-        <div class="report-card-title">🌿 최근 35일 학습 기록</div>
-        <div class="heatmap-outer" id="heatmap-outer"></div>
-        <div class="hm-legend">적음<div class="hm-legend-cells"><div class="hm-cell"></div><div class="hm-cell lv1"></div><div class="hm-cell lv2"></div><div class="hm-cell lv3"></div><div class="hm-cell lv4"></div></div>많음</div>
-      </div>
-      <!-- 정답률 추세 -->
-      <div class="report-card">
-        <div class="report-card-title">📈 최근 7일 정답률</div>
-        <svg id="acc-chart" class="chart-svg" height="90"></svg>
-      </div>
-      <!-- 학습량 바 차트 -->
-      <div class="report-card">
-        <div class="report-card-title">📊 최근 7일 학습량 (문제 수)</div>
-        <svg id="vol-chart" class="chart-svg" height="90"></svg>
-      </div>
+
+    <div class="report-subtabs">
+      <button class="report-subtab-btn active" id="report-subtab-level" onclick="switchReportSubtab('level')">📖 급수별 학습 현황</button>
+      <button class="report-subtab-btn" id="report-subtab-exam" onclick="switchReportSubtab('exam')">🧾 기출문제 점수 현황</button>
     </div>
-    <!-- 급수별 학습 현황 -->
-    <div class="lv-section">
-      <div class="lv-section-title" style="display:flex;justify-content:space-between;align-items:center;">
-        <span>📖 급수별 학습 현황</span>
-        <button id="lv-toggle-all-btn" onclick="toggleAllLevelBlocks()" style="font-size:12px;font-weight:700;color:var(--blue);background:none;border:1.5px solid var(--blue);border-radius:12px;padding:4px 10px;cursor:pointer;font-family:inherit;">전체 접기</button>
-      </div>
+
+    <div id="report-subtab-content-level" class="lv-section">
       <div id="level-progress-list"></div>
     </div>
-    <!-- 기출문제 점수 현황 -->
-    <div class="lv-section">
-      <div class="lv-section-title" style="display:flex;justify-content:space-between;align-items:center;">
-        <span>🧾 기출문제 점수 현황</span>
-        <button id="exam-toggle-all-btn" onclick="toggleAllExamLevelBlocks()" style="font-size:12px;font-weight:700;color:var(--blue);background:none;border:1.5px solid var(--blue);border-radius:12px;padding:4px 10px;cursor:pointer;font-family:inherit;">전체 접기</button>
-      </div>
+
+    <div id="report-subtab-content-exam" class="lv-section" style="display:none;">
       <div id="exam-score-chart-wrap"></div>
     </div>
   </div>
@@ -3386,6 +3397,22 @@ const HG_Sound = (() => {
       <div class="range-popup-count" id="weak-date-popup-count">날짜를 선택해 주세요</div>
       <div class="range-popup-groups" id="weak-date-popup-groups"></div>
       <button class="range-popup-confirm" onclick="confirmWeakDatePopup()">적용 완료</button>
+    </div>
+  </div>
+
+  <div id="lv-detail-popup-overlay" onclick="if(event.target===this)closeLvDetailPopup()">
+    <div class="range-popup-box" style="max-height:80vh;">
+      <div class="range-popup-title" id="lv-detail-popup-title">급수 학습 현황</div>
+      <div class="range-popup-groups" id="lv-detail-popup-body" style="overflow-y:auto;"></div>
+      <button class="range-popup-confirm" onclick="closeLvDetailPopup()">닫기</button>
+    </div>
+  </div>
+
+  <div id="exam-level-popup-overlay" onclick="if(event.target===this)closeExamLevelDetailPopup()">
+    <div class="range-popup-box" style="max-height:80vh;">
+      <div class="range-popup-title" id="exam-level-popup-title">기출문제 기록</div>
+      <div class="range-popup-groups" id="exam-level-popup-body"></div>
+      <button class="range-popup-confirm" onclick="closeExamLevelDetailPopup()">닫기</button>
     </div>
   </div>
 
@@ -3823,21 +3850,19 @@ function renderHomeTab() {
   document.getElementById('today-problems').textContent = todayTotal;
   document.getElementById('today-acc').textContent = todayAcc !== null ? todayAcc : '-';
   document.getElementById('today-time').textContent = Math.round(todaySec/60);
-  // Goal
-  const goal = settings.dailyGoal || 20;
-  const pct = Math.min(100, Math.round(todayTotal/goal*100));
-  document.getElementById('goal-pct-txt').textContent = pct + '%';
-  document.getElementById('goal-bar-fill').style.width = pct + '%';
-  document.getElementById('goal-sub-txt').textContent = `${todayTotal} / ${goal}문제`;
-  // Review nudge
-  const wrongCount = S.wrongNote.length;
-  const nudge = document.getElementById('review-nudge');
-  if (wrongCount > 0) {
-    nudge.style.display = 'flex';
-    document.getElementById('nudge-sub').textContent = `${wrongCount}개 한자 · 지금 복습하세요`;
-  } else {
-    nudge.style.display = 'none';
-  }
+  // 누적 통계 요약 (원래 리포트 탭에 있던 걸 홈으로 이동)
+  const totalQ = settings.totalQuestions || 0;
+  const totalC = settings.totalCorrect || 0;
+  const totalDays = new Set(studyLog.map(e=>e.date)).size;
+  const totalSec = settings.totalTime || 0;
+  const acc = totalQ > 0 ? Math.round(totalC/totalQ*100) : null;
+  document.getElementById('rep-total-q').textContent = totalQ;
+  document.getElementById('rep-total-acc').textContent = acc !== null ? acc + '%' : '-';
+  document.getElementById('rep-total-days').textContent = totalDays;
+  document.getElementById('rep-total-time').textContent = Math.round(totalSec/60);
+  renderHeatmap();
+  renderAccuracyChart();
+  renderVolumeChart();
   // 미션 카드
   const mCard = document.getElementById('mission-card-home');
   const mText = document.getElementById('mission-text-home');
@@ -3870,25 +3895,21 @@ function renderStudyTab() {
 }
 
 /* ===== REPORT TAB RENDER ===== */
+let reportActiveSubtab = 'level'; // 'level' | 'exam' - 리포트 탭에서 마지막으로 보던 서브탭 기억
+function switchReportSubtab(name) {
+  reportActiveSubtab = name;
+  applyReportSubtabUI();
+}
+function applyReportSubtabUI() {
+  document.getElementById('report-subtab-level').classList.toggle('active', reportActiveSubtab === 'level');
+  document.getElementById('report-subtab-exam').classList.toggle('active', reportActiveSubtab === 'exam');
+  document.getElementById('report-subtab-content-level').style.display = reportActiveSubtab === 'level' ? '' : 'none';
+  document.getElementById('report-subtab-content-exam').style.display = reportActiveSubtab === 'exam' ? '' : 'none';
+}
 function renderReportTab() {
-  // Summary
-  const totalQ = settings.totalQuestions || 0;
-  const totalC = settings.totalCorrect || 0;
-  const totalDays = new Set(studyLog.map(e=>e.date)).size;
-  const totalSec = settings.totalTime || 0;
-  const acc = totalQ > 0 ? Math.round(totalC/totalQ*100) : null;
-  document.getElementById('rep-total-q').textContent = totalQ;
-  document.getElementById('rep-total-acc').textContent = acc !== null ? acc + '%' : '-';
-  document.getElementById('rep-total-days').textContent = totalDays;
-  document.getElementById('rep-total-time').textContent = Math.round(totalSec/60);
-  // Heatmap
-  renderHeatmap();
-  // Charts
-  renderAccuracyChart();
-  renderVolumeChart();
-  // 급수별 학습 현황
   renderLevelProgress();
   renderExamScoreCharts();
+  applyReportSubtabUI();
 }
 
 function renderExamWeeklyGoalCard() {
@@ -3958,12 +3979,67 @@ function _toggleExamScoreBlock(idPrefix, level) {
   if (icon) icon.textContent = collapsed ? '▶' : '▼';
 }
 
+// examLog: {급수:{회차:[{id,date,score,answers}]}} - 급수당 한 줄(최근 응시 3개 pill)만 보여주고
+// 누르면 openPopupFnName(level)로 전체 회차 상세 팝업을 연다.
+function _buildExamScoreCompactHTML(examLog, openPopupFnName) {
+  const levels = Object.keys(examLog || {})
+    .filter(lv => Object.keys(examLog[lv] || {}).length > 0)
+    .sort((a, b) => LEVEL_ORDER.indexOf(a) - LEVEL_ORDER.indexOf(b));
+  if (!levels.length) return '';
+  return levels.map(level => {
+    const allAttempts = [];
+    Object.keys(examLog[level]).forEach(round => {
+      (examLog[level][round] || []).forEach(a => allAttempts.push({ round, ...a }));
+    });
+    allAttempts.sort((a, b) => (b.date || '').localeCompare(a.date || ''));
+    const recent3 = allAttempts.slice(0, 3);
+    const pillsHtml = recent3.map(a => `<span class="exam-compact-pill">${a.round}회 ${a.score}점</span>`).join('');
+    return `<button class="exam-compact-row" onclick="${openPopupFnName}('${level}')">
+      <span class="exam-compact-level">${level}</span>
+      <span class="exam-compact-pills">${pillsHtml}</span>
+      <span class="exam-compact-arrow">›</span>
+    </button>`;
+  }).join('');
+}
+
+// 팝업 안, 한 급수의 회차별 전체 기록 (가로 스크롤)
+// clickHandlerName: 점수 눌렀을 때 부를 함수 이름 ('openExamHistoryResult' 또는 '_openTeacherExamHistory')
+// extraArgsJs: clickHandlerName 호출 시 뒤에 덧붙일 인자 문자열
+function _buildExamScoreDetailHTML(examLog, level, clickHandlerName, extraArgsJs) {
+  const rounds = Object.keys(examLog[level] || {}).map(Number).sort((a, b) => a - b);
+  const roundCards = rounds.map(r => {
+    const attemptsAsc = examLog[level][String(r)] || [];
+    const attemptsDesc = [...attemptsAsc].reverse();
+    const attemptRows = attemptsDesc.map((a, i) => {
+      const ordinal = attemptsAsc.length - i;
+      return `<button class="exam-attempt-pill" onclick="closeExamLevelDetailPopup();${clickHandlerName}('${level}','${r}','${a.id || ''}'${extraArgsJs || ''})">${a.score}점 (${ordinal}차)</button>`;
+    }).join('');
+    return `<div class="exam-round-col"><div class="exam-round-title">${r}회</div><div class="exam-round-attempts">${attemptRows}</div></div>`;
+  }).join('');
+  return `<div class="exam-round-scroll">${roundCards}</div>`;
+}
+
+function openExamLevelDetailPopup(level, examLog, clickHandlerName, extraArgsJs) {
+  document.getElementById('exam-level-popup-title').textContent = level + ' 기출문제 기록';
+  document.getElementById('exam-level-popup-body').innerHTML =
+    _buildExamScoreDetailHTML(examLog, level, clickHandlerName, extraArgsJs);
+  document.getElementById('exam-level-popup-overlay').classList.add('active');
+}
+function closeExamLevelDetailPopup() {
+  document.getElementById('exam-level-popup-overlay').classList.remove('active');
+}
+
 function renderExamScoreCharts() {
   const wrap = document.getElementById('exam-score-chart-wrap');
   if (!wrap) return;
   const log = settings.examScoreLog || {};
-  const html = _buildExamScoreCardsHTML(log, _examScoreAllExpanded, 'exam', 'openExamHistoryResult');
+  const html = _buildExamScoreCompactHTML(log, '_openExamLevelPopupSelf');
   wrap.innerHTML = html || `<div style="text-align:center;color:var(--gray);font-size:13px;padding:16px 0;">아직 시험 모드를 풀지 않았어요.</div>`;
+}
+// openExamHistoryResult(level, round, attemptId, examLog, studentName, originTab) 순서 기준으로
+// examLog=null(내 데이터 그대로), studentName='', originTab='report'를 넘긴다.
+function _openExamLevelPopupSelf(level) {
+  openExamLevelDetailPopup(level, settings.examScoreLog, 'openExamHistoryResult', ",null,'','report'");
 }
 
 function toggleAllExamLevelBlocks() {
@@ -4358,12 +4434,81 @@ function _buildLevelProgressHTML(wp, lp) {
   }).join('');
 }
 
+// 급수 하나의 스텝카드 그리드 HTML (팝업 안에서 사용) - _buildLevelProgressHTML의 그리드 로직을 그대로 뽑아옴
+function _buildStepCardsForLevel(lv, wp, lp) {
+  const steps = LEVEL_STEPS[lv] || [];
+  return steps.map(step => {
+    const sData = wpGet(wp, step+'_선정');
+    const tData = wpGet(wp, step+'_교과서');
+    const sScore = sData.score, sRound = sData.round;
+    const tScore = tData.score, tRound = tData.round;
+    const sCls = sScore>=100?'done':sScore>0?'ing':'none';
+    const tCls = tScore>=100?'done':tScore>0?'ing':'none';
+    const sTxt = sScore>=100?'✅':'';
+    const tTxt = tScore>=100?'✅':'';
+    const sNum = sScore>0 ? (sRound>1?`${sRound}회 ${sScore}점`:`${sScore}점`) : '';
+    const tNum = tScore>0 ? (tRound>1?`${tRound}회 ${tScore}점`:`${tScore}점`) : '';
+    const stepLv = LEVEL_ORDER.find(l => (LEVEL_STEPS[l]||[]).includes(step)) || lv;
+    return `<div class="lv-step-card">
+      <div class="lv-step-title">${step}</div>
+      <div class="lv-bar-row" style="cursor:pointer" onclick="closeLvDetailPopup();goStudyFromProgress('${stepLv}','${step}','선정')">
+        <div class="lv-bar-label"><span class="lv-bar-type blue">선정</span><span class="lv-bar-score ${sCls}">${sTxt}</span></div>
+        <div class="lv-bar-with-score"><div class="lv-mini-bar" style="flex:1"><div class="lv-mini-fill-blue" style="width:${Math.min(sScore,100)}%"></div></div><span class="lv-bar-num">${sNum}</span></div>
+      </div>
+      <div class="lv-bar-row" style="cursor:pointer" onclick="closeLvDetailPopup();goStudyFromProgress('${stepLv}','${step}','교과서')">
+        <div class="lv-bar-label"><span class="lv-bar-type pink">교과서</span><span class="lv-bar-score ${tCls}">${tTxt}</span></div>
+        <div class="lv-bar-with-score"><div class="lv-mini-bar" style="flex:1"><div class="lv-mini-fill-pink" style="width:${Math.min(tScore,100)}%"></div></div><span class="lv-bar-num">${tNum}</span></div>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+// 급수 목록을 한 줄(진도바+%)씩만 보여주는 컴팩트 렌더 - 누르면 openPopupFnName(lv)로 상세 팝업을 연다
+function _buildLevelProgressCompactHTML(wp, lp, openPopupFnName) {
+  wp = wp || {}; lp = lp || {};
+  return LEVEL_ORDER.map(lv => {
+    const steps = LEVEL_STEPS[lv] || [];
+    const totalCells = steps.length * 2;
+    let completedCells = 0, hasAny = false;
+    for (const step of steps) {
+      if (wpScore(wp, step+'_선정') >= 100) completedCells++;
+      if (wpScore(wp, step+'_교과서') >= 100) completedCells++;
+      if (wpScore(wp, step+'_선정') > 0 || wpScore(wp, step+'_교과서') > 0) hasAny = true;
+    }
+    let pct, pctLabel;
+    if (hasAny) { pct = Math.round(completedCells/totalCells*100); pctLabel = pct+'%'; }
+    else {
+      const oldCnt = lp[lv] || 0;
+      if (oldCnt > 0) { pct = Math.min(99, Math.round(oldCnt/(steps.length*10)*100)); pctLabel = pct+'%·참고'; }
+      else { pct = 0; pctLabel = '미학습'; }
+    }
+    return `<button class="lv-compact-row" onclick="${openPopupFnName}('${lv}')">
+      <span class="lv-compact-name">${lv}</span>
+      <div class="lv-compact-bar-bg"><div class="lv-compact-bar-fill" style="width:${pct}%"></div></div>
+      <span class="lv-compact-pct">${pctLabel}</span>
+    </button>`;
+  }).join('');
+}
+
+function openLvDetailPopup(lv, wp, lp) {
+  document.getElementById('lv-detail-popup-title').textContent = lv + ' 학습 현황';
+  document.getElementById('lv-detail-popup-body').innerHTML =
+    `<div class="lv-steps-grid">${_buildStepCardsForLevel(lv, wp || {}, lp || {})}</div>`;
+  document.getElementById('lv-detail-popup-overlay').classList.add('active');
+}
+function closeLvDetailPopup() {
+  document.getElementById('lv-detail-popup-overlay').classList.remove('active');
+}
+
 function renderLevelProgress() {
   const list = document.getElementById('level-progress-list');
   if (!list) return;
   const wp = settings.writeProgress || {};
   const lp = settings.levelProgress || {};
-  list.innerHTML = _buildLevelProgressHTML(wp, lp);
+  list.innerHTML = _buildLevelProgressCompactHTML(wp, lp, '_openLvDetailPopupSelf');
+}
+function _openLvDetailPopupSelf(lv) {
+  openLvDetailPopup(lv, settings.writeProgress || {}, settings.levelProgress || {});
 }
 
 /* ===== WRONG NOTE FUNCTIONS ===== */
@@ -5675,6 +5820,7 @@ let EX = {
   attemptDate: null,       // 이 결과가 언제 응시한 건지 (히스토리 열람 시 표시)
   teacherViewMode: false,  // 선생님이 학생 기록을 보는 중인지
   teacherStudentName: '',  // 선생님 화면일 때 어떤 학생인지 표시용
+  historyOrigin: 'weak',   // 히스토리 열람을 어느 탭에서 열었는지 ('weak' | 'report') - 결과 화면 버튼 분기용
 };
 
 // 문제 번호별로 이미 입력/판정한 답을 저장해두는 곳 - "이전" 버튼으로 돌아갔을 때
@@ -6236,7 +6382,7 @@ function getExamScoreStats(level, round) {
   if (!arr.length) return null;
   return { latest: arr[arr.length - 1].score, best: Math.max(...arr.map(x => x.score)), attempts: arr.length };
 }
-function openExamHistoryResult(level, round, attemptId, examLog, studentName) {
+function openExamHistoryResult(level, round, attemptId, examLog, studentName, originTab) {
   const log = examLog || settings.examScoreLog;
   const arr = (log && log[level] && log[level][round]) || [];
   // id가 없는 예전 기록은 'idx:N' 형태로 넘어온다(renderWeakExamSection 참고) - 인덱스로 바로 찾는다.
@@ -6254,6 +6400,7 @@ function openExamHistoryResult(level, round, attemptId, examLog, studentName) {
   EX.teacherViewMode = !!examLog; // 선생님이 학생 데이터를 넘겨서 부른 경우
   EX.teacherStudentName = studentName || '';
   EX.attemptDate = record.date;
+  EX.historyOrigin = originTab || 'weak';
   EX.lastScoreIsFirst = false;
   EX.lastScoreDelta = null;
   goSub('exam_test_result');
@@ -6274,6 +6421,12 @@ function _openTeacherExamHistory(level, round, attemptId) {
   document.getElementById('student-detail').classList.remove('active');
   document.getElementById('teacher-app').classList.remove('active');
   openExamHistoryResult(level, round, attemptId, _detailStudentExamLog, _detailStudentNameForExam);
+}
+function _openLvDetailPopupTeacher(lv) {
+  openLvDetailPopup(lv, _detailStudentWP, _detailStudentLP);
+}
+function _openExamLevelPopupTeacher(level) {
+  openExamLevelDetailPopup(level, _detailStudentExamLog, '_openTeacherExamHistory', '');
 }
 function getExamWeeklyGoal(level) {
   return (settings.examWeeklyGoal && settings.examWeeklyGoal[level]) || 3; // 기본 주 3회차
@@ -6455,7 +6608,7 @@ function renderExamTestResult() {
   const buttonsHtml = EX.teacherViewMode
     ? `<button class="btn btn-black" onclick="closeExamResultForTeacher()" style="min-width:120px;height:52px;font-size:16px;">닫기</button>`
     : EX.viewingHistory
-      ? `<button class="btn btn-black" onclick="EX.viewingHistory=false;showTab('weak');" style="min-width:120px;height:52px;font-size:16px;">오답노트로</button>
+      ? `<button class="btn btn-black" onclick="EX.viewingHistory=false;showTab('${EX.historyOrigin || 'weak'}');" style="min-width:120px;height:52px;font-size:16px;">${EX.historyOrigin === 'report' ? '리포트로' : '오답노트로'}</button>
          <button class="btn btn-black" onclick="goSub('exam_test_intro')" style="min-width:120px;height:52px;font-size:16px;">다시 풀기</button>`
       : `<button class="btn btn-black" onclick="showTab('study')" style="min-width:120px;height:52px;font-size:16px;">홈으로</button>
          <button class="btn btn-black" onclick="goSub('exam_test_intro')" style="min-width:120px;height:52px;font-size:16px;">다시 풀기</button>`;
@@ -9520,6 +9673,8 @@ function renderTeacherList() {
 /* ===== 학생 상세 보기 ===== */
 let _detailStudentExamLog = {};
 let _detailStudentNameForExam = '';
+let _detailStudentWP = {};
+let _detailStudentLP = {};
 async function showStudentDetail(studentId, studentName) {
   document.getElementById('detail-name').textContent = studentName;
   document.getElementById('detail-today-badge').innerHTML = '';
@@ -9566,7 +9721,10 @@ async function showStudentDetail(studentId, studentName) {
 
     // 선생님 학생 상세 - writeProgress 기반 인라인 진도율
     const wp_student = st.writeProgress || {};
-    const levelRows = _buildLevelProgressHTML(wp_student, lp);
+    const levelRows = _buildLevelProgressCompactHTML(wp_student, lp, '_openLvDetailPopupTeacher');
+    _detailStudentWP = wp_student;
+    _detailStudentLP = lp;
+    window._viewingStudentWP = wp_student; // goStudyFromProgress가 선생님 열람 모드를 감지해 이동을 막는 데 씀 (closeStudentDetail에서 null로 리셋됨)
 
     const wrongRows = top5.length
       ? top5.map(it => `
@@ -9580,7 +9738,7 @@ async function showStudentDetail(studentId, studentName) {
     const examLog = st.examScoreLog || {};
     _detailStudentExamLog = examLog;   // 아래 클릭 핸들러에서 참조
     _detailStudentNameForExam = studentName;
-    const examCardsHtml = _buildExamScoreCardsHTML(examLog, true, 'texam', '_openTeacherExamHistory');
+    const examCardsHtml = _buildExamScoreCompactHTML(examLog, '_openExamLevelPopupTeacher');
     const examSectionHtml = examCardsHtml ? `
       <div class="detail-section">
         <div class="detail-section-title">🧾 기출문제 점수</div>
