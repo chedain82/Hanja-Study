@@ -1412,7 +1412,14 @@ body {
 #exam-level-popup-body { overflow-y:hidden; }
 .exam-round-col { flex:0 0 auto; min-width:100px; text-align:center; }
 .exam-round-title { font-size:12px; font-weight:700; color:var(--gray); margin-bottom:6px; }
-.exam-round-attempts { display:flex; flex-direction:column; gap:6px; }
+.exam-round-attempts {
+  display:flex; flex-direction:column; gap:6px;
+  max-height:340px; overflow-y:auto; padding-right:4px;
+  scrollbar-width:thin; scrollbar-color:#D0D0D0 transparent;
+}
+.exam-round-attempts::-webkit-scrollbar { width:5px; }
+.exam-round-attempts::-webkit-scrollbar-track { background:transparent; }
+.exam-round-attempts::-webkit-scrollbar-thumb { background:#D0D0D0; border-radius:3px; }
 .exam-attempt-pill {
   border:1.5px solid #4A90D9; color:#222; background:#fff;
   border-radius:16px; padding:6px 10px; font-size:12px; font-weight:700;
