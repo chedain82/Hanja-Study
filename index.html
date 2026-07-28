@@ -24,6 +24,9 @@
 <meta name="apple-mobile-web-app-title" content="한자플러스">
 <meta name="theme-color" content="#3B7DE0">
 
+<!-- ===== UI 본문용 폰트 (Pretendard) - 한자/큰 타이틀은 기존 명조체 유지, 그 외 UI는 이걸로 ===== -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.css">
+
 <!-- ===== 오픈그래프 (카카오톡·SNS 공유 미리보기) ===== -->
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://hanjaplus.kr/">
@@ -66,15 +69,24 @@
   --border: #2A2A2A;
   --correct: #43A047;
   --wrong: #C62828;
-  --nav-h: 60px;
+  --nav-h: 68px; /* 60px → 68px: 아이콘/글자 크기는 그대로 두고 탭 터치 영역만 위아래로 넉넉하게 */
   --safe: env(safe-area-inset-bottom, 0px);
+  --font-sans: 'Pretendard', 'Noto Sans KR', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
 }
 
 * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
 
+/* ===== 접근성: 키보드 포커스 표시 ===== */
+button:focus-visible, a:focus-visible, [role="button"]:focus-visible,
+input:focus-visible, select:focus-visible, textarea:focus-visible,
+[tabindex]:focus-visible {
+  outline: 2.5px solid var(--blue);
+  outline-offset: 2px;
+}
+
 body {
   background: var(--bg);
-  font-family: 'Nanum Myeongjo', serif;
+  font-family: var(--font-sans);
   height: 100dvh;
   overflow: hidden;
   display: flex;
@@ -119,10 +131,11 @@ body {
   flex: 1; display: flex; flex-direction: column;
   align-items: center; justify-content: center;
   gap: 2px; border: none; background: none; cursor: pointer;
-  font-family: 'Nanum Myeongjo', serif;
+  font-family: var(--font-sans);
   -webkit-user-select: none; user-select: none;
   transition: all .15s;
-  padding: 6px 0;
+  min-height: 44px;
+  padding: 4px 0 10px; /* 위는 좁게, 아래는 넉넉하게 - 아이콘/글자를 살짝 위로 올리면서 터치 영역은 넓힘 */
 }
 .nav-tab .n-icon { font-size: 21px; transition: transform .2s; }
 .nav-tab .n-lbl { font-size: 10px; font-weight: 700; color: #BBA8AD; }
@@ -325,7 +338,7 @@ body {
 
 /* charts */
 .chart-svg { width: 100%; overflow: visible; }
-.chart-bar-label { font-size: 9px; fill: #AAA; font-family: 'Nanum Myeongjo', serif; font-weight: 700; }
+.chart-bar-label { font-size: 9px; fill: #AAA; font-family: var(--font-sans); font-weight: 700; }
 .chart-line { fill: none; stroke: var(--blue); stroke-width: 2.5; stroke-linecap: round; stroke-linejoin: round; }
 .chart-dot { fill: var(--blue); }
 .chart-dot-bg { fill: white; stroke: var(--blue); stroke-width: 2; }
@@ -2885,12 +2898,12 @@ const HG_Sound = (() => {
       <rect width="280" height="120" rx="16" fill="url(#cg)"/>
       <circle cx="0" cy="60" r="18" fill="white"/><circle cx="280" cy="60" r="18" fill="white"/>
       <line x1="18" y1="60" x2="262" y2="60" stroke="rgba(255,255,255,.4)" stroke-width="2" stroke-dasharray="8,6"/>
-      <text x="140" y="44" text-anchor="middle" font-size="13" font-weight="800" fill="rgba(255,255,255,.85)" font-family="serif">10일 연속 정답 100%</text>
+      <text x="140" y="44" text-anchor="middle" font-size="13" font-weight="800" fill="rgba(255,255,255,.85)" font-family="serif">10일 연속 80점 이상</text>
       <text x="140" y="72" text-anchor="middle" font-size="26" font-weight="800" fill="white" font-family="serif">쿠폰 교환권</text>
       <text x="140" y="100" text-anchor="middle" font-size="13" font-weight="700" fill="rgba(255,255,255,.8)" font-family="serif">1 COUPON</text>
     </svg>
     <div class="coupon-ov-title">🎊 쿠폰 획득!</div>
-    <div class="coupon-ov-sub">10일 연속 정답률 100% 달성!</div>
+    <div class="coupon-ov-sub">10일 연속 80점 이상 달성!</div>
     <div class="coupon-ov-count" id="coupon-ov-count">현재 0장 보유</div>
     <button class="coupon-ov-btn" onclick="closeCouponOverlay()">닫기</button>
   </div>
@@ -2948,7 +2961,7 @@ const HG_Sound = (() => {
         </div>
         <div>
           <div class="coupon-streak-label">
-            <span id="coupon-streak-label-txt">10일 연속 100% 도전중</span>
+            <span id="coupon-streak-label-txt">10일 연속 80점 이상 도전중</span>
             <span id="coupon-streak-days">0/10일</span>
           </div>
           <div class="coupon-streak-bg"><div class="coupon-streak-fill" id="coupon-streak-bar"></div></div>
@@ -3112,9 +3125,9 @@ const HG_Sound = (() => {
           <div class="coupon-wallet-cnt" id="coupon-wallet-cnt">0장 보유</div>
         </div>
         <div class="coupon-grid" id="coupon-grid"></div>
-        <div class="coupon-wallet-empty" id="coupon-wallet-empty">아직 쿠폰이 없어요 🎟️<br>10일 연속 100% 달성 시 쿠폰 10장 교환권 획득!</div>
+        <div class="coupon-wallet-empty" id="coupon-wallet-empty">아직 쿠폰이 없어요 🎟️<br>10일 연속 80점 이상 달성 시 쿠폰 10장 교환권 획득!</div>
         <div class="coupon-perfect-progress">
-          <div class="cpp-label"><span>🔥 연속 정답 100% 도전</span><span id="cpp-days">0/10일</span></div>
+          <div class="cpp-label"><span>🔥 연속 80점 이상 도전</span><span id="cpp-days">0/10일</span></div>
           <div class="cpp-bar-bg"><div class="cpp-bar-fill" id="cpp-bar" style="width:0%"></div></div>
           <div class="cpp-msg" id="cpp-msg"></div>
         </div>
@@ -4142,7 +4155,7 @@ function renderAccuracyChart() {
     days.push({ label: `${d.getMonth()+1}/${d.getDate()}`, acc });
   }
   if (days.every(d=>d.acc===null)) {
-    svg.innerHTML = `<text x="${W/2}" y="50" text-anchor="middle" font-size="12" fill="#CCC" font-family="'Nanum Myeongjo',serif" font-weight="700">아직 데이터가 없어요</text>`;
+    svg.innerHTML = `<text x="${W/2}" y="50" text-anchor="middle" font-size="12" fill="#CCC" font-family="var(--font-sans)" font-weight="700">아직 데이터가 없어요</text>`;
     return;
   }
   const pad = 10; const chartW = W - pad*2; const chartH = 60;
@@ -4152,7 +4165,7 @@ function renderAccuracyChart() {
   // Draw grid line at 70%
   const gridY = 10 + (1-0.7)*chartH;
   let svgStr = `<line x1="${pad}" y1="${gridY}" x2="${W-pad}" y2="${gridY}" stroke="#EEE" stroke-width="1" stroke-dasharray="4,3"/>`;
-  svgStr += `<text x="${pad}" y="${gridY-3}" font-size="9" fill="#DDD" font-family="'Nanum Myeongjo',serif" font-weight="700">70%</text>`;
+  svgStr += `<text x="${pad}" y="${gridY-3}" font-size="9" fill="#DDD" font-family="var(--font-sans)" font-weight="700">70%</text>`;
   // Polyline through non-null points
   const validPts = points.filter(p=>p!==null);
   if (validPts.length > 1) {
@@ -4165,7 +4178,7 @@ function renderAccuracyChart() {
     if (points[i]) {
       svgStr += `<circle cx="${points[i].x}" cy="${points[i].y}" r="5" class="chart-dot-bg"/>`;
       svgStr += `<circle cx="${points[i].x}" cy="${points[i].y}" r="3.5" class="chart-dot"/>`;
-      svgStr += `<text x="${points[i].x}" y="${points[i].y-9}" text-anchor="middle" font-size="9" fill="var(--blue)" font-family="'Nanum Myeongjo',serif" font-weight="700">${d.acc}%</text>`;
+      svgStr += `<text x="${points[i].x}" y="${points[i].y-9}" text-anchor="middle" font-size="9" fill="var(--blue)" font-family="var(--font-sans)" font-weight="700">${d.acc}%</text>`;
     }
     svgStr += `<text x="${x}" y="86" text-anchor="middle" class="chart-bar-label">${d.label}</text>`;
   });
@@ -4195,7 +4208,7 @@ function renderVolumeChart() {
     const y = 10 + chartH - barH;
     if (d.total > 0) {
       svgStr += `<rect x="${x-barW/2}" y="${y}" width="${barW}" height="${barH}" rx="3" fill="var(--blue)" opacity="0.8"/>`;
-      svgStr += `<text x="${x}" y="${y-4}" text-anchor="middle" font-size="9" fill="var(--blue)" font-family="'Nanum Myeongjo',serif" font-weight="700">${d.total}</text>`;
+      svgStr += `<text x="${x}" y="${y-4}" text-anchor="middle" font-size="9" fill="var(--blue)" font-family="var(--font-sans)" font-weight="700">${d.total}</text>`;
     } else {
       svgStr += `<rect x="${x-barW/2}" y="${10+chartH-4}" width="${barW}" height="4" rx="2" fill="#EEE"/>`;
     }
@@ -6714,7 +6727,7 @@ function renderCouponHomeCard() {
   const el = document.getElementById('coupon-home-count'); if(el) el.textContent = coupons;
   const dEl = document.getElementById('coupon-streak-days'); if(dEl) dEl.textContent = ps+'/10일';
   const bar = document.getElementById('coupon-streak-bar'); if(bar) bar.style.width = Math.min(100,ps*10)+'%';
-  const msgs = {0:'매일 100% 정답 10일 연속 달성 시 쿠폰 10장 교환권!',1:'1일째! 9일 남았어요 💪',2:'2일째! 8일 더 하면 쿠폰!',3:'🔥 3일째! 7일 남았어요!',4:'4일째! 절반 가까이!',5:'⚡ 5일째! 절반 달성! 5일만 더!',6:'6일째! 4일 남았어요!',7:'💎 7일째! 3일만 더하면 쿠폰!',8:'거의 다 왔어요! 2일 남았어요!',9:'🚀 9일째! 내일 100% 달성하면 쿠폰!',10:'🎉 10일 달성! 쿠폰 교환권 획득!'};
+  const msgs = {0:'매일 80점 이상 10일 연속 달성 시 쿠폰 10장 교환권!',1:'1일째! 9일 남았어요 💪',2:'2일째! 8일 더 하면 쿠폰!',3:'🔥 3일째! 7일 남았어요!',4:'4일째! 절반 가까이!',5:'⚡ 5일째! 절반 달성! 5일만 더!',6:'6일째! 4일 남았어요!',7:'💎 7일째! 3일만 더하면 쿠폰!',8:'거의 다 왔어요! 2일 남았어요!',9:'🚀 9일째! 내일 80점 이상 달성하면 쿠폰!',10:'🎉 10일 달성! 쿠폰 교환권 획득!'};
   const msg = document.getElementById('coupon-streak-msg'); if(msg) msg.textContent = msgs[Math.min(10,ps)] || '';
 }
 
@@ -6809,7 +6822,7 @@ function getWeeklyScore() {
   return computeWeekScore(studyLog, getWeekStart());
 }
 
-/* ===== 연속 정답 100% 체크 ===== */
+/* ===== 연속 80점 이상 체크 ===== */
 function checkPerfectStreak() {
   const today = todayStr();
   if (settings.lastPerfectDate === today) return; // 오늘 이미 기록됨
@@ -6887,7 +6900,7 @@ function renderCouponWallet() {
   const ps = settings.perfectStreak || 0;
   const dEl = document.getElementById('cpp-days'); if(dEl) dEl.textContent = ps+'/10일';
   const bar = document.getElementById('cpp-bar'); if(bar) bar.style.width = Math.min(100,ps*10)+'%';
-  const msgs = ['100% 달성 10일 연속 → 쿠폰 1장!','1일! 9일 남았어요','2일! 8일 남았어요','🔥 3일! 7일 더!','4일! 절반에 가까워요','⚡ 5일! 반환점!','6일! 4일 남았어요','💎 7일! 3일 남았어요!','거의 다 왔어요! 2일!','🚀 9일! 내일이면 쿠폰!','🎉 10일 달성!'];
+  const msgs = ['80점 이상 10일 연속 → 쿠폰 1장!','1일! 9일 남았어요','2일! 8일 남았어요','🔥 3일! 7일 더!','4일! 절반에 가까워요','⚡ 5일! 반환점!','6일! 4일 남았어요','💎 7일! 3일 남았어요!','거의 다 왔어요! 2일!','🚀 9일! 내일이면 쿠폰!','🎉 10일 달성!'];
   const msgEl = document.getElementById('cpp-msg'); if(msgEl) msgEl.textContent = msgs[Math.min(10,ps)] || '';
 }
 
@@ -7044,7 +7057,7 @@ function getMvpStudentId(cacheArr) {
   return maxQ > 0 ? mvpId : null;
 }
 
-/* ===== DATA RESET =====
+/* ===== DATA RESET ===== */
 function resetAllData() {
   if (!confirm('모든 학습 데이터를 삭제할까요? 이 작업은 되돌릴 수 없습니다.')) return;
   studyLog = []; settings = {streak:0,lastStudyDate:'',dailyGoal:100,totalCorrect:0,totalQuestions:0,totalTime:0,bestStreak:0,levelProgress:{}};
@@ -9870,6 +9883,68 @@ const _origSaveStudyLog  = saveStudyLog;  saveStudyLog  = function(){ _origSaveS
 const _origSaveWrongNote = saveWrongNote; saveWrongNote = function(){ _origSaveWrongNote(); syncToFirestore(); };
 
 initLogin();
+
+/* ===== 접근성: 팝업 공통 Escape 닫기 + 포커스 이동/복귀 =====
+   팝업마다 open/close 함수가 제각각 만들어져 있어(공통 유틸 없이 그때그때 추가됨),
+   기존 함수를 그대로 재사용하는 방식으로 최소 침습적으로 접근성을 추가한다.
+   - Escape: 열려있는 팝업 중 배열 순서상 먼저 오는(=자식 팝업을 앞에 둬서 부모보다 먼저
+     닫히게) 것의 실제 close 함수를 그대로 호출한다 - 각 팝업 고유의 정리 로직(예:
+     closeStudentDetail의 window._viewingStudentWP 리셋)이 그대로 실행된다.
+   - 포커스 이동/복귀: 각 팝업 엘리먼트의 class/style 변화를 MutationObserver로 감지해서,
+     열릴 때 포커스를 팝업 안 첫 번째 포커스 가능 요소로 옮기고, 닫힐 때 팝업을 열기
+     전 포커스였던 요소로 되돌린다. */
+const A11Y_POPUPS = [
+  { id: 'exam-level-popup-overlay', close: closeExamLevelDetailPopup }, // student-detail 위에 뜰 수 있어 먼저 닫히게 앞에 둠
+  { id: 'lv-detail-popup-overlay', close: closeLvDetailPopup },
+  { id: 'weak-date-popup-overlay', close: closeWeakDatePopup },
+  { id: 'range-popup-overlay', close: closeRangePopup },
+  { id: 'week-picker-overlay', close: closeWeekPicker },
+  { id: 'grade-picker-overlay', close: closeGradePicker },
+  { id: 'coupon-overlay', close: closeCouponOverlay },
+  { id: 'examples-popup-overlay', close: closeExamples },
+  { id: 'badge-popup-overlay', close: closeBadgePopup },
+  { id: 'guide-popup', close: closeGuidePopup },
+  { id: 'level-detail-modal', close: closeLevelDetail },
+  { id: 'ex-popup-overlay', close: closeExamTestPopup },
+  { id: 'exam-pdf-popup', close: closeExamPdfPopup },
+  { id: 'msg-modal', close: closeMsgModal, isOpen: el => el.style.display === 'flex' },
+  { id: 'student-detail', close: closeStudentDetail },
+];
+function _a11yIsOpen(entry, el) {
+  return entry.isOpen ? entry.isOpen(el) : el.classList.contains('active');
+}
+document.addEventListener('keydown', (e) => {
+  if (e.key !== 'Escape') return;
+  for (const entry of A11Y_POPUPS) {
+    const el = document.getElementById(entry.id);
+    if (el && _a11yIsOpen(entry, el)) { entry.close(); e.stopPropagation(); return; }
+  }
+});
+function _a11yFocusFirst(el) {
+  const focusable = el.querySelector(
+    'button:not([disabled]), a[href], input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])'
+  );
+  if (focusable) focusable.focus();
+}
+const _a11yLastFocus = new WeakMap();
+A11Y_POPUPS.forEach(entry => {
+  const el = document.getElementById(entry.id);
+  if (!el) return;
+  let wasOpen = _a11yIsOpen(entry, el);
+  const observer = new MutationObserver(() => {
+    const isOpen = _a11yIsOpen(entry, el);
+    if (isOpen === wasOpen) return;
+    wasOpen = isOpen;
+    if (isOpen) {
+      _a11yLastFocus.set(el, document.activeElement);
+      setTimeout(() => _a11yFocusFirst(el), 0);
+    } else {
+      const prev = _a11yLastFocus.get(el);
+      if (prev && document.body.contains(prev) && typeof prev.focus === 'function') prev.focus();
+    }
+  });
+  observer.observe(el, { attributes: true, attributeFilter: ['class', 'style'] });
+});
 
 // 탭/앱이 다시 활성화될 때 Firestore 재동기화 (방법 2)
 document.addEventListener('visibilitychange', async () => {
