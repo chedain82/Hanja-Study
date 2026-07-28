@@ -1404,6 +1404,17 @@ body {
 .lv-section { padding: 0 14px 8px; }
 .lv-section-title { font-size:14px; font-weight:800; color:#222; margin-bottom:10px; padding-top:4px; }
 .lv-level-block { margin-bottom:16px; }
+.exam-round-scroll { display:flex; gap:14px; overflow-x:auto; padding:10px 2px 6px; -webkit-overflow-scrolling:touch; }
+.exam-round-scroll.collapsed { display:none; }
+.exam-round-col { flex:0 0 auto; min-width:100px; text-align:center; }
+.exam-round-title { font-size:12px; font-weight:700; color:var(--gray); margin-bottom:6px; }
+.exam-round-attempts { display:flex; flex-direction:column; gap:6px; }
+.exam-attempt-pill {
+  border:1.5px solid #4A90D9; color:#4A90D9; background:#fff;
+  border-radius:16px; padding:6px 10px; font-size:12px; font-weight:700;
+  cursor:pointer; font-family:inherit; white-space:nowrap; width:100%;
+}
+.exam-attempt-pill:active { opacity:.7; transform:scale(.96); }
 .lv-level-header {
   display:flex; align-items:center;
   margin-bottom:6px;
@@ -2994,14 +3005,12 @@ const HG_Sound = (() => {
       </div>
       <div id="level-progress-list"></div>
     </div>
-    <!-- 이번 주 목표 -->
-    <div class="lv-section">
-      <div class="lv-section-title">🎯 이번 주 목표</div>
-      <div id="exam-weekly-goal-wrap"></div>
-    </div>
     <!-- 기출문제 점수 현황 -->
     <div class="lv-section">
-      <div class="lv-section-title">🧾 기출문제 점수 현황</div>
+      <div class="lv-section-title" style="display:flex;justify-content:space-between;align-items:center;">
+        <span>🧾 기출문제 점수 현황</span>
+        <button id="exam-toggle-all-btn" onclick="toggleAllExamLevelBlocks()" style="font-size:12px;font-weight:700;color:var(--blue);background:none;border:1.5px solid var(--blue);border-radius:12px;padding:4px 10px;cursor:pointer;font-family:inherit;">전체 접기</button>
+      </div>
       <div id="exam-score-chart-wrap"></div>
     </div>
   </div>
@@ -3880,7 +3889,6 @@ function renderReportTab() {
   // 급수별 학습 현황
   renderLevelProgress();
   renderExamScoreCharts();
-  renderExamWeeklyGoalCard();
 }
 
 function renderExamWeeklyGoalCard() {
@@ -3909,54 +3917,68 @@ function renderExamWeeklyGoalCard() {
   }).join('');
 }
 
+let _examScoreAllExpanded = true;
+
+// examLog: {급수:{회차:[{id,date,score,answers}, ...]}} 형태 - 내 것(settings.examScoreLog)이든 선생님이 보는 학생 것이든 그대로 넣으면 됨
+// idPrefix: DOM id 충돌 방지용 접두어 (학생 리포트='exam', 선생님 학생상세='texam' 등)
+// clickHandlerName: 점수 버튼 클릭 시 호출할 전역 함수 이름 (문자열)
+function _buildExamScoreCardsHTML(examLog, expanded, idPrefix, clickHandlerName) {
+  const levels = Object.keys(examLog || {})
+    .filter(lv => Object.keys(examLog[lv] || {}).length > 0)
+    .sort((a, b) => LEVEL_ORDER.indexOf(a) - LEVEL_ORDER.indexOf(b));
+  if (!levels.length) return '';
+  return levels.map(level => {
+    const rounds = Object.keys(examLog[level]).map(Number).sort((a, b) => a - b);
+    const roundCards = rounds.map(r => {
+      const attemptsAsc = examLog[level][String(r)] || [];
+      const attemptsDesc = [...attemptsAsc].reverse(); // 최근 응시가 위로 오도록
+      const attemptRows = attemptsDesc.map((a, i) => {
+        const ordinal = attemptsAsc.length - i; // 실제 응시 순서 기준 n차
+        return `<button class="exam-attempt-pill" onclick="${clickHandlerName}('${level}','${r}','${a.id || ''}')">${a.score}점 (${ordinal}차)</button>`;
+      }).join('');
+      return `<div class="exam-round-col"><div class="exam-round-title">${r}회</div><div class="exam-round-attempts">${attemptRows}</div></div>`;
+    }).join('');
+    const isOpen = expanded;
+    return `<div class="lv-level-block">
+      <div class="lv-level-header" id="${idPrefix}-hdr-${level}" onclick="_toggleExamScoreBlock('${idPrefix}','${level}')">
+        <span class="lv-level-name">${level}</span>
+        <span class="lv-level-toggle">${isOpen ? '▼' : '▶'}</span>
+      </div>
+      <div class="exam-round-scroll${isOpen ? '' : ' collapsed'}" id="${idPrefix}-grid-${level}">${roundCards}</div>
+    </div>`;
+  }).join('');
+}
+
+function _toggleExamScoreBlock(idPrefix, level) {
+  const grid = document.getElementById(idPrefix + '-grid-' + level);
+  const header = document.getElementById(idPrefix + '-hdr-' + level);
+  if (!grid || !header) return;
+  const icon = header.querySelector('.lv-level-toggle');
+  const collapsed = grid.classList.toggle('collapsed');
+  if (icon) icon.textContent = collapsed ? '▶' : '▼';
+}
+
 function renderExamScoreCharts() {
   const wrap = document.getElementById('exam-score-chart-wrap');
   if (!wrap) return;
   const log = settings.examScoreLog || {};
-  const levels = Object.keys(log).filter(lv => Object.keys(log[lv] || {}).length > 0);
-  if (!levels.length) {
-    wrap.innerHTML = `<div style="text-align:center;color:var(--gray);font-size:13px;padding:16px 0;">아직 시험 모드를 풀지 않았어요.</div>`;
-    return;
-  }
-  wrap.innerHTML = levels.map(lv => renderExamScoreChartForLevel(lv)).join('');
+  const html = _buildExamScoreCardsHTML(log, _examScoreAllExpanded, 'exam', 'openExamHistoryResult');
+  wrap.innerHTML = html || `<div style="text-align:center;color:var(--gray);font-size:13px;padding:16px 0;">아직 시험 모드를 풀지 않았어요.</div>`;
 }
 
-function renderExamScoreChartForLevel(level) {
-  const rounds = Object.keys(settings.examScoreLog[level]).map(Number).sort((a,b) => a-b);
-  const W = 320, H = 140, padL = 34, padR = 10, padT = 14, padB = 24;
-  const plotW = W - padL - padR, plotH = H - padT - padB;
-  const n = rounds.length;
-  const xStep = n > 1 ? plotW / (n - 1) : 0;
-  const xFor = i => padL + xStep * i;
-  const yFor = score => padT + plotH * (1 - score / 100);
-
-  const latestPts = rounds.map((r, i) => ({ x: xFor(i), y: yFor(getExamScoreStats(level, r).latest), score: getExamScoreStats(level, r).latest }));
-  const bestPts = rounds.map((r, i) => ({ x: xFor(i), y: yFor(getExamScoreStats(level, r).best), score: getExamScoreStats(level, r).best }));
-  const toPath = pts => pts.map((p,i) => (i===0?'M':'L') + p.x.toFixed(1) + ',' + p.y.toFixed(1)).join(' ');
-
-  const latestLine = `<path d="${toPath(latestPts)}" fill="none" stroke="#3B7DE0" stroke-width="2.5"/>`;
-  const bestLine = `<path d="${toPath(bestPts)}" fill="none" stroke="#F0B429" stroke-width="2" stroke-dasharray="4,3"/>`;
-  const dots = latestPts.map((p,i) => `<circle cx="${p.x}" cy="${p.y}" r="3.5" fill="#3B7DE0"/>`).join('');
-  // 점수 숫자 표시 - 파란 점(최근) 위, 노란 점(최고) 아래에 표시. 두 점수가 같으면 점 위치도
-  // 같아지므로 최고 점수 숫자를 조금 더 아래로 내려 겹치지 않게 한다.
-  const latestLabels = latestPts.map(p => `<text x="${p.x}" y="${p.y-7}" font-size="10" font-weight="700" text-anchor="middle" fill="#3B7DE0">${p.score}</text>`).join('');
-  const bestLabels = bestPts.map((p,i) => {
-    const dy = p.score === latestPts[i].score ? 16 : 13;
-    return `<text x="${p.x}" y="${p.y+dy}" font-size="10" font-weight="700" text-anchor="middle" fill="#C9950A">${p.score}</text>`;
-  }).join('');
-  const xLabels = rounds.map((r,i) => `<text x="${xFor(i)}" y="${H-6}" font-size="10" text-anchor="middle" fill="#888">${r}</text>`).join('');
-  const gridLines = [0,50,100].map(v => `<line x1="${padL}" y1="${yFor(v)}" x2="${W-padR}" y2="${yFor(v)}" stroke="#EEE" stroke-width="1"/><text x="4" y="${yFor(v)+3}" font-size="9" fill="#AAA">${v}</text>`).join('');
-
-  return `
-    <div class="report-card">
-      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;">
-        <div style="font-weight:800;font-size:14px;">${level}</div>
-        <div style="font-size:11px;color:var(--gray);"><span style="color:#3B7DE0;">●</span> 최근  <span style="color:#F0B429;">- - -</span> 최고</div>
-      </div>
-      <svg viewBox="0 0 ${W} ${H}" style="width:100%;height:auto;">
-        ${gridLines}${bestLine}${latestLine}${dots}${xLabels}${bestLabels}${latestLabels}
-      </svg>
-    </div>`;
+function toggleAllExamLevelBlocks() {
+  _examScoreAllExpanded = !_examScoreAllExpanded;
+  const log = settings.examScoreLog || {};
+  Object.keys(log).forEach(level => {
+    const grid = document.getElementById('exam-grid-' + level);
+    const header = document.getElementById('exam-hdr-' + level);
+    if (!grid || !header) return;
+    const icon = header.querySelector('.lv-level-toggle');
+    if (_examScoreAllExpanded) { grid.classList.remove('collapsed'); if (icon) icon.textContent = '▼'; }
+    else { grid.classList.add('collapsed'); if (icon) icon.textContent = '▶'; }
+  });
+  const btn = document.getElementById('exam-toggle-all-btn');
+  if (btn) btn.textContent = _examScoreAllExpanded ? '전체 접기' : '전체 펼치기';
 }
 
 function renderHeatmap() {
@@ -5650,6 +5672,9 @@ let EX = {
   lastScoreIsFirst: false, lastScoreDelta: null,
   sessionStart: null,
   viewingHistory: false,
+  attemptDate: null,       // 이 결과가 언제 응시한 건지 (히스토리 열람 시 표시)
+  teacherViewMode: false,  // 선생님이 학생 기록을 보는 중인지
+  teacherStudentName: '',  // 선생님 화면일 때 어떤 학생인지 표시용
 };
 
 // 문제 번호별로 이미 입력/판정한 답을 저장해두는 곳 - "이전" 버튼으로 돌아갔을 때
@@ -6211,8 +6236,9 @@ function getExamScoreStats(level, round) {
   if (!arr.length) return null;
   return { latest: arr[arr.length - 1].score, best: Math.max(...arr.map(x => x.score)), attempts: arr.length };
 }
-function openExamHistoryResult(level, round, attemptId) {
-  const arr = (settings.examScoreLog && settings.examScoreLog[level] && settings.examScoreLog[level][round]) || [];
+function openExamHistoryResult(level, round, attemptId, examLog, studentName) {
+  const log = examLog || settings.examScoreLog;
+  const arr = (log && log[level] && log[level][round]) || [];
   // id가 없는 예전 기록은 'idx:N' 형태로 넘어온다(renderWeakExamSection 참고) - 인덱스로 바로 찾는다.
   // id가 있는 정상 기록은 String()으로 감싸 비교해 타입이 살짝 달라도(문자열/숫자) 매칭되게 한다.
   const record = (typeof attemptId === 'string' && attemptId.startsWith('idx:'))
@@ -6225,9 +6251,29 @@ function openExamHistoryResult(level, round, attemptId) {
   EX.userAnswers = JSON.parse(JSON.stringify(record.answers)); // 저장된 스냅샷의 사본 - 여기서 뭘 눌러도 원본 기록은 안 바뀜
   EX.reviewMode = false; // 이전 미완료 시험의 찾아가기 모드가 남아있으면 결과 화면 대신 그 화면이 뜨는 걸 방지
   EX.viewingHistory = true;
+  EX.teacherViewMode = !!examLog; // 선생님이 학생 데이터를 넘겨서 부른 경우
+  EX.teacherStudentName = studentName || '';
+  EX.attemptDate = record.date;
   EX.lastScoreIsFirst = false;
   EX.lastScoreDelta = null;
   goSub('exam_test_result');
+}
+// exam_test_result 서브스크린은 #app 안에 있고(z-index:20, #app 자체는 z-index:auto),
+// #teacher-app은 position:fixed·z-index:500이라 #teacher-app이 활성화된 채로는 #app 쪽
+// 화면이 항상 그 뒤에 가려진다. 그래서 결과 화면을 띄우는 동안은 #teacher-app을 잠깐
+// 비활성화했다가, 닫을 때 다시 활성화해 학생 상세보기 시트로 복귀한다.
+function closeExamResultForTeacher() {
+  EX.teacherViewMode = false;
+  document.querySelectorAll('.subscreen').forEach(el => el.classList.remove('active'));
+  document.getElementById('teacher-app').classList.add('active');
+  document.getElementById('student-detail').classList.add('active');
+}
+function _openTeacherExamHistory(level, round, attemptId) {
+  // #teacher-app(z-index:500)이 켜져 있으면 #app 안의 exam_test_result 화면이 뒤에 가려지므로
+  // 둘 다 잠깐 숨겨서 결과 화면이 보이게 한다 - closeExamResultForTeacher()에서 다시 켠다.
+  document.getElementById('student-detail').classList.remove('active');
+  document.getElementById('teacher-app').classList.remove('active');
+  openExamHistoryResult(level, round, attemptId, _detailStudentExamLog, _detailStudentNameForExam);
 }
 function getExamWeeklyGoal(level) {
   return (settings.examWeeklyGoal && settings.examWeeklyGoal[level]) || 3; // 기본 주 3회차
@@ -6278,6 +6324,8 @@ function finalizeExamTestGrade() {
   EX.lastScoreIsFirst = prevAttempts.length === 0;
   EX.lastScoreDelta = prevAttempts.length ? r.totalScore - prevAttempts[prevAttempts.length - 1].score : null;
   EX.viewingHistory = false; // 방금 실제로 끝낸 시험이니 결과 화면은 항상 "홈으로" 버튼이 보이도록
+  EX.teacherViewMode = false;
+  EX.attemptDate = todayStr();
   recordExamScore(EX.level, EX.round, r.totalScore, EX.userAnswers);
   // 랭킹 점수(getWeeklyScore) 반영용 studyLog 기록 - exam 분기는 받은 점수(100점 만점) 그대로 반영
   const totalCorrect = r.autoCorrect + r.selfCorrect;
@@ -6399,9 +6447,21 @@ function renderExamTestResult() {
   const allListHtml = r.items.map(x =>
     `<button class="ex-no-btn ${statusCls[x.status]}" onclick="reviewExamTestNo(${x.no})">${x.no}</button>`
   ).join('');
+  const subLabel = [
+    EX.teacherViewMode && EX.teacherStudentName ? EX.teacherStudentName : '',
+    `${EX.level} 제${EX.round}회`,
+    EX.attemptDate || ''
+  ].filter(Boolean).join(' · ');
+  const buttonsHtml = EX.teacherViewMode
+    ? `<button class="btn btn-black" onclick="closeExamResultForTeacher()" style="min-width:120px;height:52px;font-size:16px;">닫기</button>`
+    : EX.viewingHistory
+      ? `<button class="btn btn-black" onclick="EX.viewingHistory=false;showTab('weak');" style="min-width:120px;height:52px;font-size:16px;">오답노트로</button>
+         <button class="btn btn-black" onclick="goSub('exam_test_intro')" style="min-width:120px;height:52px;font-size:16px;">다시 풀기</button>`
+      : `<button class="btn btn-black" onclick="showTab('study')" style="min-width:120px;height:52px;font-size:16px;">홈으로</button>
+         <button class="btn btn-black" onclick="goSub('exam_test_intro')" style="min-width:120px;height:52px;font-size:16px;">다시 풀기</button>`;
   box.innerHTML = `
     <div class="section-title mb-8" style="font-size:clamp(22px,6vw,30px);">시험 결과</div>
-    <div style="text-align:center;font-size:15px;color:var(--gray);margin-bottom:6px;">${EX.level} 제${EX.round}회</div>
+    <div style="text-align:center;font-size:15px;color:var(--gray);margin-bottom:6px;">${subLabel}</div>
     <div style="text-align:center;font-size:48px;font-weight:900;color:var(--blue);margin:8px 0 16px;">${r.totalScore}점</div>
     ${examResultMotivMessage()}
     <div style="display:flex;gap:10px;justify-content:center;margin-bottom:16px;">
@@ -6421,12 +6481,7 @@ function renderExamTestResult() {
       <span><span class="ex-legend-dot ex-no-unanswered"></span>미응시</span>
     </div>
     <div style="flex:1;overflow-y:auto;display:flex;flex-wrap:wrap;align-content:flex-start;gap:6px;padding:4px;">${allListHtml}</div>
-    <div class="btn-row" style="margin-top:12px;">
-      ${EX.viewingHistory
-        ? `<button class="btn btn-black" onclick="EX.viewingHistory=false;showTab('weak');" style="min-width:120px;height:52px;font-size:16px;">오답노트로</button>`
-        : `<button class="btn btn-black" onclick="showTab('study')" style="min-width:120px;height:52px;font-size:16px;">홈으로</button>`}
-      <button class="btn btn-black" onclick="goSub('exam_test_intro')" style="min-width:120px;height:52px;font-size:16px;">다시 풀기</button>
-    </div>`;
+    <div class="btn-row" style="margin-top:12px;">${buttonsHtml}</div>`;
 }
 // 채점(gradeExamTest)을 눌렀는데 미응답 문제가 있을 때 보여주는 "찾아가기 목록" - 아직
 // 최종 결과가 아니므로 정답(파랑)/오답(빨강) 색은 쓰지 않고 풀었음/안풀었음 2단계로만
@@ -9463,6 +9518,8 @@ function renderTeacherList() {
 }
 
 /* ===== 학생 상세 보기 ===== */
+let _detailStudentExamLog = {};
+let _detailStudentNameForExam = '';
 async function showStudentDetail(studentId, studentName) {
   document.getElementById('detail-name').textContent = studentName;
   document.getElementById('detail-today-badge').innerHTML = '';
@@ -9521,22 +9578,13 @@ async function showStudentDetail(studentId, studentName) {
       : '<div class="detail-empty">오답이 없어요 🎉</div>';
 
     const examLog = st.examScoreLog || {};
-    const examLevels = Object.keys(examLog);
-    const examSectionHtml = examLevels.length ? `
+    _detailStudentExamLog = examLog;   // 아래 클릭 핸들러에서 참조
+    _detailStudentNameForExam = studentName;
+    const examCardsHtml = _buildExamScoreCardsHTML(examLog, true, 'texam', '_openTeacherExamHistory');
+    const examSectionHtml = examCardsHtml ? `
       <div class="detail-section">
         <div class="detail-section-title">🧾 기출문제 점수</div>
-        ${examLevels.map(lv => {
-          const rounds = Object.keys(examLog[lv]).sort((a,b)=>Number(a)-Number(b));
-          const rows = rounds.map(r => {
-            const arr = examLog[lv][r];
-            const latest = arr[arr.length-1].score;
-            const best = Math.max(...arr.map(x=>x.score));
-            return `<div style="display:flex;justify-content:space-between;font-size:13px;padding:4px 0;border-bottom:1px solid #F0F0F0;">
-              <span>${lv} 제${r}회</span><span>최근 ${latest}점 · 최고 ${best}점</span>
-            </div>`;
-          }).join('');
-          return `<div style="margin-bottom:8px;"><div style="font-weight:700;font-size:13px;margin-bottom:4px;">${lv}</div>${rows}</div>`;
-        }).join('')}
+        ${examCardsHtml}
       </div>` : '';
 
     document.getElementById('detail-body').innerHTML = `
