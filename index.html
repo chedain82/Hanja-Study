@@ -6432,7 +6432,14 @@ function closeExamResultForTeacher() {
   document.getElementById('teacher-app').classList.add('active');
   document.getElementById('student-detail').classList.add('active');
 }
-function _openTeacherExamHistory(level, round, attemptId) {
+async function _openTeacherExamHistory(level, round, attemptId) {
+  // 시험 문제 은행(EXAM_TEST_DATA)은 학생 로그인(enterStudentApp) 때만 loadExamTestData()로
+  // 채워지고, 선생님 세션(enterTeacherApp)에서는 전혀 안 불러온다. 그래서 채워지기 전에는
+  // buildExamTestItems()가 항상 빈 배열을 반환해 점수/그리드가 전부 0/빈 화면으로 보였다 -
+  // 결과 화면을 열기 직전에 한 번만(이미 불러왔으면 재요청 없이) 불러온다.
+  if (!Object.keys(EXAM_TEST_DATA).length) {
+    await loadExamTestData();
+  }
   openExamHistoryResult(level, round, attemptId, _detailStudentExamLog, _detailStudentNameForExam);
 }
 function _openLvDetailPopupTeacher(lv) {
