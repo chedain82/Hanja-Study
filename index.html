@@ -2182,6 +2182,13 @@ const HG_Sound = (() => {
 .range-popup-groups{overflow-y:auto;flex:1;}
 .range-popup-count{font-size:13px;font-weight:700;color:#4A90D9;text-align:center;background:#EEF4FF;padding:5px;border-radius:10px;}
 .range-popup-confirm{width:100%;height:50px;border-radius:25px;background:#4A90D9;color:#fff;font-size:17px;font-weight:800;border:none;cursor:pointer;font-family:inherit;flex-shrink:0;}
+
+.detail-subtabs { display:flex; gap:6px; padding:0 0 14px; }
+.detail-subtab-btn {
+  flex:1; height:40px; border-radius:12px; border:1.5px solid #DDD; background:#fff; color:#222;
+  font-size:13px; font-weight:700; cursor:pointer; font-family:inherit; transition:all .15s;
+}
+.detail-subtab-btn.active { background:var(--black-btn); color:#fff; border-color:var(--black-btn); }
 .range-popup-box .range-btn{height:36px;font-size:12px;}
 /* ===== 아코디언 ===== */
 .lv-level-header{cursor:pointer;user-select:none;}
@@ -2811,7 +2818,6 @@ const HG_Sound = (() => {
       <div class="detail-student-name" id="detail-name">학생</div>
       <button class="detail-close-btn" onclick="closeStudentDetail()">✕</button>
     </div>
-    <div id="detail-today-badge"></div>
     <div id="detail-body">
       <div style="text-align:center;padding:40px;color:var(--gray);font-size:14px;font-weight:700;">불러오는 중...</div>
     </div>
@@ -9675,9 +9681,21 @@ let _detailStudentExamLog = {};
 let _detailStudentNameForExam = '';
 let _detailStudentWP = {};
 let _detailStudentLP = {};
+let detailActiveSubtab = 'status';
+function switchDetailSubtab(name) {
+  detailActiveSubtab = name;
+  applyDetailSubtabUI();
+}
+function applyDetailSubtabUI() {
+  ['status', 'level', 'exam'].forEach(k => {
+    const btn = document.getElementById('detail-subtab-' + k);
+    const content = document.getElementById('detail-subtab-content-' + k);
+    if (btn) btn.classList.toggle('active', detailActiveSubtab === k);
+    if (content) content.style.display = detailActiveSubtab === k ? '' : 'none';
+  });
+}
 async function showStudentDetail(studentId, studentName) {
   document.getElementById('detail-name').textContent = studentName;
-  document.getElementById('detail-today-badge').innerHTML = '';
   document.getElementById('detail-body').innerHTML =
     '<div style="text-align:center;padding:40px;color:var(--gray);font-size:14px;font-weight:700;">불러오는 중...</div>';
   _detailStudentId = studentId;
@@ -9699,8 +9717,7 @@ async function showStudentDetail(studentId, studentName) {
     const lastUpdated = data.lastUpdated ? data.lastUpdated.slice(0,10) : '';
     const isToday     = lastUpdated === todayStr;
 
-    document.getElementById('detail-today-badge').innerHTML =
-      '<div class="detail-today-badge ' + (isToday ? 'today' : 'not-today') + '">' +
+    const todayBadgeHtml = '<div class="detail-today-badge ' + (isToday ? 'today' : 'not-today') + '">' +
       (isToday ? '✅ 오늘 학습함' : '⚠️ 마지막 접속: ' + (lastUpdated || '기록 없음')) +
       '</div>';
     const todayLogs    = sl.filter(e => e.date === todayStr);
@@ -9739,43 +9756,48 @@ async function showStudentDetail(studentId, studentName) {
     _detailStudentExamLog = examLog;   // 아래 클릭 핸들러에서 참조
     _detailStudentNameForExam = studentName;
     const examCardsHtml = _buildExamScoreCompactHTML(examLog, '_openExamLevelPopupTeacher');
-    const examSectionHtml = examCardsHtml ? `
-      <div class="detail-section">
-        <div class="detail-section-title">🧾 기출문제 점수</div>
-        ${examCardsHtml}
-      </div>` : '';
 
     document.getElementById('detail-body').innerHTML = `
-      <!-- 쿠폰 관리 섹션 -->
-      <div class="coupon-mgmt-section" id="coupon-mgmt-section" style="display:none;">
-        <div class="detail-section-title">🎟️ 쿠폰 관리</div>
-        <div class="coupon-mgmt-row">
-          <span class="coupon-mgmt-lbl">사용 가능 쿠폰</span>
-          <span style="display:flex;align-items:center;gap:8px;">
-            <span class="coupon-mgmt-val" id="coupon-mgmt-avail">0</span>
-            <span style="font-size:12px;font-weight:700;color:var(--gray);" id="coupon-mgmt-total"></span>
-          </span>
+      <div class="detail-subtabs">
+        <button class="detail-subtab-btn active" id="detail-subtab-status" onclick="switchDetailSubtab('status')">학생현황</button>
+        <button class="detail-subtab-btn" id="detail-subtab-level" onclick="switchDetailSubtab('level')">급수별 학습현황</button>
+        <button class="detail-subtab-btn" id="detail-subtab-exam" onclick="switchDetailSubtab('exam')">기출문제 점수</button>
+      </div>
+
+      <div id="detail-subtab-content-status">
+        ${todayBadgeHtml}
+        <div class="coupon-mgmt-section" id="coupon-mgmt-section" style="display:none;">
+          <div class="detail-section-title">🎟️ 쿠폰 관리</div>
+          <div class="coupon-mgmt-row">
+            <span class="coupon-mgmt-lbl">사용 가능 쿠폰</span>
+            <span style="display:flex;align-items:center;gap:8px;">
+              <span class="coupon-mgmt-val" id="coupon-mgmt-avail">0</span>
+              <span style="font-size:12px;font-weight:700;color:var(--gray);" id="coupon-mgmt-total"></span>
+            </span>
+          </div>
+          <button class="coupon-deduct-btn" id="coupon-deduct-btn" onclick="deductCoupon()" disabled>쿠폰 1장 사용 처리</button>
         </div>
-        <button class="coupon-deduct-btn" id="coupon-deduct-btn" onclick="deductCoupon()" disabled>쿠폰 1장 사용 처리</button>
+        <div class="detail-grid">
+          <div class="detail-card"><div class="detail-val">${totalQ}</div><div class="detail-lbl">📝 누적 문제 수</div></div>
+          <div class="detail-card"><div class="detail-val">${acc}%</div><div class="detail-lbl">✅ 전체 정답률</div></div>
+          <div class="detail-card"><div class="detail-val">${todayTotal}</div><div class="detail-lbl">📖 오늘 푼 문제</div></div>
+          <div class="detail-card"><div class="detail-val">${todayAcc}</div><div class="detail-lbl">🎯 오늘 정답률</div></div>
+          <div class="detail-card"><div class="detail-val">${streak}일</div><div class="detail-lbl">🔥 연속 학습</div></div>
+          <div class="detail-card"><div class="detail-val">${totalDays}일</div><div class="detail-lbl">📅 총 학습 일수</div></div>
+        </div>
       </div>
-      <div class="detail-grid">
-        <div class="detail-card"><div class="detail-val">${totalQ}</div><div class="detail-lbl">📝 누적 문제 수</div></div>
-        <div class="detail-card"><div class="detail-val">${acc}%</div><div class="detail-lbl">✅ 전체 정답률</div></div>
-        <div class="detail-card"><div class="detail-val">${todayTotal}</div><div class="detail-lbl">📖 오늘 푼 문제</div></div>
-        <div class="detail-card"><div class="detail-val">${todayAcc}</div><div class="detail-lbl">🎯 오늘 정답률</div></div>
-        <div class="detail-card"><div class="detail-val">${streak}일</div><div class="detail-lbl">🔥 연속 학습</div></div>
-        <div class="detail-card"><div class="detail-val">${totalDays}일</div><div class="detail-lbl">📅 총 학습 일수</div></div>
-      </div>
-      <div class="detail-section">
-        <div class="detail-section-title">📖 급수별 학습 현황</div>
+
+      <div id="detail-subtab-content-level" style="display:none;">
         <div class="lv-section" style="padding:0;">${levelRows}</div>
       </div>
-      <div class="detail-section">
-        <div class="detail-section-title">❌ 자주 틀린 한자 Top 5</div>
-        ${wrongRows}
+
+      <div id="detail-subtab-content-exam" style="display:none;">
+        ${examCardsHtml || '<div class="detail-empty">아직 시험 모드를 풀지 않았어요.</div>'}
       </div>
-      ${examSectionHtml}`;
+    `;
     openCouponMgmt(studentId, studentName);
+    detailActiveSubtab = 'status';
+    applyDetailSubtabUI();
   } catch(e) {
     document.getElementById('detail-body').innerHTML =
       `<div class="detail-empty" style="color:var(--wrong);">오류: ${e.message}</div>`;
