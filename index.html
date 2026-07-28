@@ -2814,8 +2814,8 @@ const HG_Sound = (() => {
       <div class="teacher-card">
         <div class="teacher-card-title">➕ 학생 추가</div>
         <div class="teacher-input-row">
-          <input class="teacher-input" id="new-student-name" style="flex:1;" placeholder="이름" maxlength="10"/>
-          <input class="teacher-input" id="new-student-pin" style="width:100px;text-align:center;" placeholder="PIN 4자리" maxlength="4" type="tel"
+          <input class="teacher-input" id="new-student-name" style="flex:1;min-width:0;" placeholder="이름" maxlength="10"/>
+          <input class="teacher-input" id="new-student-pin" style="width:100px;flex-shrink:0;text-align:center;" placeholder="PIN 4자리" maxlength="4" type="tel"
             onkeydown="if(event.key==='Enter')addStudent()"/>
         </div>
         <button class="teacher-add-btn" onclick="addStudent()">추가하기</button>
