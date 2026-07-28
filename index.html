@@ -1404,8 +1404,12 @@ body {
 .lv-section { padding: 0 14px 8px; }
 .lv-section-title { font-size:14px; font-weight:800; color:#222; margin-bottom:10px; padding-top:4px; }
 .lv-level-block { margin-bottom:16px; }
-.exam-round-scroll { display:flex; gap:14px; overflow-x:auto; padding:10px 2px 6px; -webkit-overflow-scrolling:touch; }
+.exam-round-scroll { display:flex; gap:14px; overflow-x:auto; width:100%; max-width:100%; padding:10px 2px 6px; -webkit-overflow-scrolling:touch; }
 .exam-round-scroll.collapsed { display:none; }
+/* #exam-level-popup-body는 .range-popup-groups(세로 스크롤용)를 공유하지만, 이 팝업만은
+   회차 목록을 가로로 스크롤해야 하므로 세로 스크롤을 끄고 가로 스크롤은 안쪽
+   .exam-round-scroll이 전담하게 한다 (ID 선택자라 .range-popup-groups보다 우선 적용됨). */
+#exam-level-popup-body { overflow-y:hidden; }
 .exam-round-col { flex:0 0 auto; min-width:100px; text-align:center; }
 .exam-round-title { font-size:12px; font-weight:700; color:var(--gray); margin-bottom:6px; }
 .exam-round-attempts { display:flex; flex-direction:column; gap:6px; }
@@ -6409,12 +6413,19 @@ function openExamHistoryResult(level, round, attemptId, examLog, studentName, or
   EX.historyOrigin = originTab || 'weak';
   EX.lastScoreIsFirst = false;
   EX.lastScoreDelta = null;
+  // exam_test_result 서브스크린은 #app 안에 있고(z-index:20, #app 자체는 z-index:auto),
+  // #teacher-app은 position:fixed·z-index:500이라 #teacher-app이 활성화된 채로는 #app 쪽
+  // 화면이 항상 그 뒤에 가려진다. 그래서 결과 화면을 실제로 띄우기 직전(=레코드를 찾아
+  // 성공이 확정된 시점 - 위의 두 실패 return을 이미 통과한 뒤)에만 #teacher-app/시트를
+  // 잠깐 비활성화한다. 실패로 일찍 return하는 경로는 절대 건드리지 않아야, 기록을 못
+  // 찾았을 때 화면이 그대로 학생 상세보기에 머문다 (엉뚱한 빈 학생 홈 화면으로 안 바뀜).
+  if (examLog) {
+    document.getElementById('student-detail').classList.remove('active');
+    document.getElementById('teacher-app').classList.remove('active');
+  }
   goSub('exam_test_result');
 }
-// exam_test_result 서브스크린은 #app 안에 있고(z-index:20, #app 자체는 z-index:auto),
-// #teacher-app은 position:fixed·z-index:500이라 #teacher-app이 활성화된 채로는 #app 쪽
-// 화면이 항상 그 뒤에 가려진다. 그래서 결과 화면을 띄우는 동안은 #teacher-app을 잠깐
-// 비활성화했다가, 닫을 때 다시 활성화해 학생 상세보기 시트로 복귀한다.
+// 결과 화면을 닫을 때 #teacher-app/학생 상세보기 시트를 다시 활성화한다.
 function closeExamResultForTeacher() {
   EX.teacherViewMode = false;
   document.querySelectorAll('.subscreen').forEach(el => el.classList.remove('active'));
@@ -6422,10 +6433,6 @@ function closeExamResultForTeacher() {
   document.getElementById('student-detail').classList.add('active');
 }
 function _openTeacherExamHistory(level, round, attemptId) {
-  // #teacher-app(z-index:500)이 켜져 있으면 #app 안의 exam_test_result 화면이 뒤에 가려지므로
-  // 둘 다 잠깐 숨겨서 결과 화면이 보이게 한다 - closeExamResultForTeacher()에서 다시 켠다.
-  document.getElementById('student-detail').classList.remove('active');
-  document.getElementById('teacher-app').classList.remove('active');
   openExamHistoryResult(level, round, attemptId, _detailStudentExamLog, _detailStudentNameForExam);
 }
 function _openLvDetailPopupTeacher(lv) {
