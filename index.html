@@ -610,40 +610,43 @@ body {
 
 /* 시험 모드(exam test) 전용 버튼 - .card-nav(margin-top:-30px, 카드 모드용)를 그대로 갖다
    쓰다가 내용과 겹치는 문제가 있었다. 별도 클래스로 분리하고 크기도 기존 대비 축소. */
-.ex-nav-row { display: flex; gap: 8px; padding: 6px 0; }
+.ex-nav-row { display: flex; gap: 10px; padding: 6px 0 2px; }
 .ex-confirm-row { display: flex; justify-content: center; padding: 4px 0; }
 .ex-btn {
-  flex: 1; height: 38px; border-radius: 12px; border: none; font-size: 14px; font-weight: 700;
+  flex: 1; height: 52px; border-radius: 16px; border: none; font-size: 17px; font-weight: 700;
   cursor: pointer; font-family: inherit; color: white; background: var(--black-btn);
   transition: opacity .15s, transform .1s;
 }
 .ex-btn:active { transform: scale(.96); }
 .ex-btn:disabled { opacity: .4; cursor: not-allowed; }
-.ex-btn-prev { background: #8A8F98; flex: 0 0 32%; }
+.ex-btn-prev { background: #8A8F98; flex: 0 0 34%; }
 .ex-btn-primary { background: var(--blue); }
-.ex-confirm-row .ex-btn { flex: 0 0 auto; min-width: 110px; padding: 0 20px; }
+.ex-confirm-row .ex-btn { flex: 0 0 auto; min-width: 130px; padding: 0 22px; }
 .ex-btn-correct-selected { background: var(--correct) !important; }
 .ex-btn-wrong-selected { background: var(--wrong) !important; }
 .ex-bank-box {
   display: grid; gap: 10px; padding: 18px 16px; background: #F7F8FA;
   border: 1.5px solid #E2E8F0; border-radius: 14px; margin-bottom: 14px;
 }
+/* position:relative + .num을 absolute로 좌측 상단에 고정 - 번호가 인라인으로 같이
+   있으면 그 폭만큼 본문(한자)의 중심이 우측으로 밀려 보이던 문제를 구조적으로 해결 */
 .ex-bank-cell {
-  display: flex; align-items: center; justify-content: center; padding: 14px 6px;
+  position: relative; display: flex; align-items: center; justify-content: center; padding: 14px 6px;
   background: #FFFFFF; border: 2px solid #2E6FBE; border-radius: 10px;
   font-size: 34px; font-weight: 900; color: #0A1F3D; font-family: 'Nanum Myeongjo', serif;
 }
-.ex-bank-cell .num { font-size: 12px; font-weight: 700; margin-right: 3px; font-family: inherit; }
+.ex-bank-cell .num { position: absolute; top: 4px; left: 6px; font-size: 12px; font-weight: 700; font-family: inherit; }
 .ex-bank-cell.chosen { background: #DDE8FB; border-color: #1A56C4; }
 .ex-bank-cell:disabled { opacity: .6; }
 /* 문제 내용은 스크롤되고, 버튼 영역은 항상 카드 하단에 고정되도록 두 영역을 분리.
    (fixed/sticky 대신 flex 레이아웃으로 처리 - .card가 이미 고정 높이+overflow:hidden이라
    더 안정적이다: 문제가 길어도 버튼이 밀려나지 않고, 겹치는 것도 구조적으로 불가능해진다) */
 .ex-content-area { flex: 1; min-height: 0; overflow-y: auto; display: flex; flex-direction: column; align-items: center; gap: 12px; width: 100%; padding: 4px 2px 12px; }
-.ex-footer { flex-shrink: 0; display: flex; flex-direction: column; gap: 8px; padding-top: 8px; border-top: 1px solid #EEE; }
+.ex-footer { flex-shrink: 0; display: flex; flex-direction: column; gap: 8px; padding: 8px 0 10px; margin-bottom: 6px; border-top: 1px solid #EEE; }
 .quiz-options-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; width: 100%; max-width: 360px; margin: 4px auto 0; }
-.quiz-options-grid .quiz-opt { width: 100%; min-height: 84px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px; }
-.quiz-options-grid .quiz-opt .num { font-size: 14px; }
+/* 번호를 absolute로 좌측 상단에 고정하고 한자만 박스 중앙에 오도록 정렬 (ex-bank-cell과 동일 원칙) */
+.quiz-options-grid .quiz-opt { position: relative; width: 100%; min-height: 84px; display: flex; align-items: center; justify-content: center; }
+.quiz-options-grid .quiz-opt .num { position: absolute; top: 8px; left: 10px; font-size: 17px; font-weight: 800; color: #666; }
 
 /* 키보드 클 때 자동 축소 */
 .card[data-kb="large"] .card-content-wrap {
@@ -3347,7 +3350,7 @@ const HG_Sound = (() => {
         <div class="badge" id="ex-intro-badge"></div>
         <div style="font-size:22px;font-weight:800;text-align:center;" id="ex-intro-count"></div>
       </div>
-      <div class="btn-row mb-12"><button class="btn btn-black" onclick="startExamTest()" style="width:220px;height:64px;font-size:19px;">시작하기</button></div>
+      <div class="btn-row" style="margin-bottom:34px;"><button class="btn btn-black" onclick="startExamTest()" style="width:220px;height:64px;font-size:19px;">시작하기</button></div>
       <div class="back-wrap"><button class="btn btn-back" onclick="goSub('exam_test_round')">← 뒤로</button></div>
     </div>
   </div>
@@ -6035,11 +6038,15 @@ function examTestCorrectChoiceIndex(it) {
 // 보기 글자 수에 맞춘 확대 폰트 - 2열 그리드/세로 목록 어느 쪽이든 동일하게 적용
 function exOptFontSize() {
   const w = window.innerWidth;
-  return Math.min(Math.max(Math.round(w * .126), 40), 54);
+  return Math.round(Math.min(Math.max(Math.round(w * .126), 40), 54) * .9);
 }
 function isKoreanText(s) { return /[가-힣]/.test(s || ''); }
+// fill_in_word/meaning_to_word는 지문 전체가 문장(뜻풀이)이라 huneum류 단일 한자와 달리
+// 두껍게 쓰면 답이 아닌 부분까지 강조돼 보인다 - reading_in_sentence처럼 문장 자체는
+// 얇게 두고, 빈칸 표시는 "[]"처럼 완전히 빈 경우에도 폭이 보이도록 공백을 하나 넣는다.
+const EX_THIN_SENTENCE_TYPES = ['fill_in_word', 'meaning_to_word'];
 function examTestChoiceContent(it) {
-  const qText = exQuestionText(it);
+  const qText = exQuestionText(it).replace(/\[\]/g, '[ ]');
   const choices = it.choices || [];
   const isKorChoice = choices.length > 0 && isKoreanText(choices[0]);
   const isKorQ = isKoreanText(qText); // 6~8급: 문제가 한글 뜻(meaning_to_hanja)이거나 문장(hanja_reading_choice)인 경우
@@ -6055,6 +6062,7 @@ function examTestChoiceContent(it) {
     ? Math.min(Math.max(Math.round(window.innerWidth * .06), 20), 26)
     : (isDescType ? exDescFontSize() : exChoiceQFontSize(qText));
   const qFont = isKorQ ? '' : "font-family:'Nanum Myeongjo',serif;";
+  const qWeight = EX_THIN_SENTENCE_TYPES.includes(it.type) ? 400 : 800;
   const opts = choices.map((c, i) => {
     const cls = (i === EX.selected) ? 'chosen' : '';
     const num = EX_CIRCLE_NUMS[i] || (i + 1) + '.';
@@ -6064,7 +6072,7 @@ function examTestChoiceContent(it) {
     </button>`;
   }).join('');
   return `
-    <div style="font-size:${qSize}px;font-weight:800;${qFont}text-align:center;padding:8px;white-space:pre-wrap;">${qText}</div>
+    <div style="font-size:${qSize}px;font-weight:${qWeight};${qFont}text-align:center;padding:8px;white-space:pre-wrap;">${qText}</div>
     <div class="${useGrid?'quiz-options-grid':'quiz-options'}">${opts}</div>`;
 }
 function examTestChoiceFooter() {
@@ -6152,9 +6160,12 @@ function examTestWordbankContent(it) {
   // find_hanja_sentence(6~8급)는 힌트가 짧은 훈음이 아니라 문장 전체라 bankHintFontSize(고정
   // 26~34px)로는 너무 크다 - 81~95번에 쓰던 길이 기반 exSentenceFontSize로 따로 계산한다.
   const hintSize = it.type === 'find_hanja_sentence' ? exSentenceFontSize(it.hint || '') : bankHintFontSize(qText);
+  // common_hanja_choice("高○ ○空 十字○")의 ○가 굵게 나오면 뭉툭해 보여서 얇게 - 나머지
+  // 한자/한글은 그대로 굵게 둬서 대비만 낮춘다.
+  const qTextThinCircle = String(qText).replace(/○/g, '<span style="font-weight:400;">○</span>');
   return `
     <div class="ex-bank-box" style="grid-template-columns:repeat(${cols},1fr);">${bank}</div>
-    <div style="font-size:${hintSize}px;font-weight:800;text-align:center;padding:8px;white-space:pre-wrap;">${qText}</div>
+    <div style="font-size:${hintSize}px;font-weight:800;text-align:center;padding:8px;white-space:pre-wrap;">${qTextThinCircle}</div>
     <div class="write-result">${checked?'✔ 답안이 저장되었습니다':''}</div>`;
 }
 function examTestWordbankFooter() {
@@ -6211,19 +6222,34 @@ function chooseExamTestWordbank2(i) {
 }
 function examTestWordbank2Footer() { return exNavButtonsHtml(); }
 
+// fix_hanja/word_to_hanja/idiom - 문장(또는 힌트/뜻풀이) 전체를 얇게 두고 실제로 봐야 할
+// 부분만 굵게 강조. reading_in_sentence의 "문장은 얇게, 정답 대상만 굵게" 원칙과 동일하다.
+const EX_THIN_SELFCHECK_FIELDS = { word_to_hanja: ['sentence'], fix_hanja: ['sentence'], idiom: ['reading_kr', 'explanation'] };
+// word_to_hanja: "하룻밤 [ 여유 ]를..."의 대괄호 부분만 굵게
+function exBoldBracket(text) {
+  return String(text).replace(/\[[^\]]*\]/, m => `<span style="font-weight:800;">${m}</span>`);
+}
+// fix_hanja: "原告를 출판사에" 처럼 한글 문장 속에 섞인 한자만 굵게
+function exBoldHanjaRuns(text) {
+  return String(text).replace(/[㐀-鿿]+/g, m => `<span style="font-weight:900;">${m}</span>`);
+}
 function examTestSelfCheckContent(it) {
   const bigFields = ['pattern1','pattern2','pattern'];   // 68~70·96~100 - 한자+○ 패턴, 크게
   const sentenceFields = ['sentence'];                    // 74~75 - 문장, 16~30번과 동일 크기
+  const thinFields = EX_THIN_SELFCHECK_FIELDS[it.type] || [];
   const fieldOrder = ['pattern1','pattern2','meaning1','meaning2','question','sentence','pattern','reading_kr','explanation'];
   const rows = fieldOrder.filter(f => it[f] !== undefined && it[f] !== '').map(f => {
     let val = it[f];
     if (f === 'pattern') val = val.replace(/\(\s*[,、]?\s*\)/g, '').trim(); // "(  ,  )" 빈괄호 제거 (96~100번)
+    if (it.type === 'word_to_hanja' && f === 'sentence') val = exBoldBracket(val);
+    if (it.type === 'fix_hanja' && f === 'sentence') val = exBoldHanjaRuns(val);
     let size, font = '';
     if (bigFields.includes(f)) { size = 40; font = "font-family:'Nanum Myeongjo',serif;"; }
     else if (sentenceFields.includes(f)) { size = exDescFontSize(); }
     else if (f === 'question') { size = 40; font = "font-family:'Nanum Myeongjo',serif;"; } // 71~73번 문제
     else { size = 18; }
-    return `<div style="margin-bottom:8px;text-align:center;"><div style="font-size:${size}px;font-weight:800;white-space:pre-wrap;${font}">${val}</div></div>`;
+    const weight = thinFields.includes(f) ? 400 : 800;
+    return `<div style="margin-bottom:8px;text-align:center;"><div style="font-size:${size}px;font-weight:${weight};white-space:pre-wrap;${font}">${val}</div></div>`;
   }).join('');
   return `
     <div style="width:100%;padding:12px;background:#F7F8FA;border-radius:14px;">${rows}</div>
