@@ -3040,7 +3040,7 @@ const HG_Sound = (() => {
         <span class="sm-icon">⏱️</span>
         <div class="sm-body">
           <div class="sm-title">시험 모드</div>
-          <div class="sm-sub">8급~준3급 · 실전처럼 시간 재고 풀어보기</div>
+          <div class="sm-sub">8급~3급 · 실전처럼 시간 재고 풀어보기</div>
         </div>
         <span class="sm-arrow">›</span>
       </button>
@@ -5551,7 +5551,7 @@ function retryExamReadingWriteWrong() {
    버튼으로 세로 나열하면 화면이 너무 길어져 "다음 문제" 버튼이 밀려났다. <보기>를
    상단에 작게 가로로 고정 표시하고, 답은 버튼 클릭 대신 번호 입력으로 바꾼
    전용 그룹(wordbank)으로 분리. */
-const EX_LEVELS = ['준3급', '4급', '준4급', '5급', '준5급', '6급', '7급', '8급'];
+const EX_LEVELS = ['3급', '준3급', '4급', '준4급', '5급', '준5급', '6급', '7급', '8급'];
 const EX_TOTAL_SEC = 60 * 60;
 const EX_CIRCLE_NUMS = ['①','②','③','④','⑤','⑥','⑦','⑧','⑨','⑩'];
 const EX_TYPE_GROUP = {
@@ -5600,6 +5600,38 @@ const EX_INSTRUCTION_BY_LEVEL = {
         { lo: 71, hi: 73, text: '※ ○ 안에 공통으로 들어갈 한자[正字]를 <보기>에서 찾아 쓰시오.' },
         { lo: 74, hi: 75, text: '※ 문장에서 잘못 쓴 한자를 바르게 고쳐 쓰시오. (단, 음이 같은 한자[正字]로 고칠 것)' },
         { lo: 76, hi: 80, text: '※ [     ] 안의 단어를 한자[正字]로 쓰시오.' },
+        { lo: 96, hi: 100, text: '※ 한자성어의 설명을 읽고 ○ 안에 들어갈 한자[正字]를 차례대로 쓰시오.' },
+      ],
+    },
+  },
+  '3급': {
+    common: [
+      { lo: 1, hi: 5, text: '※ [     ] 안의 한자와 음이 같은 한자는?' },
+      { lo: 6, hi: 7, text: '※ [  ] 안의 한자와 뜻이 비슷하거나 같은 한자는?' },
+      { lo: 8, hi: 9, text: '※ [  ] 안의 한자와 뜻이 반대되거나 상대되는 한자는?' },
+      { lo: 10, hi: 12, text: '※ <보기>의 단어들과 가장 관련이 깊은 한자는?' },
+      { lo: 13, hi: 15, text: '※ [     ] 안의 단어를 한자로 알맞게 쓴 것은?' },
+      { lo: 16, hi: 25, text: '※ 주어진 뜻에 알맞은 한자어는?' },
+      { lo: 26, hi: 30, text: '※ [      ] 안에 들어갈 한자어로 알맞은 것은?' },
+      { lo: 31, hi: 40, text: '※ 한자의 훈과 음을 쓰시오.' },
+      { lo: 46, hi: 62, text: '※ 한자어의 독음을 쓰시오.' },
+      { lo: 76, hi: 95, text: '※ [    ] 안 한자어의 독음을 쓰시오.' },
+    ],
+    byEra: {
+      early: [ // 110~120회
+        { lo: 41, hi: 45, text: '※ 훈과 음에 맞는 한자를 <보기>에서 찾아 쓰시오.' },
+        { lo: 63, hi: 65, text: '※ <보기>의 뜻을 참고하여 ○안에 공통으로 들어갈 한자를 쓰시오.' },
+        { lo: 66, hi: 68, text: '※ ○ 안에 공통으로 들어갈 한자를 <보기>에서 찾아 쓰시오.' },
+        { lo: 69, hi: 70, text: '※ 문장에서 잘못 쓴 한자를 바르게 고쳐 쓰시오. (단, 음이 같은 한자로 고칠 것)' },
+        { lo: 71, hi: 75, text: '※ [   ] 안의 단어를 한자로 쓰시오.' },
+        { lo: 96, hi: 100, text: '※ 한자성어의 설명을 읽고 ○ 안에 들어갈 한자를 차례대로 쓰시오.' },
+      ],
+      late: [ // 121~124회
+        { lo: 41, hi: 45, text: '※ 훈과 음에 맞는 한자[正字]를 <보기>에서 찾아 쓰시오.' },
+        { lo: 63, hi: 65, text: '※ <보기>의 뜻을 참고하여 ○안에 공통으로 들어갈 한자[正字]를 쓰시오.' },
+        { lo: 66, hi: 68, text: '※ ○ 안에 공통으로 들어갈 한자[正字]를 <보기>에서 찾아 쓰시오.' },
+        { lo: 69, hi: 70, text: '※ 문장에서 잘못 쓴 한자를 바르게 고쳐 쓰시오. (단, 음이 같은 한자[正字]로 고칠 것)' },
+        { lo: 71, hi: 75, text: '※ [   ] 안의 단어를 한자[正字]로 쓰시오.' },
         { lo: 96, hi: 100, text: '※ 한자성어의 설명을 읽고 ○ 안에 들어갈 한자[正字]를 차례대로 쓰시오.' },
       ],
     },
@@ -7090,6 +7122,7 @@ async function loadReadingQuizData() {
 
 let EXAM_TEST_DATA = {};
 const EX_LEVEL_FILES = {
+  '3급': 'hanja_exam_3geup.json',
   '준3급': 'hanja_exam_jun3.json', '4급': 'hanja_exam_4level.json', '준4급': 'hanja_exam_junsa4.json',
   '5급': 'hanja_exam_5level.json', '준5급': 'hanja_exam_5jun.json',
   '6급': 'hanja_exam_6geup.json', '7급': 'hanja_exam_7geup.json', '8급': 'hanja_exam_8geup.json',
