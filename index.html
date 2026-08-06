@@ -1357,7 +1357,7 @@ body {
      인쇄하는 방식이라 이 규칙과 무관 - window.print()를 쓰는 건 독음쓰기뿐이다.) */
   body[data-print-mode="reading"] #teacher-tab-examlib > .teacher-card { display: none !important; }
   body[data-print-mode="reading"] #reading-print-sheet { display: block !important; }
-  .rw-page { width: 100%; height: 253mm; box-sizing: border-box; overflow: hidden; background: #fff !important; }
+  .rw-page { width: 100%; height: 253mm; box-sizing: border-box; overflow-y: hidden; overflow-x: visible; background: #fff !important; }
   .rank-print-header { display: block !important; text-align: center; margin: 0 0 28px; }
   .rank-print-header .rph-title { font-size: 26px; font-weight: 900; color: #000; margin-bottom: 6px; }
   .rank-print-header .rph-sub { font-size: 15px; font-weight: 700; color: #555; }
@@ -2233,22 +2233,21 @@ const HG_Sound = (() => {
 .rw-right-blank{display:inline-block;width:15mm;border-bottom:1px solid #333;margin-left:4px;}
 .rw-page-cols{display:flex;flex:1;min-height:0;}
 .rw-col{flex:1;min-width:0;display:flex;flex-direction:column;}
-.rw-col:first-child{border-right:1px dashed #999;padding-right:14mm;}
-.rw-col:last-child{padding-left:14mm;}
+.rw-col:first-child{border-right:1px dashed #999;padding-right:17mm;}
+.rw-col:last-child{padding-left:17mm;}
 /* 급수·회차만 표시하는 칼럼별 작은 라벨(예: "3급 110회") - 공통 헤더와 별개로 어느 회차인지 구분용 */
 .rw-col-badge{flex-shrink:0;font-size:12px;font-weight:800;color:#555;text-align:center;border-bottom:1px dashed #bbb;padding-bottom:2mm;margin-bottom:4mm;}
 /* 문항 목록: 항목이 17개든 20개든 rw-row가 flex:1로 남은 높이를 똑같이 나눠 가지므로
    항상 한 페이지 안에 딱 맞고, 계산이 어긋나 다음 페이지로 넘치는 일이 없다. */
 .rw-list{flex:1;min-height:0;display:flex;flex-direction:column;}
-.rw-row{display:flex;align-items:center;gap:6px;border-bottom:1px dotted #ccc;flex:1;min-height:0;overflow:hidden;}
+.rw-row{display:flex;align-items:center;gap:6px;border-bottom:1px dotted #ccc;flex:1;min-height:0;}
 .rw-row-num{flex-shrink:0;width:14px;color:#888;font-weight:700;}
 .rw-row-hanja{flex-shrink:0;font-weight:800;letter-spacing:1px;color:#000;white-space:nowrap;}
-.rw-row-spacer{flex:1 1 4mm;min-width:0;border-bottom:1px dotted #bbb;height:0;align-self:center;margin:0 4px;}
-/* 한자가 3글자 이상이라 한 줄이 좁아지면 뒤 괄호가 페이지 밖으로 밀려 잘리던 문제 -
-   spacer(점선)를 먼저 줄어들게 하고, 그래도 모자라면 blank-line 자체도 줄어들게 해서
-   괄호")"가 항상 화면 안에 보이도록 한다. */
-.rw-row-blank{flex:0 1 auto;min-width:0;display:flex;align-items:center;gap:2px;font-weight:700;color:#000;}
-.rw-blank-line{display:inline-block;flex:1 1 auto;min-width:9mm;height:1em;}
+.rw-row-spacer{flex:1;min-width:0;border-bottom:1px dotted #bbb;height:0;align-self:center;margin:0 4px;}
+/* 괄호 안 빈칸 너비는 한자 글자 수에 따라 JS(rwRenderColumn)에서 인라인으로 정해준다
+   (3글자 이상 단어는 좁게) - 한 줄 전체가 칼럼 밖으로 밀려 괄호")"가 잘리는 걸 막기 위함. */
+.rw-row-blank{flex-shrink:0;display:flex;align-items:center;gap:2px;font-weight:700;color:#000;}
+.rw-blank-line{display:inline-block;height:1em;}
 
 /* PDF 팝업 */
 #exam-pdf-popup{
@@ -9256,13 +9255,18 @@ function rwRenderColumn(grade, round, items, fontSz) {
   // 행 높이는 mm로 미리 계산하지 않고 flex(.rw-row{flex:1}) 로 남은 공간에 맞춰 자동 분배한다.
   // 이렇게 하면 항목이 17개든 20개든 항상 정확히 한 페이지 높이 안에 딱 맞고,
   // 계산이 실제 렌더링 높이와 어긋나 다음 페이지로 넘치는 일이 없다.
-  const rowsHtml = items.map(it => `
+  const rowsHtml = items.map(it => {
+    // 한자가 길수록(3글자 이상) 빈칸 너비를 줄여서 괄호")"가 칼럼 밖으로 밀려 잘리지 않게 한다.
+    const len = (it.hanja || '').length;
+    const blankW = len >= 4 ? 9 : len >= 3 ? 11 : 15;
+    return `
     <div class="rw-row">
       <div class="rw-row-num">${it.num}</div>
       <div class="rw-row-hanja" style="font-size:${fontSz + 3}px;">${it.hanja}</div>
       <div class="rw-row-spacer"></div>
-      <div class="rw-row-blank" style="font-size:${fontSz}px;">(<span class="rw-blank-line"></span>)</div>
-    </div>`).join('');
+      <div class="rw-row-blank" style="font-size:${fontSz}px;">(<span class="rw-blank-line" style="min-width:${blankW}mm;"></span>)</div>
+    </div>`;
+  }).join('');
   return `
     <div class="rw-col">
       <div class="rw-col-badge">${grade} ${round}회</div>
