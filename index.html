@@ -994,6 +994,8 @@ body {
 .teacher-tab-btn.active { color: var(--blue); border-bottom-color: var(--blue); }
 .teacher-tab-panel { display: none; }
 .teacher-tab-panel.active { display: block; }
+.examlib-subtab-panel { display: none; }
+.examlib-subtab-panel.active { display: block; }
 .recent-access-row {
   display: flex; align-items: center; justify-content: space-between;
   padding: 10px 0; border-bottom: 1px solid #f2f2f2;
@@ -1337,10 +1339,19 @@ body {
   }
   .teacher-frame > *:not(.teacher-body) { display: none !important; }
   .teacher-body { padding: 0; overflow: visible !important; }
-  .teacher-body > *:not(#teacher-tab-ranking) { display: none !important; }
+  .teacher-body > *:not(#teacher-tab-ranking):not(#teacher-tab-examlib) { display: none !important; }
   #teacher-tab-ranking { display: block !important; }
   .teacher-rank-tabs, #rank-print-btn { display: none !important; }
   .teacher-card { box-shadow: none; padding: 0; }
+
+  /* 독음쓰기 인쇄: #teacher-tab-examlib 안에서는 선택 UI(급수탭/서브탭/회차칩/버튼)를
+     담은 .teacher-card를 통째로 숨기고, 항상 화면엔 숨겨져 있던 #reading-print-sheet만 보여준다.
+     (이 탭의 "기출문제 프린트"/"쓰기연습 프린트" 서브탭은 PDF를 새 창으로 열어 그 문서 자체를
+     인쇄하는 방식이라 이 규칙과 무관 - window.print()를 쓰는 건 독음쓰기뿐이다.) */
+  #teacher-tab-examlib { display: block !important; }
+  #teacher-tab-examlib > .teacher-card { display: none !important; }
+  #reading-print-sheet { display: block !important; }
+  .rw-page { width: 100%; height: 253mm; box-sizing: border-box; }
   .rank-print-header { display: block !important; text-align: center; margin: 0 0 28px; }
   .rank-print-header .rph-title { font-size: 26px; font-weight: 900; color: #000; margin-bottom: 6px; }
   .rank-print-header .rph-sub { font-size: 15px; font-weight: 700; color: #555; }
@@ -2194,6 +2205,38 @@ const HG_Sound = (() => {
 .exam-pdf-empty{text-align:center;color:#bbb;font-size:14px;padding:32px 20px;line-height:2;grid-column:1/-1;}
 .exam-lib-loading{text-align:center;color:#999;font-size:14px;padding:40px 20px;grid-column:1/-1;}
 
+/* ===== 독음쓰기 - 회차 다중 선택 칩 ===== */
+.rw-round-hint{font-size:13px;font-weight:700;color:#3B7DE0;text-align:center;margin:10px 0;background:#EEF4FF;padding:7px 10px;border-radius:10px;line-height:1.4;}
+.rw-round-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;}
+.rw-round-chip{position:relative;padding:10px 4px;border-radius:12px;border:1.5px solid #eee;background:#f8f8f8;font-size:13px;font-weight:700;color:#888;cursor:pointer;white-space:nowrap;font-family:inherit;transition:all .15s;}
+.rw-round-chip.active{background:#3B7DE0;border-color:#3B7DE0;color:white;}
+.rw-round-chip .rw-order-badge{position:absolute;top:-7px;right:-7px;width:18px;height:18px;border-radius:50%;background:#FF7043;color:white;font-size:10px;font-weight:800;display:flex;align-items:center;justify-content:center;line-height:1;}
+
+/* ===== 독음쓰기 인쇄 시트 (화면엔 항상 숨김, @media print 에서만 노출) ===== */
+#reading-print-sheet{display:none;}
+.rw-page{page-break-after:always;}
+.rw-page:last-child{page-break-after:auto;}
+.rw-page-cols{display:flex;height:100%;}
+.rw-col{flex:1;min-width:0;display:flex;flex-direction:column;}
+.rw-col:first-child{border-right:1px dashed #999;padding-right:6mm;}
+.rw-col:last-child{padding-left:6mm;}
+.rw-col-header{display:flex;justify-content:space-between;align-items:flex-start;border-bottom:1.5px solid #333;padding-bottom:3mm;margin-bottom:5mm;}
+.rw-header-badge{font-size:11px;font-weight:800;color:#555;margin-bottom:2mm;}
+.rw-header-center{flex:1;text-align:center;}
+.rw-org-name{font-size:11px;font-weight:700;color:#555;}
+.rw-sheet-title{font-size:16px;font-weight:900;color:#000;margin:2mm 0;}
+.rw-name-line{font-size:12px;font-weight:600;color:#000;}
+.rw-name-blank{display:inline-block;width:26mm;border-bottom:1px solid #333;margin-left:4px;}
+.rw-header-right{font-size:10.5px;font-weight:600;color:#333;text-align:right;line-height:2.4;white-space:nowrap;flex-shrink:0;}
+.rw-right-blank{display:inline-block;width:15mm;border-bottom:1px solid #333;margin-left:4px;}
+.rw-list{flex:1;display:flex;flex-direction:column;}
+.rw-row{display:flex;align-items:center;gap:6px;border-bottom:1px dotted #ccc;}
+.rw-row-num{flex-shrink:0;width:14px;color:#888;font-weight:700;}
+.rw-row-hanja{flex-shrink:0;font-weight:800;letter-spacing:1px;color:#000;}
+.rw-row-spacer{flex:1;border-bottom:1px dotted #bbb;height:0;align-self:center;margin:0 4px;}
+.rw-row-blank{flex-shrink:0;display:flex;align-items:center;gap:2px;font-weight:700;color:#000;}
+.rw-blank-line{display:inline-block;border-bottom:1.5px solid #333;min-width:16mm;height:1em;}
+
 /* PDF 팝업 */
 #exam-pdf-popup{
   position:fixed;inset:0;background:rgba(0,0,0,.5);
@@ -2780,6 +2823,7 @@ const HG_Sound = (() => {
         <button class="teacher-tab-btn"        data-tab="add"      onclick="setTeacherDashTab('add')">학생추가</button>
         <button class="teacher-tab-btn"        data-tab="students" onclick="setTeacherDashTab('students')">학생목록</button>
         <button class="teacher-tab-btn"        data-tab="ranking"  onclick="setTeacherDashTab('ranking')">주간랭킹</button>
+        <button class="teacher-tab-btn"        data-tab="examlib"  onclick="setTeacherDashTab('examlib')">기출문제</button>
       </div>
     </div>
     <div class="teacher-body">
@@ -2868,6 +2912,74 @@ const HG_Sound = (() => {
         <div id="rank-print-header" class="rank-print-header"></div>
         <div id="teacher-rank-list"><div class="t-rank-empty">불러오는 중...</div></div>
       </div>
+    </div>
+
+    <!-- [기출문제] 탭 -->
+    <div class="teacher-tab-panel" id="teacher-tab-examlib">
+      <div class="teacher-card">
+        <div class="teacher-card-title">📄 기출문제 자료실</div>
+        <div class="teacher-rank-tabs">
+          <button class="t-rank-tab active" data-sub="examprint" onclick="setExamLibSubTab('examprint')">기출문제 프린트</button>
+          <button class="t-rank-tab"        data-sub="writeprint" onclick="setExamLibSubTab('writeprint')">쓰기연습 프린트</button>
+          <button class="t-rank-tab"        data-sub="reading"    onclick="setExamLibSubTab('reading')">독음쓰기</button>
+        </div>
+
+        <!-- 서브탭: 기출문제 프린트 (학생 자료실과 동일 로직 재사용, grid만 별도) -->
+        <div class="examlib-subtab-panel active" id="examlib-sub-examprint">
+          <div class="exam-grade-tabs-wrap">
+            <div class="exam-lib-grade-tabs" id="teacher-examprint-tabs">
+              <button class="exam-grade-tab active" onclick="selectExamGrade('3급',this,'teacher-exam-pdf-grid')">3급</button>
+              <button class="exam-grade-tab" onclick="selectExamGrade('준3급',this,'teacher-exam-pdf-grid')">준3급</button>
+              <button class="exam-grade-tab" onclick="selectExamGrade('4급',this,'teacher-exam-pdf-grid')">4급</button>
+              <button class="exam-grade-tab" onclick="selectExamGrade('준4급',this,'teacher-exam-pdf-grid')">준4급</button>
+              <button class="exam-grade-tab" onclick="selectExamGrade('5급',this,'teacher-exam-pdf-grid')">5급</button>
+              <button class="exam-grade-tab" onclick="selectExamGrade('준5급',this,'teacher-exam-pdf-grid')">준5급</button>
+              <button class="exam-grade-tab" onclick="selectExamGrade('6급',this,'teacher-exam-pdf-grid')">6급</button>
+              <button class="exam-grade-tab" onclick="selectExamGrade('준6급',this,'teacher-exam-pdf-grid')">준6급</button>
+              <button class="exam-grade-tab" onclick="selectExamGrade('7급',this,'teacher-exam-pdf-grid')">7급</button>
+              <button class="exam-grade-tab" onclick="selectExamGrade('8급',this,'teacher-exam-pdf-grid')">8급</button>
+            </div>
+          </div>
+          <div class="exam-pdf-grid" id="teacher-exam-pdf-grid">
+            <div class="exam-lib-loading">⏳ 불러오는 중...</div>
+          </div>
+        </div>
+
+        <!-- 서브탭: 쓰기연습 프린트 (학생 자료실과 동일 로직 재사용, grid만 별도) -->
+        <div class="examlib-subtab-panel" id="examlib-sub-writeprint">
+          <div class="exam-grade-tabs-wrap">
+            <div class="exam-lib-grade-tabs" id="teacher-writeprint-tabs">
+              <button class="exam-grade-tab active" onclick="selectWritingGrade('준3급',this,'teacher-writing-pdf-grid')">준3급</button>
+              <button class="exam-grade-tab" onclick="selectWritingGrade('3급',this,'teacher-writing-pdf-grid')">3급</button>
+            </div>
+          </div>
+          <div class="exam-pdf-grid" id="teacher-writing-pdf-grid">
+            <div class="exam-lib-loading">⏳ 불러오는 중...</div>
+          </div>
+        </div>
+
+        <!-- 서브탭: 독음쓰기 (신규 - hanja_reading_quiz.json 재사용) -->
+        <div class="examlib-subtab-panel" id="examlib-sub-reading">
+          <div class="rw-selection-ui">
+            <div class="exam-grade-tabs-wrap">
+              <div class="exam-lib-grade-tabs" id="rw-grade-tabs">
+                <button class="exam-grade-tab active" onclick="rwSelectGrade('3급',this)">3급</button>
+                <button class="exam-grade-tab" onclick="rwSelectGrade('준3급',this)">준3급</button>
+                <button class="exam-grade-tab" onclick="rwSelectGrade('4급',this)">4급</button>
+                <button class="exam-grade-tab" onclick="rwSelectGrade('준4급',this)">준4급</button>
+                <button class="exam-grade-tab" onclick="rwSelectGrade('5급',this)">5급</button>
+                <button class="exam-grade-tab" onclick="rwSelectGrade('준5급',this)">준5급</button>
+              </div>
+            </div>
+            <div class="rw-round-hint">회차를 1개 이상 선택하세요 (여러 개 선택 가능 · 선택한 순서대로 2개씩 짝지어 인쇄돼요)</div>
+            <div class="rw-round-grid" id="rw-round-grid"></div>
+            <button class="teacher-add-btn" id="rw-print-btn" style="margin-top:14px;" disabled onclick="rwPrintWorksheet()">🖨️ 프린트하기</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- 독음쓰기 인쇄 전용 시트 (화면에는 항상 숨김, 인쇄 시에만 노출) -->
+      <div id="reading-print-sheet"></div>
     </div>
 
   </div>
@@ -7984,15 +8096,17 @@ function closeStudySelect() {
   document.getElementById('landing-screen').classList.add('active');
 }
 
-async function selectWritingGrade(grade, btn) {
-  document.querySelectorAll('#exam-library-screen .exam-lib-grade-tabs .exam-grade-tab').forEach(t => {
-    if (t.getAttribute('onclick') && t.getAttribute('onclick').includes('selectWritingGrade')) {
-      t.classList.remove('active');
-    }
-  });
+async function selectWritingGrade(grade, btn, gridId) {
+  gridId = gridId || 'writing-pdf-grid';
+  // 급수 탭 활성화 표시는 클릭된 탭이 속한 탭바(.exam-lib-grade-tabs)로만 한정한다.
+  // 학생 자료실/선생님 자료실 등 같은 .exam-grade-tab 클래스를 쓰는 여러 탭바가
+  // 화면에 동시에 존재할 수 있으므로, document 전체에서 지우면 다른 탭바의
+  // 활성 상태까지 지워버리는 문제가 생긴다.
+  const tabsWrap = btn ? btn.closest('.exam-lib-grade-tabs') : null;
+  (tabsWrap || document).querySelectorAll('.exam-grade-tab').forEach(t => t.classList.remove('active'));
   if (btn) btn.classList.add('active');
 
-  const grid = document.getElementById('writing-pdf-grid');
+  const grid = document.getElementById(gridId);
   grid.innerHTML = '<div class="exam-lib-loading">⏳ 불러오는 중...</div>';
 
   let pdfs = [];
@@ -8014,11 +8128,13 @@ async function selectWritingGrade(grade, btn) {
   }
 }
 
-async function selectExamGrade(grade, btn) {
-  document.querySelectorAll('.exam-grade-tab').forEach(t => t.classList.remove('active'));
+async function selectExamGrade(grade, btn, gridId) {
+  gridId = gridId || 'exam-pdf-grid';
+  const tabsWrap = btn ? btn.closest('.exam-lib-grade-tabs') : null;
+  (tabsWrap || document).querySelectorAll('.exam-grade-tab').forEach(t => t.classList.remove('active'));
   if (btn) btn.classList.add('active');
 
-  const grid = document.getElementById('exam-pdf-grid');
+  const grid = document.getElementById(gridId);
   grid.innerHTML = '<div class="exam-lib-loading">⏳ 불러오는 중...</div>';
 
   let pdfs = [];
@@ -9027,6 +9143,133 @@ function setTeacherDashTab(tab) {
   _teacherActiveTab = tab;
   document.querySelectorAll('.teacher-tab-btn').forEach(b => b.classList.toggle('active', b.dataset.tab === tab));
   document.querySelectorAll('.teacher-tab-panel').forEach(p => p.classList.toggle('active', p.id === 'teacher-tab-' + tab));
+  if (tab === 'examlib') initTeacherExamLib();
+}
+
+/* ===== 선생님 대시보드 - [기출문제] 탭 =====
+ * 서브탭 3개: 기출문제 프린트 / 쓰기연습 프린트(학생 자료실과 동일 데이터·로직 재사용,
+ * grid ID만 교사용으로 분리) / 독음쓰기(신규 - hanja_reading_quiz.json 재사용, A4 인쇄용
+ * 워크시트를 그때그때 생성). 처음 [기출문제] 탭을 열 때 한 번만 각 서브탭 기본 급수를
+ * 불러온다(재방문 시 Firebase Storage 재조회 안 함 - 다른 탭들과 동일한 관례). */
+let _examLibInited = false;
+function initTeacherExamLib() {
+  if (_examLibInited) return;
+  _examLibInited = true;
+  selectExamGrade('3급', document.querySelector('#teacher-examprint-tabs .exam-grade-tab'), 'teacher-exam-pdf-grid');
+  selectWritingGrade('준3급', document.querySelector('#teacher-writeprint-tabs .exam-grade-tab'), 'teacher-writing-pdf-grid');
+  rwRenderRoundGrid();
+}
+
+function setExamLibSubTab(sub) {
+  document.querySelectorAll('#teacher-tab-examlib .t-rank-tab').forEach(b => b.classList.toggle('active', b.dataset.sub === sub));
+  document.querySelectorAll('#teacher-tab-examlib .examlib-subtab-panel').forEach(p => p.classList.toggle('active', p.id === 'examlib-sub-' + sub));
+}
+
+/* ----- 독음쓰기: 급수/회차 선택 상태 ----- */
+const RW_STATE = { grade: '3급', selectedRounds: [] }; // selectedRounds: 선택한 순서 그대로 담는 배열(페이지 짝짓기 기준)
+
+function rwSelectGrade(grade, btn) {
+  const tabsWrap = btn ? btn.closest('.exam-lib-grade-tabs') : null;
+  (tabsWrap || document).querySelectorAll('.exam-grade-tab').forEach(t => t.classList.remove('active'));
+  if (btn) btn.classList.add('active');
+  RW_STATE.grade = grade;
+  RW_STATE.selectedRounds = [];
+  rwRenderRoundGrid();
+  rwUpdatePrintButton();
+}
+
+function rwToggleRound(round) {
+  const i = RW_STATE.selectedRounds.indexOf(round);
+  if (i >= 0) RW_STATE.selectedRounds.splice(i, 1);
+  else RW_STATE.selectedRounds.push(round);
+  rwRenderRoundGrid();
+  rwUpdatePrintButton();
+}
+
+function rwRenderRoundGrid() {
+  const grid = document.getElementById('rw-round-grid');
+  if (!grid) return;
+  const gradeData = (window.READING_DATA || {})[RW_STATE.grade] || {};
+  const rounds = Object.keys(gradeData).sort((a, b) => Number(a) - Number(b));
+  if (rounds.length === 0) {
+    grid.innerHTML = `<div class="exam-pdf-empty">📋 준비 중입니다</div>`;
+    return;
+  }
+  grid.innerHTML = rounds.map(r => {
+    const idx = RW_STATE.selectedRounds.indexOf(r);
+    const active = idx >= 0;
+    const badge = active ? `<span class="rw-order-badge">${idx + 1}</span>` : '';
+    return `<button class="rw-round-chip${active ? ' active' : ''}" onclick="rwToggleRound('${r}')">${r}회${badge}</button>`;
+  }).join('');
+}
+
+function rwUpdatePrintButton() {
+  const btn = document.getElementById('rw-print-btn');
+  if (btn) btn.disabled = RW_STATE.selectedRounds.length === 0;
+}
+
+/* ----- 독음쓰기: 인쇄 시트 생성 -----
+ * 회차는 선택한 순서대로 2개씩 짝지어 페이지를 나눈다(1·2번째→1페이지, 3·4번째→2페이지...).
+ * 홀수로 남는 마지막 회차는 왼쪽 칼럼만 채우고 오른쪽은 빈 채로 둔다.
+ * 같은 급수 안에서는 회차마다 문항 수가 같으므로(3~준4급 17개, 5급/준5급 20개),
+ * 줄 높이/글자 크기는 세션당 한 번만 계산해 전체 페이지에 동일하게 적용한다. */
+const RW_ORG_NAME = '푸르넷 호반 2차';
+const RW_SHEET_TITLE = '독음 기출문제 쓰기';
+
+function rwRenderColumn(grade, round, items, rowH, fontSz) {
+  const rowsHtml = items.map(it => `
+    <div class="rw-row" style="height:${rowH}mm;">
+      <div class="rw-row-num">${it.num}</div>
+      <div class="rw-row-hanja" style="font-size:${fontSz + 3}px;">${it.hanja}</div>
+      <div class="rw-row-spacer"></div>
+      <div class="rw-row-blank" style="font-size:${fontSz}px;">(<span class="rw-blank-line"></span>)</div>
+    </div>`).join('');
+  return `
+    <div class="rw-col">
+      <div class="rw-col-header">
+        <div class="rw-header-center">
+          <div class="rw-header-badge">${grade} ${round}회</div>
+          <div class="rw-org-name">${RW_ORG_NAME}</div>
+          <div class="rw-sheet-title">${RW_SHEET_TITLE}</div>
+          <div class="rw-name-line">이름 <span class="rw-name-blank"></span></div>
+        </div>
+        <div class="rw-header-right">
+          날짜 <span class="rw-right-blank"></span><br>
+          채점 <span class="rw-right-blank"></span><br>
+          확인 <span class="rw-right-blank"></span>
+        </div>
+      </div>
+      <div class="rw-list" style="font-size:${fontSz}px;">${rowsHtml}</div>
+    </div>`;
+}
+
+function rwBuildWorksheetHTML() {
+  const grade = RW_STATE.grade;
+  const rounds = RW_STATE.selectedRounds.slice();
+  const gradeData = (window.READING_DATA || {})[grade] || {};
+  const itemCount = rounds.length ? (gradeData[rounds[0]] || []).length : 17;
+  // A4(@page margin 22mm 공통 규칙 기준) 한 칼럼의 실사용 목록 높이 ≈ 205mm.
+  // 항목 수가 많을수록(20개) 줄이 촘촘해지고, 적을수록(17개) 여유로워지도록 자동 조정.
+  const rowH = Math.max(9, Math.min(13, 205 / itemCount));
+  const fontSz = Math.max(11, Math.min(13.5, rowH));
+
+  const pages = [];
+  for (let i = 0; i < rounds.length; i += 2) pages.push([rounds[i], rounds[i + 1]]);
+
+  return pages.map(pair => {
+    const cols = pair.map(round =>
+      round ? rwRenderColumn(grade, round, gradeData[round] || [], rowH, fontSz) : '<div class="rw-col"></div>'
+    ).join('');
+    return `<div class="rw-page"><div class="rw-page-cols">${cols}</div></div>`;
+  }).join('');
+}
+
+function rwPrintWorksheet() {
+  if (!RW_STATE.selectedRounds.length) return;
+  const sheet = document.getElementById('reading-print-sheet');
+  sheet.innerHTML = rwBuildWorksheetHTML();
+  gaEvent('reading_worksheet_print', { grade: RW_STATE.grade, rounds: RW_STATE.selectedRounds.length });
+  window.print();
 }
 
 /* ===== 개인별 메시지 (선생님) ===== */
@@ -10073,7 +10316,7 @@ document.addEventListener('visibilitychange', async () => {
         return { name: itemRef.name, url };
       }));
       return files;
-    } catch(e) { return []; }
+    } catch(e) { console.error('exam pdfs error:', e); return []; }
   };
 
   window._fbListWritingPdfs = async (grade) => {
