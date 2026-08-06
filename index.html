@@ -7256,6 +7256,9 @@ async function loadReadingQuizData() {
   try { const r = await fetch('hanja_reading_quiz.json'); READING_DATA = await r.json(); }
   catch(e) { console.log('hanja_reading_quiz.json load failed'); READING_DATA = {}; }
   window.READING_DATA = READING_DATA;
+  // 선생님이 [기출문제→독음쓰기] 탭을 이 fetch가 끝나기 전에 먼저 열었을 수도 있으니
+  // (준비 중입니다만 뜬 채 멈춰있지 않도록) 로드 완료 후 회차 목록을 다시 그려준다.
+  if (typeof rwRenderRoundGrid === 'function') rwRenderRoundGrid();
 }
 
 let EXAM_TEST_DATA = {};
@@ -9131,6 +9134,8 @@ function enterTeacherApp() {
   setTeacherDashTab('home');
   renderTeacherStudentList();
   loadTeacherSettingsPreview();
+  loadReadingQuizData(); // 독음쓰기 탭용 hanja_reading_quiz.json - 학생 로그인 때만 불러오고 있어서
+                          // 선생님 세션엔 window.READING_DATA가 비어있던 게 "준비 중입니다"의 원인이었음
   _waitFirebaseRanking();
   renderHomeRankingTop5();
 }
