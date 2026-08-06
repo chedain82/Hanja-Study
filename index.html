@@ -1327,20 +1327,27 @@ body {
  * .t-rank-num.topN을 자식으로 갖는 .t-rank-row를 :has()로 골라 스타일만 입힌다. */
 @media print {
   @page { size: A4; margin: 22mm; }
+  body { background: #fff !important; }
   body > *:not(#teacher-app) { display: none !important; }
   #teacher-app {
     display: block !important;
     position: static !important; inset: auto !important;
     overflow: visible !important; height: auto !important; z-index: auto !important;
+    background: #fff !important;
   }
   .teacher-frame {
     max-width: none !important; width: 100% !important; height: auto !important;
     overflow: visible !important;
   }
   .teacher-frame > *:not(.teacher-body) { display: none !important; }
-  .teacher-body { padding: 0; overflow: visible !important; }
+  .teacher-body { padding: 0; overflow: visible !important; background: #fff !important; }
+  /* 인쇄 대상 탭(주간랭킹 vs 독음쓰기)은 body[data-print-mode]로 딱 하나만 골라 보여준다.
+     예전엔 #teacher-tab-ranking을 무조건 강제 노출해서, 독음쓰기를 인쇄해도 주간랭킹이
+     같이 인쇄되는 버그가 있었다 (printTeacherRanking / rwPrintWorksheet 각각 print 직전에
+     data-print-mode를 세팅한다). */
   .teacher-body > *:not(#teacher-tab-ranking):not(#teacher-tab-examlib) { display: none !important; }
-  #teacher-tab-ranking { display: block !important; }
+  body[data-print-mode="ranking"] #teacher-tab-ranking { display: block !important; }
+  body[data-print-mode="reading"] #teacher-tab-examlib { display: block !important; }
   .teacher-rank-tabs, #rank-print-btn { display: none !important; }
   .teacher-card { box-shadow: none; padding: 0; }
 
@@ -1348,10 +1355,9 @@ body {
      담은 .teacher-card를 통째로 숨기고, 항상 화면엔 숨겨져 있던 #reading-print-sheet만 보여준다.
      (이 탭의 "기출문제 프린트"/"쓰기연습 프린트" 서브탭은 PDF를 새 창으로 열어 그 문서 자체를
      인쇄하는 방식이라 이 규칙과 무관 - window.print()를 쓰는 건 독음쓰기뿐이다.) */
-  #teacher-tab-examlib { display: block !important; }
-  #teacher-tab-examlib > .teacher-card { display: none !important; }
-  #reading-print-sheet { display: block !important; }
-  .rw-page { width: 100%; height: 253mm; box-sizing: border-box; }
+  body[data-print-mode="reading"] #teacher-tab-examlib > .teacher-card { display: none !important; }
+  body[data-print-mode="reading"] #reading-print-sheet { display: block !important; }
+  .rw-page { width: 100%; height: 253mm; box-sizing: border-box; overflow: hidden; background: #fff !important; }
   .rank-print-header { display: block !important; text-align: center; margin: 0 0 28px; }
   .rank-print-header .rph-title { font-size: 26px; font-weight: 900; color: #000; margin-bottom: 6px; }
   .rank-print-header .rph-sub { font-size: 15px; font-weight: 700; color: #555; }
@@ -2214,23 +2220,27 @@ const HG_Sound = (() => {
 
 /* ===== 독음쓰기 인쇄 시트 (화면엔 항상 숨김, @media print 에서만 노출) ===== */
 #reading-print-sheet{display:none;}
-.rw-page{page-break-after:always;}
+.rw-page{page-break-after:always;display:flex;flex-direction:column;}
 .rw-page:last-child{page-break-after:auto;}
-.rw-page-cols{display:flex;height:100%;}
-.rw-col{flex:1;min-width:0;display:flex;flex-direction:column;}
-.rw-col:first-child{border-right:1px dashed #999;padding-right:6mm;}
-.rw-col:last-child{padding-left:6mm;}
-.rw-col-header{display:flex;justify-content:space-between;align-items:flex-start;border-bottom:1.5px solid #333;padding-bottom:3mm;margin-bottom:5mm;}
-.rw-header-badge{font-size:11px;font-weight:800;color:#555;margin-bottom:2mm;}
+/* 기관명/제목/이름/날짜/채점/확인은 칼럼마다 반복하지 않고 페이지당 한 번만(rw-page-header). */
+.rw-page-header{display:flex;justify-content:space-between;align-items:flex-start;border-bottom:1.5px solid #333;padding-bottom:3mm;margin-bottom:6mm;flex-shrink:0;}
 .rw-header-center{flex:1;text-align:center;}
 .rw-org-name{font-size:11px;font-weight:700;color:#555;}
 .rw-sheet-title{font-size:16px;font-weight:900;color:#000;margin:2mm 0;}
 .rw-name-line{font-size:12px;font-weight:600;color:#000;}
 .rw-name-blank{display:inline-block;width:26mm;border-bottom:1px solid #333;margin-left:4px;}
-.rw-header-right{font-size:10.5px;font-weight:600;color:#333;text-align:right;line-height:2.4;white-space:nowrap;flex-shrink:0;}
+.rw-header-right{font-size:10.5px;font-weight:600;color:#333;text-align:right;line-height:1.9;white-space:nowrap;flex-shrink:0;}
 .rw-right-blank{display:inline-block;width:15mm;border-bottom:1px solid #333;margin-left:4px;}
-.rw-list{flex:1;display:flex;flex-direction:column;}
-.rw-row{display:flex;align-items:center;gap:6px;border-bottom:1px dotted #ccc;}
+.rw-page-cols{display:flex;flex:1;min-height:0;}
+.rw-col{flex:1;min-width:0;display:flex;flex-direction:column;}
+.rw-col:first-child{border-right:1px dashed #999;padding-right:6mm;}
+.rw-col:last-child{padding-left:6mm;}
+/* 급수·회차만 표시하는 칼럼별 작은 라벨(예: "3급 110회") - 공통 헤더와 별개로 어느 회차인지 구분용 */
+.rw-col-badge{flex-shrink:0;font-size:12px;font-weight:800;color:#555;text-align:center;border-bottom:1px dashed #bbb;padding-bottom:2mm;margin-bottom:4mm;}
+/* 문항 목록: 항목이 17개든 20개든 rw-row가 flex:1로 남은 높이를 똑같이 나눠 가지므로
+   항상 한 페이지 안에 딱 맞고, 계산이 어긋나 다음 페이지로 넘치는 일이 없다. */
+.rw-list{flex:1;min-height:0;display:flex;flex-direction:column;}
+.rw-row{display:flex;align-items:center;gap:6px;border-bottom:1px dotted #ccc;flex:1;min-height:0;}
 .rw-row-num{flex-shrink:0;width:14px;color:#888;font-weight:700;}
 .rw-row-hanja{flex-shrink:0;font-weight:800;letter-spacing:1px;color:#000;}
 .rw-row-spacer{flex:1;border-bottom:1px dotted #bbb;height:0;align-self:center;margin:0 4px;}
@@ -9221,9 +9231,30 @@ function rwUpdatePrintButton() {
 const RW_ORG_NAME = '푸르넷 호반 2차';
 const RW_SHEET_TITLE = '독음 기출문제 쓰기';
 
-function rwRenderColumn(grade, round, items, rowH, fontSz) {
+function rwRenderPageHeader() {
+  // 기관명/제목/이름/날짜/채점/확인란은 칼럼마다 반복하지 않고 페이지 상단에 한 번만 둔다
+  // (예전엔 왼쪽/오른쪽 칼럼마다 각각 있어서 한 장에 같은 정보가 두 번씩 찍혔었음).
+  return `
+    <div class="rw-page-header">
+      <div class="rw-header-center">
+        <div class="rw-org-name">${RW_ORG_NAME}</div>
+        <div class="rw-sheet-title">${RW_SHEET_TITLE}</div>
+        <div class="rw-name-line">이름 <span class="rw-name-blank"></span></div>
+      </div>
+      <div class="rw-header-right">
+        날짜 <span class="rw-right-blank"></span><br>
+        채점 <span class="rw-right-blank"></span><br>
+        확인 <span class="rw-right-blank"></span>
+      </div>
+    </div>`;
+}
+
+function rwRenderColumn(grade, round, items, fontSz) {
+  // 행 높이는 mm로 미리 계산하지 않고 flex(.rw-row{flex:1}) 로 남은 공간에 맞춰 자동 분배한다.
+  // 이렇게 하면 항목이 17개든 20개든 항상 정확히 한 페이지 높이 안에 딱 맞고,
+  // 계산이 실제 렌더링 높이와 어긋나 다음 페이지로 넘치는 일이 없다.
   const rowsHtml = items.map(it => `
-    <div class="rw-row" style="height:${rowH}mm;">
+    <div class="rw-row">
       <div class="rw-row-num">${it.num}</div>
       <div class="rw-row-hanja" style="font-size:${fontSz + 3}px;">${it.hanja}</div>
       <div class="rw-row-spacer"></div>
@@ -9231,19 +9262,7 @@ function rwRenderColumn(grade, round, items, rowH, fontSz) {
     </div>`).join('');
   return `
     <div class="rw-col">
-      <div class="rw-col-header">
-        <div class="rw-header-center">
-          <div class="rw-header-badge">${grade} ${round}회</div>
-          <div class="rw-org-name">${RW_ORG_NAME}</div>
-          <div class="rw-sheet-title">${RW_SHEET_TITLE}</div>
-          <div class="rw-name-line">이름 <span class="rw-name-blank"></span></div>
-        </div>
-        <div class="rw-header-right">
-          날짜 <span class="rw-right-blank"></span><br>
-          채점 <span class="rw-right-blank"></span><br>
-          확인 <span class="rw-right-blank"></span>
-        </div>
-      </div>
+      <div class="rw-col-badge">${grade} ${round}회</div>
       <div class="rw-list" style="font-size:${fontSz}px;">${rowsHtml}</div>
     </div>`;
 }
@@ -9253,19 +9272,18 @@ function rwBuildWorksheetHTML() {
   const rounds = RW_STATE.selectedRounds.slice();
   const gradeData = (window.READING_DATA || {})[grade] || {};
   const itemCount = rounds.length ? (gradeData[rounds[0]] || []).length : 17;
-  // A4(@page margin 22mm 공통 규칙 기준) 한 칼럼의 실사용 목록 높이 ≈ 205mm.
-  // 항목 수가 많을수록(20개) 줄이 촘촘해지고, 적을수록(17개) 여유로워지도록 자동 조정.
-  const rowH = Math.max(9, Math.min(13, 205 / itemCount));
-  const fontSz = Math.max(11, Math.min(13.5, rowH));
+  // 항목 수가 많을수록(20개) 글자를 살짝 줄이고, 적을수록(17개) 여유롭게 - 실제 줄 높이는
+  // flex가 자동으로 채우므로 여기선 가독성을 위한 글자 크기만 정하면 된다.
+  const fontSz = Math.max(11, Math.min(14, 230 / itemCount));
 
   const pages = [];
   for (let i = 0; i < rounds.length; i += 2) pages.push([rounds[i], rounds[i + 1]]);
 
   return pages.map(pair => {
     const cols = pair.map(round =>
-      round ? rwRenderColumn(grade, round, gradeData[round] || [], rowH, fontSz) : '<div class="rw-col"></div>'
+      round ? rwRenderColumn(grade, round, gradeData[round] || [], fontSz) : '<div class="rw-col"></div>'
     ).join('');
-    return `<div class="rw-page"><div class="rw-page-cols">${cols}</div></div>`;
+    return `<div class="rw-page">${rwRenderPageHeader()}<div class="rw-page-cols">${cols}</div></div>`;
   }).join('');
 }
 
@@ -9274,6 +9292,7 @@ function rwPrintWorksheet() {
   const sheet = document.getElementById('reading-print-sheet');
   sheet.innerHTML = rwBuildWorksheetHTML();
   gaEvent('reading_worksheet_print', { grade: RW_STATE.grade, rounds: RW_STATE.selectedRounds.length });
+  document.body.dataset.printMode = 'reading'; // 인쇄 CSS가 독음쓰기 시트만 보여주도록 (주간랭킹과 안 겹치게)
   window.print();
 }
 
@@ -9466,6 +9485,7 @@ function printTeacherRanking() {
       `<div class="rph-title">주간 랭킹 (${formatWeekRangeLabel(weekKey)})</div>` +
       `<div class="rph-sub">${scopeLabel}</div>`;
   }
+  document.body.dataset.printMode = 'ranking'; // 인쇄 CSS가 주간랭킹 패널만 보여주도록
   window.print();
 }
 
