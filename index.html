@@ -2233,8 +2233,8 @@ const HG_Sound = (() => {
 .rw-right-blank{display:inline-block;width:15mm;border-bottom:1px solid #333;margin-left:4px;}
 .rw-page-cols{display:flex;flex:1;min-height:0;}
 .rw-col{flex:1;min-width:0;display:flex;flex-direction:column;}
-.rw-col:first-child{border-right:1px dashed #999;padding-right:6mm;}
-.rw-col:last-child{padding-left:6mm;}
+.rw-col:first-child{border-right:1px dashed #999;padding-right:14mm;}
+.rw-col:last-child{padding-left:14mm;}
 /* 급수·회차만 표시하는 칼럼별 작은 라벨(예: "3급 110회") - 공통 헤더와 별개로 어느 회차인지 구분용 */
 .rw-col-badge{flex-shrink:0;font-size:12px;font-weight:800;color:#555;text-align:center;border-bottom:1px dashed #bbb;padding-bottom:2mm;margin-bottom:4mm;}
 /* 문항 목록: 항목이 17개든 20개든 rw-row가 flex:1로 남은 높이를 똑같이 나눠 가지므로
@@ -9274,7 +9274,8 @@ function rwBuildWorksheetHTML() {
   const itemCount = rounds.length ? (gradeData[rounds[0]] || []).length : 17;
   // 항목 수가 많을수록(20개) 글자를 살짝 줄이고, 적을수록(17개) 여유롭게 - 실제 줄 높이는
   // flex가 자동으로 채우므로 여기선 가독성을 위한 글자 크기만 정하면 된다.
-  const fontSz = Math.max(11, Math.min(14, 230 / itemCount));
+  // (글자를 키우면 줄 하나가 차지하는 빈 여백이 줄어들어 문항 사이 간격도 자연히 좁아진다.)
+  const fontSz = Math.max(12, Math.min(17, 265 / itemCount));
 
   const pages = [];
   for (let i = 0; i < rounds.length; i += 2) pages.push([rounds[i], rounds[i + 1]]);
