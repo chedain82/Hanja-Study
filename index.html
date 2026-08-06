@@ -2240,12 +2240,15 @@ const HG_Sound = (() => {
 /* 문항 목록: 항목이 17개든 20개든 rw-row가 flex:1로 남은 높이를 똑같이 나눠 가지므로
    항상 한 페이지 안에 딱 맞고, 계산이 어긋나 다음 페이지로 넘치는 일이 없다. */
 .rw-list{flex:1;min-height:0;display:flex;flex-direction:column;}
-.rw-row{display:flex;align-items:center;gap:6px;border-bottom:1px dotted #ccc;flex:1;min-height:0;}
+.rw-row{display:flex;align-items:center;gap:6px;border-bottom:1px dotted #ccc;flex:1;min-height:0;overflow:hidden;}
 .rw-row-num{flex-shrink:0;width:14px;color:#888;font-weight:700;}
-.rw-row-hanja{flex-shrink:0;font-weight:800;letter-spacing:1px;color:#000;}
-.rw-row-spacer{flex:1;border-bottom:1px dotted #bbb;height:0;align-self:center;margin:0 4px;}
-.rw-row-blank{flex-shrink:0;display:flex;align-items:center;gap:2px;font-weight:700;color:#000;}
-.rw-blank-line{display:inline-block;border-bottom:1.5px solid #333;min-width:16mm;height:1em;}
+.rw-row-hanja{flex-shrink:0;font-weight:800;letter-spacing:1px;color:#000;white-space:nowrap;}
+.rw-row-spacer{flex:1 1 4mm;min-width:0;border-bottom:1px dotted #bbb;height:0;align-self:center;margin:0 4px;}
+/* 한자가 3글자 이상이라 한 줄이 좁아지면 뒤 괄호가 페이지 밖으로 밀려 잘리던 문제 -
+   spacer(점선)를 먼저 줄어들게 하고, 그래도 모자라면 blank-line 자체도 줄어들게 해서
+   괄호")"가 항상 화면 안에 보이도록 한다. */
+.rw-row-blank{flex:0 1 auto;min-width:0;display:flex;align-items:center;gap:2px;font-weight:700;color:#000;}
+.rw-blank-line{display:inline-block;flex:1 1 auto;min-width:9mm;height:1em;}
 
 /* PDF 팝업 */
 #exam-pdf-popup{
