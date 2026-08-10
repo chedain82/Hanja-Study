@@ -2258,7 +2258,7 @@ const HG_Sound = (() => {
 
 /* ===== 독음쓰기 정답지 (화면엔 항상 숨김, @media print 에서만 노출) =====
  * 워크시트(#reading-print-sheet)와 별개 시트. 빈칸/이름란 없이 번호·한자·독음만
- * 간단히 나열하고, 회차당 필요한 폭이 좁아서 한 페이지에 4회차(4칼럼)까지 넣는다. */
+ * 간단히 나열하고, 회차당 필요한 폭이 좁아서 한 페이지에 5회차(5칼럼)까지 넣는다. */
 #reading-answer-sheet{display:none;}
 .rwa-page{page-break-after:always;display:flex;flex-direction:column;}
 .rwa-page:last-child{page-break-after:auto;}
@@ -9359,13 +9359,13 @@ function rwBuildAnswerSheetHTML() {
   const rounds = RW_STATE.selectedRounds.slice();
   const gradeData = (window.READING_DATA || {})[grade] || {};
   const itemCount = rounds.length ? (gradeData[rounds[0]] || []).length : 17;
-  // 정답지는 빈칸이 없어 워크시트보다 한 줄에 필요한 폭이 훨씬 좁으므로 4칼럼으로 짠다.
+  // 정답지는 빈칸이 없어 워크시트보다 한 줄에 필요한 폭이 훨씬 좁으므로 5칼럼으로 짠다.
   // 세로 공간은 rwa-row가 flex:1로 자동 분배해서(워크시트와 동일한 원리) 17~20줄이
   // 항상 한 페이지 안에 들어간다.
   const fontSz = Math.max(12, Math.min(16, 260 / itemCount));
 
   const pages = [];
-  for (let i = 0; i < rounds.length; i += 4) pages.push(rounds.slice(i, i + 4));
+  for (let i = 0; i < rounds.length; i += 5) pages.push(rounds.slice(i, i + 5));
 
   return pages.map(group => {
     const cols = group.map(round => rwRenderAnswerColumn(grade, round, gradeData[round] || [])).join('');
