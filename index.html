@@ -1019,6 +1019,8 @@ body {
   font-family: inherit; transition: all .15s;
 }
 .teacher-add-btn:active { opacity: .8; transform: scale(.98); }
+.teacher-add-btn.secondary { background: #fff; color: var(--blue); border: 2px solid var(--blue); }
+.teacher-add-btn:disabled { opacity: .45; cursor: not-allowed; }
 .student-row {
   display: flex; align-items: center;
   padding: 12px 0; border-bottom: 1px solid #F5F5F5;
@@ -1347,17 +1349,22 @@ body {
      data-print-mode를 세팅한다). */
   .teacher-body > *:not(#teacher-tab-ranking):not(#teacher-tab-examlib) { display: none !important; }
   body[data-print-mode="ranking"] #teacher-tab-ranking { display: block !important; }
-  body[data-print-mode="reading"] #teacher-tab-examlib { display: block !important; }
+  body[data-print-mode="reading"] #teacher-tab-examlib,
+  body[data-print-mode="reading-answer"] #teacher-tab-examlib { display: block !important; }
   .teacher-rank-tabs, #rank-print-btn { display: none !important; }
   .teacher-card { box-shadow: none; padding: 0; }
 
   /* 독음쓰기 인쇄: #teacher-tab-examlib 안에서는 선택 UI(급수탭/서브탭/회차칩/버튼)를
-     담은 .teacher-card를 통째로 숨기고, 항상 화면엔 숨겨져 있던 #reading-print-sheet만 보여준다.
+     담은 .teacher-card를 통째로 숨기고, 항상 화면엔 숨겨져 있던 #reading-print-sheet(워크시트)
+     또는 #reading-answer-sheet(정답지)만 보여준다. data-print-mode 값으로 둘 중 하나를 고른다.
      (이 탭의 "기출문제 프린트"/"쓰기연습 프린트" 서브탭은 PDF를 새 창으로 열어 그 문서 자체를
      인쇄하는 방식이라 이 규칙과 무관 - window.print()를 쓰는 건 독음쓰기뿐이다.) */
-  body[data-print-mode="reading"] #teacher-tab-examlib > .teacher-card { display: none !important; }
+  body[data-print-mode="reading"] #teacher-tab-examlib > .teacher-card,
+  body[data-print-mode="reading-answer"] #teacher-tab-examlib > .teacher-card { display: none !important; }
   body[data-print-mode="reading"] #reading-print-sheet { display: block !important; }
+  body[data-print-mode="reading-answer"] #reading-answer-sheet { display: block !important; }
   .rw-page { width: 100%; height: 253mm; box-sizing: border-box; overflow-y: hidden; overflow-x: visible; background: #fff !important; }
+  .rwa-page { width: 100%; height: 253mm; box-sizing: border-box; overflow-y: hidden; overflow-x: visible; background: #fff !important; }
   .rank-print-header { display: block !important; text-align: center; margin: 0 0 28px; }
   .rank-print-header .rph-title { font-size: 26px; font-weight: 900; color: #000; margin-bottom: 6px; }
   .rank-print-header .rph-sub { font-size: 15px; font-weight: 700; color: #555; }
@@ -2249,6 +2256,24 @@ const HG_Sound = (() => {
 .rw-row-blank{flex-shrink:0;display:flex;align-items:center;gap:2px;font-weight:700;color:#000;}
 .rw-blank-line{display:inline-block;height:1em;}
 
+/* ===== 독음쓰기 정답지 (화면엔 항상 숨김, @media print 에서만 노출) =====
+ * 워크시트(#reading-print-sheet)와 별개 시트. 빈칸/이름란 없이 번호·한자·독음만
+ * 간단히 나열하고, 회차당 필요한 폭이 좁아서 한 페이지에 4회차(4칼럼)까지 넣는다. */
+#reading-answer-sheet{display:none;}
+.rwa-page{page-break-after:always;display:flex;flex-direction:column;}
+.rwa-page:last-child{page-break-after:auto;}
+.rwa-page-header{text-align:center;flex-shrink:0;margin-bottom:6mm;padding-bottom:3mm;border-bottom:1.5px solid #333;}
+.rwa-page-header .rwa-title{font-size:15px;font-weight:900;color:#000;}
+.rwa-page-cols{display:flex;flex:1;min-height:0;}
+.rwa-col{flex:1;min-width:0;display:flex;flex-direction:column;padding:0 3mm;}
+.rwa-col:not(:last-child){border-right:1px dashed #999;}
+.rwa-col-badge{flex-shrink:0;font-size:11px;font-weight:800;color:#555;text-align:center;border-bottom:1px dashed #bbb;padding-bottom:2mm;margin-bottom:3mm;}
+.rwa-list{flex:1;min-height:0;display:flex;flex-direction:column;}
+.rwa-row{display:flex;align-items:center;gap:4px;border-bottom:1px dotted #eee;flex:1;min-height:0;}
+.rwa-num{flex-shrink:0;width:16px;color:#999;font-weight:700;}
+.rwa-hanja{flex-shrink:0;font-weight:800;color:#000;white-space:nowrap;}
+.rwa-reading{flex-shrink:0;color:#3B7DE0;font-weight:800;margin-left:auto;white-space:nowrap;}
+
 /* PDF 팝업 */
 #exam-pdf-popup{
   position:fixed;inset:0;background:rgba(0,0,0,.5);
@@ -2985,13 +3010,18 @@ const HG_Sound = (() => {
             </div>
             <div class="rw-round-hint">회차를 1개 이상 선택하세요 (여러 개 선택 가능 · 선택한 순서대로 2개씩 짝지어 인쇄돼요)</div>
             <div class="rw-round-grid" id="rw-round-grid"></div>
-            <button class="teacher-add-btn" id="rw-print-btn" style="margin-top:14px;" disabled onclick="rwPrintWorksheet()">🖨️ 프린트하기</button>
+            <div style="display:flex;gap:8px;margin-top:14px;">
+              <button class="teacher-add-btn" id="rw-print-btn" style="flex:1;" disabled onclick="rwPrintWorksheet()">🖨️ 프린트하기</button>
+              <button class="teacher-add-btn secondary" id="rw-answer-print-btn" style="flex:1;" disabled onclick="rwPrintAnswerSheet()">📋 정답지 프린트</button>
+            </div>
           </div>
         </div>
       </div>
 
       <!-- 독음쓰기 인쇄 전용 시트 (화면에는 항상 숨김, 인쇄 시에만 노출) -->
       <div id="reading-print-sheet"></div>
+      <!-- 독음쓰기 정답지 전용 시트 (화면에는 항상 숨김, 인쇄 시에만 노출) -->
+      <div id="reading-answer-sheet"></div>
     </div>
 
   </div>
@@ -9221,8 +9251,11 @@ function rwRenderRoundGrid() {
 }
 
 function rwUpdatePrintButton() {
+  const empty = RW_STATE.selectedRounds.length === 0;
   const btn = document.getElementById('rw-print-btn');
-  if (btn) btn.disabled = RW_STATE.selectedRounds.length === 0;
+  if (btn) btn.disabled = empty;
+  const answerBtn = document.getElementById('rw-answer-print-btn');
+  if (answerBtn) answerBtn.disabled = empty;
 }
 
 /* ----- 독음쓰기: 인쇄 시트 생성 -----
@@ -9301,6 +9334,53 @@ function rwPrintWorksheet() {
   sheet.innerHTML = rwBuildWorksheetHTML();
   gaEvent('reading_worksheet_print', { grade: RW_STATE.grade, rounds: RW_STATE.selectedRounds.length });
   document.body.dataset.printMode = 'reading'; // 인쇄 CSS가 독음쓰기 시트만 보여주도록 (주간랭킹과 안 겹치게)
+  window.print();
+}
+
+/* ----- 독음쓰기: 정답지 생성 -----
+ * 워크시트와 달리 빈칸/이름란 없이 번호·한자·독음만 나열하는 간단한 채점용 시트.
+ * 항목당 필요한 폭이 좁아서 회차를 2개가 아니라 4개씩 짝지어 한 페이지에 넣는다. */
+function rwRenderAnswerColumn(grade, round, items) {
+  const rowsHtml = items.map(it => `
+    <div class="rwa-row">
+      <span class="rwa-num">${it.num}</span>
+      <span class="rwa-hanja">${it.hanja}</span>
+      <span class="rwa-reading">${it.reading}</span>
+    </div>`).join('');
+  return `
+    <div class="rwa-col">
+      <div class="rwa-col-badge">${grade} ${round}회</div>
+      <div class="rwa-list">${rowsHtml}</div>
+    </div>`;
+}
+
+function rwBuildAnswerSheetHTML() {
+  const grade = RW_STATE.grade;
+  const rounds = RW_STATE.selectedRounds.slice();
+  const gradeData = (window.READING_DATA || {})[grade] || {};
+  const itemCount = rounds.length ? (gradeData[rounds[0]] || []).length : 17;
+  // 정답지는 빈칸이 없어 워크시트보다 한 줄에 필요한 폭이 훨씬 좁으므로 4칼럼으로 짠다.
+  // 세로 공간은 rwa-row가 flex:1로 자동 분배해서(워크시트와 동일한 원리) 17~20줄이
+  // 항상 한 페이지 안에 들어간다.
+  const fontSz = Math.max(12, Math.min(16, 260 / itemCount));
+
+  const pages = [];
+  for (let i = 0; i < rounds.length; i += 4) pages.push(rounds.slice(i, i + 4));
+
+  return pages.map(group => {
+    const cols = group.map(round => rwRenderAnswerColumn(grade, round, gradeData[round] || [])).join('');
+    return `<div class="rwa-page" style="font-size:${fontSz}px;">` +
+      `<div class="rwa-page-header"><span class="rwa-title">독음 기출문제 정답지 - ${grade}</span></div>` +
+      `<div class="rwa-page-cols">${cols}</div></div>`;
+  }).join('');
+}
+
+function rwPrintAnswerSheet() {
+  if (!RW_STATE.selectedRounds.length) return;
+  const sheet = document.getElementById('reading-answer-sheet');
+  sheet.innerHTML = rwBuildAnswerSheetHTML();
+  gaEvent('reading_answersheet_print', { grade: RW_STATE.grade, rounds: RW_STATE.selectedRounds.length });
+  document.body.dataset.printMode = 'reading-answer';
   window.print();
 }
 
