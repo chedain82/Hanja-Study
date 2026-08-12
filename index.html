@@ -2989,7 +2989,7 @@ const HG_Sound = (() => {
           <div class="exam-pdf-grid" id="teacher-exam-pdf-grid">
             <div class="exam-lib-loading">⏳ 불러오는 중...</div>
           </div>
-          <div class="rw-round-hint">여러 개 선택한 뒤 아래 버튼을 누르면 각각 새 탭으로 열려요 (탭마다 인쇄하시면 돼요)</div>
+          <div class="rw-round-hint">여러 개 선택한 순서대로 표지·정답지는 빼고 문제 페이지만 한 파일로 합쳐 새 탭 하나로 열어드려요 (그 탭에서 인쇄 버튼 한 번만 누르면 돼요)</div>
           <button class="teacher-add-btn" id="teacher-exam-print-btn" style="margin-top:10px;" disabled onclick="tGridPrintSelected('teacher-exam-pdf-grid')">🖨️ 선택한 자료 프린트하기</button>
         </div>
 
@@ -3004,7 +3004,7 @@ const HG_Sound = (() => {
           <div class="exam-pdf-grid" id="teacher-writing-pdf-grid">
             <div class="exam-lib-loading">⏳ 불러오는 중...</div>
           </div>
-          <div class="rw-round-hint">여러 개 선택한 뒤 아래 버튼을 누르면 각각 새 탭으로 열려요 (탭마다 인쇄하시면 돼요)</div>
+          <div class="rw-round-hint">여러 개 선택한 순서대로 표지·정답지는 빼고 문제 페이지만 한 파일로 합쳐 새 탭 하나로 열어드려요 (그 탭에서 인쇄 버튼 한 번만 누르면 돼요)</div>
           <button class="teacher-add-btn" id="teacher-writing-print-btn" style="margin-top:10px;" disabled onclick="tGridPrintSelected('teacher-writing-pdf-grid')">🖨️ 선택한 자료 프린트하기</button>
         </div>
 
@@ -8210,15 +8210,73 @@ function tGridUpdatePrintBtn(gridId) {
   if (btn) btn.disabled = !sel || sel.size === 0;
 }
 
-// 선택된 회차 수만큼 새 탭으로 하나씩 열어준다 (합쳐서 한 인쇄창으로는 못 띄움 - 실제로는
-// 서로 다른 PDF 파일이라 브라우저가 하나로 합쳐 인쇄할 방법이 없음). 팝업 차단을 피하려고
-// 클릭 한 번의 이벤트 안에서 살짝 시차를 두고 순서대로 연다.
-function tGridPrintSelected(gridId) {
+// pdf-lib은 처음 "합쳐서 인쇄하기"를 쓸 때만 필요하니, 앱 로딩을 느리게 하지 않도록
+// 실제로 쓰일 때 딱 한 번만 CDN에서 불러온다.
+let _pdfLibLoadPromise = null;
+function loadPdfLib() {
+  if (window.PDFLib) return Promise.resolve();
+  if (_pdfLibLoadPromise) return _pdfLibLoadPromise;
+  _pdfLibLoadPromise = new Promise((resolve, reject) => {
+    const s = document.createElement('script');
+    s.src = 'https://cdn.jsdelivr.net/npm/pdf-lib@1.17.1/dist/pdf-lib.min.js';
+    s.onload = () => resolve();
+    s.onerror = () => reject(new Error('pdf-lib 로드 실패'));
+    document.head.appendChild(s);
+  });
+  return _pdfLibLoadPromise;
+}
+
+// 선택한 회차들의 PDF에서 표지(첫 페이지)·정답지(마지막 페이지)를 빼고 문제 페이지만
+// 골라 선택한 순서대로 한 PDF로 합쳐서 새 탭 하나로 열어준다 - 그 탭에서 인쇄 버튼을
+// 한 번만 누르면 선택한 회차 전부가 한 번에 인쇄된다 (예전엔 회차마다 탭이 따로 열려서
+// 매번 인쇄 범위를 2~4로 손으로 설정해야 했음).
+// PDF를 못 합치는 상황(네트워크/브라우저 보안 정책 등)이면 예전처럼 회차별로 새 탭을
+// 각각 열어주는 방식으로 자동 전환한다.
+async function tGridPrintSelected(gridId) {
   const sel = TGRID_SELECTED[gridId];
   if (!sel || sel.size === 0) return;
   const items = Array.from(sel.values());
-  items.forEach((it, i) => setTimeout(() => window.open(it.url, '_blank'), i * 250));
   gaEvent('exam_pdf_multi_print', { gridId, count: items.length });
+
+  const btnId = _tGridPrintBtnId(gridId);
+  const btn = btnId && document.getElementById(btnId);
+  const btnLabelOld = btn ? btn.textContent : '';
+  if (btn) { btn.disabled = true; btn.textContent = '⏳ 합치는 중...'; }
+
+  try {
+    await loadPdfLib();
+    const { PDFDocument } = window.PDFLib;
+    const merged = await PDFDocument.create();
+
+    for (const it of items) {
+      const res = await fetch(it.url);
+      if (!res.ok) throw new Error('fetch failed: ' + it.url);
+      const bytes = await res.arrayBuffer();
+      const src = await PDFDocument.load(bytes);
+      const total = src.getPageCount();
+      // 표지(1페이지)와 정답지(마지막 페이지)를 뺀 가운데 문제 페이지만 가져온다.
+      const indices = [];
+      for (let p = 1; p < total - 1; p++) indices.push(p);
+      if (indices.length === 0) { // 2페이지 이하라 뺄 게 없으면 그냥 전부 넣는다
+        for (let p = 0; p < total; p++) indices.push(p);
+      }
+      const copied = await merged.copyPages(src, indices);
+      copied.forEach(page => merged.addPage(page));
+    }
+
+    const mergedBytes = await merged.save();
+    const blob = new Blob([mergedBytes], { type: 'application/pdf' });
+    const blobUrl = URL.createObjectURL(blob);
+    window.open(blobUrl, '_blank');
+    toast('✅ ' + items.length + '개 회차를 한 파일로 합쳤어요 - 새 탭에서 인쇄 버튼을 눌러주세요');
+  } catch (e) {
+    console.log('merge failed, falling back to per-file tabs:', e.message);
+    toast('⚠️ 합치기에 실패해서 회차별로 새 탭을 열게요');
+    items.forEach((it, i) => setTimeout(() => window.open(it.url, '_blank'), i * 250));
+  } finally {
+    if (btn) btn.textContent = btnLabelOld;
+    tGridUpdatePrintBtn(gridId);
+  }
 }
 
 async function selectWritingGrade(grade, btn, gridId) {
