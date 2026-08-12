@@ -2217,6 +2217,15 @@ const HG_Sound = (() => {
 .exam-pdf-card-grade{font-size:11px;color:#3B7DE0;font-weight:700;}
 .exam-pdf-empty{text-align:center;color:#bbb;font-size:14px;padding:32px 20px;line-height:2;grid-column:1/-1;}
 .exam-lib-loading{text-align:center;color:#999;font-size:14px;padding:40px 20px;grid-column:1/-1;}
+/* 선생님 대시보드용 다중 선택 카드(회차 여러 개 골라 한 번에 새 탭으로 열어 인쇄) -
+   .exam-pdf-card는 그대로 두고 선택됐을 때만 테두리/배경/체크뱃지로 표시한다. */
+.exam-pdf-card.selectable{position:relative;}
+.exam-pdf-card.selectable.selected{background:#EEF3FD;box-shadow:0 0 0 2px #3B7DE0 inset;}
+.exam-pdf-card.selectable .exam-pdf-check{
+  position:absolute;top:6px;right:6px;width:18px;height:18px;border-radius:50%;
+  border:1.5px solid #ddd;background:#fff;font-size:11px;line-height:16px;color:transparent;
+}
+.exam-pdf-card.selectable.selected .exam-pdf-check{background:#3B7DE0;border-color:#3B7DE0;color:#fff;}
 
 /* ===== 독음쓰기 - 회차 다중 선택 칩 ===== */
 .rw-round-hint{font-size:13px;font-weight:700;color:#3B7DE0;text-align:center;margin:10px 0;background:#EEF4FF;padding:7px 10px;border-radius:10px;line-height:1.4;}
@@ -2980,6 +2989,8 @@ const HG_Sound = (() => {
           <div class="exam-pdf-grid" id="teacher-exam-pdf-grid">
             <div class="exam-lib-loading">⏳ 불러오는 중...</div>
           </div>
+          <div class="rw-round-hint">여러 개 선택한 뒤 아래 버튼을 누르면 각각 새 탭으로 열려요 (탭마다 인쇄하시면 돼요)</div>
+          <button class="teacher-add-btn" id="teacher-exam-print-btn" style="margin-top:10px;" disabled onclick="tGridPrintSelected('teacher-exam-pdf-grid')">🖨️ 선택한 자료 프린트하기</button>
         </div>
 
         <!-- 서브탭: 쓰기연습 프린트 (학생 자료실과 동일 로직 재사용, grid만 별도) -->
@@ -2993,6 +3004,8 @@ const HG_Sound = (() => {
           <div class="exam-pdf-grid" id="teacher-writing-pdf-grid">
             <div class="exam-lib-loading">⏳ 불러오는 중...</div>
           </div>
+          <div class="rw-round-hint">여러 개 선택한 뒤 아래 버튼을 누르면 각각 새 탭으로 열려요 (탭마다 인쇄하시면 돼요)</div>
+          <button class="teacher-add-btn" id="teacher-writing-print-btn" style="margin-top:10px;" disabled onclick="tGridPrintSelected('teacher-writing-pdf-grid')">🖨️ 선택한 자료 프린트하기</button>
         </div>
 
         <!-- 서브탭: 독음쓰기 (신규 - hanja_reading_quiz.json 재사용) -->
@@ -8141,6 +8154,73 @@ function closeStudySelect() {
   document.getElementById('landing-screen').classList.add('active');
 }
 
+/* 선생님 대시보드의 두 PDF 그리드(기출문제/쓰기연습)는 여러 회차를 골라 한 번에
+ * 새 탭으로 열 수 있는 "선택 모드"로 동작하고, 학생 자료실 그리드는 카드 하나 눌러
+ * 바로 팝업이 뜨는 기존 방식 그대로 둔다 (gridId가 'teacher-'로 시작하는지로 구분).
+ * 카드 클릭 핸들러는 onclick="...('${name}','${url}')" 문자열 조립 대신 addEventListener로
+ * 붙인다 - 파일명/URL에 따옴표 등 특수문자가 섞이면 문자열 조립 onclick이 깨져서
+ * "눌러도 반응이 없는" 버그가 생길 수 있는데, 이 방식은 그 문제 자체가 나지 않는다. */
+const TGRID_SELECTED = {};
+
+function _tGridPrintBtnId(gridId) {
+  return gridId === 'teacher-exam-pdf-grid' ? 'teacher-exam-print-btn'
+       : gridId === 'teacher-writing-pdf-grid' ? 'teacher-writing-print-btn' : null;
+}
+
+function renderExamPdfCards(grid, gridId, pdfs, grade) {
+  const selectable = gridId.indexOf('teacher-') === 0;
+  if (selectable) TGRID_SELECTED[gridId] = new Map();
+
+  if (pdfs.length === 0) {
+    grid.innerHTML = `<div class="exam-pdf-empty">📋 준비 중입니다<br><span style="font-size:12px;color:#ccc">곧 업로드될 예정이에요</span></div>`;
+  } else {
+    grid.innerHTML = pdfs.map((pdf, i) => {
+      const name = pdf.name.replace('.pdf', '').replace(/_/g, ' ');
+      return `<button class="exam-pdf-card${selectable ? ' selectable' : ''}" data-idx="${i}">
+        ${selectable ? '<span class="exam-pdf-check">✓</span>' : ''}
+        <span class="exam-pdf-icon">📄</span>
+        <span class="exam-pdf-card-title">${escapeHtml(name)}</span>
+        <span class="exam-pdf-card-grade">${escapeHtml(grade)}</span>
+      </button>`;
+    }).join('');
+    grid.querySelectorAll('.exam-pdf-card').forEach((cardBtn, i) => {
+      const pdf = pdfs[i];
+      const name = pdf.name.replace('.pdf', '').replace(/_/g, ' ');
+      cardBtn.addEventListener('click', () => {
+        if (selectable) tGridToggleCard(gridId, cardBtn, name, pdf.url);
+        else openExamPdfPopup(name, pdf.url, grade);
+      });
+    });
+  }
+  if (selectable) tGridUpdatePrintBtn(gridId);
+}
+
+function tGridToggleCard(gridId, cardBtn, name, url) {
+  const sel = TGRID_SELECTED[gridId];
+  if (!sel) return;
+  if (sel.has(url)) { sel.delete(url); cardBtn.classList.remove('selected'); }
+  else { sel.set(url, { name, url }); cardBtn.classList.add('selected'); }
+  tGridUpdatePrintBtn(gridId);
+}
+
+function tGridUpdatePrintBtn(gridId) {
+  const sel = TGRID_SELECTED[gridId];
+  const btnId = _tGridPrintBtnId(gridId);
+  const btn = btnId && document.getElementById(btnId);
+  if (btn) btn.disabled = !sel || sel.size === 0;
+}
+
+// 선택된 회차 수만큼 새 탭으로 하나씩 열어준다 (합쳐서 한 인쇄창으로는 못 띄움 - 실제로는
+// 서로 다른 PDF 파일이라 브라우저가 하나로 합쳐 인쇄할 방법이 없음). 팝업 차단을 피하려고
+// 클릭 한 번의 이벤트 안에서 살짝 시차를 두고 순서대로 연다.
+function tGridPrintSelected(gridId) {
+  const sel = TGRID_SELECTED[gridId];
+  if (!sel || sel.size === 0) return;
+  const items = Array.from(sel.values());
+  items.forEach((it, i) => setTimeout(() => window.open(it.url, '_blank'), i * 250));
+  gaEvent('exam_pdf_multi_print', { gridId, count: items.length });
+}
+
 async function selectWritingGrade(grade, btn, gridId) {
   gridId = gridId || 'writing-pdf-grid';
   // 급수 탭 활성화 표시는 클릭된 탭이 속한 탭바(.exam-lib-grade-tabs)로만 한정한다.
@@ -8158,19 +8238,7 @@ async function selectWritingGrade(grade, btn, gridId) {
   if (window._fbListWritingPdfs) {
     pdfs = await window._fbListWritingPdfs(grade);
   }
-
-  if (pdfs.length === 0) {
-    grid.innerHTML = `<div class="exam-pdf-empty">📋 준비 중입니다<br><span style="font-size:12px;color:#ccc">곧 업로드될 예정이에요</span></div>`;
-  } else {
-    grid.innerHTML = pdfs.map(pdf => {
-      const name = pdf.name.replace('.pdf','').replace(/_/g,' ');
-      return `<button class="exam-pdf-card" onclick="openExamPdfPopup('${name}','${pdf.url}','${grade}')">
-        <span class="exam-pdf-icon">📄</span>
-        <span class="exam-pdf-card-title">${name}</span>
-        <span class="exam-pdf-card-grade">${grade}</span>
-      </button>`;
-    }).join('');
-  }
+  renderExamPdfCards(grid, gridId, pdfs, grade);
 }
 
 async function selectExamGrade(grade, btn, gridId) {
@@ -8186,19 +8254,7 @@ async function selectExamGrade(grade, btn, gridId) {
   if (window._fbListExamPdfs) {
     pdfs = await window._fbListExamPdfs(grade);
   }
-
-  if (pdfs.length === 0) {
-    grid.innerHTML = `<div class="exam-pdf-empty">📋 준비 중입니다<br><span style="font-size:12px;color:#ccc">곧 업로드될 예정이에요</span></div>`;
-  } else {
-    grid.innerHTML = pdfs.map(pdf => {
-      const name = pdf.name.replace('.pdf','').replace(/_/g,' ');
-      return `<button class="exam-pdf-card" onclick="openExamPdfPopup('${name}','${pdf.url}','${grade}')">
-        <span class="exam-pdf-icon">📄</span>
-        <span class="exam-pdf-card-title">${name}</span>
-        <span class="exam-pdf-card-grade">${grade}</span>
-      </button>`;
-    }).join('');
-  }
+  renderExamPdfCards(grid, gridId, pdfs, grade);
 }
 
 let _currentPdfUrl = '';
